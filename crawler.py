@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os, re, requests, hashlib
 from datetime import datetime, timezone
 from xml.etree import ElementTree
@@ -17,7 +18,7 @@ FEEDS = [
     "https://news.google.com/rss/search?q=%E9%AA%91%E6%89%8B%E5%A4%96%E5%8D%96&hl=zh-CN&gl=CN&ceid=CN:zh-Hans",
     "https://news.google.com/rss/search?q=%E9%AA%91%E6%89%8B%E9%85%8D%E9%80%81&hl=zh-CN&gl=CN&ceid=CN:zh-Hans",
 ]
-CATS = ["琛屼笟鍔ㄦ€?, "鏀跨瓥娉曡", "鏀跺叆绂忓埄", "瀹夊叏淇濋殰"]
+CATS = ["\u884c\u4e1a\u52a8\u6001", "\u653f\u7b56\u6cd5\u89c4", "\u6536\u5165\u798f\u5229", "\u5b89\u5168\u4fdd\u969c"]
 
 def fetch(url):
     try:
@@ -26,8 +27,8 @@ def fetch(url):
         root = ElementTree.fromstring(r.content)
         out = []
         for item in root.findall(".//item")[:8]:
-            title = re.sub(r"\s*-\s*[^-]+$", "", item.findtext("title","")).strip()
-            link  = item.findtext("link","").strip()
+            title = re.sub(r"\s*-\s*[^-]+$", "", item.findtext("title", "")).strip()
+            link  = item.findtext("link", "").strip()
             if title and link:
                 out.append({"title": title, "url": link})
         return out
