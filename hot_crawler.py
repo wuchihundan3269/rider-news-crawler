@@ -2,9 +2,9 @@
 """
 hot_crawler.py  -  热搜爬虫
 定时抓取微博/抖音/百度/知乎 TOP10 热搜，写入 Supabase hot_search 表
-数据源：各平台官方接口（无需第三方中间 API）
 """
-import os, requests
+import os, re, requests
+from bs4 import BeautifulSoup
 from datetime import datetime, timezone
 
 SUPABASE_URL = os.environ["SUPABASE_URL"]
@@ -55,28 +55,41 @@ def fetch_weibo():
 
 
 def fetch_baidu():
-    """百度热搜 - rsshub 公共实例（无需鉴权）"""
+    """百度热搜 - 官方实时热点 JSON 接口（三层嵌套结构）"""
     try:
-        # 使用 rsshub 公共实例获取百度热搜，返回 JSON
-        url = "https://rsshub.app/baidu/hot-search?format=json"
-        r = requests.get(url, timeout=15, headers={"User-Agent": COMMON_UA})
+        url = "https://top.baidu.com/api/board?platform=wise&tab=realtime"
+        r = requests.get(url, timeout=15, headers={
+            "User-Agent": COMMON_UA,
+            "Referer": "https://top.baidu.com/board?tab=realtime",
+        })
         r.raise_for_status()
         data = r.json()
-        items = data.get("items", [])[:10]
+        # 返回结构: {data: {cards: [{content: [{content: [{word, hotScore, url}]}]}]}}
+        cards = data.get("data", {}).get("cards", [])
+        items = []
+        for card in cards:
+            for outer in card.get("content", []):
+                items.extend(outer.get("content", []))
         rows = []
-        for i, item in enumerate(items):
-            word = item.get("title", "")
-            link = item.get("url", item.get("link", f"https://www.baidu.com/s?wd={requests.utils.quote(word)}"))
-            if word:
-                rows.append({
-                    "id": f"baidu_{i+1:02d}",
-                    "platform": "baidu",
-                    "rank": i + 1,
-                    "title": word,
-                    "hot_score": "",
-                    "url": link,
-                    "updated_at": datetime.now(timezone.utc).isoformat(),
-                })
+        rank = 1
+        for item in items:
+            word = item.get("word", "")
+            if not word:
+                continue
+            hot = str(item.get("hotScore", ""))
+            link = item.get("url", f"https://www.baidu.com/s?wd={requests.utils.quote(word)}")
+            rows.append({
+                "id": f"baidu_{rank:02d}",
+                "platform": "baidu",
+                "rank": rank,
+                "title": word,
+                "hot_score": hot,
+                "url": link,
+                "updated_at": datetime.now(timezone.utc).isoformat(),
+            })
+            rank += 1
+            if rank > 10:
+                break
         return rows
     except Exception as e:
         print(f"  [baidu] 报错: {e}")
@@ -84,59 +97,109 @@ def fetch_baidu():
 
 
 def fetch_zhihu():
-    """知乎热榜 - rsshub 公共实例（无需鉴权）"""
+    """知乎热榜 - daily-hot-api (Vercel)，降级用 weibo-hot-api 镜像"""
+    # 方案1: daily-hot-api（GitHub Actions 境外服务器可访问 Vercel）
+    candidates = [
+        "https://daily-hot-api.vercel.app/zhihu",
+        "https://hot-api.vercel.app/zhihu",
+        "https://api.hotlist.online/zhihu",
+    ]
+    for api_url in candidates:
+        try:
+            r = requests.get(api_url, timeout=12, headers={"User-Agent": COMMON_UA})
+            if r.status_code == 200:
+                data = r.json()
+                # 通用结构尝试: data 为列表，或 {data: [...]}
+                raw = data if isinstance(data, list) else data.get("data", [])
+                if raw:
+                    rows = []
+                    for i, item in enumerate(raw[:10]):
+                        word = item.get("title", item.get("name", item.get("word", "")))
+                        hot  = str(item.get("hot", item.get("hotScore", item.get("num", ""))))
+                        link = item.get("url", item.get("link", "https://www.zhihu.com/hot"))
+                        if word:
+                            rows.append({
+                                "id": f"zhihu_{i+1:02d}",
+                                "platform": "zhihu",
+                                "rank": i + 1,
+                                "title": word,
+                                "hot_score": hot,
+                                "url": link,
+                                "updated_at": datetime.now(timezone.utc).isoformat(),
+                            })
+                    if rows:
+                        return rows
+        except Exception:
+            continue
+
+    # 方案2: 爬 tophub.today 知乎热榜
     try:
-        url = "https://rsshub.app/zhihu/hot?format=json"
-        r = requests.get(url, timeout=15, headers={"User-Agent": COMMON_UA})
-        r.raise_for_status()
-        data = r.json()
-        items = data.get("items", [])[:10]
-        rows = []
-        for i, item in enumerate(items):
-            word = item.get("title", "")
-            link = item.get("url", item.get("link", f"https://www.zhihu.com/search?q={requests.utils.quote(word)}"))
-            if word:
-                rows.append({
-                    "id": f"zhihu_{i+1:02d}",
-                    "platform": "zhihu",
-                    "rank": i + 1,
-                    "title": word,
-                    "hot_score": "",
-                    "url": link,
-                    "updated_at": datetime.now(timezone.utc).isoformat(),
-                })
-        return rows
+        r = requests.get("https://tophub.today/n/Q1Vd5Ko85D", timeout=15,
+                         headers={"User-Agent": COMMON_UA})
+        if r.status_code == 200:
+            soup = BeautifulSoup(r.text, "html.parser")
+            rows = []
+            for i, row in enumerate(soup.select("tr")[:10]):
+                a = row.find("a")
+                if not a:
+                    continue
+                word = a.get_text(strip=True)
+                link = a.get("href", "https://www.zhihu.com/hot")
+                tds = row.find_all("td")
+                cell_text = tds[2].get_text(strip=True) if len(tds) > 2 else ""
+                m = re.search(r"(\d+)\s*万?热度", cell_text)
+                hot = m.group(1) if m else ""
+                if word:
+                    rows.append({
+                        "id": f"zhihu_{i+1:02d}",
+                        "platform": "zhihu",
+                        "rank": i + 1,
+                        "title": word,
+                        "hot_score": hot,
+                        "url": link,
+                        "updated_at": datetime.now(timezone.utc).isoformat(),
+                    })
+            if rows:
+                return rows
     except Exception as e:
-        print(f"  [zhihu] 报错: {e}")
-        return []
+        print(f"  [zhihu-tophub] 报错: {e}")
+
+    print("  [zhihu] 所有数据源均失败")
+    return []
 
 
 def fetch_douyin():
-    """抖音热搜 - 官方接口"""
+    """抖音热搜 - tophub.today（稳定爬虫，含真实视频链接和播放量）"""
     try:
-        url = "https://www.douyin.com/aweme/v1/web/hot/search/list/?device_platform=webapp&aid=6383&channel=channel_pc_web&detail_list=1"
-        r = requests.get(url, timeout=15, headers={
-            "User-Agent": COMMON_UA,
-            "Referer": "https://www.douyin.com/",
-        })
+        url = "https://tophub.today/n/DpQvNABoNE"
+        r = requests.get(url, timeout=15, headers={"User-Agent": COMMON_UA})
         r.raise_for_status()
-        data = r.json()
-        items = data.get("data", {}).get("word_list", [])
+        soup = BeautifulSoup(r.text, "html.parser")
         rows = []
-        for i, item in enumerate(items[:10]):
-            word = item.get("word", "")
-            hot = str(item.get("hot_value", ""))
-            link = f"https://www.douyin.com/search/{requests.utils.quote(word)}"
+        rank = 1
+        for row in soup.select("tr"):
+            a = row.find("a")
+            if not a:
+                continue
+            word = a.get_text(strip=True)
+            link = a.get("href", f"https://www.douyin.com/search/{requests.utils.quote(word)}")
+            tds = row.find_all("td")
+            cell_text = tds[2].get_text(strip=True) if len(tds) > 2 else ""
+            m = re.search(r"(\d+)次播放", cell_text)
+            hot = m.group(1) if m else ""
             if word:
                 rows.append({
-                    "id": f"douyin_{i+1:02d}",
+                    "id": f"douyin_{rank:02d}",
                     "platform": "douyin",
-                    "rank": i + 1,
+                    "rank": rank,
                     "title": word,
                     "hot_score": hot,
                     "url": link,
                     "updated_at": datetime.now(timezone.utc).isoformat(),
                 })
+                rank += 1
+                if rank > 10:
+                    break
         return rows
     except Exception as e:
         print(f"  [douyin] 报错: {e}")
