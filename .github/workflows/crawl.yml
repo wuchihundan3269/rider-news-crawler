@@ -1,24 +1,38 @@
-name: Crawl News
+name: News Crawler
 
 on:
   schedule:
-    - cron: "0 0 * * *"
-    - cron: "0 4 * * *"
-    - cron: "0 10 * * *"
-    - cron: "0 14 * * *"
-  workflow_dispatch:
+    - cron: '0 0 * * *'   # UTC 00:00 = Beijing 08:00
+    - cron: '0 4 * * *'   # UTC 04:00 = Beijing 12:00
+    - cron: '0 10 * * *'  # UTC 10:00 = Beijing 18:00
+    - cron: '0 14 * * *'  # UTC 14:00 = Beijing 22:00
+  workflow_dispatch:       # Allow manual trigger
 
 jobs:
   crawl:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
-      - run: pip install requests
-      - name: Run crawler
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests feedparser
+
+      - name: Run news crawler
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
         run: python crawler.py
+
+      - name: Run hot search crawler
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: python hot_crawler.py
