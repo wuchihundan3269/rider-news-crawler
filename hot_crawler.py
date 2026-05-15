@@ -97,109 +97,60 @@ def fetch_baidu():
 
 
 def fetch_zhihu():
-    """知乎热榜 - daily-hot-api (Vercel)，降级用 weibo-hot-api 镜像"""
-    # 方案1: daily-hot-api（GitHub Actions 境外服务器可访问 Vercel）
-    candidates = [
-        "https://daily-hot-api.vercel.app/zhihu",
-        "https://hot-api.vercel.app/zhihu",
-        "https://api.hotlist.online/zhihu",
-    ]
-    for api_url in candidates:
-        try:
-            r = requests.get(api_url, timeout=12, headers={"User-Agent": COMMON_UA})
-            if r.status_code == 200:
-                data = r.json()
-                # 通用结构尝试: data 为列表，或 {data: [...]}
-                raw = data if isinstance(data, list) else data.get("data", [])
-                if raw:
-                    rows = []
-                    for i, item in enumerate(raw[:10]):
-                        word = item.get("title", item.get("name", item.get("word", "")))
-                        hot  = str(item.get("hot", item.get("hotScore", item.get("num", ""))))
-                        link = item.get("url", item.get("link", "https://www.zhihu.com/hot"))
-                        if word:
-                            rows.append({
-                                "id": f"zhihu_{i+1:02d}",
-                                "platform": "zhihu",
-                                "rank": i + 1,
-                                "title": word,
-                                "hot_score": hot,
-                                "url": link,
-                                "updated_at": datetime.now(timezone.utc).isoformat(),
-                            })
-                    if rows:
-                        return rows
-        except Exception:
-            continue
-
-    # 方案2: 爬 tophub.today 知乎热榜
+    """知乎热榜 - 60s-api.viki.moe（Deno Deploy，GitHub Actions 可访问）"""
     try:
-        r = requests.get("https://tophub.today/n/Q1Vd5Ko85D", timeout=15,
-                         headers={"User-Agent": COMMON_UA})
-        if r.status_code == 200:
-            soup = BeautifulSoup(r.text, "html.parser")
-            rows = []
-            for i, row in enumerate(soup.select("tr")[:10]):
-                a = row.find("a")
-                if not a:
-                    continue
-                word = a.get_text(strip=True)
-                link = a.get("href", "https://www.zhihu.com/hot")
-                tds = row.find_all("td")
-                cell_text = tds[2].get_text(strip=True) if len(tds) > 2 else ""
-                m = re.search(r"(\d+)\s*万?热度", cell_text)
-                hot = m.group(1) if m else ""
-                if word:
-                    rows.append({
-                        "id": f"zhihu_{i+1:02d}",
-                        "platform": "zhihu",
-                        "rank": i + 1,
-                        "title": word,
-                        "hot_score": hot,
-                        "url": link,
-                        "updated_at": datetime.now(timezone.utc).isoformat(),
-                    })
-            if rows:
-                return rows
-    except Exception as e:
-        print(f"  [zhihu-tophub] 报错: {e}")
-
-    print("  [zhihu] 所有数据源均失败")
-    return []
-
-
-def fetch_douyin():
-    """抖音热搜 - tophub.today（稳定爬虫，含真实视频链接和播放量）"""
-    try:
-        url = "https://tophub.today/n/DpQvNABoNE"
+        url = "https://60s-api.viki.moe/v2/zhihu"
         r = requests.get(url, timeout=15, headers={"User-Agent": COMMON_UA})
         r.raise_for_status()
-        soup = BeautifulSoup(r.text, "html.parser")
+        data = r.json()
+        items = data.get("data", [])
         rows = []
-        rank = 1
-        for row in soup.select("tr"):
-            a = row.find("a")
-            if not a:
-                continue
-            word = a.get_text(strip=True)
-            link = a.get("href", f"https://www.douyin.com/search/{requests.utils.quote(word)}")
-            tds = row.find_all("td")
-            cell_text = tds[2].get_text(strip=True) if len(tds) > 2 else ""
-            m = re.search(r"(\d+)次播放", cell_text)
-            hot = m.group(1) if m else ""
+        for i, item in enumerate(items[:10]):
+            word = item.get("title", "")
+            hot  = str(item.get("heat", item.get("hot", "")))
+            link = item.get("url", "https://www.zhihu.com/hot")
             if word:
                 rows.append({
-                    "id": f"douyin_{rank:02d}",
-                    "platform": "douyin",
-                    "rank": rank,
+                    "id": f"zhihu_{i+1:02d}",
+                    "platform": "zhihu",
+                    "rank": i + 1,
                     "title": word,
                     "hot_score": hot,
                     "url": link,
                     "updated_at": datetime.now(timezone.utc).isoformat(),
                 })
-                rank += 1
-                if rank > 10:
-                    break
+        return rows
+    except Exception as e:
+        print(f"  [zhihu] 报错: {e}")
+        return []
+
+
+def fetch_douyin():
+    """抖音热搜 - 官方接口"""
+    try:
+        url = "https://www.douyin.com/aweme/v1/web/hot/search/list/?device_platform=webapp&aid=6383&channel=channel_pc_web&detail_list=1"
+        r = requests.get(url, timeout=15, headers={
+            "User-Agent": COMMON_UA,
+            "Referer": "https://www.douyin.com/",
+        })
+        r.raise_for_status()
+        data = r.json()
+        items = data.get("data", {}).get("word_list", [])
+        rows = []
+        for i, item in enumerate(items[:10]):
+            word = item.get("word", "")
+            hot = str(item.get("hot_value", ""))
+            link = f"https://www.douyin.com/search/{requests.utils.quote(word)}"
+            if word:
+                rows.append({
+                    "id": f"douyin_{i+1:02d}",
+                    "platform": "douyin",
+                    "rank": i + 1,
+                    "title": word,
+                    "hot_score": hot,
+                    "url": link,
+                    "updated_at": datetime.now(timezone.utc).isoformat(),
+                })
         return rows
     except Exception as e:
         print(f"  [douyin] 报错: {e}")
