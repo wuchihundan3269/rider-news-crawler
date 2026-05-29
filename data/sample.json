@@ -1,0 +1,273 @@
+{
+  "date": "2025-06-10",
+  "generated_at": "2025-06-10T08:00:00Z",
+  "_note": "这是示例数据，用于本地预览。真实数据由 GitHub Actions 自动生成。",
+  "featured": [
+    {
+      "title": "多地出台骑手权益保障新规，平台须为骑手缴纳工伤保险",
+      "summary": "人社部联合多部委发布通知，要求外卖平台在2025年底前完成骑手工伤保险全覆盖，并建立收入保障机制，确保骑手月均收入不低于当地最低工资标准的1.5倍。",
+      "source": "人民日报",
+      "url": "https://example.com/news/1",
+      "published_at": "2025-06-10T09:30:00",
+      "category": "rider",
+      "tag": "骑手新闻",
+      "tagClass": "tag-yellow",
+      "img": null,
+      "grad": "linear-gradient(135deg,#1a2e1a 0%,#0d2b0d 45%,#1a3a1a 100%)"
+    },
+    {
+      "title": "美团发布2025骑手发展报告：全国活跃骑手超700万",
+      "summary": "报告显示，美团平台活跃骑手数量同比增长12%，其中35岁以下骑手占比达68%。平台持续加大骑手培训投入，全年培训人次突破500万。",
+      "source": "美团官方",
+      "url": "https://example.com/news/2",
+      "published_at": "2025-06-10T10:00:00",
+      "category": "platform",
+      "tag": "平台动作",
+      "tagClass": "tag-red",
+      "img": null,
+      "grad": "linear-gradient(135deg,#1a1a2e 0%,#16213e 45%,#0f3460 100%)"
+    },
+    {
+      "title": "即时配送行业迎来新增长：2025年市场规模预计突破8000亿",
+      "summary": "艾瑞咨询最新报告显示，受消费升级和下沉市场扩张驱动，即时配送行业保持高速增长态势，预计2025年全年市场规模将突破8000亿元。",
+      "source": "艾瑞咨询",
+      "url": "https://example.com/news/3",
+      "published_at": "2025-06-10T08:00:00",
+      "category": "industry",
+      "tag": "行业动态",
+      "tagClass": "tag-blue",
+      "img": null,
+      "grad": "linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"
+    },
+    {
+      "title": "骑手遭遇恶意差评事件引发广泛关注，平台启动专项整治",
+      "summary": "近期多起骑手遭遇恶意差评事件在社交媒体引发热议，美团、饿了么相继宣布启动差评申诉绿色通道，并对恶意差评用户实施封号处理。",
+      "source": "新浪科技",
+      "url": "https://example.com/news/4",
+      "published_at": "2025-06-10T11:00:00",
+      "category": "opinion",
+      "tag": "舆情信息",
+      "tagClass": "tag-purple",
+      "img": null,
+      "grad": "linear-gradient(135deg,#1e0a2e 0%,#180820 45%,#2a0f3a 100%)"
+    },
+    {
+      "title": "饿了么宣布骑手薪资上调10%，并新增高温补贴政策",
+      "summary": "饿了么宣布自7月1日起，全平台骑手基础薪资上调10%，同时在全国高温城市推行高温补贴政策，每日最高可获得30元额外补贴。",
+      "source": "36氪",
+      "url": "https://example.com/news/5",
+      "published_at": "2025-06-10T07:30:00",
+      "category": "platform",
+      "tag": "平台动作",
+      "tagClass": "tag-red",
+      "img": null,
+      "grad": "linear-gradient(135deg,#1a1a2e 0%,#16213e 45%,#0f3460 100%)"
+    }
+  ],
+  "articles": [
+    {
+      "title": "多地出台骑手权益保障新规，平台须为骑手缴纳工伤保险",
+      "summary": "人社部联合多部委发布通知，要求外卖平台在2025年底前完成骑手工伤保险全覆盖。",
+      "source": "人民日报",
+      "url": "https://example.com/news/1",
+      "published_at": "2025-06-10T09:30:00",
+      "category": "rider",
+      "tag": "骑手新闻",
+      "tagClass": "tag-yellow",
+      "img": null,
+      "grad": "linear-gradient(135deg,#1a2e1a 0%,#0d2b0d 45%,#1a3a1a 100%)"
+    },
+    {
+      "title": "美团发布2025骑手发展报告：全国活跃骑手超700万",
+      "summary": "报告显示，美团平台活跃骑手数量同比增长12%，其中35岁以下骑手占比达68%。",
+      "source": "美团官方",
+      "url": "https://example.com/news/2",
+      "published_at": "2025-06-10T10:00:00",
+      "category": "platform",
+      "tag": "平台动作",
+      "tagClass": "tag-red",
+      "img": null,
+      "grad": "linear-gradient(135deg,#1a1a2e 0%,#16213e 45%,#0f3460 100%)"
+    },
+    {
+      "title": "即时配送行业迎来新增长：2025年市场规模预计突破8000亿",
+      "summary": "艾瑞咨询最新报告显示，受消费升级和下沉市场扩张驱动，即时配送行业保持高速增长态势。",
+      "source": "艾瑞咨询",
+      "url": "https://example.com/news/3",
+      "published_at": "2025-06-10T08:00:00",
+      "category": "industry",
+      "tag": "行业动态",
+      "tagClass": "tag-blue",
+      "img": null,
+      "grad": "linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"
+    },
+    {
+      "title": "骑手遭遇恶意差评事件引发广泛关注，平台启动专项整治",
+      "summary": "近期多起骑手遭遇恶意差评事件在社交媒体引发热议，美团、饿了么相继宣布启动差评申诉绿色通道。",
+      "source": "新浪科技",
+      "url": "https://example.com/news/4",
+      "published_at": "2025-06-10T11:00:00",
+      "category": "opinion",
+      "tag": "舆情信息",
+      "tagClass": "tag-purple",
+      "img": null,
+      "grad": "linear-gradient(135deg,#1e0a2e 0%,#180820 45%,#2a0f3a 100%)"
+    },
+    {
+      "title": "饿了么宣布骑手薪资上调10%，并新增高温补贴政策",
+      "summary": "饿了么宣布自7月1日起，全平台骑手基础薪资上调10%，同时在全国高温城市推行高温补贴政策。",
+      "source": "36氪",
+      "url": "https://example.com/news/5",
+      "published_at": "2025-06-10T07:30:00",
+      "category": "platform",
+      "tag": "平台动作",
+      "tagClass": "tag-red",
+      "img": null,
+      "grad": "linear-gradient(135deg,#1a1a2e 0%,#16213e 45%,#0f3460 100%)"
+    },
+    {
+      "title": "顺丰同城宣布进军外卖配送市场，与美团展开正面竞争",
+      "summary": "顺丰同城宣布推出外卖配送服务，并在北京、上海、广州三城率先试点，计划年内覆盖全国50个主要城市。",
+      "source": "财经网",
+      "url": "https://example.com/news/6",
+      "published_at": "2025-06-10T06:00:00",
+      "category": "industry",
+      "tag": "行业动态",
+      "tagClass": "tag-blue",
+      "img": null,
+      "grad": "linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"
+    },
+    {
+      "title": "骑手职业认同感调查：超六成骑手表示愿意长期从事该职业",
+      "summary": "中国劳动关系学院发布调查报告，显示骑手群体职业认同感持续提升，超六成受访骑手表示愿意长期从事配送工作。",
+      "source": "中国劳动关系学院",
+      "url": "https://example.com/news/7",
+      "published_at": "2025-06-09T15:00:00",
+      "category": "rider",
+      "tag": "骑手新闻",
+      "tagClass": "tag-yellow",
+      "img": null,
+      "grad": "linear-gradient(135deg,#1a2e1a 0%,#0d2b0d 45%,#1a3a1a 100%)"
+    },
+    {
+      "title": "美团闪购业务Q1营收同比增长45%，即时零售成新增长极",
+      "summary": "美团一季度财报显示，闪购业务营收同比增长45%，订单量突破10亿单，即时零售已成为平台重要增长引擎。",
+      "source": "虎嗅",
+      "url": "https://example.com/news/8",
+      "published_at": "2025-06-09T10:00:00",
+      "category": "platform",
+      "tag": "平台动作",
+      "tagClass": "tag-red",
+      "img": null,
+      "grad": "linear-gradient(135deg,#1a1a2e 0%,#16213e 45%,#0f3460 100%)"
+    }
+  ],
+  "flash": [
+    {
+      "title": "多地出台骑手权益保障新规，平台须为骑手缴纳工伤保险",
+      "summary": "人社部联合多部委发布通知，要求外卖平台在2025年底前完成骑手工伤保险全覆盖。",
+      "source": "人民日报",
+      "url": "https://example.com/news/1",
+      "published_at": "2025-06-10T09:30:00",
+      "category": "rider",
+      "tag": "骑手新闻",
+      "tagClass": "tag-yellow"
+    },
+    {
+      "title": "骑手遭遇恶意差评事件引发广泛关注，平台启动专项整治",
+      "summary": "近期多起骑手遭遇恶意差评事件在社交媒体引发热议，美团、饿了么相继宣布启动差评申诉绿色通道。",
+      "source": "新浪科技",
+      "url": "https://example.com/news/4",
+      "published_at": "2025-06-10T11:00:00",
+      "category": "opinion",
+      "tag": "舆情信息",
+      "tagClass": "tag-purple"
+    },
+    {
+      "title": "美团发布2025骑手发展报告：全国活跃骑手超700万",
+      "summary": "报告显示，美团平台活跃骑手数量同比增长12%，其中35岁以下骑手占比达68%。",
+      "source": "美团官方",
+      "url": "https://example.com/news/2",
+      "published_at": "2025-06-10T10:00:00",
+      "category": "platform",
+      "tag": "平台动作",
+      "tagClass": "tag-red"
+    },
+    {
+      "title": "即时配送行业迎来新增长：2025年市场规模预计突破8000亿",
+      "summary": "艾瑞咨询最新报告显示，受消费升级和下沉市场扩张驱动，即时配送行业保持高速增长态势。",
+      "source": "艾瑞咨询",
+      "url": "https://example.com/news/3",
+      "published_at": "2025-06-10T08:00:00",
+      "category": "industry",
+      "tag": "行业动态",
+      "tagClass": "tag-blue"
+    },
+    {
+      "title": "饿了么宣布骑手薪资上调10%，并新增高温补贴政策",
+      "summary": "饿了么宣布自7月1日起，全平台骑手基础薪资上调10%，同时在全国高温城市推行高温补贴政策。",
+      "source": "36氪",
+      "url": "https://example.com/news/5",
+      "published_at": "2025-06-10T07:30:00",
+      "category": "platform",
+      "tag": "平台动作",
+      "tagClass": "tag-red"
+    }
+  ],
+  "hot": [
+    {
+      "platform": "weibo",
+      "name": "微博热搜",
+      "logo_url": "https://favicon.im/weibo.com?larger=true",
+      "link": "https://s.weibo.com/top/summary",
+      "items": [
+        {"rank": 1, "text": "外卖骑手工伤保险全覆盖"},
+        {"rank": 2, "text": "即时配送市场规模突破8000亿"},
+        {"rank": 3, "text": "美团骑手发展报告"},
+        {"rank": 4, "text": "恶意差评整治行动"},
+        {"rank": 5, "text": "顺丰同城进军外卖"},
+        {"rank": 6, "text": "骑手高温补贴政策"},
+        {"rank": 7, "text": "外卖平台竞争加剧"},
+        {"rank": 8, "text": "骑手职业认同感调查"},
+        {"rank": 9, "text": "即时零售新增长极"},
+        {"rank": 10, "text": "配送行业人才短缺"}
+      ]
+    },
+    {
+      "platform": "douyin",
+      "name": "抖音热点",
+      "logo_url": "https://favicon.im/tiktok.com?larger=true",
+      "link": "https://www.douyin.com/",
+      "items": [
+        {"rank": 1, "text": "骑手送餐途中救人"},
+        {"rank": 2, "text": "外卖小哥暖心故事"},
+        {"rank": 3, "text": "骑手收入大揭秘"},
+        {"rank": 4, "text": "恶劣天气骑手坚守"},
+        {"rank": 5, "text": "骑手权益保障新政"},
+        {"rank": 6, "text": "外卖平台新规解读"},
+        {"rank": 7, "text": "骑手日常vlog"},
+        {"rank": 8, "text": "配送效率提升技巧"},
+        {"rank": 9, "text": "骑手安全驾驶培训"},
+        {"rank": 10, "text": "外卖行业发展趋势"}
+      ]
+    },
+    {
+      "platform": "baidu",
+      "name": "百度热搜",
+      "logo_url": "https://favicon.im/baidu.com?larger=true",
+      "link": "https://top.baidu.com/board?tab=realtime",
+      "items": [
+        {"rank": 1, "text": "外卖骑手工伤保险"},
+        {"rank": 2, "text": "即时配送行业报告"},
+        {"rank": 3, "text": "美团饿了么竞争"},
+        {"rank": 4, "text": "骑手薪资待遇"},
+        {"rank": 5, "text": "外卖平台新政策"},
+        {"rank": 6, "text": "顺丰同城外卖"},
+        {"rank": 7, "text": "骑手职业发展"},
+        {"rank": 8, "text": "即时零售市场"},
+        {"rank": 9, "text": "配送行业趋势"},
+        {"rank": 10, "text": "骑手权益保障"}
+      ]
+    }
+  ]
+}

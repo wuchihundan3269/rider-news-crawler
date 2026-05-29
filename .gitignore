@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+.env
+
+# TrendRadar 运行缓存
+trendradar-config/cache/
+*.db
+*.sqlite
+
+# 编辑器 / OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# 日志
+*.log
+logs/
+
+# 临时文件
+*.tmp
+*.bak
+
+# 旧项目 / 调试脚本（不需要部署）
+designs/
+rider-news/
+rider-news-site/
+github-upload/
+*.txt
+check_table.py
+check_token.py
+create_table.py
+fetch_news_v2.py
+get_keys.py
+setup_github.py
+setup_github2.py
+setup_github3.py
+upload_workflow.py
+screenshot_all.js
+screenshot_d21.js
+screenshot_designs.ps1

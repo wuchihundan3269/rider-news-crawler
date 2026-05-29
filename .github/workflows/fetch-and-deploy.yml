@@ -1,0 +1,161 @@
+name: 抓取新闻 & 部署 GitHub Pages
+
+on:
+  # 每小时整点运行（北京时间 = UTC+8，覆盖全天24小时）
+  schedule:
+    - cron: "0 * * * *"   # 每小时 UTC :00 触发，即北京时间每小时整点
+  # 允许手动触发，可指定日期
+  workflow_dispatch:
+    inputs:
+      date:
+        description: "指定日期（YYYY-MM-DD），留空则使用今天"
+        required: false
+        default: ""
+
+# 允许 Actions 写入仓库（用于 gh-pages 部署）
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+# 同一时间只允许一个实例运行，避免并发写冲突
+concurrency:
+  group: fetch-and-deploy
+  cancel-in-progress: false
+
+jobs:
+  fetch-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      # ── 1. 检出仓库 ──────────────────────────────────────────────
+      - name: 检出代码
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # ── 2. 设置 Python ───────────────────────────────────────────
+      - name: 设置 Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      # ── 3. 安装依赖 ──────────────────────────────────────────────
+      - name: 安装依赖
+        run: |
+          pip install --upgrade pip
+          pip install feedparser requests beautifulsoup4 lxml pyyaml python-dateutil
+
+      # ── 4. 确定目标日期 & 小时 ───────────────────────────────────
+      - name: 确定日期和时间
+        id: date
+        run: |
+          if [ -n "${{ github.event.inputs.date }}" ]; then
+            DATE="${{ github.event.inputs.date }}"
+          else
+            DATE=$(TZ='Asia/Shanghai' date +%Y-%m-%d)
+          fi
+          HOUR=$(TZ='Asia/Shanghai' date +%H)
+          DATETIME=$(TZ='Asia/Shanghai' date +"%Y-%m-%d %H:%M")
+          echo "date=$DATE"         >> $GITHUB_OUTPUT
+          echo "hour=$HOUR"         >> $GITHUB_OUTPUT
+          echo "datetime=$DATETIME" >> $GITHUB_OUTPUT
+          echo "当前北京时间: $DATETIME"
+
+      # ── 5. 克隆 TrendRadar ───────────────────────────────────────
+      - name: 克隆 TrendRadar
+        run: |
+          if [ ! -d "trendradar" ]; then
+            git clone --depth=1 https://github.com/enpitsuLin/trendradar.git trendradar
+          fi
+
+      # ── 6. 复制配置文件 ──────────────────────────────────────────
+      - name: 复制 TrendRadar 配置
+        run: |
+          cp trendradar-config/config.yaml trendradar/config.yaml
+          if [ -f "trendradar-config/frequency_words.txt" ]; then
+            cp trendradar-config/frequency_words.txt trendradar/frequency_words.txt
+          fi
+
+      # ── 7. 运行 TrendRadar 抓取 ──────────────────────────────────
+      - name: 运行 TrendRadar 抓取新闻
+        working-directory: trendradar
+        run: |
+          if [ -f "requirements.txt" ]; then
+            pip install -r requirements.txt
+          fi
+          python main.py || python run.py || python trendradar.py || echo "WARNING: 抓取脚本未找到，跳过"
+        continue-on-error: true
+
+      # ── 8. 转换数据格式 ──────────────────────────────────────────
+      - name: 转换数据为网站格式
+        run: |
+          DATE="${{ steps.date.outputs.date }}"
+          NEWS_FILE="trendradar/output/news/${DATE}.json"
+          HOT_FILE="trendradar/output/hot/${DATE}.json"
+          OUTPUT_FILE="data/${DATE}.json"
+
+          if [ ! -f "$NEWS_FILE" ]; then
+            echo "WARNING: 新闻文件不存在: $NEWS_FILE，尝试查找最新输出..."
+            LATEST=$(ls trendradar/output/news/*.json 2>/dev/null | sort | tail -1)
+            if [ -n "$LATEST" ]; then
+              echo "使用最新文件: $LATEST"
+              NEWS_FILE="$LATEST"
+            else
+              echo "ERROR: 没有找到任何新闻文件，跳过转换"
+              exit 0
+            fi
+          fi
+
+          mkdir -p data
+          if [ -f "$HOT_FILE" ]; then
+            python scripts/transform.py --input "$NEWS_FILE" --hot "$HOT_FILE" --output "$OUTPUT_FILE"
+          else
+            python scripts/transform.py --input "$NEWS_FILE" --output "$OUTPUT_FILE"
+          fi
+
+          echo "数据文件已生成: $OUTPUT_FILE"
+
+      # ── 9. 生成 latest.json 指针（含小时信息）────────────────────
+      - name: 更新 latest.json
+        run: |
+          DATE="${{ steps.date.outputs.date }}"
+          HOUR="${{ steps.date.outputs.hour }}"
+          DATETIME="${{ steps.date.outputs.datetime }}"
+          DATA_FILE="data/${DATE}.json"
+          if [ -f "$DATA_FILE" ]; then
+            echo "{\"date\":\"${DATE}\",\"hour\":\"${HOUR}\",\"updated_at\":\"${DATETIME}\",\"file\":\"data/${DATE}.json\"}" > data/latest.json
+            echo "latest.json 已更新 -> ${DATETIME}"
+          fi
+
+      # ── 10. 清理7天前的旧数据 ────────────────────────────────────
+      - name: 清理旧数据
+        run: |
+          find data/ -name "*.json" -not -name "latest.json" -not -name "sample.json" \
+            -mtime +7 -delete 2>/dev/null || true
+          echo "旧数据清理完成"
+
+      # ── 11. 提交数据文件 ─────────────────────────────────────────
+      - name: 提交数据到仓库
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          if git diff --staged --quiet; then
+            echo "没有新数据，跳过提交"
+          else
+            git commit -m "data: ${{ steps.date.outputs.datetime }} 自动更新"
+            git push
+          fi
+
+      # ── 12. 部署到 GitHub Pages ──────────────────────────────────
+      - name: 部署到 GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./
+          publish_branch: gh-pages
+          exclude_assets: ".github,trendradar,trendradar-config,scripts/__pycache__"
+          commit_message: "deploy: ${{ steps.date.outputs.datetime }}"
