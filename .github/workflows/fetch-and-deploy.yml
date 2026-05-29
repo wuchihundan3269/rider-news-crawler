@@ -65,9 +65,15 @@ jobs:
 
       # ── 5. 克隆 TrendRadar ───────────────────────────────────────
       - name: 克隆 TrendRadar
+        env:
+          GIT_TERMINAL_PROMPT: "0"
         run: |
+          git config --global url."https://github.com/".insteadOf "git@github.com:"
           if [ ! -d "trendradar" ]; then
-            git clone --depth=1 https://github.com/enpitsuLin/trendradar.git trendradar
+            git clone --depth=1 --no-tags \
+              https://github.com/enpitsuLin/trendradar.git trendradar \
+              || git clone --depth=1 --no-tags \
+              https://github.com/sansan0/TrendRadar.git trendradar
           fi
 
       # ── 6. 复制配置文件 ──────────────────────────────────────────
