@@ -775,8 +775,10 @@ function renderHero(){
     const _bgStyle = n.img ? 'url(' + n.img + '), ' + n.grad : n.grad;
     const _catCls = _heroCatMap[n.category] ? _heroCatMap[n.category].cls : '';
     const _catLabel = _heroCatMap[n.category] ? _heroCatMap[n.category].label : (n.tag || '');
+    const _urlAttr = n.url ? ` data-url="${n.url}"` : '';
+    const _cursorStyle = n.url ? 'cursor:pointer' : '';
     return `
-    <div class="hero-slide${i===0?' active':''}" data-idx="${i}">
+    <div class="hero-slide${i===0?' active':''}" data-idx="${i}"${_urlAttr} style="${_cursorStyle}" onclick="if(this.dataset.url) window.open(this.dataset.url,'_blank')">
       <div class="hero-slide-bg" style="background:${_bgStyle}">
         <div class="hero-slide-content">
           <span class="hero-source-tag ${_catCls}">${_catLabel}</span>
@@ -787,6 +789,7 @@ function renderHero(){
 <span class="hero-source-name">${n.source}</span>
               <span class="hero-meta-time">${formatTime(n.ts)}</span>
             </div>
+            ${n.url ? '<span class="hero-read-more">阅读原文 &rsaquo;</span>' : ''}
           </div>
         </div>
       </div>
@@ -807,6 +810,7 @@ function renderHero(){
   listEl.innerHTML = NEWS.map((n,i) => {
     const _hc = _heroCatMap[n.category];
     const _htag = _hc ? `<span class="hero-list-tag ${_hc.cls}">${_hc.label}</span>` : '';
+    const _listUrl = n.url || '';
     return `
     <div class="hero-list-item${i===0?' active':''}" data-idx="${i}" onclick="goSlide(${i},true)" onmouseenter="hoverSlide(${i})" onmouseleave="leaveSlide()">
       <div class="hero-list-info">
@@ -1583,8 +1587,9 @@ function renderHistoryNews(){
     const summaryHtml = (!n.img && n.summary)
       ? `<div class="nc-summary">${n.summary}</div>`
       : '';
+    const _cardUrl = n.url || '';
     return `
-    <div class="${cardCls}" onclick="showPage('all')">
+    <div class="${cardCls}" style="${_cardUrl ? 'cursor:pointer' : ''}" onclick="${_cardUrl ? `window.open('${_cardUrl}','_blank')` : `showPage('all')`}">
       ${imgHtml}
       <div class="nc-body">
         <div class="nc-title">${n.title}</div>
@@ -1806,14 +1811,15 @@ function renderCategoryPage(container, category){
         const isToday = g.ts.toDateString() === new Date(now.getFullYear(),now.getMonth(),now.getDate()).toDateString();
         const isYesterday = g.ts.toDateString() === new Date(now.getFullYear(),now.getMonth(),now.getDate()-1).toDateString();
         const relLabel = isToday ? '今天' : isYesterday ? '昨天' : '';
-        const rows = g.items.map(n => {
-          const cat = tmCatMap[n.category];
-          const tagHtml = cat ? `<span class="tm-row-tag ${cat.cls}">${cat.label}</span><span class="tm-row-divider"></span>` : `<span class="tm-row-tag tag-empty"></span><span class="tm-row-divider" style="visibility:hidden"></span>`;
-          return `<div class="tm-row">
-            <span class="tm-row-title-wrap">${tagHtml}<span class="tm-row-title">${n.title}</span></span>
-            <span class="tm-row-source">${n.source||''}</span>
-            <span class="tm-row-arrow">›</span>
-          </div>`;
+const rows = g.items.map(n => {
+const cat = tmCatMap[n.category];
+const tagHtml = cat ? `<span class="tm-row-tag ${cat.cls}">${cat.label}</span><span class="tm-row-divider"></span>` : `<span class="tm-row-tag tag-empty"></span><span class="tm-row-divider" style="visibility:hidden"></span>`;
+const _tmUrl = n.url || '';
+return `<div class="tm-row" style="${_tmUrl ? 'cursor:pointer' : ''}" onclick="${_tmUrl ? `window.open('${_tmUrl}','_blank')` : ''}">
+<span class="tm-row-title-wrap">${tagHtml}<span class="tm-row-title">${n.title}</span></span>
+<span class="tm-row-source">${n.source||''}</span>
+<span class="tm-row-arrow">›</span>
+</div>`;
         }).join('');
         const relHtml = relLabel ? `<span class="tm-date-card-rel">${relLabel}</span>` : '';
         // 追加模式：若该日期分组已存在则合并
@@ -2056,21 +2062,23 @@ const data = allForCat.filter(n => n.category === category).sort((a,b) => b.ts -
     const metaBot = `<div class="cat-card-meta-bot">
       <span class="meta-source">${n.source||''}</span><span class="meta-time">${relT}</span>
     </div>`;
-    if(isTop) return `<div class="cat-card-top">
-      <div class="cat-card-body">
-        <div class="cat-card-title">${tagHtml}${n.title}</div>
-        ${summary ? `<div class="cat-card-summary">${summaryShort}</div>` : ''}
-        ${metaBot}
-      </div>
-      <span class="cat-card-arrow">›</span>
-    </div>`;
-    return `<div class="cat-card">
-      <div class="cat-card-body">
-        <div class="cat-card-title">${tagHtml}${n.title}</div>
-        ${summary ? `<div class="cat-card-summary">${summaryShort}</div>` : ''}
-        ${metaBot}
-      </div>
-      <span class="cat-card-arrow">›</span>
+const _catUrl = n.url || '';
+const _catClick = _catUrl ? `onclick="window.open('${_catUrl}','_blank')" style="cursor:pointer"` : '';
+if(isTop) return `<div class="cat-card-top" ${_catClick}>
+<div class="cat-card-body">
+<div class="cat-card-title">${tagHtml}${n.title}</div>
+${summary ? `<div class="cat-card-summary">${summaryShort}</div>` : ''}
+${metaBot}
+</div>
+<span class="cat-card-arrow">›</span>
+</div>`;
+return `<div class="cat-card" ${_catClick}>
+<div class="cat-card-body">
+<div class="cat-card-title">${tagHtml}${n.title}</div>
+${summary ? `<div class="cat-card-summary">${summaryShort}</div>` : ''}
+${metaBot}
+</div>
+<span class="cat-card-arrow">›</span>
     </div>`;
   }
 
@@ -2297,16 +2305,17 @@ const catTagMap = {
       : '';
     const summary100 = n.summary && n.summary.length > 100 ? n.summary.slice(0,100) + '...' : (n.summary||'');
     const hhmm = String(n.ts.getHours()).padStart(2,'0') + ':' + String(n.ts.getMinutes()).padStart(2,'0');
+const _flUrl = n.url || '';
     return `
-    <div class="fl-item">
-      <div class="fl-time-col">
-        <div class="fl-time-text">${hhmm}</div>
-      </div>
-      <div class="fl-body">
-        <div class="fl-title">${n.title}</div>
-        <div class="fl-summary">${summary100}</div>
-        <div class="fl-meta">
-          <span class="fl-meta-source">${n.source || n.tag}</span>
+    <div class="fl-item" style="${_flUrl ? 'cursor:pointer' : ''}" onclick="${_flUrl ? `window.open('${_flUrl}','_blank')` : ''}">
+    <div class="fl-time-col">
+    <div class="fl-time-text">${hhmm}</div>
+    </div>
+    <div class="fl-body">
+    <div class="fl-title">${n.title}</div>
+    <div class="fl-summary">${summary100}</div>
+    <div class="fl-meta">
+      <span class="fl-meta-source">${n.source || n.tag}</span>
           <span class="fl-meta-sep">·</span>
           <span class="fl-meta-time">${formatTime(n.ts)}</span>
           ${catBadge}
