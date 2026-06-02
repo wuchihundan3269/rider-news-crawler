@@ -192,3 +192,57 @@ jobs:
           publish_branch: gh-pages
           exclude_assets: ".github,trendradar,trendradar-config,scripts/__pycache__"
           commit_message: "deploy: ${{ steps.date.outputs.datetime }}"
+
+      # ── 11. 更新 NoCode 网站（内嵌数据推送）────────────────────────
+      # 将最新数据内嵌到 htmlContent.js，推送到 NoCode Git 仓库
+      # NoCode 平台检测到代码变更后自动重新渲染并部署
+      - name: 配置 SSH（用于推送到 NoCode 仓库）
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.NOCODE_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p 22 git.sankuai.com >> ~/.ssh/known_hosts 2>/dev/null || true
+          echo "SSH 配置完成"
+
+      - name: 克隆 NoCode 仓库
+        run: |
+          git clone -b temp/ai-38e37ee8 \
+            ssh://git@git.sankuai.com/nocode/nocode-0cad9b9da930458c.git \
+            /tmp/nocode-repo
+          echo "NoCode 仓库克隆完成"
+          ls /tmp/nocode-repo/src/
+
+      - name: 生成含内嵌数据的 htmlContent.js
+        run: |
+          DATE="${{ steps.date.outputs.date }}"
+          DATA_FILE="data/${DATE}.json"
+          LATEST_FILE="data/latest.json"
+          TEMPLATE="/tmp/nocode-repo/src/htmlContent.js"
+          OUTPUT="/tmp/nocode-repo/src/htmlContent.js"
+
+          if [ ! -f "$DATA_FILE" ]; then
+            echo "WARNING: 数据文件不存在: $DATA_FILE，跳过 NoCode 更新"
+            exit 0
+          fi
+
+          python scripts/generate_html_content.py \
+            --template "$TEMPLATE" \
+            --data "$DATA_FILE" \
+            --latest "$LATEST_FILE" \
+            --output "$OUTPUT"
+
+          echo "htmlContent.js 生成完成，大小: $(wc -c < $OUTPUT) 字节"
+
+      - name: 推送到 NoCode 仓库
+        run: |
+          cd /tmp/nocode-repo
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/htmlContent.js
+          if git diff --staged --quiet; then
+            echo "htmlContent.js 无变化，跳过推送"
+          else
+            git commit -m "data: ${{ steps.date.outputs.datetime }} 自动更新内嵌数据"
+            git push origin temp/ai-38e37ee8
+            echo "✅ 已推送到 NoCode 仓库，平台将自动重新渲染部署"
+          fi

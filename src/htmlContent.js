@@ -1,0 +1,2615 @@
+export const htmlContent = `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>骑手行业快讯</title>
+<style>
+/* ===== 字号体系（严格6档）=====
+   24px  fw700  #1a1a1a  — 轮播主标题（最高权重）
+   18px  fw700  #1a1a1a  — 卡片主标题
+   15px  fw400  #666     — 摘要正文 / 列表标题
+   13px  fw400  #888     — 辅助文字（来源·时间·tab·快讯正文）
+   11px  fw600  #555     — meta行极小辅助（来源·日期）
+   10px  fw700  #fff     — 徽章/角标
+   =============================================
+   色彩：主文#1a1a1a  次文#3d3d3d  辅助#888  极淡#bbb
+   强调：#e8312a  分割线：rgba(0,0,0,.08)
+*/
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:PingFangSC-regular,'PingFang SC','Microsoft YaHei',BlinkMacSystemFont,-apple-system,Arial,sans-serif;
+  background:#f5f5f5;
+  color:#3b3b3b;
+  font-size:14px;
+  line-height:1.6;
+  overflow-x:hidden;
+}
+a{text-decoration:none;color:inherit}
+
+/* ===== 导航 ===== */
+.nav{background:#fefefe;position:sticky;top:0;z-index:200;border-bottom:1px solid rgba(0,0,0,.08)}
+.nav-inner{max-width:1440px;margin:0 auto;display:flex;align-items:center;height:56px;padding:0 24px}
+.logo{font-size:18px;font-weight:900;color:#1a1a1a;margin-right:36px;letter-spacing:2px;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.logo em{color:#e8312a;font-style:normal}
+.tabs{display:flex;align-items:center;flex:1}
+.tab{
+  font-size:13px;
+  color:#555;
+  padding:0 14px;
+  height:56px;
+  display:flex;
+  align-items:center;
+  cursor:pointer;
+  border-bottom:2px solid transparent;
+  white-space:nowrap;
+  transition:color .15s;
+  font-weight:400;
+}
+.tab:hover{color:#1a1a1a}
+.tab.on{color:#e8312a;font-weight:600;border-bottom-color:#e8312a}
+.nav-sep{color:#d8d8d8;font-size:13px;user-select:none;flex-shrink:0}
+.nav-right{margin-left:auto;display:flex;align-items:center;flex-shrink:0}
+.nav-clock{font-size:11px;color:#888;white-space:nowrap;letter-spacing:.3px}
+
+/* ===== 英雄轮播区 ===== */
+.hero{background:#f5f5f5;position:relative;overflow:visible}
+.hero-outer{max-width:1440px;margin:0 auto;overflow:hidden}
+.hero-inner{width:100%;display:grid;grid-template-columns:minmax(0,1fr) 38%;padding-left:24px}
+
+/* 左侧大图 */
+.hero-stage{position:relative;overflow:visible;cursor:pointer;width:100%;min-width:0;align-self:stretch}
+.hero-slides-clip{overflow:hidden;position:relative;width:100%;height:100%}
+.hero-slide{position:absolute;inset:0;opacity:0;transition:opacity .6s ease}
+.hero-slide.active{opacity:1;position:relative;height:100%}
+.hero-slide-bg{
+width:100%;height:100%;
+display:flex;align-items:flex-end;
+padding:28px 48px 32px;
+position:relative;
+  background-size:cover!important;
+  background-position:center!important;
+}
+.hero-slide-bg::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to top, rgba(0,0,0,.88) 0%, rgba(0,0,0,.4) 50%, rgba(0,0,0,.06) 100%)
+}
+.hero-slide-content{position:relative;z-index:1;color:#fff;max-width:100%;width:100%}
+.hero-title{
+  font-size:24px;
+  font-weight:700;
+  line-height:1.45;
+  margin-bottom:10px;
+  text-shadow:0 1px 6px rgba(0,0,0,.5);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.hero-summary{
+  font-size:15px;
+  color:rgba(255,255,255,.72);
+  line-height:1.65;
+  margin-bottom:14px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.hero-meta{display:flex;align-items:center;gap:0;font-size:11px;justify-content:space-between}
+.hero-meta-left{display:flex;align-items:center;gap:12px}
+.hero-source-name{font-size:11px;font-weight:600;color:rgba(255,255,255,.9)}
+.hero-meta-dot{color:rgba(255,255,255,.35);margin:0 2px}
+.hero-meta-time{font-size:11px;color:rgba(255,255,255,.5)}
+.hero-source-tag{
+  display:inline-block;
+  margin-bottom:8px;
+  background:transparent;
+  color:rgba(255,255,255,.6);
+  padding:2px 7px;
+  border-radius:2px;
+  font-size:11px;
+  font-weight:400;
+  border:1px solid rgba(255,255,255,.25);
+}
+.hero-source-tag.tag-yellow{color:hsl(60,90%,75%)}
+.hero-source-tag.tag-purple{color:hsl(270,90%,80%);border-color:hsl(270,90%,80%)}
+.hero-source-tag.tag-green{color:hsl(120,70%,70%);border-color:hsl(120,70%,70%)}
+.hero-source-tag.tag-red{color:hsl(0,90%,80%)}
+.hero-source-tag.tag-orange{color:hsl(0,90%,80%);border-color:hsl(0,90%,80%)}
+.hero-source-tag.tag-blue{color:hsl(210,90%,80%)}
+.hero-source-tag.tag-teal{color:hsl(30,90%,80%);border-color:hsl(30,90%,80%)}
+
+/* 左右箭头 */
+.hero-arrow{
+  position:absolute;top:50%;transform:translateY(-50%);z-index:20;
+  width:30px;height:30px;border-radius:50%;
+  background:rgba(0,0,0,.38);border:1px solid rgba(255,255,255,.15);
+  color:#fff;font-size:18px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s;user-select:none;line-height:1;padding:0;
+}
+.hero-arrow:hover{background:rgba(0,0,0,.65)}
+.hero-arrow.prev{left:14px}
+.hero-arrow.next{right:14px}
+
+/* 轮播指示器：绝对定位右下角，与meta行右侧对齐 */
+.hero-dots{position:absolute;right:48px;bottom:32px;left:auto;display:flex;justify-content:flex-end;gap:5px;z-index:30;pointer-events:none}
+.hero-dot-btn{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.5);cursor:pointer;transition:all .2s;border:none;padding:0;pointer-events:auto}
+.hero-dot-btn.active{width:18px;border-radius:3px;background:#e8312a}
+
+/* 右侧快讯列表 */
+.hero-list{background:#fff;border-left:1px solid rgba(0,0,0,.06);display:flex;flex-direction:column}
+.hero-list-header{
+  padding:14px 18px 12px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:0.8px solid rgba(0,0,0,.08);
+}
+.hero-list-header-title{font-size:15px;font-weight:700;color:#1a1a1a;letter-spacing:.1px}
+.hero-list-more{font-size:11px;color:#bbb;cursor:pointer;transition:color .15s}
+.hero-list-more:hover{color:#e8312a}
+.hero-list-item{
+  padding:11px 16px;
+  border-bottom:0.8px solid rgba(0,0,0,.06);
+  cursor:pointer;
+  display:flex;gap:0;align-items:flex-start;
+  transition:background .15s;
+}
+.hero-list-item:hover{background:#fafafa}
+.hero-list-item.active{background:#f0f0f0}
+.hero-list-item:last-child{border-bottom:none}
+.hero-list-info{flex:1;min-width:0}
+.hero-list-title-row{display:flex;align-items:center;gap:8px;min-width:0;margin-bottom:5px}
+.hero-list-text{
+  font-size:15px;font-weight:500;color:#3d3d3d;
+  line-height:1.55;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  flex:1;min-width:0;
+}
+.hero-list-item.active .hero-list-text{font-weight:700;color:#1a1a1a}
+.hero-list-item:hover .hero-list-text{font-weight:700;color:#1a1a1a}
+.hero-list-meta{
+  font-size:11px;color:#bbb;
+  display:flex;align-items:center;justify-content:flex-start;
+  gap:6px;
+}
+.hero-list-meta-source{font-weight:600;color:#888;font-size:11px}
+.hero-list-meta-sep{color:#ddd;margin:0 2px}
+.hero-list-meta-time{color:#bbb;font-size:11px}
+.hero-list-tag{
+  font-size:10px;
+  padding:1px 5px;
+  border-radius:3px;
+  border:1px solid transparent;
+  flex-shrink:0;
+  font-weight:500;
+}
+.hero-list-tag.tag-yellow{background:transparent;color:hsl(60,80%,50%);border-color:hsl(60,80%,50%)}
+.hero-list-tag.tag-purple{background:transparent;color:hsl(270,80%,50%);border-color:hsl(270,80%,50%)}
+.hero-list-tag.tag-green{background:transparent;color:hsl(120,80%,50%);border-color:hsl(120,80%,50%)}
+.hero-list-tag.tag-red{background:transparent;color:hsl(0,80%,50%);border-color:hsl(0,80%,50%)}
+.hero-list-tag.tag-orange{background:transparent;color:hsl(0,80%,50%);border-color:hsl(0,80%,50%)}
+.hero-list-tag.tag-teal{background:transparent;color:hsl(30,80%,50%);border-color:hsl(30,80%,50%)}
+
+/* 进度条（隐藏） */
+.hero-progress{display:none}
+
+/* ===== 主体 ===== */
+/* ZAKER 主体：白底，左右padding，上下间距宽松 */
+.wrap{max-width:1440px;margin:0 auto;padding:20px 24px}
+.sidebar{display:none}
+
+/* ===== 文章列表 ===== */
+.feed{display:flex;flex-direction:column;gap:0;margin-bottom:8px;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.07)}
+.feed .load-more{border-radius:0;box-shadow:none;border-top:1px solid rgba(0,0,0,.06)}
+.article{
+  background:#fff;
+  padding:18px 24px;
+  cursor:pointer;
+  transition:background .15s;
+  border-bottom:1px solid rgba(0,0,0,.06);
+  display:flex;flex-direction:column;
+  min-width:0;
+  overflow:hidden;
+}
+.article:last-of-type{border-bottom:none}
+.article:hover{background:#fafafa}
+.art-body{flex:1;min-width:0}
+.art-title{
+  font-size:17px;
+  font-weight:700;
+  color:#1a1a1a;
+  line-height:1.5;
+  margin-bottom:6px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  transition:color .15s;
+}
+.art-summary{
+  font-size:14px;
+  color:#888;
+  line-height:1.6;
+  margin-bottom:10px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.art-meta{display:flex;align-items:center;gap:0;flex-wrap:nowrap;margin-top:2px}
+.tag{
+  font-size:11px;
+  font-weight:400;
+  padding:0;
+  border-radius:0;
+  background:transparent;
+  line-height:1;
+  opacity:.85;
+}
+.tag-red{color:hsl(0,80%,50%)}
+.tag-blue{color:#1677ff}
+.tag-orange{color:hsl(0,80%,50%)}
+.tag-green{color:hsl(120,80%,50%)}
+.tag-purple{color:hsl(270,80%,50%)}
+.tag-gray{color:#888}
+.tag-yellow{color:hsl(60,80%,50%)}
+.tag-teal{color:hsl(30,80%,50%)}
+.art-source{font-size:11px;font-weight:600;color:#555;flex-shrink:0}
+.art-time{font-size:11px;color:#bbb;flex-shrink:0}
+.art-dot{color:transparent;font-size:11px;margin:0 8px;line-height:1;flex-shrink:0;user-select:none}
+.art-views{font-size:11px;color:#c8c8c8}
+.art-thumb{width:116px;height:78px;flex-shrink:0;border-radius:3px;overflow:hidden;background:#f0f0f0}
+.art-thumb-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:26px;background:linear-gradient(135deg,#f0f0f0,#e4e4e4)}
+/* ===== 更多资讯 — 时光机公共样式 ===== */
+.tm-wrap{background:#f5f5f5;min-height:60vh;padding-bottom:40px}
+.tm-list{background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.tm-list-header{padding:16px 24px 12px;border-bottom:1px solid rgba(0,0,0,.06);display:flex;align-items:baseline;gap:10px}
+.tm-list-date{font-size:18px;font-weight:700;color:#1a1a1a}
+.tm-list-count{font-size:12px;color:#aaa}
+.tm-row{display:flex;align-items:center;padding:14px 24px;border-bottom:1px solid rgba(0,0,0,.05);cursor:pointer;transition:background .12s;gap:0}
+.tm-row:last-child{border-bottom:none}
+.tm-row:hover{background:#fafafa}
+.tm-row-time{display:none}
+.tm-row-title-wrap{flex:1;display:flex;align-items:center;gap:10px;padding:0 16px 0 0;min-width:0}
+.tm-row-tag{flex-shrink:0;width:52px;text-align:center;display:inline-block;font-size:10px;padding:1px 0;border-radius:3px;font-weight:500;border:1px solid transparent}
+.tm-row-tag.tag-yellow{background:transparent;color:hsl(60,80%,50%);border-color:hsl(60,80%,50%)}
+.tm-row-tag.tag-purple{background:transparent;color:hsl(270,80%,50%);border-color:hsl(270,80%,50%)}
+.tm-row-tag.tag-green{background:transparent;color:hsl(120,80%,50%);border-color:hsl(120,80%,50%)}
+.tm-row-tag.tag-red{background:transparent;color:hsl(0,80%,50%);border-color:hsl(0,80%,50%)}
+.tm-row-tag.tag-orange{background:transparent;color:hsl(0,80%,50%);border-color:hsl(0,80%,50%)}
+.tm-row-tag.tag-teal{background:transparent;color:hsl(30,80%,50%);border-color:hsl(30,80%,50%)}
+.tm-row-tag.tag-empty{visibility:hidden}
+.tm-row-divider{width:1px;height:12px;background:rgba(0,0,0,.15);flex-shrink:0}
+.tm-row-title{flex:1;font-size:14px;color:#1a1a1a;line-height:1.55;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .12s;min-width:0}
+.tm-row:hover .tm-row-title{color:#e8312a}
+.tm-row-source{font-size:12px;color:#aaa;width:90px;flex-shrink:0;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tm-row-arrow{color:#ccc;font-size:14px;margin-left:10px;flex-shrink:0}
+.tm-empty{padding:48px 24px;text-align:center;color:#bbb;font-size:14px}
+/* ===== 垂类频道页：文章卡片流 ===== */
+.cat-page{background:#f5f5f5;min-height:80vh;padding:20px 0 60px}
+.cat-page-inner{max-width:1440px;margin:0 auto;padding:0 24px}
+.cat-page-header{display:flex;align-items:center;gap:10px;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid #e8312a}
+.cat-page-header-bar{width:3px;height:20px;background:#e8312a;border-radius:2px}
+.cat-page-header-title{font-size:20px;font-weight:800;color:#1a1a1a}
+.cat-page-header-count{font-size:12px;color:#bbb;margin-left:4px}
+/* 置顶大卡 */
+.cat-card-top{background:#fff;border-radius:10px;padding:24px 28px;margin-bottom:12px;box-shadow:0 1px 6px rgba(0,0,0,.07);cursor:pointer;transition:box-shadow .15s;display:flex;align-items:center;gap:16px}
+.cat-card-top:hover{box-shadow:0 4px 16px rgba(0,0,0,.11)}
+.cat-card-top .cat-card-body{flex:1;min-width:0}
+.cat-card-top .cat-card-title{font-size:16px;font-weight:600;color:#1a1a1a;line-height:1.5;margin:0 0 6px}
+.cat-card-top .cat-card-summary{font-size:13px;color:#888;line-height:1.65;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:10px}
+/* 普通卡片 */
+.cat-card{background:#fff;border-radius:8px;padding:18px 22px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,.05);cursor:pointer;transition:box-shadow .15s;display:flex;align-items:center;gap:16px}
+.cat-card:hover{box-shadow:0 3px 12px rgba(0,0,0,.09)}
+.cat-card .cat-card-body{flex:1;min-width:0}
+.cat-card .cat-card-title{font-size:16px;font-weight:600;color:#1a1a1a;line-height:1.5;margin-bottom:6px}
+.cat-card .cat-card-summary{font-size:13px;color:#888;line-height:1.65;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:10px}
+/* 卡片顶部元信息行 */
+.cat-card-meta-top{display:flex;align-items:center;gap:8px}
+.cat-card-source-tag{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:2px 8px;border-radius:3px;border:1px solid currentColor}
+/* 卡片底部元信息行 */
+.cat-card-meta-bot{display:flex;align-items:center;gap:6px;font-size:11px;color:#bbb}
+.cat-card-meta-bot .meta-source{font-size:12px;font-weight:700;color:#1a1a1a}
+.cat-card-meta-bot .meta-time{font-size:11px;color:#bbb}
+/* 右侧箭头 */
+.cat-card-arrow{font-size:20px;color:#ccc;flex-shrink:0;line-height:1;transition:color .15s;padding:0 4px}
+.cat-card:hover .cat-card-arrow,.cat-card-top:hover .cat-card-arrow{color:#e8312a}
+/* 日期分隔 */
+.cat-date-sep{display:flex;align-items:center;gap:12px;margin:24px 0 12px;font-size:12px;color:#bbb;font-weight:500}
+.cat-date-sep::after{content:'';flex:1;height:1px;background:#e8e8e8}
+/* 日期分组容器：左侧日期卡片 + 右侧新闻列表 */
+.tm-date-group{display:flex;gap:0;align-items:flex-start;margin-top:24px}
+.tm-date-group:first-child{margin-top:0}
+/* 左侧日期卡片 */
+.tm-date-card{flex-shrink:0;width:88px;padding:14px 12px 14px 0;text-align:right;position:sticky;top:calc(var(--ctrl-h,56px) + 8px)}
+.tm-date-card-ym{font-size:10px;color:#ccc;font-weight:400;letter-spacing:.04em;margin-bottom:3px}
+.tm-date-card-day{font-size:24px;font-weight:700;color:#999;line-height:1;letter-spacing:-.01em}
+.tm-date-card-week{font-size:10px;color:#ccc;margin-top:4px}
+.tm-date-card-rel{display:inline-block;margin-top:5px;font-size:10px;color:#fff;background:#e8312a;border-radius:3px;padding:1px 5px;font-weight:600}
+/* 右侧新闻列表 */
+.tm-date-group .tm-list{flex:1;min-width:0;max-width:none;margin:0;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06);background:#fff}
+/* ===== 全站统一标签色板 ===== */
+/* rider 骑手新闻 → 黄色 */
+.tag-yellow-bg{background:#fffbe6;color:#b45309;border-color:#fde68a}
+/* industry 行业动态 → 紫色 */
+.tag-purple-bg{background:#f3e5f5;color:#6a1b9a;border-color:#e1bee7}
+/* platform 平台动作 → 绿色 */
+.tag-green-bg{background:#e8f5e9;color:#2e7d32;border-color:#c8e6c9}
+/* opinion 舆情信息 → 红色 */
+.tag-red-bg{background:#fff0f0;color:#c62828;border-color:#f8bbd0}
+/* 平台品牌（蜂鸟/饿了么/顺丰等） */
+.tag-orange-bg{background:#fff3e0;color:#e65100;border-color:#ffcc80}
+
+.tm-tag{display:inline-block;font-size:10px;padding:1px 5px;border-radius:3px;margin-left:8px;vertical-align:middle;flex-shrink:0;font-weight:500;border:1px solid transparent}
+.tm-tag.tag-yellow{background:transparent;color:hsl(60,80%,50%);border-color:hsl(60,80%,50%)}
+.tm-tag.tag-purple{background:transparent;color:hsl(270,80%,50%);border-color:hsl(270,80%,50%)}
+.tm-tag.tag-green{background:transparent;color:hsl(120,80%,50%);border-color:hsl(120,80%,50%)}
+.tm-tag.tag-red{background:transparent;color:hsl(0,80%,50%);border-color:hsl(0,80%,50%)}
+.tm-tag.tag-orange{background:transparent;color:hsl(0,80%,50%);border-color:hsl(0,80%,50%)}
+.tm-tag.tag-teal{background:transparent;color:hsl(30,80%,50%);border-color:hsl(30,80%,50%)}
+.load-more{background:#fff;text-align:center;padding:18px;font-size:13px;color:#bbb;cursor:pointer;border-top:0.8px solid rgba(0,0,0,.06);letter-spacing:.5px}
+.load-more:hover{color:#e8312a}
+/* 时光机页查看更多按钮：宽度与新闻列表对齐 */
+.tm-load-more-row{display:flex;gap:0;align-items:stretch;margin-top:24px}
+.tm-load-more-row .tm-load-more-spacer{flex-shrink:0;width:88px}
+.tm-load-more-row .load-more{flex:1;min-width:0;border-radius:8px;border-top:none;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+/* ===== 更多资讯 — 时光机控制栏（年月下拉 + 日期横排）===== */
+.tm-ctrl{background:#fff;border-bottom:1px solid rgba(0,0,0,.07);display:flex;align-items:center;justify-content:center;padding:0 24px;height:48px;position:sticky;top:56px;z-index:150;gap:0}
+.tm-ctrl-selects{display:flex;align-items:center;gap:6px;flex-shrink:0;margin-right:16px}
+.tm-ctrl-select{height:28px;padding:0 22px 0 8px;border:1px solid #e0e0e0;border-radius:5px;font-size:13px;color:#1a1a1a;background:#fff;cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5'%3E%3Cpath d='M0 0l4 5 4-5z' fill='%23bbb'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 6px center;transition:border-color .15s}
+.tm-ctrl-select:focus{border-color:#e8312a}
+.tm-ctrl-sep{width:1px;height:20px;background:rgba(0,0,0,.1);margin:0 12px;flex-shrink:0}
+.tm-days{display:flex;align-items:center;gap:0;overflow-x:auto;scrollbar-width:none;max-width:calc(100% - 200px)}
+.tm-days::-webkit-scrollbar{display:none}
+.tm-day{flex-shrink:0;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:50%;font-size:13px;color:#bbb;cursor:pointer;transition:all .15s;font-variant-numeric:tabular-nums}
+.tm-day:hover{background:#f0f0f0;color:#888}
+.tm-day.today{background:#e8312a;color:#fff;font-weight:700}
+.tm-day.today-dim{color:#e8312a;font-weight:500}
+.tm-day.selected{background:#1a1a1a;color:#fff;font-weight:700}
+.tm-day.scrolling{background:#e8312a22;color:#e8312a;font-weight:700;outline:1.5px solid #e8312a44;outline-offset:-1px}
+.tm-day.has-news{color:#bbb}
+.tm-day.no-news{color:#bbb}
+
+/* ===== 全网热点板块 ===== */
+.hot-grid{display:grid;grid-template-columns:repeat(4,1fr);column-gap:16px;margin-top:0}
+.hot-card{background:#fff;border-radius:6px;padding:14px 16px 10px;box-shadow:0 1px 4px rgba(0,0,0,.07)}
+.hot-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #f0f0f0}
+.hot-card-title{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:700;color:#1a1a1a}
+.hot-card-logo{width:20px;height:20px;border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.hot-card-more{font-size:11px;color:#bbb;cursor:pointer;white-space:nowrap;transition:color .15s}
+.hot-card-more:hover{color:#e8312a}
+.hot-update-time{font-size:12px;color:#bbb;margin-left:auto}
+.hot-item{display:flex;align-items:center;gap:6px;padding:5px 0;cursor:pointer;transition:background .12s;border-radius:3px}
+.hot-item:hover .hot-item-text{color:#e8312a}
+.hot-rank{width:20px;font-size:13px;font-weight:400;flex-shrink:0;text-align:left;line-height:1.5;font-variant-numeric:tabular-nums}
+.hot-rank.r1{color:#e8312a}
+.hot-rank.r2{color:#ff6b35}
+.hot-rank.r3{color:#ff9500}
+.hot-rank.rn{color:#c0c0c0}
+.hot-item-text{font-size:13px;color:#333;line-height:1.5;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hot-item-val{display:none}
+.hot-item-rider{display:inline-block;font-size:10px;color:#fff;background:#e8312a;border-radius:2px;padding:1px 5px;margin-left:5px;flex-shrink:0;white-space:nowrap;vertical-align:middle;line-height:1.6}
+
+/* ===== 全部资讯板块 ===== */
+.section-block{margin-top:24px}
+.section-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:14px;
+  padding-bottom:10px;
+  border-bottom:2px solid #f0f0f0;
+}
+.section-title{
+  font-size:18px;font-weight:700;color:#1a1a1a;
+  display:flex;align-items:center;gap:8px;
+}
+.section-title::before{
+  content:'';display:inline-block;
+  width:4px;height:18px;border-radius:2px;
+  background:#e8312a;
+}
+.section-more{
+  font-size:13px;color:#bbb;cursor:pointer;
+  transition:color .15s;white-space:nowrap;
+}
+.section-more:hover{color:#e8312a}
+/* ===== 全部资讯网格：4列卡片 ===== */
+.news-grid{display:grid;grid-template-columns:repeat(4,1fr);column-gap:24px;row-gap:40px}
+.news-card{
+  background:#fff;border-radius:6px;overflow:hidden;
+  box-shadow:0 1px 4px rgba(0,0,0,.08);
+  cursor:pointer;transition:box-shadow .2s,transform .2s;
+  display:flex;flex-direction:column;
+}
+.news-card:hover{box-shadow:0 6px 20px rgba(0,0,0,.13);transform:translateY(-3px)}
+/* 有图卡片：图片比例 16/9 */
+.nc-img{
+  width:100%;aspect-ratio:16/9;overflow:hidden;
+  background:#e8e8e8;flex-shrink:0;
+}
+.nc-img img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .35s;
+}
+.news-card:hover .nc-img img{transform:scale(1.04)}
+/* 无图卡片：纯白底，标题+摘要布局 */
+.news-card.nc-noimg{
+  background:#fff;
+  min-height:220px;
+}
+.news-card.nc-noimg .nc-body{padding:20px 20px 16px;justify-content:space-between;flex:1}
+.news-card.nc-noimg .nc-title{
+  font-size:17px;font-weight:700;color:#1a1a1a;
+  line-height:1.5;margin-bottom:12px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  flex:none;min-width:0;transition:color .15s;
+}
+/* 渐变色块占位图（无真实图片时） */
+.nc-grad{
+  width:100%;aspect-ratio:16/9;overflow:hidden;
+  flex-shrink:0;position:relative;
+  transition:transform .35s;
+}
+.nc-grad-inner{
+  width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+  padding:16px;
+}
+.nc-grad-label{
+  font-size:13px;font-weight:700;color:rgba(255,255,255,.75);
+  letter-spacing:1px;text-align:center;
+  border:1px solid rgba(255,255,255,.25);border-radius:4px;
+  padding:4px 10px;
+}
+.news-card:hover .nc-grad{transform:scale(1.03)}
+.nc-summary{
+  font-size:15px;color:#999;line-height:1.7;
+  display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;
+  margin-bottom:12px;flex:none;min-width:0;
+}
+/* 通用 body */
+.nc-body{padding:14px 16px 14px;flex:1;display:flex;flex-direction:column;min-width:0}
+.nc-title{
+  font-size:17px;font-weight:700;color:#1a1a1a;
+  line-height:1.5;margin-bottom:10px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  transition:color .15s;flex:none;min-width:0;
+}
+/* meta 行 */
+.nc-meta{display:flex;align-items:center;justify-content:space-between;margin-top:auto;gap:4px;padding-top:4px}
+.nc-meta-left{display:flex;align-items:center;gap:10px;min-width:0}
+.nc-source{font-size:11px;color:#555;font-weight:600;white-space:nowrap}
+.nc-date{font-size:11px;color:#888;white-space:nowrap}
+.nc-meta-sep{font-size:13px;color:#aaa;margin:0 3px;line-height:1}
+.nc-tag-wrap{flex-shrink:0}
+/* 全部资讯 查看更多长条按钮 */
+.news-grid-more{
+grid-column:1/-1;
+margin-top:-16px;
+padding:12px 0;
+  background:#fff;
+  border:1px solid rgba(0,0,0,.08);
+  border-radius:6px;
+  text-align:center;
+  font-size:13px;
+  color:#888;
+  cursor:pointer;
+  letter-spacing:.5px;
+  transition:background .15s,color .15s,border-color .15s;
+}
+.news-grid-more:hover{background:#fafafa;color:#e8312a;border-color:rgba(232,49,42,.25)}
+
+/* ===== 边栏 ===== */
+/* ZAKER 边栏卡片：白底，border-radius:4px，padding:16px 18px，margin-bottom:8px */
+.side-card{
+  background:#fff;
+  border-radius:4px;
+  margin-bottom:8px;
+  padding:15px 16px;
+}
+.side-card-title{
+  font-size:15px;
+  font-weight:700;
+  color:#1a1a1a;
+  margin-bottom:10px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding-bottom:9px;
+  border-bottom:0.8px solid rgba(0,0,0,.07);
+}
+.side-card-more{font-size:11px;font-weight:400;color:#bbb;cursor:pointer;transition:color .15s}
+.side-card-more:hover{color:#e8312a}
+.hot-item{
+  display:flex;align-items:flex-start;gap:8px;
+  padding:9px 0;
+  border-bottom:0.8px solid rgba(0,0,0,.05);
+  cursor:pointer;
+}
+.hot-item:last-child{border-bottom:none}
+.hot-item:hover .hot-text{color:#e8312a}
+.hot-num{font-size:13px;font-weight:700;color:#bbb;width:16px;flex-shrink:0;line-height:1.5}
+.hot-num.top1{color:#f84521}
+.hot-num.top2{color:#ff6e25}
+.hot-num.top3{color:#ff8b25}
+.hot-text{font-size:13px;color:#3d3d3d;line-height:1.5;flex:1;transition:color .15s;font-weight:400}
+.hot-badge{font-size:10px;font-weight:700;padding:1px 5px;border-radius:2px;flex-shrink:0;margin-top:2px}
+.hot-badge.new{background:#e8312a;color:#fff}
+.hot-badge.hot{background:#ff6e25;color:#fff}
+.topic-list{display:flex;flex-wrap:wrap;gap:6px}
+.topic-tag{
+  font-size:11px;color:#888;
+  background:#f5f5f5;
+  padding:5px 10px;
+  border-radius:2px;
+  cursor:pointer;
+  transition:all .15s;
+  line-height:1;
+}
+.topic-tag:hover{background:#fff0f0;color:#e8312a}
+.sb-flash-item{
+  padding:10px 0;
+  border-bottom:0.8px solid rgba(0,0,0,.05);
+  cursor:pointer;
+}
+.sb-flash-item:last-child{border-bottom:none}
+.sb-flash-time{font-size:11px;color:#bbb;margin-bottom:4px;font-variant-numeric:tabular-nums;letter-spacing:.3px}
+.sb-flash-text{font-size:13px;color:#3d3d3d;line-height:1.6;transition:color .15s}
+.sb-flash-item:hover .sb-flash-text{color:#e8312a}
+
+/* ===== 二级页面 ===== */
+.page-wrap{max-width:1440px;margin:0 auto;padding:20px 24px}
+.page-main{}
+/* ZAKER 页面标题区：下方0.8px分割线，margin-bottom:20px */
+.page-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:16px;
+  padding-bottom:14px;
+  border-bottom:0.8px solid rgba(0,0,0,.08);
+}
+.page-header-left{display:flex;align-items:center;gap:10px}
+/* 左侧红色竖条：4px宽，高18px */
+.page-header-bar{width:3px;height:18px;background:#e8312a;border-radius:1.5px}
+.page-header-title{font-size:18px;font-weight:700;color:#1a1a1a}
+.page-header-date{font-size:11px;color:#bbb;margin-left:4px}
+.page-header-count{font-size:11px;color:#bbb}
+
+/* ===== 今日快讯时间线 ===== */
+.flash-timeline-wrap{display:flex;gap:0;align-items:stretch;padding:0 0 40px}
+/* 左侧日期块 */
+.fl-date-col{width:88px;flex-shrink:0;position:sticky;top:72px;align-self:flex-start;text-align:right;padding-right:20px;padding-top:16px;background:#f2f3f5;z-index:2}
+.fl-date-year-month{font-size:12px;color:#aaa;letter-spacing:.5px;line-height:1.4}
+.fl-date-day{font-size:44px;font-weight:700;color:#1a1a1a;line-height:1;margin-top:2px}
+/* 中间时间轴线 */
+.fl-axis{width:2px;flex-shrink:0;background:#d0d0d0;position:relative;align-self:flex-start}
+/* 右侧内容区 */
+.fl-content-col{flex:1;min-width:0;padding-left:0;background:#fff;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.07);margin-top:0}
+/* 单条新闻 */
+.fl-item{display:flex;align-items:flex-start;gap:0;padding:0 0 0 0;cursor:pointer;position:relative}
+/* 时间节点 */
+.fl-time-col{width:72px;flex-shrink:0;padding:14px 0 14px 14px;display:flex;align-items:flex-start}
+.fl-axis-dot{position:absolute;left:50%;transform:translate(-50%,-50%);width:8px;height:8px;background:#aaa;border-radius:50%;z-index:3}
+.fl-time-text{font-size:13px;font-weight:600;color:#888;letter-spacing:.3px;font-variant-numeric:tabular-nums;line-height:1.5;padding-top:2px}
+/* 新闻主体 */
+.fl-body{flex:1;min-width:0;padding:14px 24px 14px 8px;border-bottom:1px solid rgba(0,0,0,.06)}
+.fl-item:last-child .fl-body{border-bottom:none}
+.fl-title{font-size:16px;font-weight:700;color:#1a1a1a;line-height:1.5;margin-bottom:6px;transition:color .15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fl-summary{font-size:13px;color:#888;line-height:1.65;margin-bottom:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fl-meta{display:flex;align-items:center;gap:0;font-size:12px;color:#bbb;flex-wrap:nowrap}
+.fl-meta-source{color:#555;font-weight:600;flex-shrink:0}
+.fl-meta-sep{margin:0 10px;color:transparent;flex-shrink:0;user-select:none}
+.fl-meta-time{flex-shrink:0}
+.tag-badge{font-size:11px;font-weight:500;padding:1px 6px;border-radius:3px;border:1px solid transparent;line-height:1.6;flex-shrink:0}
+.tag-badge.tag-yellow{background:transparent;color:hsl(60,80%,50%);border-color:hsl(60,80%,50%)}
+.tag-badge.tag-purple{background:transparent;color:hsl(270,80%,50%);border-color:hsl(270,80%,50%)}
+.tag-badge.tag-green{background:transparent;color:hsl(120,80%,50%);border-color:hsl(120,80%,50%)}
+.tag-badge.tag-red{background:transparent;color:hsl(0,80%,50%);border-color:hsl(0,80%,50%)}
+.tag-badge.tag-orange{background:transparent;color:hsl(0,80%,50%);border-color:hsl(0,80%,50%)}
+.tag-badge.tag-teal{background:transparent;color:hsl(30,80%,50%);border-color:hsl(30,80%,50%)}
+.tag-badge.tag-blue{background:transparent;color:#1255cc;border-color:hsl(210,80%,50%)}
+.tag-badge.tag-gray{background:transparent;color:#888;border-color:#bbb}
+
+/* 占位页 */
+.page-placeholder{background:#fff;border-radius:4px;padding:60px;text-align:center;font-size:13px;color:#bbb}
+
+/* ===== 响应式：超窄屏才单列 ===== */
+@media(max-width:420px){
+  .hero-inner{grid-template-columns:1fr;padding-left:0}
+  .hero-list{border-left:none;border-top:1px solid rgba(0,0,0,.06)}
+  .hero-stage{min-height:200px}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="logo" onclick="showPage('home')">骑手行业<em>快讯</em></div>
+    <div class="tabs">
+      <div class="tab on" data-page="home" onclick="showPage('home')">首页</div>
+      <span class="nav-sep">|</span>
+      <div class="tab" data-page="flash" onclick="showPage('flash')">今日快讯</div>
+      <span class="nav-sep">|</span>
+      <div class="tab" data-page="all" onclick="showPage('all')">更多资讯</div>
+      <span class="nav-sep">|</span>
+      <div class="tab" data-page="rider_story" onclick="showPage('rider_story')">骑手故事</div>
+      <span class="nav-sep">|</span>
+      <div class="tab" data-page="care" onclick="showPage('care')">骑手关怀</div>
+      <span class="nav-sep">|</span>
+      <div class="tab" data-page="policy" onclick="showPage('policy')">行业政策</div>
+      <span class="nav-sep">|</span>
+      <div class="tab" data-page="report" onclick="showPage('report')">宏观报告</div>
+      <span class="nav-sep">|</span>
+      <div class="tab" data-page="platform" onclick="showPage('platform')">平台动作</div>
+      <span class="nav-sep">|</span>
+      <div class="tab" data-page="opinion" onclick="showPage('opinion')">舆情信息</div>
+    </div>
+    <div class="nav-right">
+      <div class="nav-clock" id="navClock"></div>
+    </div>
+  </div>
+</nav>
+
+<!-- 英雄轮播区 -->
+<div style="height:20px;background:#f5f5f5"></div>
+<div class="hero" id="heroSection">
+<div class="hero-outer">
+<div class="hero-inner">
+    <div class="hero-stage" id="heroStage">
+      <!-- 幻灯片+箭头由JS渲染 -->
+    </div>
+    <div class="hero-list">
+      <div class="hero-list-header">
+        <span class="hero-list-header-title">今日快讯</span>
+        <span class="hero-list-more" onclick="showPage('flash')">查看更多 &rsaquo;</span>
+      </div>
+      <div id="heroListItems"><!-- 由JS渲染 --></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- 主体内容 -->
+<div class="wrap" id="homeWrap">
+  <!-- 全部资讯板块 -->
+  <div class="section-block" id="historySection">
+    <div class="section-header">
+      <div class="section-title">更多资讯</div>
+      <div class="section-more" onclick="showPage('all')">查看更多 &rsaquo;</div>
+    </div>
+    <div class="news-grid" id="historyGrid"></div>
+  </div>
+
+  <!-- 全网热点板块 -->
+  <div class="section-block" id="hotSection">
+    <div class="section-header">
+      <div class="section-title">全网热点</div>
+      <div class="hot-update-time" id="hotUpdateTime"></div>
+    </div>
+    <div class="hot-grid" id="hotGrid"></div>
+  </div>
+
+</div>
+
+<!-- 二级页面容器 -->
+<div id="subPage" style="display:none"></div>
+
+<script>
+// ===== 数据 =====
+const now = new Date();
+function minsAgo(m){ return new Date(now - m*60000); }
+function hoursAgo(h){ return new Date(now - h*3600000); }
+
+// ===== 将 published_at 字符串转为 Date 对象 =====
+function parseTs(pub){
+  if(!pub) return new Date(now - 3600000);
+  try{ return new Date(pub.replace(' ','T')); } catch(e){ return new Date(now - 3600000); }
+}
+
+// ===== 将 API 文章格式转为前端 NEWS 格式 =====
+function apiToNews(a, idx){
+  return {
+    id: idx,
+    tag: a.tag || a.category,
+    tagClass: a.tagClass || 'tag-blue',
+    source: a.source || '',
+    category: a.category || 'industry',
+    title: a.title || '',
+    summary: a.summary || '',
+    ts: parseTs(a.published_at),
+    url: a.url || null,
+    img: a.img || null,
+    grad: a.grad || 'linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)'
+  };
+}
+
+// ===== Fallback 静态数据（网络不可用时使用）=====
+const SAMPLE_NEWS = [
+  { id:1, tag:'平台动作', tagClass:'tag-green', source:'美团外卖', category:'platform',
+    title:'美团全面实施骑手超时新规，取消现金扣款改积分激励机制',
+    summary:'美团外卖宣布自下月起在全国范围内推行骑手超时新规，彻底废除现金罚款制度，改为积分激励体系，骑手按时完成配送可累积正向积分兑换奖励。',
+    ts: hoursAgo(2), img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=640&q=80', grad:'linear-gradient(135deg,#1a1a2e 0%,#16213e 45%,#0f3460 100%)' },
+  { id:2, tag:'行业政策', tagClass:'tag-red', source:'人社部', category:'policy',
+    title:'人社部发布新就业形态劳动者权益保障指导意见',
+    summary:'人力资源和社会保障部正式发布指导意见，明确平台企业对骑手等灵活就业人员的用工责任，要求平台为其提供基本社会保险参保渠道。',
+    ts: hoursAgo(5), img:null, grad:'linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)' },
+  { id:3, tag:'舆情信息', tagClass:'tag-orange', source:'市场监管总局', category:'opinion',
+    title:'外卖平台算法负面清单正式落地，禁止"最严算法"压缩配送时间',
+    summary:'市场监管总局联合交通运输部发布外卖平台算法负面清单，明确禁止平台以最严算法为基准设置配送时限。',
+    ts: hoursAgo(8), img:'https://images.unsplash.com/photo-1526367790999-0150786686a2?w=640&q=80', grad:'linear-gradient(135deg,#1e0a2e 0%,#180820 45%,#2a0f3a 100%)' },
+  { id:4, tag:'骑手故事', tagClass:'tag-yellow', source:'新华社', category:'rider_story',
+    title:'上海率先落地骑手职业伤害保障试点，首批2万名骑手纳入',
+    summary:'上海市人社局宣布骑手职业伤害保障试点正式落地，首批2万名外卖骑手纳入保障范围，每月缴费约60元，可享受工伤同等待遇。',
+    ts: hoursAgo(3), img:null, grad:'linear-gradient(135deg,#0a2e1a 0%,#0a2010 45%,#0f3020 100%)' },
+  { id:5, tag:'骑手关怀', tagClass:'tag-teal', source:'美团外卖', category:'care',
+    title:'美团启动"骑手关爱基金"，重大疾病最高援助20万元',
+    summary:'美团外卖宣布设立骑手关爱基金，由平台出资5亿元，专项用于援助遭遇重大疾病、意外伤残的骑手及其家庭，单次最高援助金额20万元。',
+    ts: hoursAgo(3), img:null, grad:'linear-gradient(135deg,#0a1e2e 0%,#081828 45%,#0a2040 100%)' }
+];
+const SAMPLE_FLASH = [
+  { ts: minsAgo(8),   tag:'平台动作', tagClass:'tag-green',  source:'美团外卖',    category:'platform',    title:'美团外卖宣布全面上线"骑手一键求助"功能', summary:'骑手遭遇交通事故、突发疾病或人身安全威胁时，长按APP内专属按钮可自动拨打120并向平台发送实时位置。' },
+  { ts: minsAgo(22),  tag:'舆情信息', tagClass:'tag-orange', source:'微博热搜',    category:'opinion',     title:'"骑手被困电梯"话题冲上热搜，引发平台配送时效讨论', summary:'一段骑手被困电梯导致超时遭差评的视频在微博引发广泛讨论，话题阅读量突破2亿。' },
+  { ts: minsAgo(45),  tag:'行业政策', tagClass:'tag-red',    source:'人社部',      category:'policy',      title:'人社部明确平台企业须为骑手缴纳工伤保险，过渡期至年底', summary:'明确要求各外卖平台在今年年底前完成骑手工伤保险参保工作，违规将面临行政处罚。' },
+  { ts: minsAgo(68),  tag:'平台动作', tagClass:'tag-green',  source:'饿了么',      category:'platform',    title:'饿了么宣布骑手底薪上调10%，恶劣天气补贴翻倍', summary:'饿了么宣布自本月起全面上调骑手底薪10%，台风、暴雨等恶劣天气下配送补贴翻倍，预计惠及全国超过200万名骑手。' },
+  { ts: minsAgo(92),  tag:'骑手故事', tagClass:'tag-yellow', source:'人民日报',    category:'rider_story', title:'骑手小哥雨中救助晕倒老人，获平台颁发"最美骑手"称号', summary:'北京一名外卖骑手在送餐途中发现路边老人突然晕倒，立即停车施救并拨打120，事后获美团平台颁发"最美骑手"荣誉称号。' },
+  { ts: minsAgo(115), tag:'行业政策', tagClass:'tag-red',    source:'交通运输部',  category:'policy',      title:'交通运输部发布骑手电动车安全新规，超速将被强制下线', summary:'交通运输部联合公安部发布新规，外卖骑手电动车超速行驶将被平台强制下线处理，同时要求平台为骑手统一配发符合标准的安全头盔。' },
+  { ts: minsAgo(138), tag:'骑手关怀', tagClass:'tag-teal',   source:'美团研究院',  category:'care',        title:'美团发布骑手关怀白皮书：五年累计投入超百亿元', summary:'美团研究院发布骑手关怀五年白皮书，数据显示美团过去五年在骑手保险、驿站建设、技能培训、困难援助等方面累计投入超过100亿元。' },
+  { ts: minsAgo(162), tag:'舆情信息', tagClass:'tag-orange', source:'新浪微博',    category:'opinion',     title:'#骑手月收入调查#话题阅读破5亿，网友热议收入差距', summary:'微博话题#骑手月收入调查#阅读量突破5亿，大量骑手晒出收入截图，头部骑手月入过万与新手不足3000元的收入差距引发广泛讨论。' },
+  { ts: minsAgo(185), tag:'平台动作', tagClass:'tag-green',  source:'顺丰同城',    category:'platform',    title:'顺丰同城骑手底薪上调15%，天气补贴翻倍', summary:'顺丰同城宣布全面上调骑手底薪15%，并将恶劣天气补贴标准翻倍，同时新增骑手意外险保额至100万元，预计惠及全国超过80万名骑手。' },
+  { ts: minsAgo(210), tag:'行业政策', tagClass:'tag-red',    source:'全国总工会',  category:'policy',      title:'全总推动骑手驿站标准化建设，全国已建成超15万个', summary:'全国总工会联合各大外卖平台推动骑手驿站标准化建设，截至目前全国已建成符合标准的骑手驿站超过15万个。' },
+  { ts: minsAgo(240), tag:'宏观报告', tagClass:'tag-purple', source:'艾瑞咨询',    category:'report',      title:'艾瑞咨询：2024年即时配送市场规模达1.35万亿，骑手需求缺口超200万', summary:'艾瑞咨询发布2024年中国即时配送行业研究报告，数据显示全年即时配送订单量同比增长28%，市场规模达1.35万亿元。' },
+  { ts: minsAgo(275), tag:'骑手故事', tagClass:'tag-yellow', source:'央视新闻',    category:'rider_story', title:'骑手群体平均年龄调查：32岁成主力，90后占比超四成', summary:'央视新闻联合多家机构发布骑手群体画像报告，显示全国外卖骑手平均年龄为32岁，90后占比超过40%，成为行业主力军。' },
+  { ts: minsAgo(310), tag:'骑手关怀', tagClass:'tag-teal',   source:'饿了么',      category:'care',        title:'饿了么骑手之家驿站突破10万个，提供免费餐饮和医疗服务', summary:'饿了么宣布骑手之家驿站网络规模突破10万个，覆盖全国500余座城市，驿站提供免费饮用水、充电、休息、急救包等服务。' },
+  { ts: minsAgo(345), tag:'舆情信息', tagClass:'tag-orange', source:'抖音热榜',    category:'opinion',     title:'骑手遭遇恶意差评视频走红，平台回应将完善申诉机制', summary:'一名骑手因顾客恶意差评导致收入大幅下降的视频在抖音获得超过3000万播放，引发广泛同情，美团随即回应将优化差评申诉机制。' },
+  { ts: minsAgo(380), tag:'平台动作', tagClass:'tag-green',  source:'达达集团',    category:'platform',    title:'达达集团推出骑手子女助学金，每年最高资助1万元', summary:'达达集团宣布设立骑手子女助学金项目，对在读中小学及大学的骑手子女给予资助，中小学每年最高3000元，大学每年最高1万元。' },
+  { ts: minsAgo(420), tag:'行业政策', tagClass:'tag-red',    source:'商务部',      category:'policy',      title:'商务部：即时零售渗透率持续提升，2024年市场规模突破6000亿', summary:'商务部发布即时零售行业发展报告，数据显示2024年即时零售市场规模突破6000亿元，同比增长45%，骑手配送品类从餐饮向全品类扩展。' },
+  { ts: minsAgo(460), tag:'宏观报告', tagClass:'tag-purple', source:'美团研究院',  category:'report',      title:'美团发布2024骑手职业发展报告：平均月收入6800元，超六成来自农村', summary:'美团研究院发布2024年外卖骑手职业发展与生活状况调查报告，显示骑手群体平均月收入达6800元，较上年增长7.2%。' },
+  { ts: minsAgo(500), tag:'骑手故事', tagClass:'tag-yellow', source:'新华社',      category:'rider_story', title:'骑手小哥坚持送餐10年，从月入3000到开办配送站', summary:'新华社报道了一名坚持送餐10年的骑手创业故事，他从最初月入3000元的普通骑手，逐步成长为拥有50名员工的配送站站长。' },
+  { ts: minsAgo(545), tag:'骑手关怀', tagClass:'tag-teal',   source:'顺丰同城',    category:'care',        title:'顺丰同城为全国骑手配发智能头盔，内置碰撞报警系统', summary:'顺丰同城宣布启动安全护航计划，为全国在册骑手统一配发新款智能头盔，新头盔内置碰撞传感器，发生事故时可自动向平台发送报警信号。' },
+  { ts: minsAgo(590), tag:'舆情信息', tagClass:'tag-orange', source:'人民网',      category:'opinion',     title:'人民网舆情报告：骑手权益话题持续高热，公众关注度创三年新高', summary:'人民网舆情数据中心发布报告显示，2024年骑手权益相关话题在各大平台的讨论热度创三年新高，全年相关话题总阅读量超过200亿次。' }
+];
+
+// ===== 运行时数据（由 loadData 填充，初始为 null 表示加载中）=====
+let NEWS = null;
+let FLASH_DATA = null;
+let _dataLoaded = false;
+
+// ===== 数据加载 =====
+async function loadData(){
+  try {
+    // 内嵌数据（由 GitHub Actions 每小时自动更新）
+    const latest = {"date":"2026-06-02","hour":"11","updated_at":"2026-06-02 11:58","file":"data/2026-06-02.json","stats":{"total":52,"by_category":{"industry":43,"rider":4,"platform":2,"opinion":3}}};
+    const data = {"date":"2026-06-02","generated_at":"2026-06-02T03:58:50Z","featured":[{"title":"外卖大战：骑手日赚千元，补贴狂欢谁在为资本买单？—顶端新闻 - 新浪财经","summary":"外卖大战：骑手日赚千元，补贴狂欢谁在为资本买单？—顶端新闻&nbsp;&nbsp;新浪财经","source":"Google新闻-配送费调整","url":"https://news.google.com/rss/articles/CBMifkFVX3lxTE5xaWw3R000OVZEbDE3RU80Y253eHM3RjVlMUtiZHdUaUx4QU9ncnZ6QUE1VkFyZmNIbFVfMU5lNGpxWDVIYi1iU3dtZWdZLUQ1cVpjWk9vOWE0MU9aYW1XRlA3aHhhemsweDdHMl9yNzNBWm14YVdlSC1DSVdsUQ?oc=5","published_at":"2026-06-01T05:00:37","category":"platform","tag":"平台动作","tagClass":"tag-red","sub_tag":"platform.pay","sub_label":"收入费用","img":null,"grad":"linear-gradient(135deg,#1a1a2e 0%,#16213e 45%,#0f3460 100%)"},{"title":"泰州海陵：“糕粽”送祝福 “骑手”护静音 - 搜狐网","summary":"泰州海陵：“糕粽”送祝福 “骑手”护静音&nbsp;&nbsp;搜狐网","source":"Google新闻-骑手","url":"https://news.google.com/rss/articles/CBMiiAFBVV95cUxOd3RTVk9Qb3AxMHN5UlNFWmFibkJoQmtxZ2lsQ2tSS2hFUTZRV2RYQkJYVFhybGpZTVFlcDJ4QmdkYjBiQnBSazhhQjFJdWd2QjB4RGZyWWhGdGZTa2h0b0hfWEsxUENZYU92Vk5DQmJoVVFDTy1uUkNjX3pFX3BXREl0cFQ1UUJN?oc=5","published_at":"2026-06-02T11:23:08","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"外卖骑手送餐时撞伤行人，谁应担责？平台与劳务公司共担责 - 中华网","summary":"外卖骑手送餐时撞伤行人，谁应担责？平台与劳务公司共担责&nbsp;&nbsp;中华网","source":"Google新闻-骑手事故","url":"https://news.google.com/rss/articles/CBMicEFVX3lxTE1RZGFjSl9qc3FicVJkX1hnbXpUZ21oMkJOMmp5SkZOeVBnYmNiNzBQZVZsVEZpbG01T1dCSXJLSHlYZGFRRXl5YzIxVE5wM3Uwb254REVSR1lPblBRZnFTVUN1OTVaMGFHbG1XU0NvRnc?oc=5","published_at":"2026-06-01T12:08:28","category":"rider","tag":"骑手新闻","tagClass":"tag-yellow","sub_tag":"rider.accident","sub_label":"安全事故","img":null,"grad":"linear-gradient(135deg,#1a2e1a 0%,#0d2b0d 45%,#1a3a1a 100%)"},{"title":"骑手将餐挂门上被顾客投诉像供祭品，平台罚款10元后引发的纠纷，你们怎么看？ - 风闻","summary":"骑手将餐挂门上被顾客投诉像供祭品，平台罚款10元后引发的纠纷，你们怎么看？&nbsp;&nbsp;风闻","source":"Google新闻-骑手","url":"https://news.google.com/rss/articles/CBMiW0FVX3lxTE9Za3E3cWgzTjg4aHktSS1CdS02eUJWRDUtX3dWSWxkbVhjbFNqaHhUcUttelliY0lXOUdGcVRSNmpyZUN1a1RnN0tkaXBxOWhQY1ZJbjQ1Q0VxQVU?oc=5","published_at":"2026-05-31T15:18:00","category":"opinion","tag":"舆情信息","tagClass":"tag-purple","sub_tag":"opinion.rights","sub_label":"权益争议","img":null,"grad":"linear-gradient(135deg,#1e0a2e 0%,#180820 45%,#2a0f3a 100%)"},{"title":"1600万骑手过剩，谁制造了“冗余运力”？ - 红网","summary":"1600万骑手过剩，谁制造了“冗余运力”？&nbsp;&nbsp;红网","source":"Google新闻-配送费调整","url":"https://news.google.com/rss/articles/CBMiZ0FVX3lxTE94MDVHWWhYTzVnM3lTVmYxUGRpZU1pckRZckZZRXg0Z2VEMkhRTU5NSkZjRzZETGxEaW1hV2k4MEN0WTNjVlloR21zS19DT1lfSmV2LTZzbVJCUm1PdTQ1a2k1NDgzdG8?oc=5","published_at":"2026-05-31T19:34:33","category":"platform","tag":"平台动作","tagClass":"tag-red","sub_tag":"platform.pay","sub_label":"收入费用","img":null,"grad":"linear-gradient(135deg,#1a1a2e 0%,#16213e 45%,#0f3460 100%)"}],"articles":[{"title":"泰州海陵：“糕粽”送祝福 “骑手”护静音 - 搜狐网","summary":"泰州海陵：“糕粽”送祝福 “骑手”护静音&nbsp;&nbsp;搜狐网","source":"Google新闻-骑手","url":"https://news.google.com/rss/articles/CBMiiAFBVV95cUxOd3RTVk9Qb3AxMHN5UlNFWmFibkJoQmtxZ2lsQ2tSS2hFUTZRV2RYQkJYVFhybGpZTVFlcDJ4QmdkYjBiQnBSazhhQjFJdWd2QjB4RGZyWWhGdGZTa2h0b0hfWEsxUENZYU92Vk5DQmJoVVFDTy1uUkNjX3pFX3BXREl0cFQ1UUJN?oc=5","published_at":"2026-06-02T11:23:08","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"关注：外卖大战后1600万骑手过剩，年轻人该进场了！ - 网易新闻客户端","summary":"关注：外卖大战后1600万骑手过剩，年轻人该进场了！&nbsp;&nbsp;网易新闻客户端","source":"Google新闻-外卖骑手","url":"https://news.google.com/rss/articles/CBMiggFBVV95cUxOTl9ISmZ3UGh3bER3TE9Kd08yaEdacXJtQ19NWS1yWFhJc3BZVXZiaHpLXzBzNC1jeUN6RVhiUmRvZVVqblc1eXBiMHoyYVVzcEgtek9JMlhGNE1ON1VxUXdOaTN6a2FxaU1SNXRBRjJtR1FPajdJWmRLY3lmUEx2WkhR?oc=5","published_at":"2026-06-02T10:42:00","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"从外卖小哥到企业战队：小铁百业大赛让台球成为全民社交新载体 - 中华网","summary":"从外卖小哥到企业战队：小铁百业大赛让台球成为全民社交新载体&nbsp;&nbsp;中华网","source":"Google新闻-美团骑手","url":"https://news.google.com/rss/articles/CBMiXkFVX3lxTE02WElESm1Rcjh0TldFZ0Y1TnpwR09QcXYwX255bnFiTVNFTHhrbWt3blA4NHB4S3pzV0ZndzU5cUF2X2VJMGZTVEMxc2U5aThSSzE4YkdqZkZUNjlVZnc?oc=5","published_at":"2026-06-02T10:38:38","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"外卖骑手人行道骑行意外撞到婴儿推车 双方发生激烈打斗 - 网易新闻客户端","summary":"外卖骑手人行道骑行意外撞到婴儿推车 双方发生激烈打斗&nbsp;&nbsp;网易新闻客户端","source":"Google新闻-外卖骑手","url":"https://news.google.com/rss/articles/CBMiU0FVX3lxTE45TjNwbUppMV9QTXlfa0pqemEzTi1Kdm5vT0FiazVmdFl6eTVpLWJJd0NYNU04QVIzYnEwLW05VlVoZ0JqeThsUVVaU1ViQm9xbk9R?oc=5","published_at":"2026-06-02T10:33:46","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":"rider.accident","sub_label":"安全事故","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"外卖骑手过剩，网约车市场饱和，说明什么问题？ - wenxuecity","summary":"外卖骑手过剩，网约车市场饱和，说明什么问题？&nbsp;&nbsp;wenxuecity","source":"Google新闻-外卖骑手","url":"https://news.google.com/rss/articles/CBMiiAFBVV95cUxOZnVtek85S3BsRndIN3Z6N3lfcnlzNk4wVUYwUGtXZ3VfWWxWM0lkVDg0MmRiTW1faWJ6em5rSUJ3ZTkxMmZZWWJYdmZBLWlyVHdBWFB6dkg2Q2NQRlNpNUNEc2dhRnVTSmJFVlJFd3VhcFpmUEg3UFhINWlpLVB5QVJnbDk4TDBz?oc=5","published_at":"2026-06-02T10:25:57","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"骑手网约车，卷疯了！ - 新浪财经","summary":"骑手网约车，卷疯了！&nbsp;&nbsp;新浪财经","source":"Google新闻-骑手社保工伤","url":"https://news.google.com/rss/articles/CBMimAFBVV95cUxPSUtnUmRlQlJMbTJkNm9UZzdPazVMRlZBNjNMd3A1RkJpMGwyMEVwRmFBTkpxZUE1YmJDQUp5VmJ4Nk05YXZSeHZDREd4OHl6UkxBUHI2aG42ZFQxWkRXanhicGNyTUNsUmpSMmN1R2NvSzRtYnJrRlBUdnJNUjBJbExocVRkdHl0Ni1FbUhMTzVmakVRMzRDRA?oc=5","published_at":"2026-06-02T10:20:58","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":"industry.labor","sub_label":"劳动法规","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"57.3公里 千名骑手竞速浙西天路 - pic.hangzhou.com.cn","summary":"57.3公里 千名骑手竞速浙西天路&nbsp;&nbsp;pic.hangzhou.com.cn","source":"Google新闻-骑手","url":"https://news.google.com/rss/articles/CBMibkFVX3lxTE9fbW9aSUNDUnJpck9GcEFEQjI4VjYxOGZuaFF4aTY2WWcyRzlRQmR0ZzRKeTUwUGNGQ1pfSW0xRGdFblBnZFlsTnRfZmVwTWtqbjBlZ1EzejFfRGxRaVRWc21meGhBdmpfZkg0X2VB?oc=5","published_at":"2026-06-02T10:10:39","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"北京这家友好医院，外卖骑手每日免收一次普通门诊挂号费 - 京报网","summary":"北京这家友好医院，外卖骑手每日免收一次普通门诊挂号费&nbsp;&nbsp;京报网","source":"Google新闻-外卖骑手","url":"https://news.google.com/rss/articles/CBMiXkFVX3lxTFBhdjc4Y2Z5X3A0VWpVRHRMQlgyOGVLU3lTQzJMTno5dThyZlFPdHVDb2JuR0wyLWxyUnhTSGh2NGhqaEhWT3NYazlsdF85dW5GeUhiaEtIUVVBSlNreEE?oc=5","published_at":"2026-06-02T09:49:00","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"精心呵护网约配送员！江西首家“骑手之家”中心店正式启用 - 凤凰网江西","summary":"精心呵护网约配送员！江西首家“骑手之家”中心店正式启用&nbsp;&nbsp;凤凰网江西","source":"Google新闻-平台经济监管","url":"https://news.google.com/rss/articles/CBMiSkFVX3lxTFBQUTlDbFBuNkl3WGFwbzFZSEoxM0FyOXpYSzExa2RlTFpVLTdrZVZEVkhrd0dNRFJrSUNNRzZlM1V6Mjk5U1VJRFJR?oc=5","published_at":"2026-06-02T07:36:04","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":"industry.policy","sub_label":"监管政策","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"平台AI识别假堂食 骑手成“移动哨兵” - 搜狐网","summary":"平台AI识别假堂食 骑手成“移动哨兵”&nbsp;&nbsp;搜狐网","source":"Google新闻-骑手","url":"https://news.google.com/rss/articles/CBMiiAFBVV95cUxNNEN6eDRUdDNjRFNuWklSWk5KSG9nNjZxd0NER1VnbXRHWFJxa200aWJGUkZHTVg0V2lXOUY5cDR4Y2MzZHhhZGRlQWJ4NUJocU1DRU8zdC1fcTRQUWhXSl9ERmI0ZF9tcW9Pc01BOXY5YXhJeXFfVDl5cE1zaWY0WDZsOGQwVmNt?oc=5","published_at":"2026-06-02T07:04:25","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"多伦多今起开展两轮车安全行动 外卖骑手和通勤族需留意路口风险 - frequencynews.ca","summary":"多伦多今起开展两轮车安全行动 外卖骑手和通勤族需留意路口风险&nbsp;&nbsp;frequencynews.ca","source":"Google新闻-外卖骑手","url":"https://news.google.com/rss/articles/CBMi1AJBVV95cUxPazNmMVNzRFlQb2ZaZFRRSjBQRGlodS1ycGhZaDhaXzdqMmZKM1BHVllTM1NrenZuUXk4YmdZb2JpdXBhOV96Z0ROOGVsSE81cGo2YjVTWFlFU0d5SWxHYkoyRkkyX2duR0JSRzlaNUhiUGdJdThyX3QtM1ZJUlNYNzJtbS1iOGtOMEg3T3g3RWRseFlVTE9zakc5Z2tuRE5IQkJGYm83cXd1V3NHTHlJa0VJT3FVRjdHdjlXUnhMX2VESGZibnRLZS1zS25LLW45WkYwb25RTHU4OW9pLVluSm13Q0JiWTd0U1lIVDdUdHlDalJSNWZMa3o2NndubWQySlpOb0p2aklUQ1ZERmViU01DWV9kdWZDR09JaGRyMjZpOXRILWFaWVI0VUdaaUlPb1NPOFVuMGJRWXJvTWtxSF9EMzAwclZaSHh4MzNIeVFfUXha?oc=5","published_at":"2026-06-02T01:21:44","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"经济学人：中国的外卖小哥是最明显的社会底层群体 - 加美财经","summary":"经济学人：中国的外卖小哥是最明显的社会底层群体&nbsp;&nbsp;加美财经","source":"Google新闻-骑手","url":"https://news.google.com/rss/articles/CBMiVEFVX3lxTE5lREVQMXJIVTlWTG11ZFFadWRISTNuOU8zdVFleXl2dFBta082NUVQZDg0VXdRcW1Jbjh4dTNlNldPYUJ6UHJqSV9Yc0FwWDFGZEpwdQ?oc=5","published_at":"2026-06-01T21:29:00","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"社保“新”守护 安心每一程 省市区三级联动护航新就业形态劳动者权益保障 - 新华网云南","summary":"社保“新”守护 安心每一程 省市区三级联动护航新就业形态劳动者权益保障&nbsp;&nbsp;新华网云南","source":"Google新闻-新就业形态","url":"https://news.google.com/rss/articles/CBMiggFBVV95cUxNZktjWEtiQnhMNW9uM0ZlY2UxX2FoVkJaN3VCRDVrd3JKWW1vMVluZG1FM1Y1cHVmLXRpbW8zX0pNZHlLTkcyeHV1dDhua2RHYTJ1RElOaE5vZUhfQnNJbThGUFMtQWpIUkl1c0huOUlaUUJyYnBpSldmYVVMODJnd093?oc=5","published_at":"2026-06-01T18:57:28","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":"industry.policy","sub_label":"监管政策","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"笑着吃外卖走红骑手说平时舍不得点 乐观背后的心酸 - 中华网","summary":"笑着吃外卖走红骑手说平时舍不得点 乐观背后的心酸&nbsp;&nbsp;中华网","source":"Google新闻-骑手","url":"https://news.google.com/rss/articles/CBMicEFVX3lxTE40YmJZNzZfWTZJYVNrcThRam5UVHNtVklULVZtOC1KWmIySnRVbmdJYnh2Szhxd3hQb2dudjd1Xzc0ZDFwZ3BkSl90djJwN1p0UnNLXzU4ODlTMjlkaVJPMXk1d3lhMjQ5SVZfQlNoYXc?oc=5","published_at":"2026-06-01T18:32:31","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"外卖骑手有了新身份：普法宣传员 ——重庆市江津区“食安随餐行”让法治精神“配送”到家 - thepaper.cn","summary":"外卖骑手有了新身份：普法宣传员 ——重庆市江津区“食安随餐行”让法治精神“配送”到家&nbsp;&nbsp;thepaper.cn","source":"Google新闻-外卖骑手","url":"https://news.google.com/rss/articles/CBMiXkFVX3lxTFBjRGgwbFdHY3kyNE5sYVBYVEd1Qzc3aHVVd0dhR200Y3JvM0xPMzdlZWxuMl95Uy03S25fRF9EamxyWWJQdjc2clVYTjJ2NFZMVjNKWmxzTFVDWERhYVE?oc=5","published_at":"2026-06-01T17:10:00","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"外卖大战后1600万骑手过剩！系统性治理迫在眉睫 | 锋面评论 - 新浪财经","summary":"外卖大战后1600万骑手过剩！系统性治理迫在眉睫 | 锋面评论&nbsp;&nbsp;新浪财经","source":"Google新闻-外卖骑手","url":"https://news.google.com/rss/articles/CBMikgFBVV95cUxNUURSbWt2MTdkVkVEWjRiMExXcXA0TlpRY0RyLXVrX0FKZ3hEdEZRLW1kU0g2a1g4OE9vR1IzenFqN0tWZER3dFQ0akJ0MkdMcHFWSk0ta01ybDFZT0NnUHR4ZGVqM3cxR3RER2NLSkQ5dkRfejdDSjd0aTN4Q3N5WEJQR0xKMjdieUh5NHd4VU5tUQ?oc=5","published_at":"2026-06-01T15:21:09","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"游客称在景区遭摩托艇故意甩尾滋水当地文旅局回应：当事人已报警，目前摩托艇俱乐部已处理当事骑手 - 中华网","summary":"游客称在景区遭摩托艇故意甩尾滋水当地文旅局回应：当事人已报警，目前摩托艇俱乐部已处理当事骑手&nbsp;&nbsp;中华网","source":"Google新闻-骑手","url":"https://news.google.com/rss/articles/CBMicEFVX3lxTE1rb2w5ZEp1UDJVRllvaldONS1Rd0JqRm5zajkwYzFNNWN3WGkzakZRN0lHd3kyM3ZnTWJPOVZQS3JtX245QUFvQWtrNFVHV3hIZTlLWmx6ZlRES1hnMDgzTnlWbzdzd1lIekpOS3o2eGg?oc=5","published_at":"2026-06-01T14:20:59","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"00后骑手笑着吃外卖走红：想传递快乐，继续完成本科学业 - 中华网","summary":"00后骑手笑着吃外卖走红：想传递快乐，继续完成本科学业&nbsp;&nbsp;中华网","source":"Google新闻-外卖骑手","url":"https://news.google.com/rss/articles/CBMicEFVX3lxTE5MYjV5UkUwLTdoRUg4ODhNM2h5ZWM4R2lQY1RPeEgzajdsUUxNTzJoNUFNSmFJWkhVaVFCMkxzZDl4UldRc2ZPYzd5c3N5LXBEY0hUek5IN2FKcnVyN3VDQlpZdVZTbi1DQ1dVM2IxN3c?oc=5","published_at":"2026-06-01T13:13:14","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"外卖骑手送餐时撞伤行人，谁应担责？平台与劳务公司共担责 - 中华网","summary":"外卖骑手送餐时撞伤行人，谁应担责？平台与劳务公司共担责&nbsp;&nbsp;中华网","source":"Google新闻-骑手事故","url":"https://news.google.com/rss/articles/CBMicEFVX3lxTE1RZGFjSl9qc3FicVJkX1hnbXpUZ21oMkJOMmp5SkZOeVBnYmNiNzBQZVZsVEZpbG01T1dCSXJLSHlYZGFRRXl5YzIxVE5wM3Uwb254REVSR1lPblBRZnFTVUN1OTVaMGFHbG1XU0NvRnc?oc=5","published_at":"2026-06-01T12:08:28","category":"rider","tag":"骑手新闻","tagClass":"tag-yellow","sub_tag":"rider.accident","sub_label":"安全事故","img":null,"grad":"linear-gradient(135deg,#1a2e1a 0%,#0d2b0d 45%,#1a3a1a 100%)"},{"title":"海口美兰区多方联建共建 暖心服务外卖骑手新就业群体 - 搜狐网","summary":"海口美兰区多方联建共建 暖心服务外卖骑手新就业群体&nbsp;&nbsp;搜狐网","source":"Google新闻-外卖骑手","url":"https://news.google.com/rss/articles/CBMiiAFBVV95cUxNd1loWjJuNTVpVk1MaEo1QU9IR19sVExRUGd2eHVoZVc2amVVVVpzaU1BcHFRWVVnZFNac0dSa3l6UWt0N2ZsYXlEbUw5SXM4MExVLXo3MlF0c3Y1STlFLWNNaU90b2IzYmdqLS1MTVdBZHAxa1oxVnZwODNmZkNjdm12Rjg3V21B?oc=5","published_at":"2026-06-01T11:17:17","category":"rider","tag":"骑手新闻","tagClass":"tag-yellow","sub_tag":"rider.positive","sub_label":"正面事迹","img":null,"grad":"linear-gradient(135deg,#1a2e1a 0%,#0d2b0d 45%,#1a3a1a 100%)"},{"title":"外卖大战后“骑手过剩” 平台补贴退潮引发运力泡沫 - 中华网","summary":"外卖大战后“骑手过剩” 平台补贴退潮引发运力泡沫&nbsp;&nbsp;中华网","source":"Google新闻-骑手","url":"https://news.google.com/rss/articles/CBMicEFVX3lxTE5OQ20tanVvZkk2MHV3Vkdqck5JZEJheU4wQmpJZlZxNlZRZDB0Wll1aWFXY3hwWndRYzl1d3lVQXBsTDRoRkl5WFlxZ3ZBUFZHODNwVVhLa2hmS09keGhtV0UybUR5d0dkeTI5Yk9oZTY?oc=5","published_at":"2026-06-01T10:27:48","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"把骑手发展成情报网，4S 店正在争夺事故车的维修权 - 虎嗅","summary":"把骑手发展成情报网，4S 店正在争夺事故车的维修权&nbsp;&nbsp;虎嗅","source":"Google新闻-骑手","url":"https://news.google.com/rss/articles/CBMiVEFVX3lxTE5WMzNLQ19mU3hmNlNHdlF6ZkhoREgyV2RzNFFSZlc5UVBxM3lXeE5RX0NaX01qZHdSaHBQR01MTW5TQWJyMmE0YmV6RDloeGh2emY5VQ?oc=5","published_at":"2026-06-01T10:25:00","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"江苏阳澄湖镇为辖区网约配送员开展交通安全课 - 光明网","summary":"江苏阳澄湖镇为辖区网约配送员开展交通安全课&nbsp;&nbsp;光明网","source":"Google新闻-配送员","url":"https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1BSTFlZTNBWDRGb3dsMEhOakNpVERaMnduSDIxaDI0WDlNZ3o3TFgyc0ppZlozLW9aeDA2c2VMRXZGaThIWV9BM0FrYUFZOGw2d2FzS0RwYkJMellBd2RkaVRlR25CSW8?oc=5","published_at":"2026-06-01T09:47:00","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"有理有句丨外卖小哥张宝剑在湖北日报《理论周刊》发文 - 湖北日报传媒集团","summary":"有理有句丨外卖小哥张宝剑在湖北日报《理论周刊》发文&nbsp;&nbsp;湖北日报传媒集团","source":"Google新闻-外卖骑手","url":"https://news.google.com/rss/articles/CBMiWEFVX3lxTFB0dmQwYWM0dUg5TzQ4SVZJaW8yRk5kZ0JSNkNGTExpYmhNTUlENkFnVDdtTEtpV2t2ZUlTU0U3VHBINHlnekFKOFF1M1k0cEZiZnlZNURta1g?oc=5","published_at":"2026-06-01T08:47:26","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"骑手小哥撑起一个IPO！智租换电连续两年盈利，钱江摩托、蜂巢新能源为股东 - 搜狐网","summary":"骑手小哥撑起一个IPO！智租换电连续两年盈利，钱江摩托、蜂巢新能源为股东&nbsp;&nbsp;搜狐网","source":"Google新闻-骑手","url":"https://news.google.com/rss/articles/CBMijAFBVV95cUxOZ2tIRGRSUXlBbXBOU0FsQThuaVRYLVJJVzVGMUVzX2F5WkZrRmJ2NHRCMzloUzh3WjhKT1VGYXVFMnRqcXVnMjYyN01TQW03NXdyVS15cWpFR3dSUTJwZGUtN0ZpckRmNHgwTlp0M20yczF5aDNXZlhPcHB3ZGNPWmgxYk94YWVQSEgwSw?oc=5","published_at":"2026-06-01T08:40:00","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"冰湖一跃暖京城 - 搜狐网","summary":"冰湖一跃暖京城&nbsp;&nbsp;搜狐网","source":"Google新闻-骑手好人好事","url":"https://news.google.com/rss/articles/CBMiVkFVX3lxTE1ZNmNvaHFhcU9YUGdlMlNNdWZTa29pV0E4QUdtbWMyb1ZsUW5NOERkSl9Rci13N0VrV2s5Nk9ySFp5MEdjYWszeF9ONElJc3pTOTVNb3p3?oc=5","published_at":"2026-06-01T05:37:32","category":"rider","tag":"骑手新闻","tagClass":"tag-yellow","sub_tag":"rider.positive","sub_label":"正面事迹","img":null,"grad":"linear-gradient(135deg,#1a2e1a 0%,#0d2b0d 45%,#1a3a1a 100%)"},{"title":"冰湖一跃暖京城 - Sina finance","summary":"冰湖一跃暖京城&nbsp;&nbsp;Sina finance","source":"Google新闻-骑手好人好事","url":"https://news.google.com/rss/articles/CBMieEFVX3lxTE5fNHd0REZyWHFON0F1N1VlYmZhVkVhRFVWTGMyX3RyY2xERWFOYjdDNVhqYzlPc2dSUkh2bHViT0M3VW9wQWJzYUlUenp6bkdyM1pQQmRfNVd3N0J4c2Nma3doTEtYMC10ZnpvWXNnc3NsNXN0d2NqZA?oc=5","published_at":"2026-06-01T05:37:00","category":"rider","tag":"骑手新闻","tagClass":"tag-yellow","sub_tag":"rider.positive","sub_label":"正面事迹","img":null,"grad":"linear-gradient(135deg,#1a2e1a 0%,#0d2b0d 45%,#1a3a1a 100%)"},{"title":"外卖大战：骑手日赚千元，补贴狂欢谁在为资本买单？—顶端新闻 - 新浪财经","summary":"外卖大战：骑手日赚千元，补贴狂欢谁在为资本买单？—顶端新闻&nbsp;&nbsp;新浪财经","source":"Google新闻-配送费调整","url":"https://news.google.com/rss/articles/CBMifkFVX3lxTE5xaWw3R000OVZEbDE3RU80Y253eHM3RjVlMUtiZHdUaUx4QU9ncnZ6QUE1VkFyZmNIbFVfMU5lNGpxWDVIYi1iU3dtZWdZLUQ1cVpjWk9vOWE0MU9aYW1XRlA3aHhhemsweDdHMl9yNzNBWm14YVdlSC1DSVdsUQ?oc=5","published_at":"2026-06-01T05:00:37","category":"platform","tag":"平台动作","tagClass":"tag-red","sub_tag":"platform.pay","sub_label":"收入费用","img":null,"grad":"linear-gradient(135deg,#1a1a2e 0%,#16213e 45%,#0f3460 100%)"},{"title":"近60名骑手齐聚鹏城，第三届深台港澳青少年马术邀请赛启幕 - 搜狐网","summary":"近60名骑手齐聚鹏城，第三届深台港澳青少年马术邀请赛启幕&nbsp;&nbsp;搜狐网","source":"Google新闻-骑手","url":"https://news.google.com/rss/articles/CBMijAFBVV95cUxNdWVxaGtZVlVrbE1qOWhyRGxKeERfbWIxNGtxbG9IS1ZGMnZfUzJvSGRxc3BOM1lKbW43cDlLVFY2dTU0TnhJLURha01USzFvNDlVaUFvdnNGeGZfMGhMT3FDS255MWJfbkF1QVM0OTN3XzBvaE1WS3dLLW9POG5vS3JWb3RTSDk3UFF2QQ?oc=5","published_at":"2026-06-01T00:01:36","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"1600万骑手过剩，谁制造了“冗余运力”？ - 红网","summary":"1600万骑手过剩，谁制造了“冗余运力”？&nbsp;&nbsp;红网","source":"Google新闻-配送费调整","url":"https://news.google.com/rss/articles/CBMiZ0FVX3lxTE94MDVHWWhYTzVnM3lTVmYxUGRpZU1pckRZckZZRXg0Z2VEMkhRTU5NSkZjRzZETGxEaW1hV2k4MEN0WTNjVlloR21zS19DT1lfSmV2LTZzbVJCUm1PdTQ1a2k1NDgzdG8?oc=5","published_at":"2026-05-31T19:34:33","category":"platform","tag":"平台动作","tagClass":"tag-red","sub_tag":"platform.pay","sub_label":"收入费用","img":null,"grad":"linear-gradient(135deg,#1a1a2e 0%,#16213e 45%,#0f3460 100%)"},{"title":"失業嚴重 中國外賣騎手過剩1600萬 網約車市場飽和 - 新唐人電視台","summary":"失業嚴重 中國外賣騎手過剩1600萬 網約車市場飽和&nbsp;&nbsp;新唐人電視台","source":"Google新闻-外卖市场竞争","url":"https://news.google.com/rss/articles/CBMiYEFVX3lxTE1CMmpaREdZTzFMOThCc1Rnd0FDRjhHVE9vdldBRVZDXzJrOENrQTNtSk9aZ1MzSkZsQTBROTEwUGItak9Odmh1TzN1eFNkWFpKM182Z2pmSmNMTTZITVlkVNIBZkFVX3lxTE9UdWQxRnpqUGZjMXJnSTQ4a2hLelZ4bUxpSFlMcTljallBOWhtWnpWS2l0VU1HdHc0V3lqV2Nwc0hZbkFBUlZWRXFHME9MSTE3YzBDSmRTdFRqalpaTmZEcjlKUU9wZw?oc=5","published_at":"2026-05-31T17:01:00","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":"industry.market","sub_label":"竞争格局","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"覆盖超百万人！广州外卖骑手、网约车司机有了专属心理服务队 - 搜狐网","summary":"覆盖超百万人！广州外卖骑手、网约车司机有了专属心理服务队&nbsp;&nbsp;搜狐网","source":"Google新闻-外卖骑手","url":"https://news.google.com/rss/articles/CBMiiAFBVV95cUxNYjQycE1hc3JTM3ZTQm9nTDRTSzQwMDdHaV95Sm9pTEpPcGFkX2dqdm5lODBVcEZUTVlZQW03NmpwRDhEWE5BeFpqX0JIb0RCelAxN0dwRmZrMHhHcVNtbWlZbjJReWxQRTJqakFvNkhBMTViUFdDYzhSbEdrM2NwQUx3dDdIaG5K?oc=5","published_at":"2026-05-31T16:57:04","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"外卖食品安全治理明天迎新规，骑士“随手拍”上报线索可获奖励 - 新浪财经","summary":"外卖食品安全治理明天迎新规，骑士“随手拍”上报线索可获奖励&nbsp;&nbsp;新浪财经","source":"Google新闻-骑手政策","url":"https://news.google.com/rss/articles/CBMimAFBVV95cUxNVlNyM3BjRUVLSHk0VXo4VUNrMTB2ZC1QRW0wdjJrYkt6MzVlNjdVTHJfVndLQnZYTEYtb1B1WlJQRzh3ekZaal9ienVpMlBzV1ZJdlEzYXZic1lRUUxnbmgxcU1ER2RLX0ZzUEdzYkZxSTV1QlIyVks3NU9uRldCRWVyWHVzc2NZeS1aM2J6c3dWZGxYMTJXQQ?oc=5","published_at":"2026-05-31T16:29:06","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":"industry.policy","sub_label":"监管政策","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"骑手将餐挂门上被顾客投诉像供祭品，平台罚款10元后引发的纠纷，你们怎么看？ - 风闻","summary":"骑手将餐挂门上被顾客投诉像供祭品，平台罚款10元后引发的纠纷，你们怎么看？&nbsp;&nbsp;风闻","source":"Google新闻-骑手","url":"https://news.google.com/rss/articles/CBMiW0FVX3lxTE9Za3E3cWgzTjg4aHktSS1CdS02eUJWRDUtX3dWSWxkbVhjbFNqaHhUcUttelliY0lXOUdGcVRSNmpyZUN1a1RnN0tkaXBxOWhQY1ZJbjQ1Q0VxQVU?oc=5","published_at":"2026-05-31T15:18:00","category":"opinion","tag":"舆情信息","tagClass":"tag-purple","sub_tag":"opinion.rights","sub_label":"权益争议","img":null,"grad":"linear-gradient(135deg,#1e0a2e 0%,#180820 45%,#2a0f3a 100%)"},{"title":"“外卖大战”后，骑手过剩：行业需400万人，实际涌入2000万人，超过5人抢1单 - 凤凰网","summary":"“外卖大战”后，骑手过剩：行业需400万人，实际涌入2000万人，超过5人抢1单&nbsp;&nbsp;凤凰网","source":"Google新闻-骑手","url":"https://news.google.com/rss/articles/CBMiSEFVX3lxTFBZU3NSU042TGswU3RKS001ZTI4SXBxcjhSNVhjQURseDRrbG1uLUxjdFZKQ2FHdkNEMElIRDZkSnM0UjZjOF9qRg?oc=5","published_at":"2026-05-31T11:55:28","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"外卖大战一周年“后遗症”初显：订单骤降，骑手却暴涨到2000万 - 新浪财经","summary":"外卖大战一周年“后遗症”初显：订单骤降，骑手却暴涨到2000万&nbsp;&nbsp;新浪财经","source":"Google新闻-饿了么骑手","url":"https://news.google.com/rss/articles/CBMisgFBVV95cUxPbTVxaUIxUG9VYTVhZFhUbVl6Mmc4WmxvOElCZ0NVWl8yOVEzTmxja0xSYVVZWmF2bms4UHlmSkFEUmdFMWJzSlcwZWo2a0RqRklRVURmSlJ3eTh6bDNuT25FSkdCSi1hUDBhTkFnYlVGSXpaQlE4Y1JjdXNDaU9qMW56WWRwUERtSi05WC1CMUFjU2pzRG5jNXdnQm1JaTNhSVZZQkl6dmpLXzFuMEFjTHNn?oc=5","published_at":"2026-05-31T11:50:44","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"外卖被挂在门把手上，顾客怒批“像上供”！骑手被罚后蒙面报复… - 搜狐网","summary":"外卖被挂在门把手上，顾客怒批“像上供”！骑手被罚后蒙面报复…&nbsp;&nbsp;搜狐网","source":"Google新闻-骑手","url":"https://news.google.com/rss/articles/CBMiiAFBVV95cUxNdEZtSjdLYWQ3QW9YTHJ4Zkh3MG1LZnZta3Y3bHJ3VjBFbThhQXZvUjMweWNNekNzNmQzYmZhT1lJb2h2T3V2RnJFcnFvcmRFenFqYjVYMk5mdkxBLVcyYktheVp6ZWJxM2NMTTFjTVdzZWZGMUhlRGVTSTU5ek1fRUEtbHJxN2Jo?oc=5","published_at":"2026-05-31T09:00:15","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"两大“蓄水池”溃坝！中国普通人退路正在崩塌 - aboluowang.com","summary":"两大“蓄水池”溃坝！中国普通人退路正在崩塌&nbsp;&nbsp;aboluowang.com","source":"Google新闻-外卖市场竞争","url":"https://news.google.com/rss/articles/CBMiY0FVX3lxTE14Q3J6QzU0a3F1RHNFQlRRT21pQWFiTEFrVnpyR1JocWE3Um5mLWE5S0FkUm5scUItdzdQWkVfdm9TVFM2M2twVzZ5MWk1OWtxQVlIRGE5ZkR6M0VEWjFncGlCd9IBY0FVX3lxTE14Q3J6QzU0a3F1RHNFQlRRT21pQWFiTEFrVnpyR1JocWE3Um5mLWE5S0FkUm5scUItdzdQWkVfdm9TVFM2M2twVzZ5MWk1OWtxQVlIRGE5ZkR6M0VEWjFncGlCdw?oc=5","published_at":"2026-05-31T08:56:43","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":"industry.market","sub_label":"竞争格局","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"两大\"蓄水池\"溃坝！中国普通人退路正在崩塌 - VanPeople","summary":"两大\"蓄水池\"溃坝！中国普通人退路正在崩塌&nbsp;&nbsp;VanPeople","source":"Google新闻-外卖市场竞争","url":"https://news.google.com/rss/articles/CBMiUEFVX3lxTFBRYzJ0dHpHeTFXRzdXelJ4ZkNrNlBYN1RMckpXRlFyNkQtUHRyYkl4ZTFPd1BaVEI4YVRVU1FBdlpFRG54TEZaQ21uY25ZeXlU?oc=5","published_at":"2026-05-31T08:05:56","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":"industry.market","sub_label":"竞争格局","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"外卖骑手饱和内卷_新浪新闻 - 新浪网","summary":"外卖骑手饱和内卷_新浪新闻&nbsp;&nbsp;新浪网","source":"Google新闻-美团骑手","url":"https://news.google.com/rss/articles/CBMiY0FVX3lxTE42UGNlUnY3MTljeXgtUUo5MUFoSXI4Z1hXcG0wT3ZoYVRjOXI4a054aTgyZF9jeWpCZXFiMXk4SWtIVDhsSU9sVTJualRRNkw4bHVOdDRJRUJVMG9ueE9TRk9rcw?oc=5","published_at":"2026-05-31T06:11:00","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"外卖大战后1600万骑手过剩：行业仅需400万骑手，实际涌进2000万人，超过5名骑手争抢1单 - 新浪新闻_手机新浪网","summary":"外卖大战后1600万骑手过剩：行业仅需400万骑手，实际涌进2000万人，超过5名骑手争抢1单&nbsp;&nbsp;新浪新闻_手机新浪网","source":"Google新闻-骑手","url":"https://news.google.com/rss/articles/CBMicEFVX3lxTFBNV0tJZjNRRlNVQ0pKazZDMVhFWGhTa1lQT1p1SDhEM0RJSFc1WWt3SU5mckZCQ2J2UUhDS2c5WUZHdldTc2djQmw1WG1xbnRyeXEzQVJIRWJiWWVYeWJQZHFPNEJpM2ZhMkUtV3NsNW0?oc=5","published_at":"2026-05-31T06:01:00","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"外卖行业内卷至死_新浪新闻 - 新浪网","summary":"外卖行业内卷至死_新浪新闻&nbsp;&nbsp;新浪网","source":"Google新闻-骑手","url":"https://news.google.com/rss/articles/CBMiY0FVX3lxTFBQTTNXZGhlZmxEd2NkOFBHc0Y5aUR0MjlqNHMweEY0eUhsT0p0UGZVWWsxQTVtd2FpUl81bnA3M3hVMXQwZ2dEelNyZ0lST1poQzBMdE1CdE91RDhXMFVRU1VYTQ?oc=5","published_at":"2026-05-30T22:45:00","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"13人遇难“致命黑车”调查：同款车违法影像曝光 座椅加到5排，挤满十几人，不系安全带 - 新浪财经","summary":"13人遇难“致命黑车”调查：同款车违法影像曝光 座椅加到5排，挤满十几人，不系安全带&nbsp;&nbsp;新浪财经","source":"Google新闻-骑手媒体曝光","url":"https://news.google.com/rss/articles/CBMifkFVX3lxTE5TVkV3dHYzYVBvR2tTVmpsM3FEeWt4b1hPNGRSNGg2R2Rpam9NRWpIMlh4eUlKWFJnbDVHUFlmOG81V0ZUSmJ1cDdKU1hGQjYtRUxwMGt0UWJXSjVKanBWYWNmUG1BZDd2ZkQ4NlFPc05JamNtSWUxaFlsSTAtQQ?oc=5","published_at":"2026-05-30T20:42:05","category":"opinion","tag":"舆情信息","tagClass":"tag-purple","sub_tag":"opinion.media","sub_label":"媒体曝光","img":null,"grad":"linear-gradient(135deg,#1e0a2e 0%,#180820 45%,#2a0f3a 100%)"},{"title":"精致的利己主义者与一份外卖的“完美犯罪”——评杭州籍白领白嫖外卖事件 - 乌有之乡","summary":"精致的利己主义者与一份外卖的“完美犯罪”——评杭州籍白领白嫖外卖事件&nbsp;&nbsp;乌有之乡","source":"Google新闻-消费者骑手矛盾","url":"https://news.google.com/rss/articles/CBMiaEFVX3lxTE9VdFNyVDJweVU0X0M1eTBuRlVNNU9oSVFGdC1WX0tBVS1rZ0pzUmN6Vkp6bnBscm1xcllhRW5HWVlNWkNlSFcwYWZvYVdRVXd0RGtkc0h2WmJIbEFWSmZESTNFenZVTHFh?oc=5","published_at":"2026-05-30T19:26:26","category":"opinion","tag":"舆情信息","tagClass":"tag-purple","sub_tag":"opinion.consumer","sub_label":"消费者矛盾","img":null,"grad":"linear-gradient(135deg,#1e0a2e 0%,#180820 45%,#2a0f3a 100%)"},{"title":"美团启动2026年“骑手关怀大篷车”巡游，为百万骑手提供夏季综合保障 - 51ldb.com","summary":"美团启动2026年“骑手关怀大篷车”巡游，为百万骑手提供夏季综合保障&nbsp;&nbsp;51ldb.com","source":"Google新闻-美团骑手","url":"https://news.google.com/rss/articles/CBMigwFBVV95cUxQSE1CTEFZdl9GelBScWRIZEo3WWdpN2F1VU9laDlzbDRJYUtiM3UxRVctZUNoc2M2cHBGMG9uSFAzY2l6Nm4tc0pmYlF6M1UzOFhJTkhwZXk3ZXpSZE5kbVdhaERuU2UwYTFuSTBEaFNZV1plNmxrT0tGaV9iNTNWVC15MA?oc=5","published_at":"2026-05-30T18:16:00","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"从外卖小哥到法律人，日照小伙陈佃乐：愿做骑手的“撑伞人” - 海报新闻","summary":"从外卖小哥到法律人，日照小伙陈佃乐：愿做骑手的“撑伞人”&nbsp;&nbsp;海报新闻","source":"Google新闻-外卖骑手","url":"https://news.google.com/rss/articles/CBMiTkFVX3lxTE1MXzhINlFCYW5IT0R2ckl0aTh1aWZtRDhlTThhT1RGcXJZMkQ1aGJQV2VmWE82THpoZW9ZRk5SLVl0SWNHU3RHQlF2cUliZw?oc=5","published_at":"2026-05-30T18:06:00","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"骑行赋能“引领区” 聚力绘就“百千万” ——香港赛马会助力从化骑游大会，近500名骑手穿行最美旅游公路 - 紫荆网","summary":"骑行赋能“引领区” 聚力绘就“百千万” ——香港赛马会助力从化骑游大会，近500名骑手穿行最美旅游公路&nbsp;&nbsp;紫荆网","source":"Google新闻-骑手","url":"https://news.google.com/rss/articles/CBMilAFBVV95cUxQMmxIbVVuT3dvNlVnZlZjdHRPQXdzTWt1Qm9vdzdQb3hqR2JQV0VGcDRSblEzUlZkejViQm5IRkd6RXlST1lyUUFQVnFoZ2tvM01pWjJTTWtVMzA3a211QmhUYzhJRDBfaDlPOVAwWnFUMVljb1JrWXoxX3NvaHd1RUQ2Sm1YSnZndkhJeUpMeVVuT0Rs?oc=5","published_at":"2026-05-30T16:52:44","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"外卖大战后遗症凸显：订单收入骤降 骑手暴涨到2000万 行业或仅需400万人 - 驱动之家","summary":"外卖大战后遗症凸显：订单收入骤降 骑手暴涨到2000万 行业或仅需400万人&nbsp;&nbsp;驱动之家历史押韵｜外卖骑手过剩，网约车市场饱和，说明什么问题？&nbsp;&nbsp;China Digital Times中國外賣騎手超編1600萬人 網約車市場亦飽和&nbsp;&nbsp;大纪元外卖大战一周年“后遗症”初显：订单骤降，骑手却暴涨到2000万&nbsp;&nbsp;新浪财经外卖大战后1600万骑手过剩！系统性治理迫在眉睫 | 锋面评论&nbsp;&nbsp;搜狐网失業嚴重 中國外賣騎手過剩1600萬 網約車市場飽和&nbsp;&nbsp;新唐人電視台","source":"Google新闻-外卖骑手","url":"https://news.google.com/rss/articles/CBMiWEFVX3lxTFBKNXpWUFJrWGllNVgta0FjN1JzclJlU3Y5UkNiLVZvMGwtY0l5MC1qbW5SeTZjZnJHeHIyOFhmV3U3ZnowdkktM0tkazdwVXBjZ0diaVUyOWk?oc=5","published_at":"2026-05-30T15:42:00","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"外卖大战一周年“后遗症”初显：订单骤降，骑手却暴涨到2000万 - 雷峰网","summary":"外卖大战一周年“后遗症”初显：订单骤降，骑手却暴涨到2000万&nbsp;&nbsp;雷峰网","source":"Google新闻-京东外卖骑手","url":"https://news.google.com/rss/articles/CBMid0FVX3lxTFBpX1lHOTBkX3NDbWRTaVF4dm9zeVl3d3NQSWh2aTV3aXhSYXVjYkxrYXJ3akpJMnhiNm1vN0JYRTFjaUFCUnlpZVZ5NUE1WUNPU2ZfSXBXX0tNd0czSGhQcWdiZ2FrM2h4Tm5rbkh3WWVjbjk2d0kw?oc=5","published_at":"2026-05-30T15:33:00","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":"industry.market","sub_label":"竞争格局","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"大厂“亲兄弟”，也要明算账 - thepaper.cn","summary":"大厂“亲兄弟”，也要明算账&nbsp;&nbsp;thepaper.cn","source":"Google新闻-高温骑手","url":"https://news.google.com/rss/articles/CBMiXkFVX3lxTE1RT2Y0VjZaWWlKdEUyb0xsWkx3QzhNR25DejFJZlRYdWdpUFoxMVNWNTZYdWpkSGdUOENWZmhIWnlVYm1mWnJ3b0Q0eVRxVVpJZVBhQlNtUVMyalJscWc?oc=5","published_at":"2026-05-30T14:34:00","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":"industry.season","sub_label":"季节影响","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"“骑手关怀大篷车”发车！将驶入全国50城送清凉 - thepaper.cn","summary":"“骑手关怀大篷车”发车！将驶入全国50城送清凉&nbsp;&nbsp;thepaper.cn","source":"Google新闻-高温骑手","url":"https://news.google.com/rss/articles/CBMiXkFVX3lxTFBWVU5CZW9PYzlBdGJtaW4xLXJZT3lBUjVKa1BoUFd4WkhOR0VhaTJZNkFvRERTYVB4emUtQUJmR1Z4TW5ZRmxVbnVNVTBwaDVqWkNGOFJLUEp2MW5PclE?oc=5","published_at":"2026-05-30T14:30:00","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":"industry.season","sub_label":"季节影响","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"为新就业形态劳动者撑腰打气（奋进“十五五” 一线见闻·加强劳动者权益保障） - 人民日报","summary":"为新就业形态劳动者撑腰打气（奋进“十五五” 一线见闻·加强劳动者权益保障）&nbsp;&nbsp;人民日报","source":"Google新闻-新就业形态","url":"https://news.google.com/rss/articles/CBMif0FVX3lxTE9rTnBvY3p1cWdnRV9XMzBzZUxYeVFGT1hlYWdrbDFVTFkyY3lPRFJ6c1Vvd19GeGNyWDRXQUdyeUFxTi01T1ZGY3hBVXVWWnY4LWFQZUlWVV9SX3VGSnZ2OTZwc2FhNGJmNFJKSUZrZVI3T0FOUmFsTnpIQkh0cjQ?oc=5","published_at":"2026-05-30T09:14:18","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":"industry.policy","sub_label":"监管政策","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"}],"flash":[{"title":"泰州海陵：“糕粽”送祝福 “骑手”护静音 - 搜狐网","summary":"泰州海陵：“糕粽”送祝福 “骑手”护静音&nbsp;&nbsp;搜狐网","source":"Google新闻-骑手","url":"https://news.google.com/rss/articles/CBMiiAFBVV95cUxOd3RTVk9Qb3AxMHN5UlNFWmFibkJoQmtxZ2lsQ2tSS2hFUTZRV2RYQkJYVFhybGpZTVFlcDJ4QmdkYjBiQnBSazhhQjFJdWd2QjB4RGZyWWhGdGZTa2h0b0hfWEsxUENZYU92Vk5DQmJoVVFDTy1uUkNjX3pFX3BXREl0cFQ1UUJN?oc=5","published_at":"2026-06-02T11:23:08","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"关注：外卖大战后1600万骑手过剩，年轻人该进场了！ - 网易新闻客户端","summary":"关注：外卖大战后1600万骑手过剩，年轻人该进场了！&nbsp;&nbsp;网易新闻客户端","source":"Google新闻-外卖骑手","url":"https://news.google.com/rss/articles/CBMiggFBVV95cUxOTl9ISmZ3UGh3bER3TE9Kd08yaEdacXJtQ19NWS1yWFhJc3BZVXZiaHpLXzBzNC1jeUN6RVhiUmRvZVVqblc1eXBiMHoyYVVzcEgtek9JMlhGNE1ON1VxUXdOaTN6a2FxaU1SNXRBRjJtR1FPajdJWmRLY3lmUEx2WkhR?oc=5","published_at":"2026-06-02T10:42:00","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"从外卖小哥到企业战队：小铁百业大赛让台球成为全民社交新载体 - 中华网","summary":"从外卖小哥到企业战队：小铁百业大赛让台球成为全民社交新载体&nbsp;&nbsp;中华网","source":"Google新闻-美团骑手","url":"https://news.google.com/rss/articles/CBMiXkFVX3lxTE02WElESm1Rcjh0TldFZ0Y1TnpwR09QcXYwX255bnFiTVNFTHhrbWt3blA4NHB4S3pzV0ZndzU5cUF2X2VJMGZTVEMxc2U5aThSSzE4YkdqZkZUNjlVZnc?oc=5","published_at":"2026-06-02T10:38:38","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"外卖骑手人行道骑行意外撞到婴儿推车 双方发生激烈打斗 - 网易新闻客户端","summary":"外卖骑手人行道骑行意外撞到婴儿推车 双方发生激烈打斗&nbsp;&nbsp;网易新闻客户端","source":"Google新闻-外卖骑手","url":"https://news.google.com/rss/articles/CBMiU0FVX3lxTE45TjNwbUppMV9QTXlfa0pqemEzTi1Kdm5vT0FiazVmdFl6eTVpLWJJd0NYNU04QVIzYnEwLW05VlVoZ0JqeThsUVVaU1ViQm9xbk9R?oc=5","published_at":"2026-06-02T10:33:46","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":"rider.accident","sub_label":"安全事故","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"外卖骑手过剩，网约车市场饱和，说明什么问题？ - wenxuecity","summary":"外卖骑手过剩，网约车市场饱和，说明什么问题？&nbsp;&nbsp;wenxuecity","source":"Google新闻-外卖骑手","url":"https://news.google.com/rss/articles/CBMiiAFBVV95cUxOZnVtek85S3BsRndIN3Z6N3lfcnlzNk4wVUYwUGtXZ3VfWWxWM0lkVDg0MmRiTW1faWJ6em5rSUJ3ZTkxMmZZWWJYdmZBLWlyVHdBWFB6dkg2Q2NQRlNpNUNEc2dhRnVTSmJFVlJFd3VhcFpmUEg3UFhINWlpLVB5QVJnbDk4TDBz?oc=5","published_at":"2026-06-02T10:25:57","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"骑手网约车，卷疯了！ - 新浪财经","summary":"骑手网约车，卷疯了！&nbsp;&nbsp;新浪财经","source":"Google新闻-骑手社保工伤","url":"https://news.google.com/rss/articles/CBMimAFBVV95cUxPSUtnUmRlQlJMbTJkNm9UZzdPazVMRlZBNjNMd3A1RkJpMGwyMEVwRmFBTkpxZUE1YmJDQUp5VmJ4Nk05YXZSeHZDREd4OHl6UkxBUHI2aG42ZFQxWkRXanhicGNyTUNsUmpSMmN1R2NvSzRtYnJrRlBUdnJNUjBJbExocVRkdHl0Ni1FbUhMTzVmakVRMzRDRA?oc=5","published_at":"2026-06-02T10:20:58","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":"industry.labor","sub_label":"劳动法规","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"57.3公里 千名骑手竞速浙西天路 - pic.hangzhou.com.cn","summary":"57.3公里 千名骑手竞速浙西天路&nbsp;&nbsp;pic.hangzhou.com.cn","source":"Google新闻-骑手","url":"https://news.google.com/rss/articles/CBMibkFVX3lxTE9fbW9aSUNDUnJpck9GcEFEQjI4VjYxOGZuaFF4aTY2WWcyRzlRQmR0ZzRKeTUwUGNGQ1pfSW0xRGdFblBnZFlsTnRfZmVwTWtqbjBlZ1EzejFfRGxRaVRWc21meGhBdmpfZkg0X2VB?oc=5","published_at":"2026-06-02T10:10:39","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"北京这家友好医院，外卖骑手每日免收一次普通门诊挂号费 - 京报网","summary":"北京这家友好医院，外卖骑手每日免收一次普通门诊挂号费&nbsp;&nbsp;京报网","source":"Google新闻-外卖骑手","url":"https://news.google.com/rss/articles/CBMiXkFVX3lxTFBhdjc4Y2Z5X3A0VWpVRHRMQlgyOGVLU3lTQzJMTno5dThyZlFPdHVDb2JuR0wyLWxyUnhTSGh2NGhqaEhWT3NYazlsdF85dW5GeUhiaEtIUVVBSlNreEE?oc=5","published_at":"2026-06-02T09:49:00","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"精心呵护网约配送员！江西首家“骑手之家”中心店正式启用 - 凤凰网江西","summary":"精心呵护网约配送员！江西首家“骑手之家”中心店正式启用&nbsp;&nbsp;凤凰网江西","source":"Google新闻-平台经济监管","url":"https://news.google.com/rss/articles/CBMiSkFVX3lxTFBQUTlDbFBuNkl3WGFwbzFZSEoxM0FyOXpYSzExa2RlTFpVLTdrZVZEVkhrd0dNRFJrSUNNRzZlM1V6Mjk5U1VJRFJR?oc=5","published_at":"2026-06-02T07:36:04","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":"industry.policy","sub_label":"监管政策","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"平台AI识别假堂食 骑手成“移动哨兵” - 搜狐网","summary":"平台AI识别假堂食 骑手成“移动哨兵”&nbsp;&nbsp;搜狐网","source":"Google新闻-骑手","url":"https://news.google.com/rss/articles/CBMiiAFBVV95cUxNNEN6eDRUdDNjRFNuWklSWk5KSG9nNjZxd0NER1VnbXRHWFJxa200aWJGUkZHTVg0V2lXOUY5cDR4Y2MzZHhhZGRlQWJ4NUJocU1DRU8zdC1fcTRQUWhXSl9ERmI0ZF9tcW9Pc01BOXY5YXhJeXFfVDl5cE1zaWY0WDZsOGQwVmNt?oc=5","published_at":"2026-06-02T07:04:25","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"},{"title":"多伦多今起开展两轮车安全行动 外卖骑手和通勤族需留意路口风险 - frequencynews.ca","summary":"多伦多今起开展两轮车安全行动 外卖骑手和通勤族需留意路口风险&nbsp;&nbsp;frequencynews.ca","source":"Google新闻-外卖骑手","url":"https://news.google.com/rss/articles/CBMi1AJBVV95cUxPazNmMVNzRFlQb2ZaZFRRSjBQRGlodS1ycGhZaDhaXzdqMmZKM1BHVllTM1NrenZuUXk4YmdZb2JpdXBhOV96Z0ROOGVsSE81cGo2YjVTWFlFU0d5SWxHYkoyRkkyX2duR0JSRzlaNUhiUGdJdThyX3QtM1ZJUlNYNzJtbS1iOGtOMEg3T3g3RWRseFlVTE9zakc5Z2tuRE5IQkJGYm83cXd1V3NHTHlJa0VJT3FVRjdHdjlXUnhMX2VESGZibnRLZS1zS25LLW45WkYwb25RTHU4OW9pLVluSm13Q0JiWTd0U1lIVDdUdHlDalJSNWZMa3o2NndubWQySlpOb0p2aklUQ1ZERmViU01DWV9kdWZDR09JaGRyMjZpOXRILWFaWVI0VUdaaUlPb1NPOFVuMGJRWXJvTWtxSF9EMzAwclZaSHh4MzNIeVFfUXha?oc=5","published_at":"2026-06-02T01:21:44","category":"industry","tag":"行业动态","tagClass":"tag-blue","sub_tag":null,"sub_label":"","img":null,"grad":"linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"}],"hot":[]};
+
+    // 转换格式
+    const articles = (data.articles || []).map((a, i) => apiToNews(a, i));
+    const featured  = (data.featured  || []).map((a, i) => apiToNews(a, i));
+    const flash     = (data.flash     || data.articles || []).map((a, i) => apiToNews(a, i));
+
+    // featured 优先用于轮播，不足则从 articles 补
+    NEWS = featured.length ? featured : articles.slice(0, 5);
+    if(NEWS.length === 0) NEWS = articles.slice(0, 5);
+
+    // FLASH_DATA：今日快讯，按时间倒序
+    FLASH_DATA = flash.length ? flash : articles;
+    FLASH_DATA.sort((a,b) => b.ts - a.ts);
+
+    // 把全量 articles 也挂到全局供历史页面用
+    window._allArticles = articles;
+    window._dataDate = latest.date;
+    window._dataUpdatedAt = latest.updated_at;
+
+    _dataLoaded = true;
+    console.log('[data] 内嵌数据加载成功', latest.date, '共', articles.length, '条');
+  } catch(e) {
+    console.warn('[data] 加载失败，使用 fallback 数据', e.message);
+    NEWS = SAMPLE_NEWS;
+    FLASH_DATA = SAMPLE_FLASH;
+    window._allArticles = SAMPLE_NEWS.concat(SAMPLE_FLASH);
+    window._dataDate = null;
+    _dataLoaded = true;
+  }
+}
+
+// ===== 动态时间格式化 =====
+function formatTime(ts){
+  const diff = Math.floor((now - ts) / 1000);
+  const mins = Math.floor(diff / 60);
+  const hours = Math.floor(mins / 60);
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  if(mins < 60) return mins <= 1 ? '刚刚' : mins + '分钟前';
+  if(ts >= todayStart) return hours + '小时前';
+  const mm = String(ts.getMonth()+1).padStart(2,'0');
+  const dd = String(ts.getDate()).padStart(2,'0');
+  return mm + '-' + dd;
+}
+
+function formatHHMM(ts){
+  return String(ts.getHours()).padStart(2,'0') + ':' + String(ts.getMinutes()).padStart(2,'0');
+}
+
+// ===== 轮播 =====
+let currentSlide = 0;
+let carouselTimer = null;
+const SLIDE_DURATION = 3000;
+
+function renderHero(){
+  const stage = document.getElementById('heroStage');
+  const listEl = document.getElementById('heroListItems');
+  const _heroCatMap = {rider_story:{label:'骑手故事',cls:'tag-yellow'},care:{label:'骑手关怀',cls:'tag-teal'},policy:{label:'行业政策',cls:'tag-red'},report:{label:'宏观报告',cls:'tag-purple'},platform:{label:'平台动作',cls:'tag-green'},opinion:{label:'舆情信息',cls:'tag-orange'},rider:{label:'骑手故事',cls:'tag-yellow'},industry:{label:'行业政策',cls:'tag-red'}};
+
+  const slidesHtml = NEWS.map((n,i) => {
+    const _bgStyle = n.img ? 'url(' + n.img + '), ' + n.grad : n.grad;
+    const _catCls = _heroCatMap[n.category] ? _heroCatMap[n.category].cls : '';
+    const _catLabel = _heroCatMap[n.category] ? _heroCatMap[n.category].label : (n.tag || '');
+    const _urlAttr = n.url ? \` data-url="\${n.url}"\` : '';
+    const _cursorStyle = n.url ? 'cursor:pointer' : '';
+    return \`
+    <div class="hero-slide\${i===0?' active':''}" data-idx="\${i}"\${_urlAttr} style="\${_cursorStyle}" onclick="if(this.dataset.url) window.open(this.dataset.url,'_blank')">
+      <div class="hero-slide-bg" style="background:\${_bgStyle}">
+        <div class="hero-slide-content">
+          <span class="hero-source-tag \${_catCls}">\${_catLabel}</span>
+          <div class="hero-title">\${n.title}</div>
+          <div class="hero-summary">\${n.summary}</div>
+          <div class="hero-meta">
+            <div class="hero-meta-left">
+<span class="hero-source-name">\${n.source}</span>
+              <span class="hero-meta-time">\${formatTime(n.ts)}</span>
+            </div>
+            \${n.url ? '<span class="hero-read-more">阅读原文 &rsaquo;</span>' : ''}
+          </div>
+        </div>
+      </div>
+    </div>
+  \`; }).join('');
+
+  const dotsHtml = \`<div class="hero-dots" id="heroDots">\${
+    NEWS.map((_,i) => \`<button class="hero-dot-btn\${i===0?' active':''}" onclick="goSlide(\${i},true)"></button>\`).join('')
+  }</div>\`;
+
+  stage.innerHTML =
+    \`<div class="hero-slides-clip">\${slidesHtml}</div>\`
+  + \`<button class="hero-arrow prev" id="heroPrev" onclick="arrowSlide(-1)">&#8249;</button>\`
+  + \`<button class="hero-arrow next" id="heroNext" onclick="arrowSlide(1)">&#8250;</button>\`
+  + dotsHtml;
+
+  // 右侧列表：标签·来源·时间
+  listEl.innerHTML = NEWS.map((n,i) => {
+    const _hc = _heroCatMap[n.category];
+    const _htag = _hc ? \`<span class="hero-list-tag \${_hc.cls}">\${_hc.label}</span>\` : '';
+    const _listUrl = n.url || '';
+    return \`
+    <div class="hero-list-item\${i===0?' active':''}" data-idx="\${i}" onclick="goSlide(\${i},true)" onmouseenter="hoverSlide(\${i})" onmouseleave="leaveSlide()">
+      <div class="hero-list-info">
+        <div class="hero-list-title-row">
+          <div class="hero-list-text">\${n.title}</div>
+          \${_htag}
+        </div>
+        <div class="hero-list-meta">
+          <span class="hero-list-meta-source">\${n.source}</span>
+          <span class="hero-list-meta-time">\${formatTime(n.ts)}</span>
+        </div>
+      </div>
+    </div>\`;
+  }).join('');
+
+  startCarousel();
+}
+
+function arrowSlide(dir){
+  const next = (currentSlide + dir + NEWS.length) % NEWS.length;
+  goSlide(next, true);
+}
+
+function goSlide(idx, manual){
+  const slides = document.querySelectorAll('.hero-slide');
+  const items = document.querySelectorAll('.hero-list-item');
+  const dots = document.querySelectorAll('.hero-dot-btn');
+  if(!slides.length) return;
+
+  slides[currentSlide].classList.remove('active');
+  items[currentSlide] && items[currentSlide].classList.remove('active');
+  dots[currentSlide] && dots[currentSlide].classList.remove('active');
+
+  currentSlide = idx;
+
+  slides[currentSlide].classList.add('active');
+  items[currentSlide] && items[currentSlide].classList.add('active');
+  dots[currentSlide] && dots[currentSlide].classList.add('active');
+
+  if(currentSlide === NEWS.length - 1){
+    clearInterval(carouselTimer);
+    carouselTimer = null;
+    const bar = document.getElementById('heroProgressBar');
+    if(bar){ bar.style.transition='none'; bar.style.width='0%'; }
+  } else {
+    resetProgress();
+    if(manual) startCarousel();
+  }
+}
+
+let isHovering = false;
+
+function hoverSlide(idx){
+  isHovering = true;
+  clearInterval(carouselTimer);
+  carouselTimer = null;
+  const bar = document.getElementById('heroProgressBar');
+  if(bar){ bar.style.transition='none'; bar.style.width='0%'; }
+  goSlide(idx, false);
+}
+
+function leaveSlide(){
+  isHovering = false;
+  if(currentSlide < NEWS.length - 1) startCarousel();
+}
+
+function startCarousel(){
+  if(isHovering) return;
+  clearInterval(carouselTimer);
+  carouselTimer = setInterval(()=>{
+    if(isHovering) return;
+    const next = currentSlide + 1;
+    if(next >= NEWS.length){
+      clearInterval(carouselTimer);
+      carouselTimer = null;
+      return;
+    }
+    goSlide(next, false);
+  }, SLIDE_DURATION);
+  resetProgress();
+}
+
+function resetProgress(){
+  const bar = document.getElementById('heroProgressBar');
+  if(!bar) return;
+  bar.style.transition = 'none';
+  bar.style.width = '0%';
+  setTimeout(()=>{
+    bar.style.transition = 'width ' + SLIDE_DURATION + 'ms linear';
+    bar.style.width = '100%';
+  }, 30);
+}
+
+// ===== 时钟 =====
+function updateClock(){
+  const t = new Date();
+  const days = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
+  const y = t.getFullYear();
+  const m = String(t.getMonth()+1).padStart(2,'0');
+  const d = String(t.getDate()).padStart(2,'0');
+  document.getElementById('navClock').textContent = y+'/'+m+'/'+d+' '+days[t.getDay()];
+}
+updateClock();
+setInterval(updateClock, 30000);
+
+// ===== 路由 =====
+const PAGE_TITLES = {all:'更多资讯', rider_story:'骑手故事', care:'骑手关怀', policy:'行业政策', report:'宏观报告', platform:'平台动作', opinion:'舆情信息'};
+
+const ALL_NEWS = [
+  {
+    tag:'饿了么', tagClass:'tag-orange', source:'饿了么官方', category:'platform',
+    title:'饿了么骑手意外险保额大幅提升，最高赔付达60万元',
+    summary:'饿了么宣布全面升级骑手意外伤害保险方案，将最高赔付金额从原来的30万元提升至60万元，同时新增职业病保障条款，覆盖腰椎、颈椎等职业高发病种。',
+    keywords:['美团 骑手 社保 工伤','外卖 骑手 劳动保障 新规','美团 骑手关怀 近期'],
+    ts: hoursAgo(4), views:'6,218'
+  },
+  {
+    tag:'政策', tagClass:'tag-blue', source:'人社部', category:'policy',
+    title:'人社部发布新就业形态劳动者权益保障指导意见，灵活就业社保缴纳有新规',
+    summary:'人力资源和社会保障部正式发布《关于维护新就业形态劳动者劳动保障权益的指导意见》，明确平台企业对骑手等灵活就业人员的用工责任，要求平台为其提供基本社会保险参保渠道，并规范算法管理行为，禁止以算法为由侵害劳动者合法权益。',
+    keywords:['新就业形态 劳动者 权益 政策','人社部 外卖 骑手 保障','外卖 骑手 劳动保障 新规'],
+    ts: hoursAgo(5), views:'12,056'
+  },
+  {
+    tag:'顺丰', tagClass:'tag-blue', source:'顺丰同城', category:'platform',
+    title:'顺丰同城骑手薪酬调整方案出炉，北京上海基础底薪上调15%',
+    summary:'顺丰同城急送宣布新一轮薪酬调整计划，北京、上海、深圳等一线城市骑手基础底薪上调15%，同时优化峰值时段奖励机制，雨天、高温等恶劣天气补贴标准翻倍。',
+    keywords:['美团 骑手 收入 降价 争议','美团 众包 快送 骑手 变化'],
+    ts: hoursAgo(6), views:'5,341'
+  },
+  {
+    tag:'监管', tagClass:'tag-orange', source:'市场监管总局', category:'opinion',
+    title:'外卖平台算法负面清单正式落地，禁止"最严算法"压缩配送时间',
+    summary:'市场监管总局联合交通运输部发布外卖平台算法负面清单，明确禁止平台以最严算法为基准设置配送时限，要求在系统推荐时间基础上预留合理缓冲，并向骑手公示算法规则。违规平台将面临最高500万元罚款。',
+    keywords:['美团 派单算法 骑手 公平','外卖 骑手 算法 透明','平台经济 监管 新规 骑手'],
+    ts: hoursAgo(8), views:'18,920'
+  },
+  {
+    tag:'蜂鸟', tagClass:'tag-orange', source:'蜂鸟配送', category:'platform',
+    title:'蜂鸟配送积分体系全面升级，老骑手可享专属福利通道',
+    summary:'饿了么旗下蜂鸟配送宣布积分体系重大升级，新增"资深骑手"专属通道，服务满两年的骑手可优先接单、享受更高峰值补贴，并获得专属客服支持。',
+    keywords:['美团 骑手体验 舆论','美团 骑手关怀 近期'],
+    ts: hoursAgo(10), views:'4,127'
+  },
+  {
+    tag:'工会', tagClass:'tag-green', source:'工会联合会', category:'rider_story',
+    title:'多地工会启动骑手集体协商试点，薪酬标准有望纳入集体合同',
+    summary:'上海、杭州、成都三地工会联合宣布启动外卖骑手集体协商试点项目，探索将骑手最低薪酬标准、工时上限、安全保障等核心权益纳入集体合同框架，为全国推广积累经验。',
+    keywords:['美团 骑手 收入 降价 争议','外卖 骑手 劳动保障 新规','美团 骑手关怀 近期'],
+    ts: new Date(now.getTime() - 18.5*3600000), views:'9,803'
+  },
+  {
+    tag:'美团', tagClass:'tag-red', source:'美团外卖', category:'platform',
+    title:'美团全面实施骑手超时新规，取消现金扣款改积分激励机制',
+    summary:'美团外卖宣布自下月起在全国范围内推行骑手超时新规，彻底废除现金罚款制度，改为积分激励体系，骑手按时完成配送可累积正向积分兑换奖励。',
+    keywords:['美团 超时 扣罚 骑手','美团 骑手 权益 争议','美团 骑手体验 舆论'],
+    ts: hoursAgo(2), views:'8,432'
+  },
+  {
+    tag:'政策', tagClass:'tag-blue', source:'上海市人社局', category:'rider_story',
+    title:'上海率先落地骑手职业伤害保障试点，首批2万名骑手纳入',
+    summary:'上海市人社局宣布骑手职业伤害保障试点正式落地，首批2万名外卖骑手纳入保障范围，每月缴费约60元，可享受工伤同等待遇。',
+    keywords:['美团 骑手 社保 工伤','人社部 外卖 骑手 保障','地方 外卖 骑手 条例 立法'],
+    ts: hoursAgo(3.5), views:'7,640'
+  },
+  {
+    tag:'交通', tagClass:'tag-blue', source:'北京市交通委', category:'opinion',
+    title:'北京市交通委发布外卖骑手交通安全专项整治通知',
+    summary:'北京市交通委员会联合公安交管部门发布专项整治通知，重点针对骑手闯红灯、逆行、超速等违规行为，整治期间将加大路面执法力度，违规骑手将被记录在案。',
+    keywords:['外卖 骑手 交通安全 新规','电动自行车 新国标 骑手'],
+    ts: hoursAgo(0.5), views:'3,210'
+  },
+  {
+    tag:'政策', tagClass:'tag-blue', source:'交通运输部', category:'policy',
+    title:'交通运输部发布网约配送员职业技能标准征求意见稿',
+    summary:'交通运输部就《网约配送员职业技能等级认定标准》公开征求意见，拟将骑手分为初级、中级、高级三个等级，持证上岗有望获得额外补贴。',
+    keywords:['外卖 骑手 交通安全 新规','新就业形态 劳动者 权益 政策'],
+    ts: hoursAgo(7), views:'5,890'
+  },
+  {
+    tag:'舆情', tagClass:'tag-orange', source:'新媒体观察', category:'opinion',
+    title:'社交媒体热议骑手"困在系统里"现象，平台回应将优化算法',
+    summary:'近期多篇关于外卖骑手被算法压榨的深度报道在社交媒体引发广泛讨论，相关话题阅读量超过5亿次。美团、饿了么相继发表声明，承诺将在算法中增加更多人性化设计。',
+    keywords:['外卖 骑手 算法 透明','美团 骑手体验 舆论','外卖 大V 发声 热搜'],
+    ts: hoursAgo(12), views:'22,450'
+  },
+  {
+    tag:'行业', tagClass:'tag-gray', source:'中国物流联合会', category:'policy',
+    title:'即时配送市场规模突破万亿，骑手群体职业化趋势加速',
+    summary:'中国物流与采购联合会发布报告显示，2024年即时配送市场规模预计突破1.2万亿元，从业骑手超过1000万人，职业化、规范化成为行业发展主旋律。',
+    keywords:['新就业形态 劳动者 权益 政策','地方 外卖 骑手 条例 立法'],
+    ts: hoursAgo(14), views:'8,120'
+  },
+  {
+    tag:'政策', tagClass:'tag-blue', source:'国家发展改革委', category:'policy',
+    title:'发改委联合多部门出台平台经济规范发展指导意见，外卖行业迎来系统性监管框架',
+    summary:'国家发展改革委联合市场监管总局、人力资源和社会保障部、交通运输部等七部门联合印发《关于促进平台经济规范健康持续发展的指导意见》，明确要求外卖、网约车等平台建立健全骑手、司机等灵活就业人员的劳动权益保障机制，包括最低收入保障、职业伤害险强制参保、算法透明度披露、申诉渠道畅通等核心条款，并设定18个月过渡期，逾期未整改平台将面临暂停新用户注册等行政处罚措施。',
+    keywords:['平台经济 监管 新规 骑手','新就业形态 劳动者 权益 政策'],
+    ts: hoursAgo(9), views:'31,204'
+  },
+  {
+    tag:'美团', tagClass:'tag-red', source:'美团研究院', category:'rider_story',
+    title:'美团发布2024骑手职业发展报告：平均月收入6800元，超六成骑手来自农村',
+    summary:'美团研究院发布《2024年外卖骑手职业发展与生活状况调查报告》，报告基于对全国32个城市逾5万名骑手的深度访谈与数据分析，显示骑手群体平均月收入达6800元，较上年增长7.2%；超过62%的骑手来自农村地区，将外卖配送作为进城务工的主要收入来源；骑手平均日工作时长为9.3小时，其中专职骑手占比约45%，兼职骑手占比55%；在职业满意度方面，73%的受访骑手表示对收入水平"基本满意"，但对配送时限压力和交通安全风险的担忧仍是主要痛点。',
+    keywords:['美团 骑手 收入 降价 争议','美团 骑手关怀 近期'],
+    ts: hoursAgo(11), views:'15,670'
+  },
+  {
+    tag:'舆情', tagClass:'tag-orange', source:'人民日报', category:'opinion',
+    title:'人民日报评论：保障骑手权益不能只靠平台自律，立法层面亟需补位',
+    summary:'人民日报发表评论文章指出，近年来外卖骑手群体规模持续扩大，但相关劳动权益保障长期依赖平台企业自律，缺乏强制性法律约束，导致骑手在工伤认定、社保缴纳、最低工资保障等方面处于法律灰色地带。文章呼吁全国人大加快推进《新就业形态劳动者权益保障法》立法进程，明确平台企业的用工主体责任，同时建立跨部门联合执法机制，防止平台以"合作关系"规避劳动法律义务，切实保障数千万骑手群体的合法权益。',
+    keywords:['外卖 骑手 劳动保障 新规','平台经济 监管 新规 骑手'],
+    ts: hoursAgo(16), views:'44,890'
+  },
+  {
+    tag:'骑手', tagClass:'tag-yellow', source:'工人日报', category:'rider_story',
+    title:'外卖骑手日均接单超30单，职业疲劳问题引关注',
+    summary:'工人日报记者走访多地发现，外卖骑手日均接单量普遍超过30单，部分骑手每天工作超12小时，职业疲劳和安全隐患问题亟待重视，多位骑手反映长期处于高压状态，身体透支严重。',
+    ts: hoursAgo(20)
+  },
+  {
+    tag:'骑手', tagClass:'tag-yellow', source:'澎湃新闻', category:'rider_story',
+    title:'骑手送餐途中救助晕倒老人，获平台免责并奖励500元',
+    summary:'上海一名外卖骑手在送餐途中发现路边老人突然晕倒，立即停车施救并拨打120，事后平台主动为其取消超时差评并给予500元奖励，引发广泛好评，网友纷纷称赞骑手的善举。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 9, 30)
+  },
+  {
+    tag:'骑手', tagClass:'tag-yellow', source:'新京报', category:'rider_story',
+    title:'北京骑手月均收入达8500元，高于全市平均工资水平',
+    summary:'新京报记者调查显示，北京地区外卖骑手月均收入约8500元，高于全市职工平均工资水平，但骑手普遍反映收入不稳定、缺乏社会保障是主要痛点，尤其是工伤认定难题长期困扰从业者。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 14, 0)
+  },
+  {
+    tag:'骑手', tagClass:'tag-yellow', source:'中国青年报', category:'rider_story',
+    title:'调查：六成骑手希望平台提供职业技能培训机会',
+    summary:'中国青年报联合多家机构对3000名外卖骑手进行调查，结果显示超过60%的骑手希望平台提供驾驶安全、急救技能等职业培训，以提升自身综合素质和职业竞争力，同时也有助于降低配送事故率。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 10, 0)
+  },
+  {
+    tag:'骑手', tagClass:'tag-yellow', source:'第一财经', category:'rider_story',
+    title:'外卖骑手收入两极分化：头部骑手月入过万，新手不足3000',
+    summary:'第一财经调查显示，外卖骑手收入两极分化明显，接单效率高、熟悉路况的头部骑手月收入可超过1万元，而新手或兼职骑手月收入往往不足3000元，平台激励机制有待进一步优化完善。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 15, 30)
+  },
+  {
+    tag:'骑手', tagClass:'tag-yellow', source:'南方都市报', category:'rider_story',
+    title:'深圳骑手自发组建互助群，成员超2万人共享路况信息',
+    summary:'深圳外卖骑手自发组建的互助微信群已吸引超过2万名成员，群内互相分享路况、天气预警及申诉技巧，成为骑手群体重要的信息交流平台，也折射出骑手群体对组织化互助的强烈需求。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 9, 0)
+  },
+  {
+    tag:'骑手', tagClass:'tag-yellow', source:'新华社', category:'rider_story',
+    title:'骑手群体心理健康调查：四成骑手存在不同程度焦虑',
+    summary:'新华社报道，一项针对5000名外卖骑手的心理健康调查显示，约40%的骑手存在不同程度的焦虑情绪，主要来源于配送时效压力、交通安全担忧和收入不稳定性，多地已启动骑手心理援助热线。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 14, 0)
+  },
+  {
+    tag:'骑手', tagClass:'tag-yellow', source:'经济日报', category:'rider_story',
+    title:'骑手配送箱升级：新款保温箱续航8小时，重量减轻30%',
+    summary:'经济日报报道，美团外卖宣布为全国骑手更换新款智能保温配送箱，新款配送箱采用新型隔热材料，保温续航时间延长至8小时，重量较旧款减轻30%，有效降低骑手体力消耗，获骑手群体普遍好评。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 4, 10, 0)
+  },
+  {
+    tag:'骑手', tagClass:'tag-yellow', source:'人民网', category:'rider_story',
+    title:'00后骑手群体崛起：占比已达21%，更注重工作灵活性',
+    summary:'人民网报道，外卖骑手群体中00后占比已升至21%，较三年前增长8个百分点。调查显示00后骑手更看重工作时间灵活性，有37%将骑手作为副业，同时从事其他工作或学习，职业观念更加多元。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 4, 15, 0)
+  },
+  {
+    tag:'骑手', tagClass:'tag-yellow', source:'法制日报', category:'rider_story',
+    title:'骑手交通事故维权难题：平台责任认定仍存争议',
+    summary:'法制日报报道，外卖骑手在配送途中发生交通事故后的维权困境引发关注，由于劳动关系认定模糊，部分骑手在事故后难以获得平台赔偿，法律界呼吁尽快明确平台用工责任边界，保障骑手合法权益。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5, 9, 0)
+  },
+  {
+    tag:'骑手', tagClass:'tag-yellow', source:'光明日报', category:'rider_story',
+    title:'骑手驿站全国覆盖超10万个，冬季供暖设施全面升级',
+    summary:'光明日报报道，截至目前全国各类骑手驿站数量已超过10万个，覆盖主要城市核心配送区域，今年冬季各平台对驿站供暖设施进行全面升级，新增热饮供应、充电宝借用等便民服务，骑手满意度大幅提升。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5, 14, 30)
+  },
+  {
+    tag:'骑手', tagClass:'tag-yellow', source:'中国新闻周刊', category:'rider_story',
+    title:'外卖骑手平均日工作时长调查：超10小时占比达58%',
+    summary:'中国新闻周刊联合高校研究团队发布调查报告，数据显示58%的外卖骑手日均工作时长超过10小时，其中兼职骑手平均工作6.2小时，专职骑手平均工作11.8小时，健康隐患不容忽视，亟需制度性保障。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 6, 10, 0)
+  },
+  // ===== 行业动态 industry =====
+  {
+    tag:'政策', tagClass:'tag-blue', source:'国务院办公厅', category:'policy',
+    title:'国务院出台促进灵活就业高质量发展意见，外卖配送纳入重点支持范围',
+    summary:'国务院办公厅印发《关于支持灵活就业高质量发展的若干意见》，将外卖配送、网约车等新业态纳入重点支持范围，提出建立灵活就业人员职业伤害保障制度，并要求各地在2025年底前完成试点推广。',
+    ts: hoursAgo(6), views:'14,320'
+  },
+  {
+    tag:'行业', tagClass:'tag-gray', source:'艾瑞咨询', category:'policy',
+    title:'艾瑞咨询：2024年即时配送订单量同比增长28%，骑手需求持续旺盛',
+    summary:'艾瑞咨询发布《2024年中国即时配送行业研究报告》，数据显示全年即时配送订单量同比增长28%，市场规模达1.35万亿元，预计2025年骑手需求缺口将超过200万人，行业人才竞争日趋激烈。',
+    ts: hoursAgo(8), views:'9,450'
+  },
+  {
+    tag:'政策', tagClass:'tag-blue', source:'人社部', category:'policy',
+    title:'人社部启动新就业形态劳动者职业技能提升行动，骑手可免费参加培训',
+    summary:'人力资源和社会保障部宣布启动"新就业形态劳动者职业技能提升三年行动"，外卖骑手、网约车司机等群体可免费参加驾驶安全、急救技能、客户服务等培训课程，完成培训并通过考核者可获得职业技能证书。',
+    ts: hoursAgo(10), views:'7,830'
+  },
+  {
+    tag:'行业', tagClass:'tag-gray', source:'中国互联网协会', category:'policy',
+    title:'中国互联网协会发布外卖平台自律公约，算法透明度成核心议题',
+    summary:'中国互联网协会联合美团、饿了么、京东到家等主要外卖平台发布《外卖平台算法自律公约》，要求成员平台向骑手公开派单算法核心规则，建立算法申诉机制，并定期发布算法影响评估报告。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 10, 0), views:'11,200'
+  },
+  {
+    tag:'政策', tagClass:'tag-blue', source:'交通运输部', category:'policy',
+    title:'交通运输部：电动自行车新国标过渡期结束，骑手换车补贴政策落地',
+    summary:'交通运输部宣布电动自行车新国标过渡期正式结束，各地陆续启动不符合标准车辆的淘汰工作。为减轻骑手换车负担，多地政府联合外卖平台推出换车补贴政策，每辆最高补贴1500元。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 15, 0), views:'6,780'
+  },
+  {
+    tag:'行业', tagClass:'tag-gray', source:'南方财经', category:'policy',
+    title:'即时零售赛道竞争加剧，骑手配送半径从3公里扩展至5公里',
+    summary:'南方财经报道，随着即时零售业务快速扩张，各大平台纷纷将骑手配送半径从传统的3公里扩展至5公里，部分城市甚至达到8公里，骑手单均配送时间和体力消耗随之增加，引发行业对骑手权益保障的新一轮讨论。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 9, 0), views:'5,340'
+  },
+  {
+    tag:'政策', tagClass:'tag-blue', source:'市场监管总局', category:'policy',
+    title:'市场监管总局对外卖平台开展专项检查，重点核查骑手保险缴纳情况',
+    summary:'市场监管总局联合人社部对全国主要外卖平台开展专项检查，重点核查平台是否按规定为骑手缴纳职业伤害保险，检查结果将于下月公布，违规平台将被责令整改并处以罚款。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 14, 0), views:'8,910'
+  },
+  {
+    tag:'行业', tagClass:'tag-gray', source:'21世纪经济报道', category:'policy',
+    title:'外卖行业进入存量竞争时代，平台转向精细化运营提升骑手效率',
+    summary:'21世纪经济报道分析指出，外卖行业用户增速放缓，各平台开始从规模扩张转向精细化运营，通过AI调度优化、智能路径规划等技术手段提升骑手配送效率，部分平台骑手人均日接单量已提升至35单以上。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 10, 0), views:'4,560'
+  },
+  {
+    tag:'政策', tagClass:'tag-blue', source:'全国总工会', category:'policy',
+    title:'全国总工会推动外卖骑手入会，全国已有超80万骑手加入工会组织',
+    summary:'全国总工会发布数据显示，截至目前全国已有超过80万名外卖骑手加入工会组织，较去年同期增长120%。工会将为骑手提供法律援助、劳动争议调解、职业培训等服务，切实维护骑手合法权益。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 15, 0), views:'12,670'
+  },
+  {
+    tag:'行业', tagClass:'tag-gray', source:'财新网', category:'policy',
+    title:'骑手职业伤害保险全国推广提速，参保人数突破500万',
+    summary:'财新网报道，国家职业伤害保险试点范围持续扩大，目前已覆盖全国22个省份，参保骑手人数突破500万，占全国骑手总数的约50%。业内人士预计，2025年底前有望实现全国全覆盖。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 4, 9, 0), views:'9,230'
+  },
+  {
+    tag:'行业', tagClass:'tag-gray', source:'经济观察报', category:'policy',
+    title:'外卖骑手群体老龄化趋势显现，40岁以上骑手占比升至18%',
+    summary:'经济观察报调查显示，外卖骑手群体中40岁以上人员占比已升至18%，较五年前增长近一倍。这一群体普遍面临体力下降、学习新技术困难等挑战，如何保障中老年骑手的职业发展成为行业新课题。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5, 10, 0), views:'6,120'
+  },
+  // ===== 平台动作 platform =====
+  {
+    tag:'美团', tagClass:'tag-red', source:'美团外卖', category:'platform',
+    title:'美团推出"骑手成长计划"，优秀骑手可晋升站长月薪破万',
+    summary:'美团外卖宣布启动"骑手成长计划"，为表现优秀的骑手提供晋升通道，经过培训考核后可晋升为站点管理员，月薪可达1万至1.5万元。首批计划在全国100个城市选拔5000名骑手参与。',
+    ts: hoursAgo(3), views:'10,450'
+  },
+  {
+    tag:'饿了么', tagClass:'tag-orange', source:'饿了么', category:'platform',
+    title:'饿了么上线骑手健康档案系统，定期体检费用全额报销',
+    summary:'饿了么宣布为全平台骑手建立电子健康档案，并推出年度免费体检福利，体检费用由平台全额报销，重点检查项目包括心血管、腰椎、颈椎等骑手高发病种，预计覆盖超过100万名骑手。',
+    ts: hoursAgo(5), views:'7,890'
+  },
+  {
+    tag:'京东', tagClass:'tag-blue', source:'京东到家', category:'platform',
+    title:'京东到家宣布骑手底薪保障计划，淡季每月不低于4000元',
+    summary:'京东到家宣布推出骑手底薪保障计划，承诺在配送淡季每月为骑手提供不低于4000元的底薪保障，解决骑手收入波动问题。该计划将于下季度在全国50个城市率先落地。',
+    ts: hoursAgo(7), views:'6,230'
+  },
+  {
+    tag:'美团', tagClass:'tag-red', source:'美团闪购', category:'platform',
+    title:'美团闪购骑手专属APP上线，实时查看收入明细和申诉进度',
+    summary:'美团闪购推出骑手专属移动应用，骑手可通过APP实时查看每单收入明细、奖励构成、扣款记录及申诉处理进度，提升收入透明度。新APP还集成了路况预警、天气提醒等实用功能。',
+    ts: hoursAgo(9), views:'5,670'
+  },
+  {
+    tag:'顺丰', tagClass:'tag-blue', source:'顺丰同城', category:'platform',
+    title:'顺丰同城推出骑手互助基金，重大疾病最高可获10万元援助',
+    summary:'顺丰同城宣布设立骑手互助基金，由平台和骑手共同出资，骑手每月缴纳20元，平台按1:2比例配捐。基金用于援助遭遇重大疾病或意外的骑手，单次最高援助金额为10万元。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 9, 0), views:'8,340'
+  },
+  {
+    tag:'达达', tagClass:'tag-green', source:'达达集团', category:'platform',
+    title:'达达集团为骑手提供免息贷款购车服务，最高额度5000元',
+    summary:'达达集团宣布与多家金融机构合作，为旗下骑手提供免息购车贷款服务，最高额度5000元，还款期限最长12个月，帮助骑手解决购置符合新国标电动车的资金压力。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 14, 0), views:'4,890'
+  },
+  {
+    tag:'美团', tagClass:'tag-red', source:'美团外卖', category:'platform',
+    title:'美团在全国新增5000个骑手驿站，配备空调、充电桩和急救包',
+    summary:'美团外卖宣布今年将在全国新增5000个骑手驿站，新驿站统一配备空调、充电桩、饮水机和急救包，并与周边商户合作提供优惠餐饮服务，预计覆盖全国300个城市的核心配送区域。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 10, 0), views:'9,120'
+  },
+  {
+    tag:'饿了么', tagClass:'tag-orange', source:'饿了么', category:'platform',
+    title:'饿了么推出骑手子女教育补贴，每年最高资助5000元',
+    summary:'饿了么宣布推出骑手子女教育补贴计划，服务满一年的骑手子女可申请每年最高5000元的教育补贴，用于学费、教材及课外培训费用，首批计划惠及全国10万名骑手家庭。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 15, 0), views:'11,560'
+  },
+  {
+    tag:'美团', tagClass:'tag-red', source:'美团研究院', category:'platform',
+    title:'美团发布骑手安全驾驶AI系统，实时识别危险驾驶行为并预警',
+    summary:'美团研究院发布新一代骑手安全驾驶AI系统，通过手机传感器实时识别急刹车、急转弯、超速等危险驾驶行为，并向骑手发出预警提示。系统上线以来，骑手交通事故率下降了23%。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 9, 0), views:'7,450'
+  },
+  {
+    tag:'拼多多', tagClass:'tag-orange', source:'多多买菜', category:'platform',
+    title:'多多买菜宣布进军即时配送，骑手招募薪酬高于行业均值20%',
+    summary:'多多买菜宣布正式进军即时配送市场，计划在全国50个城市招募10万名骑手，起步薪酬高于行业均值20%，并提供完善的社保福利，此举被业界视为对美团、饿了么市场地位的重大挑战。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 4, 10, 0), views:'18,900'
+  },
+  {
+    tag:'美团', tagClass:'tag-red', source:'美团外卖', category:'platform',
+    title:'美团骑手节正式启动，全年最大规模骑手关怀活动覆盖300万人',
+    summary:'美团外卖宣布启动年度"骑手节"系列活动，为全国300万名骑手提供包括免费体检、技能培训、家庭探访、子女夏令营等多项福利，活动持续一个月，总投入超过5亿元。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5, 9, 0), views:'13,780'
+  },
+  // ===== 舆情信息 opinion =====
+  {
+    tag:'舆情', tagClass:'tag-orange', source:'微博热搜', category:'opinion',
+    title:'"骑手被恶意差评"话题冲上热搜，网友呼吁平台完善申诉机制',
+    summary:'一名骑手因顾客恶意差评导致当月奖金全部扣除的遭遇在微博引发广泛关注，相关话题阅读量超过3亿次。大量网友留言支持骑手，呼吁平台建立更公平的差评申诉机制，美团随后回应将优化相关规则。',
+    ts: hoursAgo(2), views:'35,670'
+  },
+  {
+    tag:'媒体', tagClass:'tag-gray', source:'央视新闻', category:'opinion',
+    title:'央视《新闻调查》聚焦骑手职业伤害保障缺失问题，引发政策层面高度关注',
+    summary:'央视《新闻调查》播出专题报道，深度调查外卖骑手在配送途中受伤后面临的维权困境，报道播出后引发政策层面高度关注，人社部随即表示将加快推进职业伤害保险全国覆盖进程。',
+    ts: hoursAgo(4), views:'28,450'
+  },
+  {
+    tag:'舆情', tagClass:'tag-orange', source:'抖音', category:'opinion',
+    title:'骑手雨中送餐视频走红，引发全网对骑手群体的关注与讨论',
+    summary:'一段骑手在暴雨中坚持送餐的视频在抖音获得超过500万点赞，评论区充满对骑手辛苦付出的感谢与敬意。该视频引发全网对骑手群体工作条件的广泛讨论，多位知名博主发文呼吁善待骑手。',
+    ts: hoursAgo(6), views:'52,340'
+  },
+  {
+    tag:'媒体', tagClass:'tag-gray', source:'财经杂志', category:'opinion',
+    title:'财经深度报道：外卖平台算法如何一步步"吃掉"骑手的休息时间',
+    summary:'财经杂志发表深度调查报道，通过对200名骑手的跟踪采访，揭示外卖平台算法如何通过持续压缩配送时限、增加单均接单量等方式，逐步侵占骑手的休息时间，报道引发业界对算法伦理的深刻反思。',
+    ts: hoursAgo(8), views:'19,870'
+  },
+  {
+    tag:'舆情', tagClass:'tag-orange', source:'知乎', category:'opinion',
+    title:'知乎高赞回答揭示骑手收入真相：到手远低于平台宣传数字',
+    summary:'知乎一篇题为"外卖骑手月入过万是真的吗"的回答获得超过10万赞，作者通过详细的收支分析揭示骑手实际到手收入远低于平台宣传数字，扣除油费、维修费、保险费后，多数骑手月净收入不足5000元。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 10, 0), views:'41,230'
+  },
+  {
+    tag:'媒体', tagClass:'tag-gray', source:'新华社', category:'opinion',
+    title:'新华社评论：平台经济发展不能以牺牲骑手权益为代价',
+    summary:'新华社发表评论文章，指出部分外卖平台在追求商业利益最大化的过程中，通过算法手段不断压缩骑手收益空间，这种发展模式不可持续，呼吁平台在商业利益与劳动者权益之间寻求合理平衡。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 15, 0), views:'23,560'
+  },
+  {
+    tag:'舆情', tagClass:'tag-orange', source:'微信公众号', category:'opinion',
+    title:'10万+爆文：一位骑手父亲的自述，戳中无数人泪点',
+    summary:'一篇题为《我送了三年外卖，只为让孩子上大学》的骑手自述文章在微信公众号引发刷屏，阅读量突破1000万，文章真实记录了一位父亲为供孩子读书而坚持送外卖的艰辛历程，引发社会对骑手群体的广泛同情与关注。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 9, 0), views:'67,890'
+  },
+  {
+    tag:'媒体', tagClass:'tag-gray', source:'第一财经', category:'opinion',
+    title:'第一财经调查：骑手投诉平台处理率不足40%，申诉机制形同虚设',
+    summary:'第一财经对1000名骑手进行调查，结果显示骑手向平台投诉的问题中，仅有不足40%得到有效处理，大量骑手反映申诉渠道不畅通、处理周期过长，部分骑手因此放弃维权，相关问题亟待改善。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 10, 0), views:'15,430'
+  },
+  {
+    tag:'舆情', tagClass:'tag-orange', source:'B站', category:'opinion',
+    title:'UP主卧底骑手30天纪录片播放破千万，真实还原骑手日常引热议',
+    summary:'B站知名UP主发布卧底外卖骑手30天的纪录片，全程记录骑手的工作日常、收入构成和生活状态，播放量突破1000万，弹幕和评论区引发大量讨论，多位媒体人转发并呼吁关注骑手群体权益。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 15, 0), views:'48,900'
+  },
+  {
+    tag:'媒体', tagClass:'tag-gray', source:'南方周末', category:'opinion',
+    title:'南方周末深度：骑手交通事故背后的系统性风险与制度缺失',
+    summary:'南方周末发表深度报道，通过对近三年骑手交通事故数据的系统分析，揭示骑手事故高发的深层原因，包括配送时限压力、道路基础设施不足、安全培训缺失等，并提出系统性改革建议。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 4, 9, 0), views:'21,340'
+  },
+  {
+    tag:'舆情', tagClass:'tag-orange', source:'人民网', category:'opinion',
+    title:'人民网舆情报告：骑手权益话题持续高热，公众关注度创三年新高',
+    summary:'人民网舆情数据中心发布报告显示，2024年骑手权益相关话题在各大平台的讨论热度创三年新高，全年相关话题总阅读量超过200亿次，公众对骑手群体的关注和同情程度持续上升，政策回应速度也明显加快。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5, 10, 0), views:'16,780'
+  },
+  // ===== 骑手关怀 care =====
+  {
+    tag:'美团', tagClass:'tag-red', source:'美团外卖', category:'care',
+    title:'美团启动"骑手关爱基金"，重大疾病最高援助20万元',
+    summary:'美团外卖宣布设立"骑手关爱基金"，由平台出资5亿元，专项用于援助遭遇重大疾病、意外伤残的骑手及其家庭，单次最高援助金额20万元，已有超过3000名骑手受益，基金将持续滚动补充。',
+    ts: hoursAgo(3), views:'9,870'
+  },
+  {
+    tag:'饿了么', tagClass:'tag-orange', source:'饿了么', category:'care',
+    title:'饿了么"骑手之家"驿站突破10万个，提供免费餐饮和医疗服务',
+    summary:'饿了么宣布"骑手之家"驿站网络规模突破10万个，覆盖全国500余座城市，驿站提供免费饮用水、充电、休息、急救包等服务，部分驿站还配备了简单医疗设备和心理咨询热线，骑手满意度达92%。',
+    ts: hoursAgo(6), views:'7,340'
+  },
+  {
+    tag:'顺丰', tagClass:'tag-blue', source:'顺丰同城', category:'care',
+    title:'顺丰同城为全国骑手配发智能头盔，内置碰撞报警系统',
+    summary:'顺丰同城宣布启动"安全护航"计划，为全国在册骑手统一配发新款智能头盔，新头盔内置碰撞传感器，发生事故时可自动向平台发送报警信号，并附带意外伤害保险，预计覆盖骑手超80万人。',
+    ts: hoursAgo(9), views:'5,620'
+  },
+  {
+    tag:'美团', tagClass:'tag-red', source:'美团外卖', category:'care',
+    title:'美团骑手心理援助热线上线，7×24小时专业心理咨询',
+    summary:'美团外卖宣布上线骑手专属心理援助热线，由专业心理咨询师提供7×24小时服务，骑手可免费拨打热线倾诉工作压力、情绪困扰等问题，首月已有超过1.2万名骑手使用该服务。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 10, 0), views:'6,450'
+  },
+  {
+    tag:'达达', tagClass:'tag-blue', source:'达达集团', category:'care',
+    title:'达达集团推出骑手子女助学金，每年最高资助1万元',
+    summary:'达达集团宣布设立骑手子女助学金项目，对在读中小学及大学的骑手子女给予资助，中小学每年最高3000元，大学每年最高1万元，首批已有500余名骑手子女获得资助，项目将长期持续。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 15, 0), views:'8,120'
+  },
+  {
+    tag:'蜂鸟', tagClass:'tag-orange', source:'蜂鸟配送', category:'care',
+    title:'蜂鸟配送推出骑手免费年度体检，重点筛查职业病',
+    summary:'饿了么旗下蜂鸟配送宣布为全平台骑手提供免费年度体检，重点检查腰椎、颈椎、心血管等骑手高发病种，体检费用由平台全额承担，预计覆盖超过100万名骑手，首批体检已在全国50城启动。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 9, 0), views:'4,890'
+  },
+  {
+    tag:'美团', tagClass:'tag-red', source:'美团研究院', category:'care',
+    title:'美团发布骑手关怀白皮书：五年累计投入超百亿元',
+    summary:'美团研究院发布《骑手关怀五年白皮书》，数据显示美团过去五年在骑手保险、驿站建设、技能培训、困难援助等方面累计投入超过100亿元，骑手满意度从2019年的71%提升至2024年的89%。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 14, 0), views:'11,230'
+  },
+  {
+    tag:'工会', tagClass:'tag-green', source:'全国总工会', category:'care',
+    title:'全总推动骑手驿站标准化建设，全国已建成超15万个',
+    summary:'全国总工会联合各大外卖平台推动骑手驿站标准化建设，截至目前全国已建成符合标准的骑手驿站超过15万个，驿站须配备饮水、充电、休息、急救等基本设施，并纳入工会服务体系统一管理。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 10, 0), views:'6,780'
+  },
+  {
+    tag:'政策', tagClass:'tag-blue', source:'人社部', category:'care',
+    title:'人社部推动骑手职业伤害保障扩围，参保人数突破600万',
+    summary:'人力资源和社会保障部发布数据显示，骑手职业伤害保障制度覆盖范围持续扩大，全国参保骑手人数已突破600万，占全国骑手总数的约60%，预计2025年底前实现全国全覆盖。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 15, 0), views:'9,340'
+  },
+  {
+    tag:'美团', tagClass:'tag-red', source:'美团外卖', category:'care',
+    title:'美团骑手节日关怀礼包发放，春节期间每人补贴500元',
+    summary:'美团外卖宣布春节期间为坚守岗位的骑手发放节日关怀礼包，包含500元现金补贴、节日礼品及专属慰问信，同时为骑手家属提供免费视频通话服务，预计惠及全国超过200万名骑手。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 4, 9, 0), views:'14,560'
+  },
+  {
+    tag:'饿了么', tagClass:'tag-orange', source:'饿了么', category:'care',
+    title:'饿了么与中国人寿合作推出骑手专属重疾险，平台补贴50%保费',
+    summary:'饿了么与中国人寿保险公司签署战略合作协议，联合推出骑手专属重大疾病保险产品，保费由平台补贴50%，骑手自付部分每月不超过30元，保障范围涵盖30种重大疾病，已向全国骑手开放投保。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 4, 14, 0), views:'7,890'
+  },
+  {
+    tag:'顺丰', tagClass:'tag-blue', source:'顺丰同城', category:'care',
+    title:'顺丰同城设立骑手互助基金，重大疾病最高援助10万元',
+    summary:'顺丰同城宣布设立骑手互助基金，由平台和骑手共同出资，骑手每月缴纳20元，平台按1:2比例配捐。基金用于援助遭遇重大疾病或意外的骑手，单次最高援助金额为10万元，已有超过50万名骑手参与。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5, 10, 0), views:'5,670'
+  },
+  // ===== 宏观报告 report =====
+  {
+    tag:'报告', tagClass:'tag-purple', source:'艾瑞咨询', category:'report',
+    title:'艾瑞咨询：2024年即时配送市场规模达1.35万亿，骑手需求缺口超200万',
+    summary:'艾瑞咨询发布《2024年中国即时配送行业研究报告》，数据显示全年即时配送订单量同比增长28%，市场规模达1.35万亿元，预计2025年骑手需求缺口将超过200万人，行业人才竞争日趋激烈，薪酬水平有望持续上涨。',
+    ts: hoursAgo(4), views:'12,340'
+  },
+  {
+    tag:'报告', tagClass:'tag-purple', source:'中国物流联合会', category:'report',
+    title:'中物联报告：即时配送日均订单突破1.2亿单，骑手职业化趋势加速',
+    summary:'中国物流与采购联合会发布2024年上半年即时配送行业报告，全国即时配送日均订单量突破1.2亿单，同比增长23%，骑手职业化、规范化成为行业发展主旋律，持证骑手比例较去年提升15个百分点。',
+    ts: hoursAgo(7), views:'9,870'
+  },
+  {
+    tag:'报告', tagClass:'tag-purple', source:'美团研究院', category:'report',
+    title:'美团发布2024骑手职业发展报告：平均月收入6800元，超六成来自农村',
+    summary:'美团研究院发布《2024年外卖骑手职业发展与生活状况调查报告》，报告基于对全国32个城市逾5万名骑手的深度访谈，显示骑手群体平均月收入达6800元，较上年增长7.2%；超过62%的骑手来自农村地区，职业满意度73%。',
+    ts: hoursAgo(10), views:'18,450'
+  },
+  {
+    tag:'报告', tagClass:'tag-purple', source:'国家统计局', category:'report',
+    title:'国家统计局：灵活就业人员突破2亿，平台经济成重要就业渠道',
+    summary:'国家统计局最新数据显示，全国灵活就业人员规模已突破2亿人，其中依托平台经济从事配送、网约车等新业态的从业者占比持续上升，外卖骑手群体规模超过1000万人，成为稳就业的重要支撑力量。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 9, 0), views:'15,670'
+  },
+  {
+    tag:'报告', tagClass:'tag-purple', source:'清华大学', category:'report',
+    title:'清华大学研究：电动骑手每单碳排放仅为燃油车1/8，即时配送成绿色物流典范',
+    summary:'清华大学发布即时配送行业碳排放研究报告，数据显示电动自行车骑手每单配送碳排放量仅为燃油汽车的八分之一，全国即时配送行业每年减少碳排放约1200万吨，相当于种植约6亿棵树的固碳效果。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 14, 0), views:'8,230'
+  },
+  {
+    tag:'报告', tagClass:'tag-purple', source:'商务部', category:'report',
+    title:'商务部：即时零售渗透率持续提升，2024年市场规模突破6000亿',
+    summary:'商务部发布即时零售行业发展报告，数据显示2024年即时零售市场规模突破6000亿元，同比增长45%，渗透率从2022年的3.2%提升至8.7%，骑手配送品类从餐饮向商超、医药、鲜花等全品类扩展。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 10, 0), views:'11,890'
+  },
+  {
+    tag:'报告', tagClass:'tag-purple', source:'中国青年报', category:'report',
+    title:'调查报告：六成骑手希望平台提供职业技能培训，安全驾驶需求最迫切',
+    summary:'中国青年报联合多家机构对3000名外卖骑手进行调查，结果显示超过60%的骑手希望平台提供驾驶安全、急救技能等职业培训，其中安全驾驶培训需求最为迫切，占比达78%，职业发展通道也是骑手最关注的议题之一。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 15, 0), views:'7,450'
+  },
+  {
+    tag:'报告', tagClass:'tag-purple', source:'新华社', category:'report',
+    title:'新华社：外卖骑手群体心理健康调查，四成骑手存在不同程度焦虑',
+    summary:'新华社报道，一项针对5000名外卖骑手的心理健康调查显示，约40%的骑手存在不同程度的焦虑情绪，主要来源于配送时效压力、交通安全担忧和收入不稳定性，多地已启动骑手心理援助热线项目。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 9, 0), views:'13,780'
+  },
+  {
+    tag:'报告', tagClass:'tag-purple', source:'财新网', category:'report',
+    title:'财新报告：骑手职业伤害保险全国推广提速，参保人数突破500万',
+    summary:'财新网报道，国家职业伤害保险试点范围持续扩大，目前已覆盖全国22个省份，参保骑手人数突破500万，占全国骑手总数的约50%。业内人士预计，2025年底前有望实现全国全覆盖，制度红利将惠及千万骑手。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 14, 0), views:'9,120'
+  },
+  {
+    tag:'报告', tagClass:'tag-purple', source:'第一财经', category:'report',
+    title:'第一财经：骑手收入两极分化报告，头部骑手月入过万，新手不足3000',
+    summary:'第一财经调查显示，外卖骑手收入两极分化明显，接单效率高、熟悉路况的头部骑手月收入可超过1万元，而新手或兼职骑手月收入往往不足3000元，平台激励机制有待进一步优化，收入分配公平性亟需关注。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 4, 10, 0), views:'16,340'
+  },
+  {
+    tag:'报告', tagClass:'tag-purple', source:'经济观察报', category:'report',
+    title:'经济观察报：骑手群体老龄化趋势显现，40岁以上占比升至18%',
+    summary:'经济观察报调查显示，外卖骑手群体中40岁以上人员占比已升至18%，较五年前增长近一倍。这一群体普遍面临体力下降、学习新技术困难等挑战，如何保障中老年骑手的职业发展成为行业新课题。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 4, 15, 0), views:'7,890'
+  },
+  {
+    tag:'报告', tagClass:'tag-purple', source:'人民网', category:'report',
+    title:'人民网舆情报告：骑手权益话题持续高热，公众关注度创三年新高',
+    summary:'人民网舆情数据中心发布报告显示，2024年骑手权益相关话题在各大平台的讨论热度创三年新高，全年相关话题总阅读量超过200亿次，公众对骑手群体的关注和同情程度持续上升，政策回应速度也明显加快。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5, 9, 0), views:'21,450'
+  },
+];
+
+// ===== 全部资讯历史数据（首页图文卡片，24条，含无图卡片） =====
+const HISTORY_NEWS = [
+  { category:'policy', source:'人社部',
+    title:'人社部发布新就业形态劳动者权益保障指导意见',
+    img:'https://picsum.photos/seed/hn1/600/338',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 10, 20) },
+  { category:'platform', source:'美团外卖',
+    title:'美团全面实施骑手超时新规，取消现金扣款',
+    img:'https://picsum.photos/seed/hn2/600/338',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 14, 5) },
+  { category:'opinion', source:'市场监管总局',
+    title:'外卖算法负面清单落地，禁止"最严算法"压缩配送时间',
+    summary:'市场监管总局联合交通运输部发布外卖平台算法负面清单，明确禁止平台以最严算法为基准设置配送时限，要求预留合理缓冲并向骑手公示算法规则。',
+    img:null,
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 16, 0) },
+  { category:'policy', source:'中国物流联合会',
+    title:'即时配送市场规模突破万亿，骑手职业化趋势加速',
+    img:'https://picsum.photos/seed/hn4/600/338',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 9, 0) },
+  { category:'rider_story', source:'工会联合会',
+    title:'多地工会启动骑手集体协商试点',
+    img:'https://picsum.photos/seed/hn5/600/338',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 11, 15) },
+  { category:'platform', source:'顺丰同城',
+    title:'顺丰同城骑手底薪上调15%，天气补贴翻倍',
+    summary:'顺丰同城急送宣布新一轮薪酬调整计划，北京、上海、深圳等一线城市骑手基础底薪上调15%，雨天、高温等恶劣天气补贴标准翻倍，新规下月起正式执行。',
+    img:null,
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 14, 30) },
+  { category:'opinion', source:'新媒体观察',
+    title:'社交媒体热议骑手"困在系统里"，平台承诺优化算法',
+    img:'https://picsum.photos/seed/hn7/600/338',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 17, 0) },
+  { category:'policy', source:'交通运输部',
+    title:'交通运输部发布网约配送员职业技能标准征求意见稿',
+    img:'https://picsum.photos/seed/hn8/600/338',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 9, 30) },
+  { category:'platform', source:'饿了么',
+    title:'饿了么骑手意外险保额提升至60万元',
+    img:'https://picsum.photos/seed/hn9/600/338',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 11, 0) },
+  { category:'rider_story', source:'上海市人社局',
+    title:'上海骑手职业伤害保障试点落地，首批2万人纳入',
+    summary:'上海市人社局宣布骑手职业伤害保障试点正式落地，首批2万名外卖骑手纳入保障范围，每月缴费约60元，可享受与工伤同等的医疗和赔付待遇。',
+    img:null,
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 14, 20) },
+  { category:'opinion', source:'北京市交通委',
+    title:'北京发布骑手交通安全专项整治通知',
+    img:'https://picsum.photos/seed/hn11/600/338',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 16, 45) },
+  { category:'policy', source:'艾瑞咨询',
+    title:'2024外卖行业报告：骑手规模突破千万，收入分化加剧',
+    img:'https://picsum.photos/seed/hn12/600/338',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 4, 10, 0) },
+  { category:'platform', source:'美团外卖',
+    title:'美团公布Q2骑手收入数据：日均活跃骑手破300万',
+    summary:'美团外卖发布2024年第二季度骑手收入报告，全国日均活跃骑手数量首次突破300万人，骑手人均月收入同比增长8.3%，一线城市骑手收入增幅最为显著。',
+    img:null,
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 4, 13, 30) },
+  { category:'rider_story', source:'蜂鸟配送',
+    title:'蜂鸟配送积分体系升级，老骑手享专属福利通道',
+    img:'https://picsum.photos/seed/hn14/600/338',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 4, 15, 0) },
+  { category:'opinion', source:'财经杂志',
+    title:'外卖骑手群体调查：七成骑手月收入不足6000元',
+    img:'https://picsum.photos/seed/hn15/600/338',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 4, 18, 0) },
+  { category:'policy', source:'国家统计局',
+    title:'灵活就业人员突破2亿，平台经济成重要就业渠道',
+    summary:'国家统计局最新数据显示，全国灵活就业人员规模已突破2亿人，其中依托平台经济从事配送、网约车等新业态的从业者占比持续上升，成为稳就业的重要支撑。',
+    img:null,
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5, 9, 0) },
+  { category:'platform', source:'京东物流',
+    title:'京东外卖骑手招募启动，底薪高于行业均值20%',
+    img:'https://picsum.photos/seed/hn17/600/338',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5, 11, 30) },
+  { category:'rider_story', source:'中国青年报',
+    title:'骑手群体年轻化：90后占比超六成，00后快速增长',
+    img:'https://picsum.photos/seed/hn18/600/338',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5, 14, 0) },
+  { category:'opinion', source:'人民日报',
+    title:'评论：平台经济须守住骑手权益底线',
+    summary:'人民日报发表评论文章指出，平台经济快速发展的同时，不能以牺牲骑手基本权益为代价，呼吁各平台切实落实劳动保障政策，让骑手群体共享发展红利。',
+    img:null,
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5, 16, 30) },
+  { category:'policy', source:'商务部',
+    title:'商务部：即时零售渗透率持续提升，配送需求旺盛',
+    img:'https://picsum.photos/seed/hn20/600/338',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 6, 10, 0) },
+  { category:'platform', source:'达达集团',
+    title:'达达骑手保障计划升级，新增心理援助服务',
+    img:'https://picsum.photos/seed/hn21/600/338',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 6, 13, 0) },
+  { category:'rider_story', source:'工人日报',
+    title:'骑手职业病调查：腰椎颈椎问题高发，亟需保障',
+    summary:'工人日报调查显示，超过六成骑手存在不同程度的腰椎、颈椎问题，长期久坐骑行和负重配送是主因。专家呼吁将相关职业病纳入骑手保险保障范围。',
+    img:null,
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 6, 15, 30) },
+  { category:'opinion', source:'新华社',
+    title:'新华社：外卖平台算法改革需真正落地见效',
+    img:'https://picsum.photos/seed/hn23/600/338',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7, 9, 0) },
+  { category:'policy', source:'中国邮政快递报',
+    title:'即时配送进入精细化运营阶段，骑手培训体系完善',
+    img:'https://picsum.photos/seed/hn24/600/338',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7, 11, 0) },
+
+  // ── 行业动态补充 ──
+  { tag:'行业', tagClass:'tag-gray', source:'中国物流与采购联合会', category:'policy',
+    title:'即时配送日均订单突破1.2亿单，骑手缺口约30万人',
+    summary:'中国物流与采购联合会发布2024年上半年即时配送行业报告，全国即时配送日均订单量突破1.2亿单，同比增长23%，但受暑期旺季影响，全国骑手缺口约30万人，部分城市配送时效有所延长。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 9, 0) },
+  { tag:'政策', tagClass:'tag-blue', source:'广东省人社厅', category:'policy',
+    title:'广东出台骑手灵活就业社保补贴政策，每月最高补贴200元',
+    summary:'广东省人力资源和社会保障厅发布通知，对主动参加社会保险的外卖骑手给予补贴，按缴费基数的20%给予补贴，每人每月最高200元，补贴期限12个月，预计惠及全省约45万名骑手。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 14, 30) },
+  { tag:'监管', tagClass:'tag-purple', source:'国家网信办', category:'policy',
+    title:'网信办发布平台算法透明度新规，外卖配送算法须向骑手公示',
+    summary:'国家互联网信息办公室发布《互联网平台算法推荐管理规定》补充细则，明确要求外卖平台向骑手公示配送时间计算规则、超时认定标准及申诉流程，违规平台将被列入重点监管名单。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 10, 0) },
+  { tag:'行业', tagClass:'tag-gray', source:'交通运输部', category:'policy',
+    title:'交通运输部：网约配送员职业技能等级认定标准年内落地',
+    summary:'交通运输部相关负责人表示，《网约配送员职业技能等级认定标准》将于年内正式落地，骑手可通过考核获得初级、中级、高级证书，持证骑手有望享受额外补贴和优先接单权益。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 15, 0) },
+  { tag:'行业', tagClass:'tag-gray', source:'人社部', category:'policy',
+    title:'人社部明确平台企业须为骑手缴纳工伤保险，过渡期至年底',
+    summary:'人力资源和社会保障部发布补充通知，明确要求各外卖平台在今年年底前完成骑手工伤保险参保工作，过渡期内可采用职业伤害保障替代方案，但保障标准不得低于工伤保险待遇。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 9, 0) },
+  { tag:'行业', tagClass:'tag-gray', source:'中华全国总工会', category:'policy',
+    title:'全总发布新就业形态劳动者入会指引，骑手可就近加入工会',
+    summary:'中华全国总工会发布《新就业形态劳动者工会入会工作指引》，明确外卖骑手、网约车司机等可就近向所在地工会申请入会，享受法律援助、困难帮扶等会员权益，全国已有超200万名骑手完成入会。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 14, 0) },
+  { tag:'行业', tagClass:'tag-gray', source:'中国青年报', category:'policy',
+    title:'即时配送行业人才争夺加剧，多平台上调新人入职奖励',
+    summary:'中国青年报报道，受骑手缺口扩大影响，美团、饿了么、顺丰同城等主要平台纷纷上调新人入职奖励，部分城市新骑手入职奖励已提升至3000元以上，行业人才争夺进入白热化阶段。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 4, 10, 0) },
+  { tag:'行业', tagClass:'tag-gray', source:'第一财经', category:'policy',
+    title:'外卖行业进入存量竞争时代，平台加速布局即时零售赛道',
+    summary:'第一财经分析指出，外卖行业用户规模增速放缓，各大平台加速向即时零售延伸，美团闪购、饿了么超市等业务增速均超过50%，骑手配送品类从餐饮向商超、医药、鲜花等全品类扩展。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 4, 15, 0) },
+  { tag:'行业', tagClass:'tag-gray', source:'经济观察报', category:'policy',
+    title:'电动自行车新国标实施，外卖骑手换车成本引关注',
+    summary:'经济观察报报道，新版电动自行车国家标准正式实施，对车速、重量、电池容量等指标提出更严格要求，部分骑手现有车辆不符合新标准，换车成本约3000至5000元，多地平台已启动补贴换车计划。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5, 9, 0) },
+  { tag:'行业', tagClass:'tag-gray', source:'南方周末', category:'policy',
+    title:'外卖骑手职业伤害保障扩围，全国参保人数突破500万',
+    summary:'南方周末报道，随着职业伤害保障制度在全国范围内推广，外卖骑手参保人数已突破500万，较年初增长120%，但仍有大量骑手游离在保障体系之外，制度覆盖面有待进一步扩大。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5, 14, 0) },
+  { tag:'行业', tagClass:'tag-gray', source:'财新网', category:'policy',
+    title:'即时配送碳排放研究：电动骑手每单碳排放仅为燃油车的1/8',
+    summary:'财新网报道，清华大学发布即时配送行业碳排放研究报告，数据显示电动自行车骑手每单配送碳排放量仅为燃油汽车的八分之一，即时配送行业已成为城市绿色物流的重要组成部分。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 6, 9, 0) },
+
+  // ── 平台动作补充 ──
+  { tag:'美团', tagClass:'tag-red', source:'美团外卖', category:'platform',
+    title:'美团外卖上线"骑手一键求助"功能，30秒内响应紧急情况',
+    summary:'美团外卖宣布在全国范围内上线"骑手一键求助"功能，骑手遭遇交通事故、突发疾病或人身安全威胁时，长按APP内专属按钮可自动拨打120并向平台发送实时位置，平台将在30秒内响应并协调处置。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 10, 0) },
+  { tag:'饿了么', tagClass:'tag-orange', source:'饿了么', category:'platform',
+    title:'饿了么"骑手之家"驿站扩至全国500城，提供免费休息充电服务',
+    summary:'饿了么宣布"骑手之家"驿站网络完成新一轮扩张，覆盖城市从200个增至500个，驿站提供免费饮用水、充电、休息、急救包等服务，部分驿站还配备了简单医疗设备和心理咨询热线。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 15, 0) },
+  { tag:'美团', tagClass:'tag-red', source:'美团外卖', category:'platform',
+    title:'美团骑手APP大更新：新增路况预警和疲劳提醒功能',
+    summary:'美团骑手APP完成重大版本更新，新增实时路况预警、连续工作疲劳提醒、一键求助等安全功能，同时优化接单界面，减少骑手操作步骤，提升配送效率，新版本已向全国骑手推送。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 9, 0) },
+  { tag:'顺丰', tagClass:'tag-blue', source:'顺丰同城', category:'platform',
+    title:'顺丰同城推出"弹性排班"系统，骑手可自主选择接单时段',
+    summary:'顺丰同城急送正式上线弹性排班系统，骑手可提前一周在APP内自主选择接单时段，系统根据历史接单数据智能推荐高峰时段，预计可提升骑手人均收入约12%，已在北上广深试点推行。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 14, 0) },
+  { tag:'饿了么', tagClass:'tag-orange', source:'饿了么', category:'platform',
+    title:'饿了么与中国人寿合作推出骑手专属重疾险，平台补贴50%保费',
+    summary:'饿了么与中国人寿保险公司签署战略合作协议，联合推出骑手专属重大疾病保险产品，保费由平台补贴50%，骑手自付部分每月不超过30元，保障范围涵盖30种重大疾病，已向全国骑手开放投保。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 10, 0) },
+  { tag:'美团', tagClass:'tag-red', source:'美团外卖', category:'platform',
+    title:'美团公布Q2骑手收入数据：全国日均活跃骑手突破300万',
+    summary:'美团外卖发布2024年第二季度骑手收入报告，数据显示全国日均活跃骑手数量首次突破300万人，骑手人均月收入同比增长8.3%，其中一线城市骑手月均收入达8200元，创历史新高。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 15, 0) },
+  { tag:'蜂鸟', tagClass:'tag-orange', source:'蜂鸟配送', category:'platform',
+    title:'蜂鸟配送推出骑手职业发展通道，优秀骑手可晋升站长',
+    summary:'饿了么旗下蜂鸟配送宣布推出骑手职业发展通道，服务满一年且评分优秀的骑手可申请晋升为小组长，服务满三年可参与站长竞聘，站长月薪可达1.5万元以上，首批已有200余名骑手完成晋升。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 4, 9, 0) },
+  { tag:'达达', tagClass:'tag-blue', source:'达达集团', category:'platform',
+    title:'达达集团上线骑手健康档案系统，定期推送健康提醒',
+    summary:'达达集团宣布为旗下骑手建立电子健康档案，系统将根据骑手工作时长、骑行里程等数据定期推送健康提醒，并联合医疗机构为骑手提供每年一次免费体检，覆盖全国约50万名骑手。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 4, 14, 0) },
+  { tag:'美团', tagClass:'tag-red', source:'美团外卖', category:'platform',
+    title:'美团宣布取消"最严算法"，配送时间预留弹性缓冲',
+    summary:'美团外卖宣布对配送算法进行重大调整，在系统推荐配送时间基础上统一预留3至5分钟弹性缓冲，同时将恶劣天气、电梯故障等不可抗力情形纳入自动免责范围，新规已在全国范围内生效。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5, 10, 0) },
+  { tag:'饿了么', tagClass:'tag-orange', source:'饿了么', category:'platform',
+    title:'饿了么骑手积分商城上线，积分可兑换装备和保险',
+    summary:'饿了么宣布骑手积分商城正式上线，骑手通过完成配送任务、参与培训等方式积累积分，可兑换头盔、雨衣、手机支架等配送装备，以及意外险、重疾险等保险产品，首月已有超30万名骑手参与兑换。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5, 15, 0) },
+  { tag:'顺丰', tagClass:'tag-blue', source:'顺丰同城', category:'platform',
+    title:'顺丰同城宣布为全国骑手统一购置新款智能头盔',
+    summary:'顺丰同城宣布启动"安全护航"计划，为全国在册骑手统一配发新款智能头盔，新头盔内置碰撞传感器，发生事故时可自动向平台发送报警信号，并附带意外伤害保险，预计覆盖骑手超80万人。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 6, 9, 0) },
+
+  // ── 舆情信息补充 ──
+  { tag:'舆情', tagClass:'tag-orange', source:'微博热搜', category:'opinion',
+    title:'"骑手被困电梯"话题冲上热搜，引发配送时效讨论',
+    summary:'一段骑手被困电梯导致超时遭差评的视频在微博引发广泛讨论，话题阅读量突破2亿。多位网友呼吁平台将电梯故障等不可抗力纳入免责范围，美团、饿了么客服相继回应称正在优化申诉机制。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 11, 0) },
+  { tag:'舆情', tagClass:'tag-orange', source:'澎湃新闻', category:'opinion',
+    title:'深度报道：外卖骑手"困在系统里"两年后，改变了多少？',
+    summary:'澎湃新闻发布深度追踪报道，回顾《外卖骑手，困在系统里》发布两年来各平台的整改情况，数据显示骑手超时申诉通过率提升了约40%，但算法压力、交通安全等核心问题仍未根本解决。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 16, 0) },
+  { tag:'舆情', tagClass:'tag-orange', source:'人民日报', category:'opinion',
+    title:'人民日报：外卖小哥是城市运转的"毛细血管"，权益保障不能缺位',
+    summary:'人民日报刊发评论文章，将外卖骑手比作城市运转的"毛细血管"，指出骑手群体为城市生活提供了不可或缺的服务，其劳动权益保障理应得到社会各界的高度重视和制度性保障。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 9, 0) },
+  { tag:'舆情', tagClass:'tag-orange', source:'新京报', category:'opinion',
+    title:'骑手遭遇恶意差评维权难，平台申诉机制亟待完善',
+    summary:'新京报调查发现，部分用户利用差评机制恶意投诉骑手，导致骑手收入受损甚至被封号，而平台申诉流程繁琐、处理周期长，骑手维权成本极高，多位骑手呼吁平台建立更公平的申诉机制。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 14, 0) },
+  { tag:'舆情', tagClass:'tag-orange', source:'央视新闻', category:'opinion',
+    title:'央视曝光外卖平台"幽灵商家"问题，骑手成受害者',
+    summary:'央视新闻报道，部分外卖平台存在"幽灵商家"现象，商家实际地址与平台标注不符，导致骑手频繁跑空单、超时，不仅损害骑手利益，也影响用户体验，相关部门已介入调查。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 10, 0) },
+  { tag:'舆情', tagClass:'tag-orange', source:'南方都市报', category:'opinion',
+    title:'外卖骑手雨天事故频发，网友呼吁平台暂停恶劣天气配送',
+    summary:'南方都市报报道，近期多地强降雨期间外卖骑手交通事故明显增多，相关话题在社交媒体引发热议，大量网友呼吁平台在极端天气下暂停或减少配送任务，将骑手安全置于效率之上。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 15, 0) },
+  { tag:'舆情', tagClass:'tag-orange', source:'财经杂志', category:'opinion',
+    title:'调查：七成消费者愿意为骑手安全多等5分钟',
+    summary:'财经杂志联合调研机构发布消费者调查报告，数据显示超过70%的受访消费者表示愿意为保障骑手安全多等5分钟，超过85%的受访者支持平台取消对骑手的现金罚款制度，消费者对骑手权益的关注度持续提升。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 4, 9, 0) },
+  { tag:'舆情', tagClass:'tag-orange', source:'中国青年报', category:'opinion',
+    title:'骑手节日无休引热议：平台应保障骑手节假日休息权',
+    summary:'中国青年报报道，春节、中秋等传统节日期间外卖骑手仍需大量上岗，相关话题引发社会广泛讨论，法律专家指出平台应依法保障骑手节假日休息权，并支付相应加班报酬，目前多地已启动专项检查。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 4, 14, 0) },
+  { tag:'舆情', tagClass:'tag-orange', source:'观察者网', category:'opinion',
+    title:'外卖平台算法"黑箱"争议持续，学界呼吁建立第三方审计机制',
+    summary:'观察者网报道，外卖平台算法透明度问题持续引发学界和媒体关注，多位学者呼吁建立独立的第三方算法审计机制，对平台配送时间计算、派单规则等核心算法进行定期审查，防止算法侵权。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5, 10, 0) },
+  { tag:'舆情', tagClass:'tag-orange', source:'新浪财经', category:'opinion',
+    title:'骑手群体消费力报告：年消费总额超3000亿，不可忽视的新兴消费群体',
+    summary:'新浪财经援引消费研究报告指出，全国外卖骑手群体年消费总额超过3000亿元，在餐饮、住房、通讯、娱乐等领域均有较强消费能力，是不可忽视的重要消费群体，多个品牌已开始针对骑手群体推出专属产品。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5, 15, 0) },
+  { tag:'舆情', tagClass:'tag-orange', source:'工人日报', category:'opinion',
+    title:'工人日报：骑手权益保障需要"组合拳"，单靠平台自律远远不够',
+    summary:'工人日报发表评论指出，保障骑手权益需要立法、监管、平台、工会、社会多方协同发力，单靠平台自律远远不够。文章建议尽快推动新就业形态劳动者权益保障专项立法，明确各方责任边界。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 6, 9, 0) },
+];
+  
+
+// 人性化日期：昨天→"昨日"，更早→"YYYY-MM-DD"
+function formatHistoryDate(ts){
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const yesterdayStart = new Date(todayStart - 86400000);
+  if(ts >= yesterdayStart && ts < todayStart) return '昨日';
+  const y = ts.getFullYear();
+  const m = String(ts.getMonth()+1).padStart(2,'0');
+  const d = String(ts.getDate()).padStart(2,'0');
+  return y + '-' + m + '-' + d;
+}
+
+const NC_CAT_MAP = {
+  rider_story: {label:'骑手故事', cls:'tag-yellow'},
+  care:        {label:'骑手关怀', cls:'tag-teal'},
+  policy:      {label:'行业政策', cls:'tag-red'},
+  report:      {label:'宏观报告', cls:'tag-purple'},
+  platform:    {label:'平台动作', cls:'tag-green'},
+  opinion:     {label:'舆情信息', cls:'tag-orange'},
+  // 旧分类兼容
+  rider:       {label:'骑手故事', cls:'tag-yellow'},
+  industry:    {label:'行业政策', cls:'tag-red'},
+};
+function renderNcTag(category){
+  const info = NC_CAT_MAP[category];
+  if(!info) return '';
+  return \`<div class="nc-tag-wrap"><span class="tag \${info.cls}">\${info.label}</span></div>\`;
+}
+
+function renderHistoryNews(){
+  const grid = document.getElementById('historyGrid');
+  if(!grid) return;
+
+  // 优先使用真实数据（loadData 填充），不足时 fallback 到静态 HISTORY_NEWS
+  const liveNews = (window._allArticles && window._allArticles.length)
+    ? window._allArticles
+    : [];
+  const baseData = liveNews.length ? liveNews : HISTORY_NEWS;
+  const visible = baseData.slice(0, 16);
+  const cards = visible.map(n => {
+    const imgHtml = n.img
+      ? \`<div class="nc-img"><img src="\${n.img}" alt="\${n.title}" loading="lazy"></div>\`
+      : '';
+    const cardCls = n.img ? 'news-card' : 'news-card nc-noimg';
+    const summaryHtml = n.img ? '' : (n.summary ? \`<div class="nc-summary">\${n.summary}</div>\` : '');
+    const _cardUrl = n.url || '';
+    return \`
+    <div class="\${cardCls}" style="\${_cardUrl ? 'cursor:pointer' : ''}" onclick="\${_cardUrl ? \`window.open('\${_cardUrl}','_blank')\` : \`showPage('all')\`}">
+      \${imgHtml}
+      <div class="nc-body">
+        <div class="nc-title">\${n.title}</div>
+        \${summaryHtml}
+        <div class="nc-meta">
+          <div class="nc-meta-left">
+            <span class="nc-source">\${n.source}</span>
+            <span class="nc-date">\${formatHistoryDate(n.ts)}</span>
+          </div>
+          \${renderNcTag(n.category)}
+        </div>
+      </div>
+    </div>\`;
+  }).join('');
+
+  grid.innerHTML = cards + \`<div class="news-grid-more" onclick="showPage('all')">查看更多资讯 &rsaquo;</div>\`;
+}
+
+// ===== 全网热点数据 =====
+const HOT_PLATFORMS = [
+  {
+    id:'weibo', name:'微博',
+    logo:\`<img src="https://favicon.im/weibo.com?larger=true" width="18" height="18" style="border-radius:3px;display:block">\`,
+    link:'https://s.weibo.com/top/summary',
+    items:[
+      {rank:1,text:'女子耳环示不到100元的耳环'},
+      {rank:2,text:'白玉兰利剑收场'},
+      {rank:3,text:'暴雨山洪来了怎么办'},
+      {rank:4,text:'现在在发展'},
+      {rank:5,text:'30个太阳过一天'},
+      {rank:6,text:'人工的优雅大了兰'},
+      {rank:7,text:'骑手薪酬调整方案出炉'},
+      {rank:8,text:'cp是一个很私人的事儿'},
+      {rank:9,text:'肖德菲地平面'},
+      {rank:10,text:'外卖骑手法负面清单落地'},
+    ]
+  },
+  {
+    id:'douyin', name:'抖音',
+    logo:\`<img src="https://favicon.im/tiktok.com?larger=true" width="18" height="18" style="border-radius:3px;display:block">\`,
+    link:'https://www.douyin.com/search/%E7%83%AD%E6%90%9C',
+    items:[
+      {rank:1,text:'中方强烈谴责巴基斯坦恐袭事件'},
+      {rank:2,text:'送全体考生高考最后100题'},
+      {rank:3,text:'中国盾构机向世界输出中国方案'},
+      {rank:4,text:'夏天的味道你感受到了吗'},
+      {rank:5,text:'重庆永川暴雨数9死11失联'},
+      {rank:6,text:'网友自制歼35航模超低空飞'},
+      {rank:7,text:'骑手月收入不足6000元调查'},
+      {rank:8,text:'8张太空全家福来了'},
+      {rank:9,text:'CBA总决赛你更看好谁'},
+      {rank:10,text:'外卖骑手取消金扣款新规'},
+    ]
+  },
+  {
+    id:'kuaishou', name:'快手',
+    logo:\`<img src="https://favicon.im/kuaishou.com?larger=true" width="18" height="18" style="border-radius:3px;display:block">\`,
+    link:'https://www.kuaishou.com/',
+    items:[
+      {rank:1,text:'德祝警犬大报告有不合格的'},
+      {rank:2,text:'广大老家卜大赛后组出来些组'},
+      {rank:3,text:'别在德平宇地划拆破坏了'},
+      {rank:4,text:'骑手兄弟互助基金成立'},
+      {rank:5,text:'这种天天上长长的小水稻'},
+      {rank:6,text:'汉些状况不是紧最大脑在求救'},
+      {rank:7,text:'外卖小哥送餐途中救人'},
+      {rank:8,text:'骑手收入真实记录vlog'},
+      {rank:9,text:'配送路线优化AI新算法'},
+      {rank:10,text:'即时配送行业招聘旺季'},
+    ]
+  },
+  {
+    id:'baidu', name:'百度',
+    logo:\`<img src="https://favicon.im/baidu.com?larger=true" width="18" height="18" style="border-radius:3px;display:block">\`,
+    link:'https://top.baidu.com/board?tab=realtime',
+    items:[
+      {rank:1,text:'中泰铁杆友谊树一棵'},
+      {rank:2,text:'新能源车尾号以马路越快停不住'},
+      {rank:3,text:'从三客客三角出门以绕省道'},
+      {rank:4,text:'骑手薪酬调整方案'},
+      {rank:5,text:'杭州道度90%山门被装修了'},
+      {rank:6,text:'外卖平台算法压单被禁止'},
+      {rank:7,text:'二手巴拉特3年款80万行迹板发发'},
+      {rank:8,text:'全网骑手的骑会让它不来遭遇'},
+      {rank:9,text:'2亿属人的甲状腺作用胃气'},
+      {rank:10,text:'即时配送市场规模突破万亿'},
+    ]
+  }
+];
+
+// 骑手相关关键词
+const RIDER_KEYWORDS = ['骑手','外卖','配送','蜂鸟','即时配送','顺丰同城','美团','饿了么','薪酬','底薪','补贴','权益','意外险'];
+function isRiderRelated(text){
+  return RIDER_KEYWORDS.some(k => text.includes(k));
+}
+function truncate(text, max){
+  return text.length > max ? text.slice(0, max) + '...' : text;
+}
+
+function renderHotUpdateTime(){
+  const el = document.getElementById('hotUpdateTime');
+  if(!el) return;
+  // 模拟：页面加载时随机 3~15 分钟前更新
+  const mins = Math.floor(Math.random() * 13) + 3;
+  el.textContent = mins + ' 分钟前更新';
+}
+
+function renderHotSection(){
+  const grid = document.getElementById('hotGrid');
+  if(!grid) return;
+  grid.innerHTML = HOT_PLATFORMS.map(p => {
+    const items = p.items.map((item,i) => {
+      const rankClass = i===0?'r1':i===1?'r2':i===2?'r3':'rn';
+      const label = truncate(item.text, 16);
+      const riderTag = isRiderRelated(item.text) ? \`<span class="hot-item-rider">骑手</span>\` : '';
+      return \`<div class="hot-item" onclick="window.open('\${p.link}','_blank')">
+        <span class="hot-rank \${rankClass}">\${item.rank}</span>
+        <span class="hot-item-text">\${label}</span>\${riderTag}
+      </div>\`;
+    }).join('');
+    return \`<div class="hot-card">
+      <div class="hot-card-header">
+        <div class="hot-card-title"><span class="hot-card-logo">\${p.logo}</span>\${p.name}热点</div>
+        <span class="hot-card-more" onclick="window.open('\${p.link}','_blank')">查看全榜 &rsaquo;</span>
+      </div>
+      \${items}
+    </div>\`;
+  }).join('');
+}
+
+function showPage(name){
+  // 清理上一个页面的事件监听（如更多资讯的scroll联动）
+  if(window._tmCleanup){ window._tmCleanup(); window._tmCleanup = null; }
+
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('on', t.dataset.page === name));
+
+  const hero = document.getElementById('heroSection');
+  const wrap = document.getElementById('homeWrap');
+  const sub  = document.getElementById('subPage');
+
+  if(name === 'home'){
+    hero.style.display = '';
+    wrap.style.display = '';
+    sub.style.display  = 'none';
+    sub.innerHTML = '';
+    return;
+  }
+
+  hero.style.display = 'none';
+  wrap.style.display = 'none';
+  sub.style.display  = 'block';
+
+  if(name === 'flash'){
+    renderFlashPage(sub);
+  } else if(name === 'all'){
+    renderCategoryPage(sub, 'all');
+  } else if(PAGE_TITLES[name]){
+    renderCategoryPage(sub, name);
+  }
+}
+
+// ===== 频道分类页面 =====
+function renderCategoryPage(container, category){
+  const title = PAGE_TITLES[category] || '全部资讯';
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+  // ---- 更多资讯：原版时光机 + 控制栏5方案切换预览 ----
+  if(category === 'all'){
+    // 合并全部数据：真实数据优先，再补静态历史数据，去重，按时间倒序
+    const liveAll = (window._allArticles && window._allArticles.length) ? window._allArticles : [];
+    const merged = [...liveAll, ...HISTORY_NEWS, ...ALL_NEWS.map(n => ({...n, img: n.img||null}))];
+    const seen = new Set();
+    const allData = merged.filter(n => {
+      if(seen.has(n.title)) return false;
+      seen.add(n.title);
+      return true;
+    }).sort((a,b) => b.ts - a.ts);
+
+    // 工具函数
+    function hhmm(ts){ const d=ts instanceof Date?ts:new Date(ts); return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); }
+    function dayKey(ts){ const d=ts instanceof Date?ts:new Date(ts); return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
+
+    // 收集有数据的日期集合
+    const dateDaySet = new Set(allData.map(n => dayKey(n.ts)));
+
+    // 当前选中日期（null=全部）
+    let selYear = now.getFullYear(), selMonth = now.getMonth();
+
+    // 分页配置
+    const ALL_PAGE_SIZE = 20;
+    let _allOffset = 0;
+    const tmCatMap = {rider_story:{label:'骑手故事',cls:'tag-yellow'},care:{label:'骑手关怀',cls:'tag-teal'},policy:{label:'行业政策',cls:'tag-red'},report:{label:'宏观报告',cls:'tag-purple'},platform:{label:'平台动作',cls:'tag-green'},opinion:{label:'舆情信息',cls:'tag-orange'},rider:{label:'骑手故事',cls:'tag-yellow'},industry:{label:'行业政策',cls:'tag-red'}};
+    const WEEK_CN = ['日','一','二','三','四','五','六'];
+
+    // 渲染新闻列表（按日期分组，支持分页追加）
+    function renderList(append){
+      const listEl = container.querySelector('#tm-list');
+      if(!listEl) return;
+      if(!allData.length){ listEl.innerHTML = '<div class="tm-empty">暂无相关内容</div>'; return; }
+
+      const slice = allData.slice(_allOffset, _allOffset + ALL_PAGE_SIZE);
+      _allOffset += slice.length;
+
+      const groups = [], groupMap = {};
+      slice.forEach(n => {
+        const d = n.ts instanceof Date ? n.ts : new Date(n.ts);
+        const key = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+        if(!groupMap[key]){
+          groupMap[key] = {key, ts: new Date(d.getFullYear(),d.getMonth(),d.getDate()), items:[]};
+          groups.push(groupMap[key]);
+        }
+        groupMap[key].items.push(n);
+      });
+
+      const html = groups.map(g => {
+        const y=g.ts.getFullYear(), m=String(g.ts.getMonth()+1).padStart(2,'0'), dd=String(g.ts.getDate()).padStart(2,'0');
+        const dateKey = g.ts.getFullYear()+'-'+(g.ts.getMonth()+1)+'-'+g.ts.getDate();
+        const weekLabel = '周' + WEEK_CN[g.ts.getDay()];
+        const isToday = g.ts.toDateString() === new Date(now.getFullYear(),now.getMonth(),now.getDate()).toDateString();
+        const isYesterday = g.ts.toDateString() === new Date(now.getFullYear(),now.getMonth(),now.getDate()-1).toDateString();
+        const relLabel = isToday ? '今天' : isYesterday ? '昨天' : '';
+const rows = g.items.map(n => {
+const cat = tmCatMap[n.category];
+const tagHtml = cat ? \`<span class="tm-row-tag \${cat.cls}">\${cat.label}</span><span class="tm-row-divider"></span>\` : \`<span class="tm-row-tag tag-empty"></span><span class="tm-row-divider" style="visibility:hidden"></span>\`;
+const _tmUrl = n.url || '';
+return \`<div class="tm-row" style="\${_tmUrl ? 'cursor:pointer' : ''}" onclick="\${_tmUrl ? \`window.open('\${_tmUrl}','_blank')\` : ''}">
+<span class="tm-row-title-wrap">\${tagHtml}<span class="tm-row-title">\${n.title}</span></span>
+<span class="tm-row-source">\${n.source||''}</span>
+<span class="tm-row-arrow">›</span>
+</div>\`;
+        }).join('');
+        const relHtml = relLabel ? \`<span class="tm-date-card-rel">\${relLabel}</span>\` : '';
+        // 追加模式：若该日期分组已存在则合并
+        if(append){
+          const existing = listEl.querySelector(\`.tm-date-group[data-date-key="\${dateKey}"]\`);
+          if(existing){
+            existing.querySelector('.tm-list').insertAdjacentHTML('beforeend', rows);
+            return null;
+          }
+        }
+        return \`<div class="tm-date-group" data-date-key="\${dateKey}">
+          <div class="tm-date-card">
+            <div class="tm-date-card-ym">\${y}.\${m}</div>
+            <div class="tm-date-card-day">\${dd}</div>
+            <div class="tm-date-card-week">\${weekLabel}</div>
+            \${relHtml}
+          </div>
+          <div class="tm-list">\${rows}</div>
+        </div>\`;
+      }).filter(h => h !== null).join('');
+
+      if(append){
+        listEl.insertAdjacentHTML('beforeend', html);
+      } else {
+        listEl.innerHTML = html;
+      }
+      _updateAllLoadMore();
+    }
+
+    // 更新「查看更多」按钮
+    function _updateAllLoadMore(){
+      const row = container.querySelector('#all-load-more-row');
+      if(!row) return;
+      const remaining = allData.length - _allOffset;
+      row.style.display = remaining <= 0 ? 'none' : 'flex';
+    }
+
+    // 渲染全部数据（重置分页后渲染首屏）
+    function applyFilter(){
+      _allOffset = 0;
+      renderList(false);
+    }
+
+    // 渲染控制栏
+    function renderCtrl(){
+      const ctrlEl = container.querySelector('#tm-ctrl');
+      if(!ctrlEl) return;
+      // 年份选项
+      const years = [...new Set(allData.map(n=>(n.ts instanceof Date?n.ts:new Date(n.ts)).getFullYear()))].sort((a,b)=>b-a);
+      const yearOpts = years.map(y=>\`<option value="\${y}"\${y===selYear?' selected':''}>\${y}年</option>\`).join('');
+      // 月份选项
+      const monthOpts = Array.from({length:12},(_,i)=>\`<option value="\${i}"\${i===selMonth?' selected':''}>\${i+1}月</option>\`).join('');
+      // 当月天数
+      const daysInMonth = new Date(selYear, selMonth+1, 0).getDate();
+      const daysHtml = Array.from({length:daysInMonth},(_,i)=>{
+        const d = i+1; const todayY=now.getFullYear(),todayM=now.getMonth(),todayD=now.getDate(); const isFuture=(selYear>todayY)||(selYear===todayY&&selMonth>todayM)||(selYear===todayY&&selMonth===todayM&&d>todayD); if(isFuture)return '';
+        const k = selYear+'-'+(selMonth+1)+'-'+d;
+const isToday = selYear===now.getFullYear() && selMonth===now.getMonth() && d===now.getDate();
+const hasNews = dateDaySet.has(k);
+let cls = 'tm-day';
+if(isToday) cls += ' today';  // 今天始终红圈
+else if(hasNews) cls += ' has-news';
+else cls += ' no-news';
+        return \`<span class="\${cls}" data-d="\${d}">\${d}</span>\`;
+      }).join('');
+      ctrlEl.innerHTML = \`
+        <div class="tm-ctrl-selects">
+          <select class="tm-ctrl-select" id="tm-year">\${yearOpts}</select>
+          <select class="tm-ctrl-select" id="tm-month">\${monthOpts}</select>
+        </div>
+        <div class="tm-ctrl-sep"></div>
+        <div class="tm-days" id="tm-days">\${daysHtml}</div>\`;
+      ctrlEl.querySelector('#tm-year').addEventListener('change', e=>{
+        selYear=+e.target.value; renderCtrl();
+        // 滚动到该年第一条新闻
+        requestAnimationFrame(()=>{
+          const first = container.querySelector('.tm-date-group');
+          if(first){ const navH=document.querySelector('.nav')?.offsetHeight||56; const ctrlH=container.querySelector('#tm-ctrl')?.offsetHeight||56; window.scrollTo({top:first.getBoundingClientRect().top+window.scrollY-navH-ctrlH-12,behavior:'smooth'}); }
+        });
+      });
+      ctrlEl.querySelector('#tm-month').addEventListener('change', e=>{
+        selMonth=+e.target.value; renderCtrl();
+        // 滚动到该月第一条新闻
+        requestAnimationFrame(()=>{
+          const key0 = selYear+'-'+(selMonth+1)+'-';
+          const target = [...container.querySelectorAll('.tm-date-group[data-date-key]')].find(el=>el.dataset.dateKey.startsWith(key0));
+          const navH=document.querySelector('.nav')?.offsetHeight||56; const ctrlH=container.querySelector('#tm-ctrl')?.offsetHeight||56;
+          if(target) window.scrollTo({top:target.getBoundingClientRect().top+window.scrollY-navH-ctrlH-12,behavior:'smooth'});
+          else window.scrollTo({top:0,behavior:'smooth'});
+        });
+      });
+      ctrlEl.querySelector('#tm-days').addEventListener('click', e=>{
+        const t=e.target.closest('.tm-day'); if(!t) return;
+        if(t.classList.contains('no-news')) return; // 无新闻的日期不响应
+        const d=+t.dataset.d;
+        // 点击日期：滚动到对应日期分组，不过滤列表
+        const key = selYear+'-'+( selMonth+1)+'-'+d;
+        const target = container.querySelector(\`.tm-date-group[data-date-key="\${key}"]\`);
+        if(target){
+          const navH = document.querySelector('.nav')?.offsetHeight || 56;
+          const ctrlH = container.querySelector('#tm-ctrl')?.offsetHeight || 56;
+          const top = target.getBoundingClientRect().top + window.scrollY - navH - ctrlH - 12;
+          window.scrollTo({top, behavior:'smooth'});
+        }
+      });
+      // 自动滚动到今天（或当前滚动联动高亮的日期）
+      requestAnimationFrame(()=>{
+        const target = ctrlEl.querySelector('.today, .scrolling');
+        if(target) target.scrollIntoView({inline:'center', block:'nearest', behavior:'smooth'});
+      });
+    }
+
+    // 构建骨架
+container.innerHTML = \`
+<div class="tm-ctrl" id="tm-ctrl"></div>
+<div class="tm-wrap" style="padding:20px 0 40px">
+<div style="max-width:1440px;margin:0 auto;padding:0 24px">
+<div id="tm-list" style="padding-left:0"></div>
+<div class="tm-load-more-row" id="all-load-more-row" style="display:none"><div class="tm-load-more-spacer"></div><div id="all-load-more" class="load-more">查看更多</div></div>
+</div>
+</div>\`;
+
+renderCtrl();
+    applyFilter();
+
+    // 绑定「查看更多」
+    container.querySelector('#all-load-more').addEventListener('click', () => {
+      renderList(true);
+    });
+
+    // 设置 --ctrl-h 供日期卡片 sticky 定位使用
+    requestAnimationFrame(()=>{
+      const navH = document.querySelector('.nav')?.offsetHeight || 56;
+      const ctrlH = container.querySelector('#tm-ctrl')?.offsetHeight || 56;
+      document.documentElement.style.setProperty('--ctrl-h', (navH + ctrlH) + 'px');
+    });
+
+    // ---- 滚动联动日期高亮 ----
+    // 当未手动选中某天（selDay===null）时，滚动时自动高亮日历上对应日期
+    let _scrollRaf = null;
+    function onTmScroll(){
+      if(_scrollRaf) return;
+      _scrollRaf = requestAnimationFrame(()=>{
+        _scrollRaf = null;
+        // 只在未手动选中日期时生效
+        // 滚动联动始终生效（日期点击不再改变selDay）
+        const listEl = container.querySelector('#tm-list');
+        if(!listEl) return;
+        const groups = container.querySelectorAll('.tm-date-group[data-date-key]');
+        if(!groups.length) return;
+        // 找到第一个顶部在视口上半部分（或刚过顶部）的分组
+        const viewMid = window.innerHeight * 0.35; // 视口35%处作为判断基准
+        let activeKey = null;
+        for(const g of groups){
+          const rect = g.getBoundingClientRect();
+          // 取第一个底部还在基准线以下的分组（即当前正在阅读的日期段）
+          if(rect.bottom > viewMid){
+            activeKey = g.dataset.dateKey;
+            break;
+          }
+        }
+        if(!activeKey) activeKey = groups[groups.length-1].dataset.dateKey;
+        // 解析 activeKey → day
+        const parts = activeKey.split('-');
+        const scrollDay = +parts[2];
+        const scrollMonth = +parts[1] - 1;
+        const scrollYear = +parts[0];
+        // 只在当前显示月份匹配时高亮
+        const ctrlEl = container.querySelector('#tm-ctrl');
+        if(!ctrlEl) return;
+        ctrlEl.querySelectorAll('.tm-day').forEach(el=>{
+          el.classList.remove('scrolling');
+        });
+        if(scrollYear === selYear && scrollMonth === selMonth){
+          const target = ctrlEl.querySelector(\`.tm-day[data-d="\${scrollDay}"]\`);
+          if(target){
+            target.classList.add('scrolling');
+            // 让日历横向滚动到该日期
+            target.scrollIntoView({inline:'center', block:'nearest', behavior:'smooth'});
+          }
+        }
+      });
+    }
+    window.addEventListener('scroll', onTmScroll);
+    // 页面切走时移除监听
+    const _origShowPage = window._tmCleanup;
+    window._tmCleanup = function(){
+      window.removeEventListener('scroll', onTmScroll);
+      if(_origShowPage) _origShowPage();
+    };
+
+    return; // 分支结束
+  }
+
+// ---- 垂类频道页：时光机时间轴样式 ----
+const liveAll2 = (window._allArticles && window._allArticles.length) ? window._allArticles : [];
+const allForCat = [...liveAll2, ...ALL_NEWS];
+const data = allForCat.filter(n => n.category === category).sort((a,b) => b.ts - a.ts);
+
+  if(!data.length){
+    container.innerHTML = \`<div class="tm-wrap"><div style="max-width:1440px;margin:0 auto;padding:0 24px"><div class="tm-empty">暂无相关内容</div></div></div>\`;
+    return;
+  }
+
+  // 工具函数
+  function _dayKey(ts){ const d=ts instanceof Date?ts:new Date(ts); return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
+
+  // 收集有数据的日期集合
+  const _dateDaySet = new Set(data.map(n => _dayKey(n.ts)));
+
+  // 当前年月（用于控制栏）
+  let _selYear = now.getFullYear(), _selMonth = now.getMonth();
+
+  // 分类标签映射
+  const _catTagMap = {
+    rider_story: {label:'骑手故事', cls:'tag-yellow'},
+    care:        {label:'骑手关怀', cls:'tag-teal'},
+    policy:      {label:'行业政策', cls:'tag-red'},
+    report:      {label:'宏观报告', cls:'tag-purple'},
+    platform:    {label:'平台动作', cls:'tag-green'},
+    opinion:     {label:'舆情信息', cls:'tag-orange'},
+    // 旧分类兼容
+    rider:       {label:'骑手故事', cls:'tag-yellow'},
+    industry:    {label:'行业政策', cls:'tag-red'},
+  };
+
+  // 分页配置
+  const CAT_PAGE_SIZE = 15;
+  let _catOffset = 0; // 当前已渲染条数
+
+  // 将 data 扁平化为单条列表（保留原始顺序），用于分页切片
+  function _buildCardHtml(n, isTop){
+    const _catInfo = _catTagMap[n.category];
+    const tagHtml = '';  // 垂类频道页不显示分类标签
+    const summary = n.summary || '';
+    const summaryShort = isTop
+      ? (summary.length > 200 ? summary.slice(0,200)+'…' : summary)
+      : (summary.length > 150 ? summary.slice(0,150)+'…' : summary);
+    const diff = now - n.ts;
+    const relT = diff < 3600000
+      ? Math.floor(diff/60000) + '分钟前'
+      : diff < 86400000
+        ? Math.floor(diff/3600000) + '小时前'
+        : (n.ts.getMonth()+1) + '月' + n.ts.getDate() + '日';
+    const metaBot = \`<div class="cat-card-meta-bot">
+      <span class="meta-source">\${n.source||''}</span><span class="meta-time">\${relT}</span>
+    </div>\`;
+const _catUrl = n.url || '';
+const _catClick = _catUrl ? \`onclick="window.open('\${_catUrl}','_blank')" style="cursor:pointer"\` : '';
+if(isTop) return \`<div class="cat-card-top" \${_catClick}>
+<div class="cat-card-body">
+<div class="cat-card-title">\${tagHtml}\${n.title}</div>
+\${summary ? \`<div class="cat-card-summary">\${summaryShort}</div>\` : ''}
+\${metaBot}
+</div>
+<span class="cat-card-arrow">›</span>
+</div>\`;
+return \`<div class="cat-card" \${_catClick}>
+<div class="cat-card-body">
+<div class="cat-card-title">\${tagHtml}\${n.title}</div>
+\${summary ? \`<div class="cat-card-summary">\${summaryShort}</div>\` : ''}
+\${metaBot}
+</div>
+<span class="cat-card-arrow">›</span>
+    </div>\`;
+  }
+
+  // 渲染新闻列表（按日期分组，时光机样式，支持分页追加）
+  function _renderList(append){
+    const listEl = container.querySelector('#cat-tm-list');
+    if(!listEl) return;
+
+    // 取当前批次数据
+    const slice = data.slice(_catOffset, _catOffset + CAT_PAGE_SIZE);
+    _catOffset += slice.length;
+
+    // 按日期分组
+    const WEEK_CN = ['日','一','二','三','四','五','六'];
+    const groups = [], groupMap = {};
+    slice.forEach(n => {
+      const d = n.ts instanceof Date ? n.ts : new Date(n.ts);
+      const key = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+      if(!groupMap[key]){
+        groupMap[key] = {key, ts: new Date(d.getFullYear(),d.getMonth(),d.getDate()), items:[]};
+        groups.push(groupMap[key]);
+      }
+      groupMap[key].items.push(n);
+    });
+
+    const isFirstBatch = !append; // 第一批：第一条为置顶大卡
+    const html = groups.map((g, gi) => {
+      const y=g.ts.getFullYear(), m=String(g.ts.getMonth()+1).padStart(2,'0'), dd=String(g.ts.getDate()).padStart(2,'0');
+      const dateKey = g.ts.getFullYear()+'-'+(g.ts.getMonth()+1)+'-'+g.ts.getDate();
+      const weekLabel = '周' + WEEK_CN[g.ts.getDay()];
+      const isToday = g.ts.toDateString() === new Date(now.getFullYear(),now.getMonth(),now.getDate()).toDateString();
+      const isYesterday = g.ts.toDateString() === new Date(now.getFullYear(),now.getMonth(),now.getDate()-1).toDateString();
+      const relLabel = isToday ? '今天' : isYesterday ? '昨天' : '';
+      const relHtml = relLabel ? \`<span class="tm-date-card-rel">\${relLabel}</span>\` : '';
+      const cards = g.items.map((n, idx) => {
+        const isTop = isFirstBatch && gi === 0 && idx === 0;
+        return _buildCardHtml(n, isTop);
+      }).join('');
+      // 追加模式：若该日期分组已存在则合并，否则新增
+      if(append){
+        const existing = listEl.querySelector(\`.tm-date-group[data-date-key="\${dateKey}"]\`);
+        if(existing){
+          existing.querySelector('div[style]').insertAdjacentHTML('beforeend', cards);
+          return null; // 已处理，不再返回 HTML
+        }
+      }
+      return \`<div class="tm-date-group" data-date-key="\${dateKey}">
+        <div class="tm-date-card">
+          <div class="tm-date-card-ym">\${y}.\${m}</div>
+          <div class="tm-date-card-day">\${dd}</div>
+          <div class="tm-date-card-week">\${weekLabel}</div>
+          \${relHtml}
+        </div>
+        <div style="flex:1;min-width:0">\${cards}</div>
+      </div>\`;
+    }).filter(h => h !== null).join('');
+
+    if(append){
+      listEl.insertAdjacentHTML('beforeend', html);
+    } else {
+      listEl.innerHTML = html;
+    }
+
+    // 更新「查看更多」按钮状态
+    _updateLoadMore();
+  }
+
+  // 更新底部按钮
+  function _updateLoadMore(){
+    const row = container.querySelector('#cat-load-more-row');
+    if(!row) return;
+    const remaining = data.length - _catOffset;
+    row.style.display = remaining <= 0 ? 'none' : 'flex';
+  }
+
+  // 渲染顶部控制栏（年月下拉 + 日期横排）
+  function _renderCtrl(){
+    const ctrlEl = container.querySelector('#cat-tm-ctrl');
+    if(!ctrlEl) return;
+    const years = [...new Set(data.map(n=>(n.ts instanceof Date?n.ts:new Date(n.ts)).getFullYear()))].sort((a,b)=>b-a);
+    const yearOpts = years.map(y=>\`<option value="\${y}"\${y===_selYear?' selected':''}>\${y}年</option>\`).join('');
+    const monthOpts = Array.from({length:12},(_,i)=>\`<option value="\${i}"\${i===_selMonth?' selected':''}>\${i+1}月</option>\`).join('');
+    const daysInMonth = new Date(_selYear, _selMonth+1, 0).getDate();
+    const daysHtml = Array.from({length:daysInMonth},(_,i)=>{
+      const d = i+1; const _todayY=now.getFullYear(),_todayM=now.getMonth(),_todayD=now.getDate(); const isFuture=(_selYear>_todayY)||(_selYear===_todayY&&_selMonth>_todayM)||(_selYear===_todayY&&_selMonth===_todayM&&d>_todayD); if(isFuture)return '';
+      const k = _selYear+'-'+(_selMonth+1)+'-'+d;
+      const isToday = _selYear===now.getFullYear() && _selMonth===now.getMonth() && d===now.getDate();
+      const hasNews = _dateDaySet.has(k);
+      let cls = 'tm-day';
+      if(isToday) cls += ' today';
+      else if(hasNews) cls += ' has-news';
+      else cls += ' no-news';
+      return \`<span class="\${cls}" data-d="\${d}">\${d}</span>\`;
+    }).join('');
+    ctrlEl.innerHTML = \`
+      <div class="tm-ctrl-selects">
+        <select class="tm-ctrl-select" id="cat-tm-year">\${yearOpts}</select>
+        <select class="tm-ctrl-select" id="cat-tm-month">\${monthOpts}</select>
+      </div>
+      <div class="tm-ctrl-sep"></div>
+      <div class="tm-days" id="cat-tm-days">\${daysHtml}</div>\`;
+
+    // 年份切换
+    ctrlEl.querySelector('#cat-tm-year').addEventListener('change', e=>{
+      _selYear=+e.target.value; _renderCtrl();
+      requestAnimationFrame(()=>{
+        const first = container.querySelector('.tm-date-group');
+        if(first){ const navH=document.querySelector('.nav')?.offsetHeight||56; const ctrlH=ctrlEl.offsetHeight||48; window.scrollTo({top:first.getBoundingClientRect().top+window.scrollY-navH-ctrlH-12,behavior:'smooth'}); }
+      });
+    });
+    // 月份切换 → 滚动到该月第一条
+    ctrlEl.querySelector('#cat-tm-month').addEventListener('change', e=>{
+      _selMonth=+e.target.value; _renderCtrl();
+      requestAnimationFrame(()=>{
+        const key0 = _selYear+'-'+(_selMonth+1)+'-';
+        const target = [...container.querySelectorAll('.tm-date-group[data-date-key]')].find(el=>el.dataset.dateKey.startsWith(key0));
+        const navH=document.querySelector('.nav')?.offsetHeight||56; const ctrlH=ctrlEl.offsetHeight||48;
+        if(target) window.scrollTo({top:target.getBoundingClientRect().top+window.scrollY-navH-ctrlH-12,behavior:'smooth'});
+        else window.scrollTo({top:0,behavior:'smooth'});
+      });
+    });
+    // 点击日期 → 滚动到对应日期分组
+    ctrlEl.querySelector('#cat-tm-days').addEventListener('click', e=>{
+      const t=e.target.closest('.tm-day'); if(!t) return;
+      if(t.classList.contains('no-news')) return;
+      const d=+t.dataset.d;
+      const key = _selYear+'-'+(_selMonth+1)+'-'+d;
+      const target = container.querySelector(\`.tm-date-group[data-date-key="\${key}"]\`);
+      if(target){
+        const navH=document.querySelector('.nav')?.offsetHeight||56;
+        const ctrlH=ctrlEl.offsetHeight||48;
+        window.scrollTo({top:target.getBoundingClientRect().top+window.scrollY-navH-ctrlH-12,behavior:'smooth'});
+      }
+    });
+    // 自动滚动到今天
+    requestAnimationFrame(()=>{
+      const target = ctrlEl.querySelector('.today, .scrolling');
+      if(target) target.scrollIntoView({inline:'center', block:'nearest', behavior:'smooth'});
+    });
+  }
+
+  // 构建骨架
+  container.innerHTML = \`
+    <div class="tm-ctrl" id="cat-tm-ctrl"></div>
+    <div class="tm-wrap" style="padding:20px 0 40px">
+      <div style="max-width:1440px;margin:0 auto;padding:0 24px">
+        <div id="cat-tm-list"></div>
+        <div class="tm-load-more-row" id="cat-load-more-row" style="display:none"><div class="tm-load-more-spacer"></div><div id="cat-load-more" class="load-more">查看更多</div></div>
+      </div>
+    </div>\`;
+
+  _renderCtrl();
+  _renderList();
+
+  // 绑定「查看更多」
+  container.querySelector('#cat-load-more').addEventListener('click', () => {
+    _renderList(true);
+  });
+
+  // 设置 --ctrl-h 供日期卡片 sticky 定位使用
+  requestAnimationFrame(()=>{
+    const navH = document.querySelector('.nav')?.offsetHeight || 56;
+    const ctrlH = container.querySelector('#cat-tm-ctrl')?.offsetHeight || 48;
+    document.documentElement.style.setProperty('--ctrl-h', (navH + ctrlH) + 'px');
+  });
+
+  // 滚动联动：自动高亮日历上对应日期
+  let _scrollRaf = null;
+  function _onCatScroll(){
+    if(_scrollRaf) return;
+    _scrollRaf = requestAnimationFrame(()=>{
+      _scrollRaf = null;
+      const groups = container.querySelectorAll('.tm-date-group[data-date-key]');
+      if(!groups.length) return;
+      const viewMid = window.innerHeight * 0.35;
+      let activeKey = null;
+      for(const g of groups){
+        const rect = g.getBoundingClientRect();
+        if(rect.bottom > viewMid){ activeKey = g.dataset.dateKey; break; }
+      }
+      if(!activeKey) activeKey = groups[groups.length-1].dataset.dateKey;
+      const parts = activeKey.split('-');
+      const scrollDay = +parts[2], scrollMonth = +parts[1]-1, scrollYear = +parts[0];
+      const ctrlEl = container.querySelector('#cat-tm-ctrl');
+      if(!ctrlEl) return;
+      ctrlEl.querySelectorAll('.tm-day').forEach(el=>el.classList.remove('scrolling'));
+      if(scrollYear===_selYear && scrollMonth===_selMonth){
+        const target = ctrlEl.querySelector(\`.tm-day[data-d="\${scrollDay}"]\`);
+        if(target){
+          target.classList.add('scrolling');
+          target.scrollIntoView({inline:'center', block:'nearest', behavior:'smooth'});
+        }
+      }
+    });
+  }
+  window.addEventListener('scroll', _onCatScroll);
+  // 页面切走时移除监听
+  const _prevCleanup = window._tmCleanup;
+  window._tmCleanup = function(){
+    window.removeEventListener('scroll', _onCatScroll);
+    if(_prevCleanup) _prevCleanup();
+  };
+}
+
+// ===== 今日快讯二级页面（澎湃时间线风格）=====
+function renderFlashPage(container){
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const todayData = FLASH_DATA.filter(n => n.ts >= todayStart).sort((a,b) => b.ts - a.ts);
+
+  const yearMonth = now.getFullYear() + '.' + String(now.getMonth()+1).padStart(2,'0');
+  const day = String(now.getDate()).padStart(2,'0');
+
+const catTagMap = {
+  rider_story: {label:'骑手故事', cls:'tag-yellow'},
+  care:        {label:'骑手关怀', cls:'tag-teal'},
+  policy:      {label:'行业政策', cls:'tag-red'},
+  report:      {label:'宏观报告', cls:'tag-purple'},
+  platform:    {label:'平台动作', cls:'tag-green'},
+  opinion:     {label:'舆情信息', cls:'tag-orange'},
+  // 旧分类兼容
+  rider:       {label:'骑手故事', cls:'tag-yellow'},
+  industry:    {label:'行业政策', cls:'tag-red'},
+};
+
+  const items = todayData.map((n) => {
+    const catInfo = catTagMap[n.category];
+    const catBadge = catInfo
+      ? \`<span class="fl-meta-sep">·</span><span class="tag-badge \${catInfo.cls}">\${catInfo.label}</span>\`
+      : '';
+    const summary100 = n.summary && n.summary.length > 100 ? n.summary.slice(0,100) + '...' : (n.summary||'');
+    const hhmm = String(n.ts.getHours()).padStart(2,'0') + ':' + String(n.ts.getMinutes()).padStart(2,'0');
+const _flUrl = n.url || '';
+    return \`
+    <div class="fl-item" style="\${_flUrl ? 'cursor:pointer' : ''}" onclick="\${_flUrl ? \`window.open('\${_flUrl}','_blank')\` : ''}">
+    <div class="fl-time-col">
+    <div class="fl-time-text">\${hhmm}</div>
+    </div>
+    <div class="fl-body">
+    <div class="fl-title">\${n.title}</div>
+    <div class="fl-summary">\${summary100}</div>
+    <div class="fl-meta">
+      <span class="fl-meta-source">\${n.source || n.tag}</span>
+          <span class="fl-meta-sep">·</span>
+          <span class="fl-meta-time">\${formatTime(n.ts)}</span>
+          \${catBadge}
+        </div>
+      </div>
+    </div>\`;
+  }).join('');
+
+  container.innerHTML = \`
+    <div class="page-wrap">
+      <div class="page-main">
+        <div class="flash-timeline-wrap">
+          <div class="fl-date-col">
+            <div class="fl-date-year-month">\${yearMonth}</div>
+            <div class="fl-date-day">\${day}</div>
+          </div>
+          <div class="fl-axis" id="flAxis"></div>
+          <div class="fl-content-col" id="flContent">
+            \${todayData.length ? items : '<div style="padding:40px 24px;color:#bbb;font-size:14px">今日暂无快讯</div>'}
+          </div>
+        </div>
+      </div>
+    </div>\`;
+
+  // 渲染后动态将圆点插入轴线，并让轴线只在第一个到最后一个圆点之间绘制
+  requestAnimationFrame(() => {
+    const axis = container.querySelector('#flAxis');
+    if(!axis) return;
+    const axisRect = axis.getBoundingClientRect();
+    const tops = [];
+    container.querySelectorAll('.fl-item').forEach(item => {
+      const timeText = item.querySelector('.fl-time-text');
+      if(!timeText) return;
+      const tr = timeText.getBoundingClientRect();
+      const top = tr.top + tr.height / 2 - axisRect.top;
+      tops.push(top);
+      const dot = document.createElement('div');
+      dot.className = 'fl-axis-dot';
+      dot.style.top = top + 'px';
+      axis.appendChild(dot);
+    });
+    // 轴线只从第一个圆点到最后一个圆点
+    if(tops.length >= 1) {
+      const first = tops[0];
+      const last = tops[tops.length - 1];
+      axis.style.top = first + 'px';
+      axis.style.height = (last - first) + 'px';
+      axis.style.alignSelf = 'auto';
+      // 圆点 top 已相对于原始 axisRect.top，需减去 first 偏移
+      axis.querySelectorAll('.fl-axis-dot').forEach((dot, i) => {
+        dot.style.top = (tops[i] - first) + 'px';
+      });
+    }
+  });
+}
+
+// ===== 初始化 =====
+(async function(){
+  // 显示加载中占位
+  const heroStage = document.getElementById('heroStage');
+  const heroListItems = document.getElementById('heroListItems');
+  if(heroStage) heroStage.innerHTML = '<div style="height:420px;display:flex;align-items:center;justify-content:center;color:#888;font-size:14px">数据加载中…</div>';
+  if(heroListItems) heroListItems.innerHTML = '';
+
+  // 加载数据
+  await loadData();
+
+  // 渲染
+  renderHero();
+  renderHistoryNews();
+  renderHotSection();
+  renderHotUpdateTime();
+
+  // 更新导航栏时间显示（如果有数据更新时间）
+  if(window._dataUpdatedAt){
+    const clockEl = document.querySelector('.nav-clock');
+    if(clockEl) clockEl.textContent = '更新于 ' + window._dataUpdatedAt;
+  }
+
+  const p = new URLSearchParams(location.search).get('page');
+  if(p) showPage(p);
+})();
+</script>
+</body>
+</html>
+`;
