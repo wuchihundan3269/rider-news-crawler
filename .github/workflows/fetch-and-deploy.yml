@@ -1,7 +1,7 @@
 name: 抓取新闻 & 部署 GitHub Pages
 
 # 数据来源方案：学城文档 2763869388
-# 三管道：热榜平台 / RSS订阅(P0-P5媒体) / 搜索引擎关键词
+# 三管道：RSS订阅(P0-P5媒体) / 搜索引擎关键词 / 热榜平台
 # 四分类：骑手新闻 / 行业动态 / 平台动作 / 舆情信息
 # 去重：同一事件保留最高优先级来源；排序：时效优先，同天按P0→P5
 
@@ -76,47 +76,31 @@ jobs:
           echo "datetime=$DATETIME" >> $GITHUB_OUTPUT
           echo "当前北京时间: $DATETIME"
 
-      # ── 5. 克隆 TrendRadar ───────────────────────────────────────
-      - name: 克隆 TrendRadar
-        env:
-          GIT_TERMINAL_PROMPT: "0"
+      # ── 5. 运行独立抓取脚本（不依赖 TrendRadar）────────────────
+      # fetch_news_v3.py 直接读取 trendradar-config/config.yaml
+      # 三管道：RSS(P0-P5媒体) + 搜索引擎关键词 + 热榜平台
+      - name: 运行新闻抓取
         run: |
-          git config --global url."https://github.com/".insteadOf "git@github.com:"
-          if [ ! -d "trendradar" ]; then
-            git clone --depth=1 --no-tags \
-              https://github.com/enpitsuLin/trendradar.git trendradar \
-              || git clone --depth=1 --no-tags \
-              https://github.com/sansan0/TrendRadar.git trendradar
+          DATE="${{ steps.date.outputs.date }}"
+          mkdir -p trendradar/output/news
+          python scripts/fetch_news_v3.py \
+            --date "$DATE" \
+            --output "trendradar/output/news/${DATE}.json" \
+            --config "trendradar-config/config.yaml" \
+            --words  "trendradar-config/frequency_words.txt"
+          echo "抓取完成，检查输出："
+          ls -la trendradar/output/news/ || true
+          if [ -f "trendradar/output/news/${DATE}.json" ]; then
+            python3 -c "
+          import json
+          with open('trendradar/output/news/$DATE.json') as f:
+              d = json.load(f)
+          print(f'总计: {d.get(\"total\", 0)} 条')
+          print(f'分类: {d.get(\"by_category\", {})}')
+          "
           fi
 
-      # ── 6. 复制配置文件 ──────────────────────────────────────────
-      # 将学城文档方案转成的配置文件注入 TrendRadar
-      # config.yaml: 三管道(热榜/RSS/搜索引擎) + P0-P5媒体优先级 + 四分类
-      # frequency_words.txt: 四分类触发词 + 全局过滤词
-      - name: 复制 TrendRadar 配置
-        run: |
-          cp trendradar-config/config.yaml trendradar/config.yaml
-          if [ -f "trendradar-config/frequency_words.txt" ]; then
-            cp trendradar-config/frequency_words.txt trendradar/frequency_words.txt
-          fi
-          echo "配置文件已注入 TrendRadar："
-          echo "  - config.yaml: $(wc -l < trendradar/config.yaml) 行"
-          echo "  - frequency_words.txt: $(wc -l < trendradar/frequency_words.txt) 行"
-
-      # ── 7. 运行 TrendRadar 抓取 ──────────────────────────────────
-      # 三管道并行：热榜平台(weibo/zhihu/baidu/toutiao/douyin)
-      #            + RSS(P0新华社/人民日报/财新/澎湃/36氪/虎嗅等)
-      #            + 搜索引擎关键词(Bing News RSS)
-      - name: 运行 TrendRadar 抓取新闻
-        working-directory: trendradar
-        run: |
-          if [ -f "requirements.txt" ]; then
-            pip install -r requirements.txt
-          fi
-          python main.py || python run.py || python trendradar.py || echo "WARNING: 抓取脚本未找到，跳过"
-        continue-on-error: true
-
-      # ── 8. 转换数据格式 ──────────────────────────────────────────
+      # ── 6. 转换数据格式 ──────────────────────────────────────────
       # transform.py 负责：
       #   - 四分类打标（rider/industry/platform/opinion）
       #   - 子分类打标（rider.positive/industry.policy 等22个子分类）
@@ -127,7 +111,6 @@ jobs:
         run: |
           DATE="${{ steps.date.outputs.date }}"
           NEWS_FILE="trendradar/output/news/${DATE}.json"
-          HOT_FILE="trendradar/output/hot/${DATE}.json"
           OUTPUT_FILE="data/${DATE}.json"
 
           if [ ! -f "$NEWS_FILE" ]; then
@@ -143,15 +126,10 @@ jobs:
           fi
 
           mkdir -p data
-          if [ -f "$HOT_FILE" ]; then
-            python scripts/transform.py --input "$NEWS_FILE" --hot "$HOT_FILE" --output "$OUTPUT_FILE"
-          else
-            python scripts/transform.py --input "$NEWS_FILE" --output "$OUTPUT_FILE"
-          fi
-
+          python scripts/transform.py --input "$NEWS_FILE" --output "$OUTPUT_FILE"
           echo "数据文件已生成: $OUTPUT_FILE"
 
-      # ── 9. 生成 latest.json 指针（含小时信息）────────────────────
+      # ── 7. 生成 latest.json 指针（含小时信息）────────────────────
       - name: 更新 latest.json
         run: |
           DATE="${{ steps.date.outputs.date }}"
@@ -180,9 +158,11 @@ jobs:
             }" | python3 -c "import json,sys; print(json.dumps(json.load(sys.stdin), ensure_ascii=False, indent=2))" > data/latest.json
             echo "latest.json 已更新 -> ${DATETIME}"
             cat data/latest.json
+          else
+            echo "WARNING: 数据文件不存在，跳过 latest.json 更新"
           fi
 
-      # ── 10. 清理7天前的旧数据 ────────────────────────────────────
+      # ── 8. 清理7天前的旧数据 ────────────────────────────────────
       - name: 清理旧数据
         run: |
           find data/ -name "*.json" -not -name "latest.json" -not -name "sample.json" \
@@ -190,7 +170,7 @@ jobs:
           echo "旧数据清理完成，当前 data/ 文件列表："
           ls -la data/ | head -20
 
-      # ── 11. 提交数据文件 ─────────────────────────────────────────
+      # ── 9. 提交数据文件 ─────────────────────────────────────────
       - name: 提交数据到仓库
         run: |
           git config user.name  "github-actions[bot]"
@@ -203,7 +183,7 @@ jobs:
             git push
           fi
 
-      # ── 12. 部署到 GitHub Pages ──────────────────────────────────
+      # ── 10. 部署到 GitHub Pages ──────────────────────────────────
       - name: 部署到 GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
