@@ -1,0 +1,14 @@
+{
+  "date": "2026-06-02",
+  "hour": "11",
+  "updated_at": "2026-06-02 11:08",
+  "file": "data/2026-06-02.json",
+  "stats": {
+    "total": 3,
+    "by_category": {
+      "opinion": 1,
+      "rider": 1,
+      "industry": 1
+    }
+  }
+}
