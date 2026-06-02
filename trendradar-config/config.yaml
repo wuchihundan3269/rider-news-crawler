@@ -1,30 +1,199 @@
 # ===== 骑手行业新闻监控 · TrendRadar 配置 =====
-# 与 frequency_words.txt 配合使用
+# 数据来源方案：学城文档 2763869388
+# 三管道：热榜平台 / RSS订阅 / 搜索引擎关键词
+# 四分类：骑手新闻(rider) / 行业动态(industry) / 平台动作(platform) / 舆情信息(opinion)
+# 媒体优先级：P0（权威官媒）→ P5（自媒体/论坛）
+# 去重规则：同一事件只保留最高优先级来源
+# 排序规则：时效优先，同一天内按 P0→P5 降序
 # 子分类 tag 由 scripts/transform.py 在转换阶段根据关键词匹配写入
 
 base:
   timezone: "Asia/Shanghai"
   language: "zh"
 
-# ===== 热榜平台（驱动"全网热点"板块）=====
+# ===== 媒体优先级体系（P0-P5）=====
+# P0: 权威官媒（新华社/人民日报/央视/政府官网）
+# P1: 主流财经媒体（财新/澎湃/第一财经/南方都市报）
+# P2: 科技商业媒体（36氪/虎嗅/晚点LatePost/界面新闻）
+# P3: 行业垂直媒体（外卖行业报/物流时代/劳工报道）
+# P4: 平台官方渠道（美团官方/饿了么官方/各平台公告）
+# P5: 自媒体/论坛（微博/知乎/抖音/微信公众号）
+media_priority:
+  dedup_strategy: "keep_highest_priority"   # 同一事件保留最高优先级来源
+  sort_strategy: "recency_first_then_priority"  # 时效优先，同天按P0→P5
+  p0:
+    - "新华社"
+    - "人民日报"
+    - "央视"
+    - "CCTV"
+    - "国务院"
+    - "人社部"
+    - "市场监管总局"
+    - "交通运输部"
+  p1:
+    - "财新"
+    - "澎湃新闻"
+    - "第一财经"
+    - "南方都市报"
+    - "经济观察报"
+    - "工人日报"
+    - "中国青年报"
+  p2:
+    - "36氪"
+    - "虎嗅"
+    - "晚点LatePost"
+    - "界面新闻"
+    - "钛媒体"
+    - "极客公园"
+    - "Tech星球"
+  p3:
+    - "外卖行业报"
+    - "物流时代"
+    - "劳工报道"
+    - "骑手之家"
+    - "即时配送"
+  p4:
+    - "美团官方"
+    - "饿了么官方"
+    - "顺丰同城官方"
+    - "达达官方"
+    - "闪送官方"
+  p5:
+    - "微博"
+    - "知乎"
+    - "抖音"
+    - "微信公众号"
+    - "今日头条"
+
+# ===== 管道一：热榜平台（驱动"全网热点"板块）=====
 crawler:
   enable_crawler: true
   platforms:
-    - weibo
-    - zhihu
-    - baidu
-    - toutiao
-    - douyin
+    - weibo      # P5 - 微博热搜（骑手舆情最敏感）
+    - zhihu      # P5 - 知乎热榜（深度讨论）
+    - baidu      # P5 - 百度热搜（大众关注度）
+    - toutiao    # P5 - 今日头条（算法推荐热点）
+    - douyin     # P5 - 抖音热点（短视频骑手内容）
   request_timeout: 30
   max_retries: 3
+  # 热榜关键词过滤：只保留与骑手/外卖相关的热榜条目
+  hot_filter_keywords:
+    - "骑手"
+    - "外卖"
+    - "配送"
+    - "美团"
+    - "饿了么"
+    - "即时配送"
+    - "新就业形态"
 
-# ===== RSS 订阅（核心数据源）=====
+# ===== 管道二：RSS 订阅（核心数据源）=====
 rss:
   enable_rss: true
   freshness_filter:
     enabled: true
     max_age_days: 3          # 每小时更新，只保留3天内的新闻
   feeds:
+
+    # ══════════════════════════════════════════════════════════════
+    # P0 权威官媒（最高优先级，去重时保留）
+    # ══════════════════════════════════════════════════════════════
+
+    - id: "p0_xinhua"
+      name: "新华社"
+      url: "https://rsshub.app/xinhua/world"
+      priority: "P0"
+      category: "auto"       # auto = 由关键词匹配决定分类
+      tag: "auto"
+
+    - id: "p0_people"
+      name: "人民日报"
+      url: "https://rsshub.app/people/politics"
+      priority: "P0"
+      category: "auto"
+      tag: "auto"
+
+    - id: "p0_gov"
+      name: "国务院政策"
+      url: "https://www.gov.cn/zhengce/rss.xml"
+      priority: "P0"
+      category: "industry"
+      tag: "industry.policy"
+
+    - id: "p0_mohrss"
+      name: "人社部公告"
+      url: "http://www.mohrss.gov.cn/rss.xml"
+      priority: "P0"
+      category: "industry"
+      tag: "industry.policy"
+
+    # ══════════════════════════════════════════════════════════════
+    # P1 主流财经媒体
+    # ══════════════════════════════════════════════════════════════
+
+    - id: "p1_caixin"
+      name: "财新网"
+      url: "https://rsshub.app/caixin/latest"
+      priority: "P1"
+      category: "auto"
+      tag: "auto"
+
+    - id: "p1_thepaper"
+      name: "澎湃新闻"
+      url: "https://rsshub.app/thepaper/channel/25950"
+      priority: "P1"
+      category: "auto"
+      tag: "auto"
+
+    - id: "p1_workercn"
+      name: "工人日报"
+      url: "https://rsshub.app/workercn/news"
+      priority: "P1"
+      category: "industry"
+      tag: "industry.labor"
+
+    - id: "p1_yicai"
+      name: "第一财经"
+      url: "https://rsshub.app/yicai/brief"
+      priority: "P1"
+      category: "auto"
+      tag: "auto"
+
+    # ══════════════════════════════════════════════════════════════
+    # P2 科技商业媒体
+    # ══════════════════════════════════════════════════════════════
+
+    - id: "p2_36kr"
+      name: "36氪"
+      url: "https://rsshub.app/36kr/news/latest"
+      priority: "P2"
+      category: "auto"
+      tag: "auto"
+
+    - id: "p2_huxiu"
+      name: "虎嗅"
+      url: "https://rsshub.app/huxiu/article"
+      priority: "P2"
+      category: "auto"
+      tag: "auto"
+
+    - id: "p2_latepost"
+      name: "晚点LatePost"
+      url: "https://rsshub.app/latepost/news"
+      priority: "P2"
+      category: "auto"
+      tag: "auto"
+
+    - id: "p2_jiemian"
+      name: "界面新闻"
+      url: "https://rsshub.app/jiemian/news/7"
+      priority: "P2"
+      category: "auto"
+      tag: "auto"
+
+    # ══════════════════════════════════════════════════════════════
+    # 管道三：搜索引擎关键词 RSS（Bing News）
+    # 按四分类 + 子分类组织，覆盖学城文档全部触发词
+    # ══════════════════════════════════════════════════════════════
 
     # ──────────────────────────────────────────────────────────────
     # 一、骑手新闻 (category=rider)
@@ -34,12 +203,14 @@ rss:
     - id: "rider_positive"
       name: "骑手好人好事"
       url: "https://www.bing.com/news/search?q=%E9%AA%91%E6%89%8B+%E5%A5%BD%E4%BA%BA%E5%A5%BD%E4%BA%8B+%E8%A7%81%E4%B9%89%E5%8B%87%E4%B8%BA&format=rss"
+      priority: "P5"
       category: "rider"
       tag: "rider.positive"
 
     - id: "rider_hero"
       name: "最美骑手"
       url: "https://www.bing.com/news/search?q=%E6%9C%80%E7%BE%8E%E9%AA%91%E6%89%8B+%E6%AD%A3%E8%83%BD%E9%87%8F+%E6%95%91%E4%BA%BA&format=rss"
+      priority: "P5"
       category: "rider"
       tag: "rider.positive"
 
@@ -47,12 +218,14 @@ rss:
     - id: "rider_accident"
       name: "骑手交通事故"
       url: "https://www.bing.com/news/search?q=%E9%AA%91%E6%89%8B+%E4%BA%A4%E9%80%9A%E4%BA%8B%E6%95%85&format=rss"
+      priority: "P5"
       category: "rider"
       tag: "rider.accident"
 
     - id: "rider_overwork"
       name: "骑手猝死过劳"
       url: "https://www.bing.com/news/search?q=%E9%AA%91%E6%89%8B+%E7%8C%9D%E6%AD%BB+%E8%BF%87%E5%8A%B3+%E5%8F%97%E4%BC%A4&format=rss"
+      priority: "P5"
       category: "rider"
       tag: "rider.accident"
 
@@ -60,12 +233,14 @@ rss:
     - id: "rider_story"
       name: "骑手生活故事"
       url: "https://www.bing.com/news/search?q=%E9%AA%91%E6%89%8B+%E6%95%85%E4%BA%8B+%E7%BB%8F%E5%8E%86+%E7%94%9F%E6%B4%BB&format=rss"
+      priority: "P5"
       category: "rider"
       tag: "rider.story"
 
     - id: "rider_student"
       name: "大学生骑手"
       url: "https://www.bing.com/news/search?q=%E9%AA%91%E6%89%8B+%E5%A4%A7%E5%AD%A6%E7%94%9F+%E9%AB%98%E5%AD%A6%E5%8E%86+%E9%80%81%E5%A4%96%E5%8D%96&format=rss"
+      priority: "P5"
       category: "rider"
       tag: "rider.story"
 
@@ -73,12 +248,14 @@ rss:
     - id: "rider_incident"
       name: "骑手群体事件"
       url: "https://www.bing.com/news/search?q=%E9%AA%91%E6%89%8B+%E7%BD%A2%E5%B7%A5+%E8%AE%A8%E8%96%AA+%E6%AC%A0%E8%96%AA+%E5%81%9C%E5%B7%A5&format=rss"
+      priority: "P5"
       category: "rider"
       tag: "rider.incident"
 
     - id: "rider_scam"
       name: "外卖站点跑路骗押金"
       url: "https://www.bing.com/news/search?q=%E5%A4%96%E5%8D%96%E7%AB%99%E7%82%B9+%E8%B7%91%E8%B7%AF+%E9%AA%97%E6%8A%BC%E9%87%91&format=rss"
+      priority: "P5"
       category: "rider"
       tag: "rider.incident"
 
@@ -86,6 +263,7 @@ rss:
     - id: "rider_career"
       name: "骑手职业发展"
       url: "https://www.bing.com/news/search?q=%E9%AA%91%E6%89%8B+%E8%81%8C%E4%B8%9A%E5%8F%91%E5%B1%95+%E8%BD%AC%E5%9E%8B+%E6%8A%80%E8%83%BD%E5%A4%A7%E8%B5%9B&format=rss"
+      priority: "P5"
       category: "rider"
       tag: "rider.career"
 
@@ -97,18 +275,21 @@ rss:
     - id: "industry_policy_national"
       name: "新就业形态政策"
       url: "https://www.bing.com/news/search?q=%E6%96%B0%E5%B0%B1%E4%B8%9A%E5%BD%A2%E6%80%81+%E5%8A%B3%E5%8A%A8%E8%80%85+%E6%9D%83%E7%9B%8A+%E6%94%BF%E7%AD%96&format=rss"
+      priority: "P5"
       category: "industry"
       tag: "industry.policy"
 
     - id: "industry_policy_mhrss"
       name: "人社部骑手指导意见"
       url: "https://www.bing.com/news/search?q=%E4%BA%BA%E7%A4%BE%E9%83%A8+%E9%AA%91%E6%89%8B+%E6%8C%87%E5%AF%BC%E6%84%8F%E8%A7%81+%E5%B9%B3%E5%8F%B0%E7%BB%8F%E6%B5%8E+%E7%9B%91%E7%AE%A1&format=rss"
+      priority: "P5"
       category: "industry"
       tag: "industry.policy"
 
     - id: "industry_policy_npc"
       name: "骑手两会提案"
       url: "https://www.bing.com/news/search?q=%E9%AA%91%E6%89%8B+%E4%B8%A4%E4%BC%9A+%E6%8F%90%E6%A1%88+%E5%BB%BA%E8%AE%AE&format=rss"
+      priority: "P5"
       category: "industry"
       tag: "industry.policy"
 
@@ -116,12 +297,14 @@ rss:
     - id: "industry_labor_insurance"
       name: "骑手社保工伤保障"
       url: "https://www.bing.com/news/search?q=%E9%AA%91%E6%89%8B+%E7%A4%BE%E4%BF%9D+%E8%81%8C%E4%B8%9A%E4%BC%A4%E5%AE%B3+%E4%BF%9D%E9%9A%9C+%E8%AF%95%E7%82%B9&format=rss"
+      priority: "P5"
       category: "industry"
       tag: "industry.labor"
 
     - id: "industry_labor_law"
       name: "灵活就业劳动关系立法"
       url: "https://www.bing.com/news/search?q=%E7%81%B5%E6%B4%BB%E5%B0%B1%E4%B8%9A+%E5%8A%B3%E5%8A%A8%E5%85%B3%E7%B3%BB+%E7%AB%8B%E6%B3%95+%E6%96%B0%E5%B0%B1%E4%B8%9A%E5%BD%A2%E6%80%81+%E5%B7%A5%E4%BC%9A&format=rss"
+      priority: "P5"
       category: "industry"
       tag: "industry.labor"
 
@@ -129,12 +312,14 @@ rss:
     - id: "industry_std_ebike"
       name: "电动自行车新国标"
       url: "https://www.bing.com/news/search?q=%E7%94%B5%E5%8A%A8%E8%87%AA%E8%A1%8C%E8%BD%A6+%E6%96%B0%E5%9B%BD%E6%A0%87+%E5%A4%96%E5%8D%96&format=rss"
+      priority: "P5"
       category: "industry"
       tag: "industry.std"
 
     - id: "industry_std_service"
       name: "即时配送服务规范"
       url: "https://www.bing.com/news/search?q=%E5%8D%B3%E6%97%B6%E9%85%8D%E9%80%81+%E6%9C%8D%E5%8A%A1%E8%A7%84%E8%8C%83+%E8%A1%8C%E4%B8%9A%E6%A0%87%E5%87%86&format=rss"
+      priority: "P5"
       category: "industry"
       tag: "industry.std"
 
@@ -142,18 +327,21 @@ rss:
     - id: "industry_market_jd"
       name: "京东外卖扩张"
       url: "https://www.bing.com/news/search?q=%E4%BA%AC%E4%B8%9C%E5%A4%96%E5%8D%96+%E4%B8%8A%E7%BA%BF+%E6%89%A9%E5%BC%A0+%E9%AA%91%E6%89%8B&format=rss"
+      priority: "P5"
       category: "industry"
       tag: "industry.market"
 
     - id: "industry_market_douyin"
       name: "抖音外卖骑手"
       url: "https://www.bing.com/news/search?q=%E6%8A%96%E9%9F%B3%E5%A4%96%E5%8D%96+%E9%AA%91%E6%89%8B+%E6%8B%9B%E5%8B%9F&format=rss"
+      priority: "P5"
       category: "industry"
       tag: "industry.market"
 
     - id: "industry_market_new"
       name: "即时配送新玩家"
       url: "https://www.bing.com/news/search?q=%E5%8D%B3%E6%97%B6%E9%85%8D%E9%80%81+%E5%B8%82%E5%9C%BA%E6%A0%BC%E5%B1%80+%E6%96%B0%E7%8E%A9%E5%AE%B6+%E5%85%A5%E5%B1%80&format=rss"
+      priority: "P5"
       category: "industry"
       tag: "industry.market"
 
@@ -161,12 +349,14 @@ rss:
     - id: "industry_local_station"
       name: "骑手驿站建设"
       url: "https://www.bing.com/news/search?q=%E9%AA%91%E6%89%8B+%E9%A9%BF%E7%AB%99+%E4%BC%91%E6%81%AF%E7%AB%99+%E5%BB%BA%E8%AE%BE&format=rss"
+      priority: "P5"
       category: "industry"
       tag: "industry.local"
 
     - id: "industry_local_policy"
       name: "地方骑手关爱措施"
       url: "https://www.bing.com/news/search?q=%E5%9C%B0%E6%96%B9+%E9%AA%91%E6%89%8B+%E5%85%B3%E7%88%B1+%E7%AE%A1%E7%90%86%E5%8A%9E%E6%B3%95&format=rss"
+      priority: "P5"
       category: "industry"
       tag: "industry.local"
 
@@ -174,18 +364,21 @@ rss:
     - id: "industry_season_heat"
       name: "高温骑手保护"
       url: "https://www.bing.com/news/search?q=%E9%AB%98%E6%B8%A9+%E9%AA%91%E6%89%8B+%E8%A1%A5%E8%B4%B4+%E4%BF%9D%E6%8A%A4&format=rss"
+      priority: "P5"
       category: "industry"
       tag: "industry.season"
 
     - id: "industry_season_weather"
       name: "极端天气配送安全"
       url: "https://www.bing.com/news/search?q=%E6%9A%B4%E9%9B%A8+%E6%9E%81%E7%AB%AF%E5%A4%A9%E6%B0%94+%E9%AA%91%E6%89%8B+%E9%85%8D%E9%80%81+%E5%AE%89%E5%85%A8&format=rss"
+      priority: "P5"
       category: "industry"
       tag: "industry.season"
 
     - id: "industry_season_holiday"
       name: "节假日外卖爆单"
       url: "https://www.bing.com/news/search?q=%E8%8A%82%E5%81%87%E6%97%A5+%E5%A4%96%E5%8D%96+%E7%88%86%E5%8D%95+%E9%AA%91%E6%89%8B&format=rss"
+      priority: "P5"
       category: "industry"
       tag: "industry.season"
 
@@ -197,12 +390,14 @@ rss:
     - id: "platform_ops_meituan"
       name: "美团运力模式调整"
       url: "https://www.bing.com/news/search?q=%E7%BE%8E%E5%9B%A2+%E4%BC%97%E5%8C%85+%E4%B8%93%E9%80%81+%E8%BF%90%E5%8A%9B+%E8%B0%83%E5%BA%A6+%E8%B0%83%E6%95%B4&format=rss"
+      priority: "P5"
       category: "platform"
       tag: "platform.ops"
 
     - id: "platform_ops_mode"
       name: "骑手接单模式调整"
       url: "https://www.bing.com/news/search?q=%E9%AA%91%E6%89%8B+%E6%8E%A5%E5%8D%95%E6%A8%A1%E5%BC%8F+%E8%B0%83%E6%95%B4+%E7%BE%8E%E5%9B%A2%E7%95%85%E8%B7%91+%E4%B9%90%E8%B7%91&format=rss"
+      priority: "P5"
       category: "platform"
       tag: "platform.ops"
 
@@ -210,12 +405,14 @@ rss:
     - id: "platform_algo"
       name: "美团派单算法更新"
       url: "https://www.bing.com/news/search?q=%E7%BE%8E%E5%9B%A2+%E6%B4%BE%E5%8D%95%E7%AE%97%E6%B3%95+%E8%B6%85%E6%97%B6%E8%A7%84%E5%88%99+%E9%85%8D%E9%80%81%E6%97%B6%E9%97%B4+%E4%BC%98%E5%8C%96&format=rss"
+      priority: "P5"
       category: "platform"
       tag: "platform.algo"
 
     - id: "platform_appeal"
       name: "骑手申诉机制"
       url: "https://www.bing.com/news/search?q=%E9%AA%91%E6%89%8B+%E7%94%B3%E8%AF%89+%E6%9C%BA%E5%88%B6+%E4%B8%8A%E7%BA%BF&format=rss"
+      priority: "P5"
       category: "platform"
       tag: "platform.algo"
 
@@ -223,12 +420,14 @@ rss:
     - id: "platform_pay_fee"
       name: "配送费调整"
       url: "https://www.bing.com/news/search?q=%E7%BE%8E%E5%9B%A2+%E9%85%8D%E9%80%81%E8%B4%B9+%E8%B0%83%E6%95%B4+%E9%AA%91%E6%89%8B+%E5%8D%95%E4%BB%B7+%E5%8F%98%E5%8A%A8&format=rss"
+      priority: "P5"
       category: "platform"
       tag: "platform.pay"
 
     - id: "platform_pay_reward"
       name: "骑手奖励规则变化"
       url: "https://www.bing.com/news/search?q=%E9%AA%91%E6%89%8B+%E5%A5%96%E5%8A%B1+%E8%A7%84%E5%88%99+%E5%8F%98%E5%8C%96+%E6%8F%90%E7%8E%B0+%E8%AE%A1%E4%BB%B7&format=rss"
+      priority: "P5"
       category: "platform"
       tag: "platform.pay"
 
@@ -236,6 +435,7 @@ rss:
     - id: "platform_recruit"
       name: "平台骑手招募"
       url: "https://www.bing.com/news/search?q=%E7%BE%8E%E5%9B%A2+%E9%AA%91%E6%89%8B+%E6%8B%9B%E5%8B%9F+%E6%89%A9%E6%8B%9B+%E4%BC%97%E5%8C%85+%E6%B3%A8%E5%86%8C&format=rss"
+      priority: "P5"
       category: "platform"
       tag: "platform.recruit"
 
@@ -243,6 +443,7 @@ rss:
     - id: "platform_safety"
       name: "平台骑手安全举措"
       url: "https://www.bing.com/news/search?q=%E7%BE%8E%E5%9B%A2+%E9%AA%91%E6%89%8B+%E5%AE%89%E5%85%A8%E5%9F%B9%E8%AE%AD+%E4%BF%9D%E9%99%A9+%E5%8D%B4%E7%9B%94+%E5%8F%8D%E5%85%89%E8%A1%A3&format=rss"
+      priority: "P5"
       category: "platform"
       tag: "platform.safety"
 
@@ -250,6 +451,7 @@ rss:
     - id: "platform_welfare"
       name: "平台骑手福利"
       url: "https://www.bing.com/news/search?q=%E7%BE%8E%E5%9B%A2+%E9%AA%91%E6%89%8B+%E9%AB%98%E6%B8%A9%E8%A1%A5%E8%B4%B4+%E8%8A%82%E6%97%A5%E7%A6%8F%E5%88%A9+%E4%BD%93%E6%A3%80+%E5%8A%A9%E5%AD%A6&format=rss"
+      priority: "P5"
       category: "platform"
       tag: "platform.welfare"
 
@@ -261,12 +463,14 @@ rss:
     - id: "opinion_rights"
       name: "骑手权益争议"
       url: "https://www.bing.com/news/search?q=%E9%AA%91%E6%89%8B+%E6%9D%83%E7%9B%8A+%E4%BA%89%E8%AE%AE+%E6%89%A3%E7%BD%9A+%E4%B8%8D%E5%90%88%E7%90%86+%E4%BB%B2%E8%A3%81+%E7%BB%B4%E6%9D%83&format=rss"
+      priority: "P5"
       category: "opinion"
       tag: "opinion.rights"
 
     - id: "opinion_fee_opaque"
       name: "配送费不透明质疑"
       url: "https://www.bing.com/news/search?q=%E5%A4%96%E5%8D%96+%E9%85%8D%E9%80%81%E8%B4%B9+%E4%B8%8D%E9%80%8F%E6%98%8E+%E8%B4%A8%E7%96%91+%E9%AA%91%E6%89%8B+%E6%94%B6%E5%85%A5+%E9%99%8D%E4%BD%8E&format=rss"
+      priority: "P5"
       category: "opinion"
       tag: "opinion.rights"
 
@@ -274,12 +478,14 @@ rss:
     - id: "opinion_media"
       name: "媒体骑手曝光调查"
       url: "https://www.bing.com/news/search?q=%E9%AA%91%E6%89%8B+%E6%9A%97%E8%AE%BF+%E6%9B%9D%E5%85%89+%E7%BA%AA%E5%BD%95%E7%89%87+%E8%B0%83%E6%9F%A5+%E6%8A%A5%E9%81%93&format=rss"
+      priority: "P5"
       category: "opinion"
       tag: "opinion.media"
 
     - id: "opinion_cctv"
       name: "央视外卖骑手报道"
       url: "https://www.bing.com/news/search?q=%E5%A4%AE%E8%A7%86+%E5%A4%96%E5%8D%96+%E9%AA%91%E6%89%8B+%E6%8A%A5%E9%81%93&format=rss"
+      priority: "P0"
       category: "opinion"
       tag: "opinion.media"
 
@@ -287,6 +493,7 @@ rss:
     - id: "opinion_viral"
       name: "骑手热搜大V发声"
       url: "https://www.bing.com/news/search?q=%E9%AA%91%E6%89%8B+%E7%83%AD%E6%90%9C+%E5%A4%A7V+%E5%8F%91%E5%A3%B0+%E7%9F%AD%E8%A7%86%E9%A2%91+%E7%88%86%E7%81%AB&format=rss"
+      priority: "P5"
       category: "opinion"
       tag: "opinion.viral"
 
@@ -294,12 +501,14 @@ rss:
     - id: "opinion_consumer"
       name: "消费者骑手矛盾"
       url: "https://www.bing.com/news/search?q=%E5%A4%96%E5%8D%96+%E9%AA%91%E6%89%8B+%E5%B7%AE%E8%AF%84+%E6%8A%95%E8%AF%89+%E8%B6%85%E6%97%B6+%E7%9F%9B%E7%9B%BE&format=rss"
+      priority: "P5"
       category: "opinion"
       tag: "opinion.consumer"
 
     - id: "opinion_access"
       name: "骑手门禁上楼争议"
       url: "https://www.bing.com/news/search?q=%E9%AA%91%E6%89%8B+%E7%89%A9%E4%B8%9A+%E9%97%A8%E7%A6%81+%E5%86%99%E5%AD%97%E6%A5%BC+%E4%B8%8A%E6%A5%BC+%E4%BA%89%E8%AE%AE&format=rss"
+      priority: "P5"
       category: "opinion"
       tag: "opinion.consumer"
 
@@ -307,6 +516,7 @@ rss:
     - id: "opinion_merchant"
       name: "商家骑手冲突纠纷"
       url: "https://www.bing.com/news/search?q=%E5%95%86%E5%AE%B6+%E9%AA%91%E6%89%8B+%E5%86%B2%E7%AA%81+%E7%BA%A0%E7%BA%B7+%E5%87%BA%E9%A4%90%E6%85%A2+%E5%8F%96%E6%B6%88%E8%AE%A2%E5%8D%95&format=rss"
+      priority: "P5"
       category: "opinion"
       tag: "opinion.merchant"
 
@@ -314,6 +524,7 @@ rss:
     - id: "opinion_crisis"
       name: "骑手群体舆情发酵"
       url: "https://www.bing.com/news/search?q=%E9%AA%91%E6%89%8B+%E8%88%86%E8%AE%BA+%E9%A3%8E%E6%9A%B4+%E5%85%A8%E7%BD%91%E5%85%B3%E6%B3%A8+%E6%9E%81%E7%AB%AF%E4%BA%8B%E4%BB%B6+%E7%A4%BE%E4%BC%9A%E5%8F%8D%E6%80%9D&format=rss"
+      priority: "P5"
       category: "opinion"
       tag: "opinion.crisis"
 
@@ -322,12 +533,28 @@ rss:
 filter:
   method: "keyword"
   keyword_file: "frequency_words.txt"
+  # 全局必须命中的基础词（任意一个即可）
+  base_keywords:
+    - "骑手"
+    - "外卖"
+    - "配送员"
+    - "送餐"
+    - "即时配送"
+    - "新就业形态"
+    - "平台用工"
+    - "灵活就业"
 
 # ===== 报告模式 =====
 report:
   mode: "daily"
   group_by: "category"
   max_news_per_keyword: 20    # 每小时更新，每个关键词最多保留20条
+  # 去重配置
+  dedup:
+    enabled: true
+    method: "title_similarity"   # 标题相似度去重
+    threshold: 0.85              # 相似度阈值
+    keep: "highest_priority"     # 保留最高优先级来源
 
 # ===== 存储路径 =====
 storage:

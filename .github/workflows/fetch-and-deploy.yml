@@ -1,5 +1,10 @@
 name: 抓取新闻 & 部署 GitHub Pages
 
+# 数据来源方案：学城文档 2763869388
+# 三管道：热榜平台 / RSS订阅(P0-P5媒体) / 搜索引擎关键词
+# 四分类：骑手新闻 / 行业动态 / 平台动作 / 舆情信息
+# 去重：同一事件保留最高优先级来源；排序：时效优先，同天按P0→P5
+
 on:
   # 每小时整点运行（北京时间 = UTC+8，覆盖全天24小时）
   schedule:
@@ -11,6 +16,14 @@ on:
         description: "指定日期（YYYY-MM-DD），留空则使用今天"
         required: false
         default: ""
+      force_refresh:
+        description: "强制刷新（忽略缓存）"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
 
 # 允许 Actions 写入仓库（用于 gh-pages 部署）
 permissions:
@@ -77,14 +90,23 @@ jobs:
           fi
 
       # ── 6. 复制配置文件 ──────────────────────────────────────────
+      # 将学城文档方案转成的配置文件注入 TrendRadar
+      # config.yaml: 三管道(热榜/RSS/搜索引擎) + P0-P5媒体优先级 + 四分类
+      # frequency_words.txt: 四分类触发词 + 全局过滤词
       - name: 复制 TrendRadar 配置
         run: |
           cp trendradar-config/config.yaml trendradar/config.yaml
           if [ -f "trendradar-config/frequency_words.txt" ]; then
             cp trendradar-config/frequency_words.txt trendradar/frequency_words.txt
           fi
+          echo "配置文件已注入 TrendRadar："
+          echo "  - config.yaml: $(wc -l < trendradar/config.yaml) 行"
+          echo "  - frequency_words.txt: $(wc -l < trendradar/frequency_words.txt) 行"
 
       # ── 7. 运行 TrendRadar 抓取 ──────────────────────────────────
+      # 三管道并行：热榜平台(weibo/zhihu/baidu/toutiao/douyin)
+      #            + RSS(P0新华社/人民日报/财新/澎湃/36氪/虎嗅等)
+      #            + 搜索引擎关键词(Bing News RSS)
       - name: 运行 TrendRadar 抓取新闻
         working-directory: trendradar
         run: |
@@ -95,6 +117,12 @@ jobs:
         continue-on-error: true
 
       # ── 8. 转换数据格式 ──────────────────────────────────────────
+      # transform.py 负责：
+      #   - 四分类打标（rider/industry/platform/opinion）
+      #   - 子分类打标（rider.positive/industry.policy 等22个子分类）
+      #   - 去重（标题相似度）
+      #   - 排序（时效优先，同天按P0→P5）
+      #   - 生成 featured/articles/flash/hot 四个数据块
       - name: 转换数据为网站格式
         run: |
           DATE="${{ steps.date.outputs.date }}"
@@ -131,8 +159,27 @@ jobs:
           DATETIME="${{ steps.date.outputs.datetime }}"
           DATA_FILE="data/${DATE}.json"
           if [ -f "$DATA_FILE" ]; then
-            echo "{\"date\":\"${DATE}\",\"hour\":\"${HOUR}\",\"updated_at\":\"${DATETIME}\",\"file\":\"data/${DATE}.json\"}" > data/latest.json
+            # 统计各分类文章数
+            TOTAL=$(python3 -c "
+          import json
+          with open('$DATA_FILE') as f:
+              d = json.load(f)
+          articles = d.get('articles', [])
+          cats = {}
+          for a in articles:
+              c = a.get('category', 'unknown')
+              cats[c] = cats.get(c, 0) + 1
+          print(json.dumps({'total': len(articles), 'by_category': cats}))
+          " 2>/dev/null || echo '{"total":0,"by_category":{}}')
+            echo "{
+              \"date\": \"${DATE}\",
+              \"hour\": \"${HOUR}\",
+              \"updated_at\": \"${DATETIME}\",
+              \"file\": \"data/${DATE}.json\",
+              \"stats\": ${TOTAL}
+            }" | python3 -c "import json,sys; print(json.dumps(json.load(sys.stdin), ensure_ascii=False, indent=2))" > data/latest.json
             echo "latest.json 已更新 -> ${DATETIME}"
+            cat data/latest.json
           fi
 
       # ── 10. 清理7天前的旧数据 ────────────────────────────────────
@@ -140,7 +187,8 @@ jobs:
         run: |
           find data/ -name "*.json" -not -name "latest.json" -not -name "sample.json" \
             -mtime +7 -delete 2>/dev/null || true
-          echo "旧数据清理完成"
+          echo "旧数据清理完成，当前 data/ 文件列表："
+          ls -la data/ | head -20
 
       # ── 11. 提交数据文件 ─────────────────────────────────────────
       - name: 提交数据到仓库

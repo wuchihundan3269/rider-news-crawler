@@ -34,6 +34,8 @@ rider-news/
 rider-news-site/
 github-upload/
 *.txt
+# 例外：TrendRadar 关键词配置文件必须跟踪
+!trendradar-config/frequency_words.txt
 check_table.py
 check_token.py
 create_table.py
