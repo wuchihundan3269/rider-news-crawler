@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
 fetch_news_v3.py — 骑手行业新闻独立抓取脚本
-数据来源方案：学城文档 2763869388
+数据来源方案：学城文档 2765848623
 
 功能：
   - 直接读取 trendradar-config/config.yaml，无需 TrendRadar
   - 三管道：RSS订阅(P0-P5媒体) + 搜索引擎关键词(Bing News) + 热榜平台
-  - 四分类：骑手新闻(rider) / 行业动态(industry) / 平台动作(platform) / 舆情信息(opinion)
+  - 六分类：骑手故事(rider_story) / 骑手关怀(care) / 行业政策(policy) / 宏观报告(report) / 平台动作(platform) / 舆情信息(opinion)
   - 媒体优先级：P0→P5，去重时保留最高优先级来源
   - 排序：时效优先，同天按P0→P5
   - 输出：TrendRadar 兼容格式（output/news/YYYY-MM-DD.json）
@@ -30,6 +30,55 @@ import feedparser
 import requests
 import yaml
 from dateutil import parser as dateparser
+
+
+def resolve_google_news_url(url: str, timeout: int = 5) -> str:
+    """将 Google News RSS 中间链接解析为真实原始 URL
+
+    Google News 重定向链：
+      第1次 GET → 302 → 同一 URL（加 hl/gl/ceid 参数）
+      第2次 GET → 302 → 真实原文 URL（仅在境外服务器上）
+    因此必须手动跟随每一步重定向，不能用 allow_redirects=True。
+    """
+    if not url or "news.google.com" not in url:
+        return url
+
+    headers = {
+        "User-Agent": (
+            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+            "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        ),
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
+    }
+
+    current = url
+    session = requests.Session()
+    session.headers.update(headers)
+
+    for _ in range(6):  # 最多跟随 6 次重定向
+        try:
+            resp = session.get(current, allow_redirects=False, timeout=timeout)
+        except Exception:
+            break
+
+        if resp.status_code in (301, 302, 303, 307, 308):
+            location = resp.headers.get("Location", "")
+            if not location:
+                break
+            # 处理相对路径
+            if location.startswith("/"):
+                from urllib.parse import urljoin
+                location = urljoin(current, location)
+            # 找到非 Google 的真实 URL
+            if "news.google.com" not in location and location.startswith("http"):
+                return location
+            current = location
+        else:
+            # 非重定向响应，无法继续跟随
+            break
+
+    return url
 
 # ── 路径配置 ──────────────────────────────────────────────────────────────────
 
@@ -137,14 +186,33 @@ def load_keyword_rules(words_path: Path) -> dict:
     return {"rules": rules, "global_filter": global_filter}
 
 
-def match_sub_tag(title: str, summary: str, rules: list) -> str | None:
-    """根据标题+摘要匹配子分类 tag"""
+def match_sub_tags(title: str, summary: str, rules: list) -> list[str]:
+    """
+    根据标题+摘要匹配所有命中的子分类 tag（支持多标签共存）。
+
+    优先级规则（来自 Wiki）：
+    1. 舆情(opinion.*) 具有最高优先级——只要命中任意 opinion.* 标签，
+       最终 category 强制为 opinion，但其他标签仍保留用于细粒度展示。
+    2. 同一条新闻可同时命中多个标签（如 rider.positive + platform.welfare）。
+    """
     text = title + " " + summary
+    matched = []
+    seen_tags = set()
     for sub_tag, keyword_groups in rules:
+        if sub_tag in seen_tags:
+            continue
         for kw_group in keyword_groups:
             if all(kw in text for kw in kw_group):
-                return sub_tag
-    return None
+                matched.append(sub_tag)
+                seen_tags.add(sub_tag)
+                break  # 该子分类已命中，跳到下一个子分类
+    return matched
+
+
+def match_sub_tag(title: str, summary: str, rules: list) -> str | None:
+    """兼容旧调用：返回第一个命中的子分类 tag（已被 match_sub_tags 取代）"""
+    tags = match_sub_tags(title, summary, rules)
+    return tags[0] if tags else None
 
 
 def is_global_filtered(title: str, summary: str, global_filter: list) -> bool:
@@ -161,58 +229,80 @@ def matches_base_keywords(title: str, summary: str, base_keywords: list) -> bool
 
 # ── 分类映射 ──────────────────────────────────────────────────────────────────
 
-# 子分类 → 一级分类
+# 子分类 → 一级分类（六分类体系 v2）
 SUB_TAG_TO_CATEGORY = {
-    "rider.positive":   "rider",
-    "rider.accident":   "rider",
-    "rider.story":      "rider",
-    "rider.incident":   "rider",
-    "rider.career":     "rider",
-    "industry.policy":  "industry",
-    "industry.labor":   "industry",
-    "industry.std":     "industry",
-    "industry.market":  "industry",
-    "industry.local":   "industry",
-    "industry.season":  "industry",
-    "platform.ops":     "platform",
-    "platform.algo":    "platform",
-    "platform.pay":     "platform",
-    "platform.recruit": "platform",
-    "platform.safety":  "platform",
-    "platform.welfare": "platform",
-    "opinion.rights":   "opinion",
-    "opinion.media":    "opinion",
-    "opinion.viral":    "opinion",
-    "opinion.consumer": "opinion",
-    "opinion.merchant": "opinion",
-    "opinion.crisis":   "opinion",
+    # 骑手故事
+    "rider_story.life":      "rider_story",
+    "rider_story.positive":  "rider_story",
+    "rider_story.accident":  "rider_story",
+    "rider_story.incident":  "rider_story",
+    "rider_story.career":    "rider_story",
+    # 骑手关怀
+    "care.welfare":          "care",
+    "care.health":           "care",
+    "care.station":          "care",
+    "care.social":           "care",
+    # 行业政策
+    "policy.national":       "policy",
+    "policy.labor":          "policy",
+    "policy.local":          "policy",
+    "policy.standard":       "policy",
+    # 宏观报告
+    "report.market":         "report",
+    "report.economy":        "report",
+    "report.research":       "report",
+    "report.season":         "report",
+    # 平台动作
+    "platform.ops":          "platform",
+    "platform.algo":         "platform",
+    "platform.pay":          "platform",
+    "platform.recruit":      "platform",
+    "platform.safety":       "platform",
+    # 舆情信息
+    "opinion.rights":        "opinion",
+    "opinion.media":         "opinion",
+    "opinion.viral":         "opinion",
+    "opinion.consumer":      "opinion",
+    "opinion.merchant":      "opinion",
+    "opinion.crisis":        "opinion",
 }
 
 # 子分类中文标签
 SUB_TAG_LABEL = {
-    "rider.positive":   "正面事迹",
-    "rider.accident":   "安全事故",
-    "rider.story":      "生活故事",
-    "rider.incident":   "群体事件",
-    "rider.career":     "职业发展",
-    "industry.policy":  "监管政策",
-    "industry.labor":   "劳动法规",
-    "industry.std":     "行业标准",
-    "industry.market":  "竞争格局",
-    "industry.local":   "地方政策",
-    "industry.season":  "季节影响",
-    "platform.ops":     "运力调整",
-    "platform.algo":    "算法规则",
-    "platform.pay":     "收入费用",
-    "platform.recruit": "招募合作",
-    "platform.safety":  "安全合规",
-    "platform.welfare": "福利保障",
-    "opinion.rights":   "权益争议",
-    "opinion.media":    "媒体曝光",
-    "opinion.viral":    "热搜发声",
-    "opinion.consumer": "消费者矛盾",
-    "opinion.merchant": "商家摩擦",
-    "opinion.crisis":   "舆情发酵",
+    # 骑手故事
+    "rider_story.life":      "生活百态",
+    "rider_story.positive":  "正面事迹",
+    "rider_story.accident":  "安全事故",
+    "rider_story.incident":  "群体事件",
+    "rider_story.career":    "职业发展",
+    # 骑手关怀
+    "care.welfare":          "平台福利",
+    "care.health":           "健康安全",
+    "care.station":          "驿站设施",
+    "care.social":           "社会关爱",
+    # 行业政策
+    "policy.national":       "国家政策",
+    "policy.labor":          "劳动法规",
+    "policy.local":          "地方政策",
+    "policy.standard":       "行业标准",
+    # 宏观报告
+    "report.market":         "市场格局",
+    "report.economy":        "宏观经济",
+    "report.research":       "行业报告",
+    "report.season":         "季节趋势",
+    # 平台动作
+    "platform.ops":          "运力调整",
+    "platform.algo":         "算法规则",
+    "platform.pay":          "收入费用",
+    "platform.recruit":      "招募合作",
+    "platform.safety":       "安全合规",
+    # 舆情信息
+    "opinion.rights":        "权益争议",
+    "opinion.media":         "媒体曝光",
+    "opinion.viral":         "热搜发声",
+    "opinion.consumer":      "消费者矛盾",
+    "opinion.merchant":      "商家摩擦",
+    "opinion.crisis":        "舆情发酵",
 }
 
 
@@ -252,6 +342,9 @@ def fetch_rss_feed(feed_cfg: dict, keyword_rules: dict, base_keywords: list,
         if not title or not url_str:
             continue
 
+        # 解析 Google News 中间链接为真实原始 URL
+        url_str = resolve_google_news_url(url_str)
+
         # 时效过滤
         pub_str = parse_time(entry)
         try:
@@ -269,14 +362,34 @@ def fetch_rss_feed(feed_cfg: dict, keyword_rules: dict, base_keywords: list,
         if category == "auto" and not matches_base_keywords(title, summary, base_keywords):
             continue
 
-        # 子分类打标
-        sub_tag = tag if tag != "auto" else match_sub_tag(title, summary, keyword_rules["rules"])
+        # 子分类打标（多标签）
+        if tag != "auto":
+            sub_tags = [tag]
+        else:
+            sub_tags = match_sub_tags(title, summary, keyword_rules["rules"])
 
-        # 一级分类
+        # 一级分类：
+        #   - 固定分类源直接使用配置的 category
+        #   - auto 源：舆情(opinion.*) 优先级最高，其次按第一个命中的子分类决定
         if category == "auto":
-            final_category = SUB_TAG_TO_CATEGORY.get(sub_tag, "industry") if sub_tag else "industry"
+            if sub_tags:
+                # 舆情优先：只要有任意 opinion.* 标签，强制归入 opinion
+                opinion_tags = [t for t in sub_tags if t.startswith("opinion.")]
+                if opinion_tags:
+                    final_category = "opinion"
+                else:
+                    final_category = SUB_TAG_TO_CATEGORY.get(sub_tags[0], "policy")
+            else:
+                final_category = "policy"
         else:
             final_category = category
+
+        # 主标签：舆情优先时取第一个 opinion.* 标签，否则取第一个命中标签
+        if sub_tags:
+            opinion_tags = [t for t in sub_tags if t.startswith("opinion.")]
+            primary_tag = opinion_tags[0] if opinion_tags else sub_tags[0]
+        else:
+            primary_tag = ""
 
         items.append({
             "title":        title,
@@ -285,7 +398,8 @@ def fetch_rss_feed(feed_cfg: dict, keyword_rules: dict, base_keywords: list,
             "url":          url_str,
             "published_at": pub_str,
             "category":     final_category,
-            "tag":          sub_tag or "",
+            "tag":          primary_tag,
+            "tags":         sub_tags,          # 所有命中的子分类（多标签）
             "priority":     priority,
             "feed_id":      feed_id,
             "url_hash":     url_hash(url_str),
@@ -424,8 +538,14 @@ def main():
         cat = item.get("category", "industry")
         if cat not in sources_map:
             sources_map[cat] = {
-                "name":     {"rider": "骑手新闻", "industry": "行业动态",
-                             "platform": "平台动作", "opinion": "舆情信息"}.get(cat, cat),
+                "name":     {
+                    "rider_story": "骑手故事",
+                    "care":        "骑手关怀",
+                    "policy":      "行业政策",
+                    "report":      "宏观报告",
+                    "platform":    "平台动作",
+                    "opinion":     "舆情信息",
+                }.get(cat, cat),
                 "category": cat,
                 "items":    []
             }
@@ -436,6 +556,7 @@ def main():
             "url":          item["url"],
             "published_at": item["published_at"],
             "tag":          item.get("tag", ""),
+            "tags":         item.get("tags", []),   # 多标签（用于前端细粒度筛选）
             "priority":     item.get("priority", "P5"),
         })
 
@@ -450,10 +571,18 @@ def main():
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
 
+    CAT_NAMES = {
+        "rider_story": "骑手故事",
+        "care":        "骑手关怀",
+        "policy":      "行业政策",
+        "report":      "宏观报告",
+        "platform":    "平台动作",
+        "opinion":     "舆情信息",
+    }
     print(f"\n[OK] 输出完成: {output_path}")
     print(f"     总计: {len(final_items)} 条")
     for cat, count in cat_stats.items():
-        print(f"     {cat}: {count} 条")
+        print(f"     {CAT_NAMES.get(cat, cat)}: {count} 条")
 
 
 if __name__ == "__main__":

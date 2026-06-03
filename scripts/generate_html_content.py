@@ -15,6 +15,13 @@ import json
 import re
 import sys
 import os
+from concurrent.futures import ThreadPoolExecutor, as_completed
+
+try:
+    import requests as _requests
+    _HAS_REQUESTS = True
+except ImportError:
+    _HAS_REQUESTS = False
 
 
 def load_file(path):
@@ -26,6 +33,105 @@ def save_file(path, content):
     os.makedirs(os.path.dirname(path) if os.path.dirname(path) else '.', exist_ok=True)
     with open(path, 'w', encoding='utf-8') as f:
         f.write(content)
+
+
+def resolve_google_news_url(url: str, timeout: int = 8) -> str:
+    """将 Google News RSS 中间链接解析为真实原始 URL
+
+    Google News 重定向链：
+      第1次 GET → 302 → 同一 URL（加 hl/gl/ceid 参数）
+      第2次 GET → 302 → 真实原文 URL（仅在境外服务器上）
+    因此必须手动跟随每一步重定向，不能用 allow_redirects=True。
+    """
+    if not url or "news.google.com" not in url:
+        return url
+
+    if not _HAS_REQUESTS:
+        return url
+
+    headers = {
+        "User-Agent": (
+            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+            "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        ),
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
+    }
+
+    current = url
+    session = _requests.Session()
+    session.headers.update(headers)
+
+    for _ in range(6):  # 最多跟随 6 次重定向
+        try:
+            resp = session.get(current, allow_redirects=False, timeout=timeout)
+        except Exception:
+            break
+
+        if resp.status_code in (301, 302, 303, 307, 308):
+            location = resp.headers.get("Location", "")
+            if not location:
+                break
+            # 处理相对路径
+            if location.startswith("/"):
+                from urllib.parse import urljoin
+                location = urljoin(current, location)
+            # 找到非 Google 的真实 URL
+            if "news.google.com" not in location and location.startswith("http"):
+                return location
+            current = location
+        else:
+            # 非重定向响应，无法继续跟随
+            break
+
+    return url
+
+
+def resolve_all_urls(data: dict) -> dict:
+    """批量解析 data 中所有 Google News URL（并发执行）"""
+    # 收集所有需要解析的 URL
+    url_set = set()
+    for key in ("featured", "articles", "flash"):
+        for a in data.get(key, []):
+            url = a.get("url", "")
+            if url and "news.google.com" in url:
+                url_set.add(url)
+
+    if not url_set:
+        print("[URL] 无需解析 Google News URL")
+        return data
+
+    print(f"[URL] 开始解析 {len(url_set)} 个 Google News URL（并发）...")
+    url_map = {}
+
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        future_to_url = {executor.submit(resolve_google_news_url, u): u for u in url_set}
+        for future in as_completed(future_to_url):
+            orig = future_to_url[future]
+            try:
+                resolved = future.result()
+                url_map[orig] = resolved
+                if resolved != orig:
+                    print(f"  ✓ {resolved[:80]}")
+                else:
+                    print(f"  ✗ 未解析: {orig[:60]}...")
+            except Exception as e:
+                url_map[orig] = orig
+                print(f"  ✗ 异常: {e}")
+
+    resolved_count = sum(1 for k, v in url_map.items() if k != v)
+    print(f"[URL] 解析完成：{resolved_count}/{len(url_set)} 条成功")
+
+    # 替换数据中的 URL
+    def fix_list(lst):
+        return [{**a, "url": url_map.get(a.get("url", ""), a.get("url", ""))} for a in lst]
+
+    return {
+        **data,
+        "featured": fix_list(data.get("featured", [])),
+        "articles": fix_list(data.get("articles", [])),
+        "flash":    fix_list(data.get("flash", [])),
+    }
 
 
 def build_new_load_data(data: dict, latest: dict) -> str:
@@ -88,6 +194,9 @@ def main():
     with open(args.latest, 'r', encoding='utf-8') as f:
         latest = json.load(f)
     print(f'[2] 读取数据: {latest["date"]}, 共 {latest["stats"]["total"]} 条')
+
+    # 解析 Google News URL 为真实原始 URL
+    data = resolve_all_urls(data)
 
     # 构建新的 loadData 函数
     new_load_data = build_new_load_data(data, latest)
