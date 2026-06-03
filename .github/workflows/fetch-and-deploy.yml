@@ -180,6 +180,7 @@ jobs:
             echo "没有新数据，跳过提交"
           else
             git commit -m "data: ${{ steps.date.outputs.datetime }} 自动更新"
+            git pull --rebase origin master
             git push
           fi
 
