@@ -680,6 +680,20 @@ padding:12px 0;
 <div id="subPage" style="display:none"></div>
 
 <script>
+// ===== 工具函数：打开新闻链接 =====
+// 用动态 <a> 标签代替 window.open，兼容 sandbox iframe 环境
+// （window.open 在 NoCode 平台的 sandbox iframe 里会被拦截）
+function openNewsUrl(url) {
+  if (!url) return;
+  var a = document.createElement('a');
+  a.href = url;
+  a.target = '_blank';
+  a.rel = 'noopener noreferrer';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
 // ===== 数据 =====
 const now = new Date();
 function minsAgo(m){ return new Date(now - m*60000); }
@@ -830,7 +844,7 @@ function renderHero(){
     const _urlAttr = n.url ? \` data-url="\${n.url}"\` : '';
     const _cursorStyle = n.url ? 'cursor:pointer' : '';
     return \`
-    <div class="hero-slide\${i===0?' active':''}" data-idx="\${i}"\${_urlAttr} style="\${_cursorStyle}" onclick="if(this.dataset.url) window.open(this.dataset.url,'_blank')">
+    <div class="hero-slide\${i===0?' active':''}" data-idx="\${i}"\${_urlAttr} style="\${_cursorStyle}" onclick="if(this.dataset.url) openNewsUrl(this.dataset.url)">
       <div class="hero-slide-bg" style="background:\${_bgStyle}">
         <div class="hero-slide-content">
           <span class="hero-source-tag \${_catCls}">\${_catLabel}</span>
@@ -1790,7 +1804,7 @@ function renderHistoryNews(){
     const summaryHtml = n.img ? '' : (n.summary ? \`<div class="nc-summary">\${n.summary}</div>\` : '');
     const _cardUrl = n.url || '';
     return \`
-    <div class="\${cardCls}" style="\${_cardUrl ? 'cursor:pointer' : ''}" onclick="\${_cardUrl ? \`window.open('\${_cardUrl}','_blank')\` : \`showPage('all')\`}">
+    <div class="\${cardCls}" style="\${_cardUrl ? 'cursor:pointer' : ''}" onclick="\${_cardUrl ? \`openNewsUrl('\${_cardUrl}')\` : \`showPage('all')\`}">
       \${imgHtml}
       <div class="nc-body">
         <div class="nc-title">\${n.title}</div>
@@ -1906,7 +1920,7 @@ function renderHotSection(){
       const rankClass = i===0?'r1':i===1?'r2':i===2?'r3':'rn';
       const label = truncate(item.text, 16);
       const riderTag = isRiderRelated(item.text) ? \`<span class="hot-item-rider">骑手</span>\` : '';
-      return \`<div class="hot-item" onclick="window.open('\${p.link}','_blank')">
+      return \`<div class="hot-item" onclick="openNewsUrl('\${p.link}')">
         <span class="hot-rank \${rankClass}">\${item.rank}</span>
         <span class="hot-item-text">\${label}</span>\${riderTag}
       </div>\`;
@@ -1914,7 +1928,7 @@ function renderHotSection(){
     return \`<div class="hot-card">
       <div class="hot-card-header">
         <div class="hot-card-title"><span class="hot-card-logo">\${p.logo}</span>\${p.name}热点</div>
-        <span class="hot-card-more" onclick="window.open('\${p.link}','_blank')">查看全榜 &rsaquo;</span>
+        <span class="hot-card-more" onclick="openNewsUrl('\${p.link}')">查看全榜 &rsaquo;</span>
       </div>
       \${items}
     </div>\`;
@@ -2016,7 +2030,7 @@ const rows = g.items.map(n => {
 const cat = tmCatMap[n.category];
 const tagHtml = cat ? \`<span class="tm-row-tag \${cat.cls}">\${cat.label}</span><span class="tm-row-divider"></span>\` : \`<span class="tm-row-tag tag-empty"></span><span class="tm-row-divider" style="visibility:hidden"></span>\`;
 const _tmUrl = n.url || '';
-return \`<div class="tm-row" style="\${_tmUrl ? 'cursor:pointer' : ''}" onclick="\${_tmUrl ? \`window.open('\${_tmUrl}','_blank')\` : ''}">
+return \`<div class="tm-row" style="\${_tmUrl ? 'cursor:pointer' : ''}" onclick="\${_tmUrl ? \`openNewsUrl('\${_tmUrl}')\` : ''}">
 <span class="tm-row-title-wrap">\${tagHtml}<span class="tm-row-title">\${n.title}</span></span>
 <span class="tm-row-source">\${n.source||''}</span>
 <span class="tm-row-arrow">›</span>
@@ -2269,7 +2283,7 @@ const data = allForCat.filter(n => n.category === category).sort((a,b) => b.ts -
       <span class="meta-source">\${n.source||''}</span><span class="meta-time">\${relT}</span>
     </div>\`;
 const _catUrl = n.url || '';
-const _catClick = _catUrl ? \`onclick="window.open('\${_catUrl}','_blank')" style="cursor:pointer"\` : '';
+const _catClick = _catUrl ? \`onclick="openNewsUrl('\${_catUrl}')" style="cursor:pointer"\` : '';
 if(isTop) return \`<div class="cat-card-top" \${_catClick}>
 <div class="cat-card-body">
 <div class="cat-card-title">\${tagHtml}\${n.title}</div>
@@ -2518,7 +2532,7 @@ const catTagMap = {
     const hhmm = String(n.ts.getHours()).padStart(2,'0') + ':' + String(n.ts.getMinutes()).padStart(2,'0');
 const _flUrl = n.url || '';
     return \`
-    <div class="fl-item" style="\${_flUrl ? 'cursor:pointer' : ''}" onclick="\${_flUrl ? \`window.open('\${_flUrl}','_blank')\` : ''}">
+    <div class="fl-item" style="\${_flUrl ? 'cursor:pointer' : ''}" onclick="\${_flUrl ? \`openNewsUrl('\${_flUrl}')\` : ''}">
     <div class="fl-time-col">
     <div class="fl-time-text">\${hhmm}</div>
     </div>
