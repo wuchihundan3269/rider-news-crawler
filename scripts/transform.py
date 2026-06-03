@@ -57,8 +57,76 @@ import json
 import os
 import sys
 import argparse
+import re
+import urllib.parse
 from datetime import datetime, timezone
 from pathlib import Path
+
+try:
+    import requests as _requests
+    _HAS_REQUESTS = True
+except ImportError:
+    _HAS_REQUESTS = False
+
+
+def resolve_google_news_url(url: str, timeout: int = 5) -> str:
+    """
+    将 Google News RSS 中间链接解析为真实原始 URL。
+    策略：
+      1. protobuf 字节解析（CBMi... 格式，最可靠）
+      2. HTTP GET 跟随重定向（境外服务器可用）
+      3. 失败则返回原 URL
+    """
+    if not url or "news.google.com" not in url:
+        return url
+
+    # 策略1：protobuf 字节解析
+    # Google News RSS URL 格式: .../articles/BASE64?oc=5
+    # BASE64 解码后是 protobuf 二进制，结构：
+    #   前缀 0x08 0x13 0x22（可选）+ 长度字节 + URL 字节
+    try:
+        import base64
+        match = re.search(r'/articles/([A-Za-z0-9_-]+)', url)
+        if match:
+            b64 = match.group(1)
+            b64 += '=' * (4 - len(b64) % 4)
+            data = base64.urlsafe_b64decode(b64)
+            # 去掉 protobuf 前缀 0x08 0x13 0x22
+            start = 0
+            if len(data) > 3 and data[0] == 0x08 and data[1] == 0x13 and data[2] == 0x22:
+                start = 3
+            # 读取长度字节（支持 varint 编码）
+            if start < len(data):
+                length = data[start]
+                if length >= 0x80:
+                    start += 2
+                    length = data[start - 1] + (length - 0x80) * 128
+                else:
+                    start += 1
+                # 提取 URL 字节
+                real_url = data[start:start + length].decode('utf-8', errors='ignore')
+                if real_url.startswith('http://') or real_url.startswith('https://'):
+                    if 'google.com' not in real_url:
+                        return real_url
+    except Exception:
+        pass
+
+    # 策略2：HTTP GET 跟随重定向（GitHub Actions 境外服务器可访问）
+    if _HAS_REQUESTS:
+        try:
+            resp = _requests.get(
+                url,
+                allow_redirects=True,
+                timeout=timeout,
+                headers={"User-Agent": "Mozilla/5.0 (compatible; RiderNewsBot/3.0)"}
+            )
+            final_url = resp.url
+            if final_url and "news.google.com" not in final_url:
+                return final_url
+        except Exception:
+            pass
+
+    return url
 
 # ===== 一级分类映射（category → 页面展示信息）=====
 CATEGORY_MAP = {
@@ -177,11 +245,14 @@ def parse_article(item: dict, cat_info: dict, date_str: str) -> dict:
     sub_tag = item.get("tag") or detect_sub_tag(title, summary)
     sub_label = SUB_TAG_LABEL.get(sub_tag, "") if sub_tag else ""
 
+    raw_url = item.get("url", item.get("link", ""))
+    resolved_url = resolve_google_news_url(raw_url)
+
     return {
         "title":        title,
         "summary":      summary,
         "source":       item.get("source", item.get("feed_name", "")).strip(),
-        "url":          item.get("url", item.get("link", "")),
+        "url":          resolved_url,
         "published_at": pub,
         "category":     cat_info["category"],
         "tag":          cat_info["tag"],
@@ -203,15 +274,32 @@ def transform(input_path: str, hot_path: str | None, output_path: str):
 
     # ── 格式检测：如果输入已经是网站格式（含 articles 字段），直接透传 ──
     if "articles" in raw and isinstance(raw["articles"], list):
-        # 补充 sub_tag 打标（已有则保留，没有则重新检测）
+        # 补充 sub_tag 打标（已有则保留，没有则重新检测）；同时解析 Google News URL
         articles = []
         for a in raw["articles"]:
+            updates = {}
             if not a.get("sub_tag"):
                 sub_tag = detect_sub_tag(a.get("title", ""), a.get("summary", ""))
-                a = {**a, "sub_tag": sub_tag, "sub_label": SUB_TAG_LABEL.get(sub_tag, "") if sub_tag else ""}
+                updates["sub_tag"] = sub_tag
+                updates["sub_label"] = SUB_TAG_LABEL.get(sub_tag, "") if sub_tag else ""
+            # 解析 Google News 中间链接
+            raw_url = a.get("url", "")
+            if raw_url and "news.google.com" in raw_url:
+                updates["url"] = resolve_google_news_url(raw_url)
+            if updates:
+                a = {**a, **updates}
             articles.append(a)
-        flash    = raw.get("flash", [])
-        featured = raw.get("featured", _pick_featured(articles))
+        def _resolve_list(lst):
+            result = []
+            for a in lst:
+                raw_url = a.get("url", "")
+                if raw_url and "news.google.com" in raw_url:
+                    a = {**a, "url": resolve_google_news_url(raw_url)}
+                result.append(a)
+            return result
+
+        flash    = _resolve_list(raw.get("flash", []))
+        featured = _resolve_list(raw.get("featured", _pick_featured(articles)))
         hot      = raw.get("hot", [])
         output = {
             "date":         date_str,

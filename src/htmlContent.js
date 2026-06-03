@@ -682,11 +682,20 @@ padding:12px 0;
 <script>
 // ===== 工具函数：打开新闻链接 =====
 // 用动态 <a> 标签代替 window.open，兼容 sandbox iframe 环境
-// （window.open 在 NoCode 平台的 sandbox iframe 里会被拦截）
-function openNewsUrl(url) {
+// 若 URL 是 Google News 中间链接（国内被屏蔽），自动降级为必应搜索标题
+function openNewsUrl(url, title) {
   if (!url) return;
+  var finalUrl = url;
+  if (url.indexOf('news.google.com') !== -1) {
+    // Google News URL 在国内被屏蔽，降级为必应搜索
+    var q = (title || '').replace(/\s*-\s*[^-]+$/, '').trim(); // 去掉末尾的来源名
+    if (!q) q = title || '';
+    finalUrl = q
+      ? 'https://www.bing.com/search?q=' + encodeURIComponent(q)
+      : url;
+  }
   var a = document.createElement('a');
-  a.href = url;
+  a.href = finalUrl;
   a.target = '_blank';
   a.rel = 'noopener noreferrer';
   document.body.appendChild(a);
@@ -844,7 +853,7 @@ function renderHero(){
     const _urlAttr = n.url ? \` data-url="\${n.url}"\` : '';
     const _cursorStyle = n.url ? 'cursor:pointer' : '';
     return \`
-    <div class="hero-slide\${i===0?' active':''}" data-idx="\${i}"\${_urlAttr} style="\${_cursorStyle}" onclick="if(this.dataset.url) openNewsUrl(this.dataset.url)">
+    <div class="hero-slide\${i===0?' active':''}" data-idx="\${i}"\${_urlAttr} style="\${_cursorStyle}" onclick="if(this.dataset.url) openNewsUrl(this.dataset.url, this.dataset.title)">
       <div class="hero-slide-bg" style="background:\${_bgStyle}">
         <div class="hero-slide-content">
           <span class="hero-source-tag \${_catCls}">\${_catLabel}</span>
@@ -1804,7 +1813,7 @@ function renderHistoryNews(){
     const summaryHtml = n.img ? '' : (n.summary ? \`<div class="nc-summary">\${n.summary}</div>\` : '');
     const _cardUrl = n.url || '';
     return \`
-    <div class="\${cardCls}" style="\${_cardUrl ? 'cursor:pointer' : ''}" onclick="\${_cardUrl ? \`openNewsUrl('\${_cardUrl}')\` : \`showPage('all')\`}">
+    <div class="\${cardCls}" style="\${_cardUrl ? 'cursor:pointer' : ''}" onclick="\${_cardUrl ? \`openNewsUrl('\${_cardUrl}','\${(n.title||"").replace(/\'/g,"\\'")}')\` : \`showPage('all')\`}">
       \${imgHtml}
       <div class="nc-body">
         <div class="nc-title">\${n.title}</div>
@@ -2030,7 +2039,7 @@ const rows = g.items.map(n => {
 const cat = tmCatMap[n.category];
 const tagHtml = cat ? \`<span class="tm-row-tag \${cat.cls}">\${cat.label}</span><span class="tm-row-divider"></span>\` : \`<span class="tm-row-tag tag-empty"></span><span class="tm-row-divider" style="visibility:hidden"></span>\`;
 const _tmUrl = n.url || '';
-return \`<div class="tm-row" style="\${_tmUrl ? 'cursor:pointer' : ''}" onclick="\${_tmUrl ? \`openNewsUrl('\${_tmUrl}')\` : ''}">
+return \`<div class="tm-row" style="\${_tmUrl ? 'cursor:pointer' : ''}" onclick="\${_tmUrl ? \`openNewsUrl('\${_tmUrl}','\${(n.title||"").replace(/\'/g,"\\'")}')\` : ''}">
 <span class="tm-row-title-wrap">\${tagHtml}<span class="tm-row-title">\${n.title}</span></span>
 <span class="tm-row-source">\${n.source||''}</span>
 <span class="tm-row-arrow">›</span>
@@ -2283,7 +2292,7 @@ const data = allForCat.filter(n => n.category === category).sort((a,b) => b.ts -
       <span class="meta-source">\${n.source||''}</span><span class="meta-time">\${relT}</span>
     </div>\`;
 const _catUrl = n.url || '';
-const _catClick = _catUrl ? \`onclick="openNewsUrl('\${_catUrl}')" style="cursor:pointer"\` : '';
+const _catClick = _catUrl ? \`onclick="openNewsUrl('\${_catUrl}','\${(n.title||"").replace(/\'/g,"\\'")}')" style="cursor:pointer"\` : '';
 if(isTop) return \`<div class="cat-card-top" \${_catClick}>
 <div class="cat-card-body">
 <div class="cat-card-title">\${tagHtml}\${n.title}</div>
@@ -2532,7 +2541,7 @@ const catTagMap = {
     const hhmm = String(n.ts.getHours()).padStart(2,'0') + ':' + String(n.ts.getMinutes()).padStart(2,'0');
 const _flUrl = n.url || '';
     return \`
-    <div class="fl-item" style="\${_flUrl ? 'cursor:pointer' : ''}" onclick="\${_flUrl ? \`openNewsUrl('\${_flUrl}')\` : ''}">
+    <div class="fl-item" style="\${_flUrl ? 'cursor:pointer' : ''}" onclick="\${_flUrl ? \`openNewsUrl('\${_flUrl}','\${(n.title||"").replace(/\'/g,"\\'")}')\` : ''}">
     <div class="fl-time-col">
     <div class="fl-time-text">\${hhmm}</div>
     </div>
