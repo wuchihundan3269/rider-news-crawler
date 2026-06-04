@@ -816,13 +816,18 @@ function renderHero(){
   + `<button class="hero-arrow next" id="heroNext" onclick="arrowSlide(1)">&#8250;</button>`
   + dotsHtml;
 
-  // 右侧列表：标签·来源·时间
-  listEl.innerHTML = NEWS.map((n,i) => {
+  // 右侧列表：使用 FLASH_DATA（今日快讯），最多显示5条；不足时 fallback 到 NEWS
+  const _flashList = (FLASH_DATA && FLASH_DATA.length) ? FLASH_DATA.slice(0, 5) : NEWS.slice(0, 5);
+  listEl.innerHTML = _flashList.map((n,i) => {
     const _hc = _heroCatMap[n.category];
     const _htag = _hc ? `<span class="hero-list-tag ${_hc.cls}">${_hc.label}</span>` : '';
     const _listUrl = n.url || '';
+    const _isActive = i < NEWS.length && i === 0;
     return `
-    <div class="hero-list-item${i===0?' active':''}" data-idx="${i}" onclick="goSlide(${i},true)" onmouseenter="hoverSlide(${i})" onmouseleave="leaveSlide()">
+    <div class="hero-list-item${_isActive?' active':''}" data-idx="${i < NEWS.length ? i : 0}"
+      onclick="${_listUrl ? `window.open('${_listUrl}','_blank')` : `goSlide(${Math.min(i,NEWS.length-1)},true)`}"
+      onmouseenter="${i < NEWS.length ? `hoverSlide(${i})` : ''}"
+      onmouseleave="${i < NEWS.length ? 'leaveSlide()' : ''}">
       <div class="hero-list-info">
         <div class="hero-list-title-row">
           <div class="hero-list-text">${n.title}</div>
@@ -1743,8 +1748,8 @@ function renderHistoryNews(){
   const cards = visible.map(n => {
     const imgHtml = n.img
       ? `<div class="nc-img"><img src="${n.img}" alt="${n.title}" loading="lazy"></div>`
-      : '';
-    const cardCls = n.img ? 'news-card' : `news-card nc-noimg cat-${n.category}`;
+      : `<div class="nc-img" style="background:${n.grad||'linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)'}"></div>`;
+    const cardCls = n.img ? 'news-card' : `news-card cat-${n.category}`;
     const summaryHtml = (!n.img && n.summary)
       ? `<div class="nc-summary">${n.summary}</div>`
       : '';
