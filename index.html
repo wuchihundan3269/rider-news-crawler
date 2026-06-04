@@ -112,6 +112,7 @@ position:relative;
 .hero-source-tag.tag-red{color:#fca5a5;border-color:#fca5a5}
 .hero-source-tag.tag-orange{color:#fdba74;border-color:#fdba74}
 .hero-source-tag.tag-blue{color:#93c5fd;border-color:#93c5fd}
+.hero-source-tag.tag-teal{color:#5eead4;border-color:#5eead4}
 
 /* 左右箭头 */
 .hero-arrow{
@@ -182,6 +183,7 @@ position:relative;
 .hero-list-tag.tag-green{background:transparent;color:#2e7d32;border-color:#2e7d32}
 .hero-list-tag.tag-red{background:transparent;color:#c62828;border-color:#c62828}
 .hero-list-tag.tag-orange{background:transparent;color:#e65100;border-color:#e65100}
+.hero-list-tag.tag-teal{background:transparent;color:#0f766e;border-color:#0f766e}
 
 /* 进度条（隐藏） */
 .hero-progress{display:none}
@@ -240,6 +242,7 @@ position:relative;
 .tag-purple{color:#722ed1}
 .tag-gray{color:#ababab}
 .tag-yellow{color:#d48806}
+.tag-teal{color:#0d9488}
 .art-source{font-size:11px;font-weight:600;color:#555;flex-shrink:0}
 .art-time{font-size:11px;color:#bbb;flex-shrink:0}
 .art-dot{color:transparent;font-size:11px;margin:0 8px;line-height:1;flex-shrink:0;user-select:none}
@@ -263,6 +266,7 @@ position:relative;
 .tm-row-tag.tag-green{background:transparent;color:#2e7d32;border-color:#2e7d32}
 .tm-row-tag.tag-red{background:transparent;color:#c62828;border-color:#c62828}
 .tm-row-tag.tag-orange{background:transparent;color:#e65100;border-color:#e65100}
+.tm-row-tag.tag-teal{background:transparent;color:#0f766e;border-color:#0f766e}
 .tm-row-tag.tag-empty{visibility:hidden}
 .tm-row-divider{width:1px;height:12px;background:rgba(0,0,0,.15);flex-shrink:0}
 .tm-row-title{flex:1;font-size:14px;color:#1a1a1a;line-height:1.55;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .12s;min-width:0}
@@ -331,6 +335,7 @@ position:relative;
 .tm-tag.tag-green{background:transparent;color:#2e7d32;border-color:#2e7d32}
 .tm-tag.tag-red{background:transparent;color:#c62828;border-color:#c62828}
 .tm-tag.tag-orange{background:transparent;color:#e65100;border-color:#e65100}
+.tm-tag.tag-teal{background:transparent;color:#0f766e;border-color:#0f766e}
 .load-more{background:#fff;text-align:center;padding:18px;font-size:13px;color:#bbb;cursor:pointer;border-top:0.8px solid rgba(0,0,0,.06);letter-spacing:.5px}
 .load-more:hover{color:#e8312a}
 /* 时光机页查看更多按钮：宽度与新闻列表对齐 */
@@ -568,6 +573,7 @@ padding:12px 0;
 .tag-badge.tag-green{background:transparent;color:#2e7d32;border-color:#2e7d32}
 .tag-badge.tag-red{background:transparent;color:#c62828;border-color:#c62828}
 .tag-badge.tag-orange{background:transparent;color:#e65100;border-color:#e65100}
+.tag-badge.tag-teal{background:transparent;color:#0f766e;border-color:#0f766e}
 .tag-badge.tag-blue{background:transparent;color:#1255cc;border-color:#1255cc}
 .tag-badge.tag-gray{background:transparent;color:#888;border-color:#bbb}
 
@@ -587,9 +593,13 @@ padding:12px 0;
       <span class="nav-sep">|</span>
       <div class="tab" data-page="all" onclick="showPage('all')">更多资讯</div>
       <span class="nav-sep">|</span>
-      <div class="tab" data-page="rider" onclick="showPage('rider')">骑手新闻</div>
+      <div class="tab" data-page="rider_story" onclick="showPage('rider_story')">骑手故事</div>
       <span class="nav-sep">|</span>
-      <div class="tab" data-page="industry" onclick="showPage('industry')">行业动态</div>
+      <div class="tab" data-page="care" onclick="showPage('care')">骑手关怀</div>
+      <span class="nav-sep">|</span>
+      <div class="tab" data-page="policy" onclick="showPage('policy')">行业政策</div>
+      <span class="nav-sep">|</span>
+      <div class="tab" data-page="report" onclick="showPage('report')">宏观报告</div>
       <span class="nav-sep">|</span>
       <div class="tab" data-page="platform" onclick="showPage('platform')">平台动作</div>
       <span class="nav-sep">|</span>
@@ -680,7 +690,7 @@ const SAMPLE_NEWS = [
     title:'美团全面实施骑手超时新规，取消现金扣款改积分激励机制',
     summary:'美团外卖宣布自下月起在全国范围内推行骑手超时新规，彻底废除现金罚款制度，改为积分激励体系，骑手按时完成配送可累积正向积分兑换奖励。',
     ts: hoursAgo(2), img:null, grad:'linear-gradient(135deg,#1a1a2e 0%,#16213e 45%,#0f3460 100%)' },
-  { id:2, tag:'行业动态', tagClass:'tag-blue', source:'人社部', category:'industry',
+  { id:2, tag:'行业动态', tagClass:'tag-blue', source:'人社部', category:'policy',
     title:'人社部发布新就业形态劳动者权益保障指导意见',
     summary:'人力资源和社会保障部正式发布指导意见，明确平台企业对骑手等灵活就业人员的用工责任，要求平台为其提供基本社会保险参保渠道。',
     ts: hoursAgo(5), img:null, grad:'linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)' },
@@ -692,7 +702,7 @@ const SAMPLE_NEWS = [
 const SAMPLE_FLASH = [
   { ts: minsAgo(15),  tag:'美团', tagClass:'tag-red',    source:'美团外卖',  category:'platform', title:'美团外卖宣布全面上线"骑手一键求助"功能', summary:'骑手遭遇交通事故、突发疾病或人身安全威胁时，长按APP内专属按钮可自动拨打120并向平台发送实时位置。' },
   { ts: minsAgo(55),  tag:'舆情', tagClass:'tag-purple', source:'微博热搜',  category:'opinion',  title:'"骑手被困电梯"话题冲上热搜，引发平台配送时效讨论', summary:'一段骑手被困电梯导致超时遭差评的视频在微博引发广泛讨论，话题阅读量突破2亿。' },
-  { ts: minsAgo(140), tag:'政策', tagClass:'tag-blue',   source:'人社部',    category:'industry', title:'人社部明确平台企业须为骑手缴纳工伤保险，过渡期至年底', summary:'明确要求各外卖平台在今年年底前完成骑手工伤保险参保工作。' }
+  { ts: minsAgo(140), tag:'政策', tagClass:'tag-blue',   source:'人社部',    category:'policy', title:'人社部明确平台企业须为骑手缴纳工伤保险，过渡期至年底', summary:'明确要求各外卖平台在今年年底前完成骑手工伤保险参保工作。' }
 ];
 
 // ===== 运行时数据（由 loadData 填充，初始为 null 表示加载中）=====
@@ -769,7 +779,7 @@ const SLIDE_DURATION = 3000;
 function renderHero(){
   const stage = document.getElementById('heroStage');
   const listEl = document.getElementById('heroListItems');
-  const _heroCatMap = {rider:{label:'骑手新闻',cls:'tag-yellow'},industry:{label:'行业动态',cls:'tag-purple'},platform:{label:'平台动作',cls:'tag-green'},opinion:{label:'舆情信息',cls:'tag-red'}};
+  const _heroCatMap = {rider_story:{label:'骑手故事',cls:'tag-yellow'},care:{label:'骑手关怀',cls:'tag-teal'},policy:{label:'行业政策',cls:'tag-red'},report:{label:'宏观报告',cls:'tag-purple'},platform:{label:'平台动作',cls:'tag-green'},opinion:{label:'舆情信息',cls:'tag-orange'},rider:{label:'骑手故事',cls:'tag-yellow'},industry:{label:'行业政策',cls:'tag-red'}};
 
   const slidesHtml = NEWS.map((n,i) => {
     const _bgStyle = n.img ? 'url(' + n.img + '), ' + n.grad : n.grad;
@@ -917,7 +927,7 @@ updateClock();
 setInterval(updateClock, 30000);
 
 // ===== 路由 =====
-const PAGE_TITLES = {all:'更多资讯', rider:'骑手新闻', industry:'行业动态', platform:'平台动作', opinion:'舆情信息'};
+const PAGE_TITLES = {all:'更多资讯', rider_story:'骑手故事', care:'骑手关怀', policy:'行业政策', report:'宏观报告', platform:'平台动作', opinion:'舆情信息'};
 
 const ALL_NEWS = [
   {
@@ -928,7 +938,7 @@ const ALL_NEWS = [
     ts: hoursAgo(4), views:'6,218'
   },
   {
-    tag:'政策', tagClass:'tag-blue', source:'人社部', category:'industry',
+    tag:'政策', tagClass:'tag-blue', source:'人社部', category:'policy',
     title:'人社部发布新就业形态劳动者权益保障指导意见，灵活就业社保缴纳有新规',
     summary:'人力资源和社会保障部正式发布《关于维护新就业形态劳动者劳动保障权益的指导意见》，明确平台企业对骑手等灵活就业人员的用工责任，要求平台为其提供基本社会保险参保渠道，并规范算法管理行为，禁止以算法为由侵害劳动者合法权益。',
     keywords:['新就业形态 劳动者 权益 政策','人社部 外卖 骑手 保障','外卖 骑手 劳动保障 新规'],
@@ -956,7 +966,7 @@ const ALL_NEWS = [
     ts: hoursAgo(10), views:'4,127'
   },
   {
-    tag:'工会', tagClass:'tag-green', source:'工会联合会', category:'rider',
+    tag:'工会', tagClass:'tag-green', source:'工会联合会', category:'rider_story',
     title:'多地工会启动骑手集体协商试点，薪酬标准有望纳入集体合同',
     summary:'上海、杭州、成都三地工会联合宣布启动外卖骑手集体协商试点项目，探索将骑手最低薪酬标准、工时上限、安全保障等核心权益纳入集体合同框架，为全国推广积累经验。',
     keywords:['美团 骑手 收入 降价 争议','外卖 骑手 劳动保障 新规','美团 骑手关怀 近期'],
@@ -970,7 +980,7 @@ const ALL_NEWS = [
     ts: hoursAgo(2), views:'8,432'
   },
   {
-    tag:'政策', tagClass:'tag-blue', source:'上海市人社局', category:'rider',
+    tag:'政策', tagClass:'tag-blue', source:'上海市人社局', category:'rider_story',
     title:'上海率先落地骑手职业伤害保障试点，首批2万名骑手纳入',
     summary:'上海市人社局宣布骑手职业伤害保障试点正式落地，首批2万名外卖骑手纳入保障范围，每月缴费约60元，可享受工伤同等待遇。',
     keywords:['美团 骑手 社保 工伤','人社部 外卖 骑手 保障','地方 外卖 骑手 条例 立法'],
@@ -984,7 +994,7 @@ const ALL_NEWS = [
     ts: hoursAgo(0.5), views:'3,210'
   },
   {
-    tag:'政策', tagClass:'tag-blue', source:'交通运输部', category:'industry',
+    tag:'政策', tagClass:'tag-blue', source:'交通运输部', category:'policy',
     title:'交通运输部发布网约配送员职业技能标准征求意见稿',
     summary:'交通运输部就《网约配送员职业技能等级认定标准》公开征求意见，拟将骑手分为初级、中级、高级三个等级，持证上岗有望获得额外补贴。',
     keywords:['外卖 骑手 交通安全 新规','新就业形态 劳动者 权益 政策'],
@@ -998,21 +1008,21 @@ const ALL_NEWS = [
     ts: hoursAgo(12), views:'22,450'
   },
   {
-    tag:'行业', tagClass:'tag-gray', source:'中国物流联合会', category:'industry',
+    tag:'行业', tagClass:'tag-gray', source:'中国物流联合会', category:'policy',
     title:'即时配送市场规模突破万亿，骑手群体职业化趋势加速',
     summary:'中国物流与采购联合会发布报告显示，2024年即时配送市场规模预计突破1.2万亿元，从业骑手超过1000万人，职业化、规范化成为行业发展主旋律。',
     keywords:['新就业形态 劳动者 权益 政策','地方 外卖 骑手 条例 立法'],
     ts: hoursAgo(14), views:'8,120'
   },
   {
-    tag:'政策', tagClass:'tag-blue', source:'国家发展改革委', category:'industry',
+    tag:'政策', tagClass:'tag-blue', source:'国家发展改革委', category:'policy',
     title:'发改委联合多部门出台平台经济规范发展指导意见，外卖行业迎来系统性监管框架',
     summary:'国家发展改革委联合市场监管总局、人力资源和社会保障部、交通运输部等七部门联合印发《关于促进平台经济规范健康持续发展的指导意见》，明确要求外卖、网约车等平台建立健全骑手、司机等灵活就业人员的劳动权益保障机制，包括最低收入保障、职业伤害险强制参保、算法透明度披露、申诉渠道畅通等核心条款，并设定18个月过渡期，逾期未整改平台将面临暂停新用户注册等行政处罚措施。',
     keywords:['平台经济 监管 新规 骑手','新就业形态 劳动者 权益 政策'],
     ts: hoursAgo(9), views:'31,204'
   },
   {
-    tag:'美团', tagClass:'tag-red', source:'美团研究院', category:'rider',
+    tag:'美团', tagClass:'tag-red', source:'美团研究院', category:'rider_story',
     title:'美团发布2024骑手职业发展报告：平均月收入6800元，超六成骑手来自农村',
     summary:'美团研究院发布《2024年外卖骑手职业发展与生活状况调查报告》，报告基于对全国32个城市逾5万名骑手的深度访谈与数据分析，显示骑手群体平均月收入达6800元，较上年增长7.2%；超过62%的骑手来自农村地区，将外卖配送作为进城务工的主要收入来源；骑手平均日工作时长为9.3小时，其中专职骑手占比约45%，兼职骑手占比55%；在职业满意度方面，73%的受访骑手表示对收入水平"基本满意"，但对配送时限压力和交通安全风险的担忧仍是主要痛点。',
     keywords:['美团 骑手 收入 降价 争议','美团 骑手关怀 近期'],
@@ -1026,140 +1036,140 @@ const ALL_NEWS = [
     ts: hoursAgo(16), views:'44,890'
   },
   {
-    tag:'骑手', tagClass:'tag-yellow', source:'工人日报', category:'rider',
+    tag:'骑手', tagClass:'tag-yellow', source:'工人日报', category:'rider_story',
     title:'外卖骑手日均接单超30单，职业疲劳问题引关注',
     summary:'工人日报记者走访多地发现，外卖骑手日均接单量普遍超过30单，部分骑手每天工作超12小时，职业疲劳和安全隐患问题亟待重视，多位骑手反映长期处于高压状态，身体透支严重。',
     ts: hoursAgo(20)
   },
   {
-    tag:'骑手', tagClass:'tag-yellow', source:'澎湃新闻', category:'rider',
+    tag:'骑手', tagClass:'tag-yellow', source:'澎湃新闻', category:'rider_story',
     title:'骑手送餐途中救助晕倒老人，获平台免责并奖励500元',
     summary:'上海一名外卖骑手在送餐途中发现路边老人突然晕倒，立即停车施救并拨打120，事后平台主动为其取消超时差评并给予500元奖励，引发广泛好评，网友纷纷称赞骑手的善举。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 9, 30)
   },
   {
-    tag:'骑手', tagClass:'tag-yellow', source:'新京报', category:'rider',
+    tag:'骑手', tagClass:'tag-yellow', source:'新京报', category:'rider_story',
     title:'北京骑手月均收入达8500元，高于全市平均工资水平',
     summary:'新京报记者调查显示，北京地区外卖骑手月均收入约8500元，高于全市职工平均工资水平，但骑手普遍反映收入不稳定、缺乏社会保障是主要痛点，尤其是工伤认定难题长期困扰从业者。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 14, 0)
   },
   {
-    tag:'骑手', tagClass:'tag-yellow', source:'中国青年报', category:'rider',
+    tag:'骑手', tagClass:'tag-yellow', source:'中国青年报', category:'rider_story',
     title:'调查：六成骑手希望平台提供职业技能培训机会',
     summary:'中国青年报联合多家机构对3000名外卖骑手进行调查，结果显示超过60%的骑手希望平台提供驾驶安全、急救技能等职业培训，以提升自身综合素质和职业竞争力，同时也有助于降低配送事故率。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 10, 0)
   },
   {
-    tag:'骑手', tagClass:'tag-yellow', source:'第一财经', category:'rider',
+    tag:'骑手', tagClass:'tag-yellow', source:'第一财经', category:'rider_story',
     title:'外卖骑手收入两极分化：头部骑手月入过万，新手不足3000',
     summary:'第一财经调查显示，外卖骑手收入两极分化明显，接单效率高、熟悉路况的头部骑手月收入可超过1万元，而新手或兼职骑手月收入往往不足3000元，平台激励机制有待进一步优化完善。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 15, 30)
   },
   {
-    tag:'骑手', tagClass:'tag-yellow', source:'南方都市报', category:'rider',
+    tag:'骑手', tagClass:'tag-yellow', source:'南方都市报', category:'rider_story',
     title:'深圳骑手自发组建互助群，成员超2万人共享路况信息',
     summary:'深圳外卖骑手自发组建的互助微信群已吸引超过2万名成员，群内互相分享路况、天气预警及申诉技巧，成为骑手群体重要的信息交流平台，也折射出骑手群体对组织化互助的强烈需求。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 9, 0)
   },
   {
-    tag:'骑手', tagClass:'tag-yellow', source:'新华社', category:'rider',
+    tag:'骑手', tagClass:'tag-yellow', source:'新华社', category:'rider_story',
     title:'骑手群体心理健康调查：四成骑手存在不同程度焦虑',
     summary:'新华社报道，一项针对5000名外卖骑手的心理健康调查显示，约40%的骑手存在不同程度的焦虑情绪，主要来源于配送时效压力、交通安全担忧和收入不稳定性，多地已启动骑手心理援助热线。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 14, 0)
   },
   {
-    tag:'骑手', tagClass:'tag-yellow', source:'经济日报', category:'rider',
+    tag:'骑手', tagClass:'tag-yellow', source:'经济日报', category:'rider_story',
     title:'骑手配送箱升级：新款保温箱续航8小时，重量减轻30%',
     summary:'经济日报报道，美团外卖宣布为全国骑手更换新款智能保温配送箱，新款配送箱采用新型隔热材料，保温续航时间延长至8小时，重量较旧款减轻30%，有效降低骑手体力消耗，获骑手群体普遍好评。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 4, 10, 0)
   },
   {
-    tag:'骑手', tagClass:'tag-yellow', source:'人民网', category:'rider',
+    tag:'骑手', tagClass:'tag-yellow', source:'人民网', category:'rider_story',
     title:'00后骑手群体崛起：占比已达21%，更注重工作灵活性',
     summary:'人民网报道，外卖骑手群体中00后占比已升至21%，较三年前增长8个百分点。调查显示00后骑手更看重工作时间灵活性，有37%将骑手作为副业，同时从事其他工作或学习，职业观念更加多元。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 4, 15, 0)
   },
   {
-    tag:'骑手', tagClass:'tag-yellow', source:'法制日报', category:'rider',
+    tag:'骑手', tagClass:'tag-yellow', source:'法制日报', category:'rider_story',
     title:'骑手交通事故维权难题：平台责任认定仍存争议',
     summary:'法制日报报道，外卖骑手在配送途中发生交通事故后的维权困境引发关注，由于劳动关系认定模糊，部分骑手在事故后难以获得平台赔偿，法律界呼吁尽快明确平台用工责任边界，保障骑手合法权益。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5, 9, 0)
   },
   {
-    tag:'骑手', tagClass:'tag-yellow', source:'光明日报', category:'rider',
+    tag:'骑手', tagClass:'tag-yellow', source:'光明日报', category:'rider_story',
     title:'骑手驿站全国覆盖超10万个，冬季供暖设施全面升级',
     summary:'光明日报报道，截至目前全国各类骑手驿站数量已超过10万个，覆盖主要城市核心配送区域，今年冬季各平台对驿站供暖设施进行全面升级，新增热饮供应、充电宝借用等便民服务，骑手满意度大幅提升。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5, 14, 30)
   },
   {
-    tag:'骑手', tagClass:'tag-yellow', source:'中国新闻周刊', category:'rider',
+    tag:'骑手', tagClass:'tag-yellow', source:'中国新闻周刊', category:'rider_story',
     title:'外卖骑手平均日工作时长调查：超10小时占比达58%',
     summary:'中国新闻周刊联合高校研究团队发布调查报告，数据显示58%的外卖骑手日均工作时长超过10小时，其中兼职骑手平均工作6.2小时，专职骑手平均工作11.8小时，健康隐患不容忽视，亟需制度性保障。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 6, 10, 0)
   },
   // ===== 行业动态 industry =====
   {
-    tag:'政策', tagClass:'tag-blue', source:'国务院办公厅', category:'industry',
+    tag:'政策', tagClass:'tag-blue', source:'国务院办公厅', category:'policy',
     title:'国务院出台促进灵活就业高质量发展意见，外卖配送纳入重点支持范围',
     summary:'国务院办公厅印发《关于支持灵活就业高质量发展的若干意见》，将外卖配送、网约车等新业态纳入重点支持范围，提出建立灵活就业人员职业伤害保障制度，并要求各地在2025年底前完成试点推广。',
     ts: hoursAgo(6), views:'14,320'
   },
   {
-    tag:'行业', tagClass:'tag-gray', source:'艾瑞咨询', category:'industry',
+    tag:'行业', tagClass:'tag-gray', source:'艾瑞咨询', category:'policy',
     title:'艾瑞咨询：2024年即时配送订单量同比增长28%，骑手需求持续旺盛',
     summary:'艾瑞咨询发布《2024年中国即时配送行业研究报告》，数据显示全年即时配送订单量同比增长28%，市场规模达1.35万亿元，预计2025年骑手需求缺口将超过200万人，行业人才竞争日趋激烈。',
     ts: hoursAgo(8), views:'9,450'
   },
   {
-    tag:'政策', tagClass:'tag-blue', source:'人社部', category:'industry',
+    tag:'政策', tagClass:'tag-blue', source:'人社部', category:'policy',
     title:'人社部启动新就业形态劳动者职业技能提升行动，骑手可免费参加培训',
     summary:'人力资源和社会保障部宣布启动"新就业形态劳动者职业技能提升三年行动"，外卖骑手、网约车司机等群体可免费参加驾驶安全、急救技能、客户服务等培训课程，完成培训并通过考核者可获得职业技能证书。',
     ts: hoursAgo(10), views:'7,830'
   },
   {
-    tag:'行业', tagClass:'tag-gray', source:'中国互联网协会', category:'industry',
+    tag:'行业', tagClass:'tag-gray', source:'中国互联网协会', category:'policy',
     title:'中国互联网协会发布外卖平台自律公约，算法透明度成核心议题',
     summary:'中国互联网协会联合美团、饿了么、京东到家等主要外卖平台发布《外卖平台算法自律公约》，要求成员平台向骑手公开派单算法核心规则，建立算法申诉机制，并定期发布算法影响评估报告。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 10, 0), views:'11,200'
   },
   {
-    tag:'政策', tagClass:'tag-blue', source:'交通运输部', category:'industry',
+    tag:'政策', tagClass:'tag-blue', source:'交通运输部', category:'policy',
     title:'交通运输部：电动自行车新国标过渡期结束，骑手换车补贴政策落地',
     summary:'交通运输部宣布电动自行车新国标过渡期正式结束，各地陆续启动不符合标准车辆的淘汰工作。为减轻骑手换车负担，多地政府联合外卖平台推出换车补贴政策，每辆最高补贴1500元。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 15, 0), views:'6,780'
   },
   {
-    tag:'行业', tagClass:'tag-gray', source:'南方财经', category:'industry',
+    tag:'行业', tagClass:'tag-gray', source:'南方财经', category:'policy',
     title:'即时零售赛道竞争加剧，骑手配送半径从3公里扩展至5公里',
     summary:'南方财经报道，随着即时零售业务快速扩张，各大平台纷纷将骑手配送半径从传统的3公里扩展至5公里，部分城市甚至达到8公里，骑手单均配送时间和体力消耗随之增加，引发行业对骑手权益保障的新一轮讨论。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 9, 0), views:'5,340'
   },
   {
-    tag:'政策', tagClass:'tag-blue', source:'市场监管总局', category:'industry',
+    tag:'政策', tagClass:'tag-blue', source:'市场监管总局', category:'policy',
     title:'市场监管总局对外卖平台开展专项检查，重点核查骑手保险缴纳情况',
     summary:'市场监管总局联合人社部对全国主要外卖平台开展专项检查，重点核查平台是否按规定为骑手缴纳职业伤害保险，检查结果将于下月公布，违规平台将被责令整改并处以罚款。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 14, 0), views:'8,910'
   },
   {
-    tag:'行业', tagClass:'tag-gray', source:'21世纪经济报道', category:'industry',
+    tag:'行业', tagClass:'tag-gray', source:'21世纪经济报道', category:'policy',
     title:'外卖行业进入存量竞争时代，平台转向精细化运营提升骑手效率',
     summary:'21世纪经济报道分析指出，外卖行业用户增速放缓，各平台开始从规模扩张转向精细化运营，通过AI调度优化、智能路径规划等技术手段提升骑手配送效率，部分平台骑手人均日接单量已提升至35单以上。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 10, 0), views:'4,560'
   },
   {
-    tag:'政策', tagClass:'tag-blue', source:'全国总工会', category:'industry',
+    tag:'政策', tagClass:'tag-blue', source:'全国总工会', category:'policy',
     title:'全国总工会推动外卖骑手入会，全国已有超80万骑手加入工会组织',
     summary:'全国总工会发布数据显示，截至目前全国已有超过80万名外卖骑手加入工会组织，较去年同期增长120%。工会将为骑手提供法律援助、劳动争议调解、职业培训等服务，切实维护骑手合法权益。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 15, 0), views:'12,670'
   },
   {
-    tag:'行业', tagClass:'tag-gray', source:'财新网', category:'industry',
+    tag:'行业', tagClass:'tag-gray', source:'财新网', category:'policy',
     title:'骑手职业伤害保险全国推广提速，参保人数突破500万',
     summary:'财新网报道，国家职业伤害保险试点范围持续扩大，目前已覆盖全国22个省份，参保骑手人数突破500万，占全国骑手总数的约50%。业内人士预计，2025年底前有望实现全国全覆盖。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 4, 9, 0), views:'9,230'
   },
   {
-    tag:'行业', tagClass:'tag-gray', source:'经济观察报', category:'industry',
+    tag:'行业', tagClass:'tag-gray', source:'经济观察报', category:'policy',
     title:'外卖骑手群体老龄化趋势显现，40岁以上骑手占比升至18%',
     summary:'经济观察报调查显示，外卖骑手群体中40岁以上人员占比已升至18%，较五年前增长近一倍。这一群体普遍面临体力下降、学习新技术困难等挑战，如何保障中老年骑手的职业发展成为行业新课题。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5, 10, 0), views:'6,120'
@@ -1298,11 +1308,157 @@ const ALL_NEWS = [
     summary:'人民网舆情数据中心发布报告显示，2024年骑手权益相关话题在各大平台的讨论热度创三年新高，全年相关话题总阅读量超过200亿次，公众对骑手群体的关注和同情程度持续上升，政策回应速度也明显加快。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5, 10, 0), views:'16,780'
   },
+  // ===== 骑手关怀 care =====
+  {
+    tag:'美团', tagClass:'tag-red', source:'美团外卖', category:'care',
+    title:'美团启动"骑手关爱基金"，重大疾病最高援助20万元',
+    summary:'美团外卖宣布设立"骑手关爱基金"，由平台出资5亿元，专项用于援助遭遇重大疾病、意外伤残的骑手及其家庭，单次最高援助金额20万元，已有超过3000名骑手受益，基金将持续滚动补充。',
+    ts: hoursAgo(3), views:'9,870'
+  },
+  {
+    tag:'饿了么', tagClass:'tag-orange', source:'饿了么', category:'care',
+    title:'饿了么"骑手之家"驿站突破10万个，提供免费餐饮和医疗服务',
+    summary:'饿了么宣布"骑手之家"驿站网络规模突破10万个，覆盖全国500余座城市，驿站提供免费饮用水、充电、休息、急救包等服务，部分驿站还配备了简单医疗设备和心理咨询热线，骑手满意度达92%。',
+    ts: hoursAgo(6), views:'7,340'
+  },
+  {
+    tag:'顺丰', tagClass:'tag-blue', source:'顺丰同城', category:'care',
+    title:'顺丰同城为全国骑手配发智能头盔，内置碰撞报警系统',
+    summary:'顺丰同城宣布启动"安全护航"计划，为全国在册骑手统一配发新款智能头盔，新头盔内置碰撞传感器，发生事故时可自动向平台发送报警信号，并附带意外伤害保险，预计覆盖骑手超80万人。',
+    ts: hoursAgo(9), views:'5,620'
+  },
+  {
+    tag:'美团', tagClass:'tag-red', source:'美团外卖', category:'care',
+    title:'美团骑手心理援助热线上线，7×24小时专业心理咨询',
+    summary:'美团外卖宣布上线骑手专属心理援助热线，由专业心理咨询师提供7×24小时服务，骑手可免费拨打热线倾诉工作压力、情绪困扰等问题，首月已有超过1.2万名骑手使用该服务。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 10, 0), views:'6,450'
+  },
+  {
+    tag:'达达', tagClass:'tag-blue', source:'达达集团', category:'care',
+    title:'达达集团推出骑手子女助学金，每年最高资助1万元',
+    summary:'达达集团宣布设立骑手子女助学金项目，对在读中小学及大学的骑手子女给予资助，中小学每年最高3000元，大学每年最高1万元，首批已有500余名骑手子女获得资助，项目将长期持续。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 15, 0), views:'8,120'
+  },
+  {
+    tag:'蜂鸟', tagClass:'tag-orange', source:'蜂鸟配送', category:'care',
+    title:'蜂鸟配送推出骑手免费年度体检，重点筛查职业病',
+    summary:'饿了么旗下蜂鸟配送宣布为全平台骑手提供免费年度体检，重点检查腰椎、颈椎、心血管等骑手高发病种，体检费用由平台全额承担，预计覆盖超过100万名骑手，首批体检已在全国50城启动。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 9, 0), views:'4,890'
+  },
+  {
+    tag:'美团', tagClass:'tag-red', source:'美团研究院', category:'care',
+    title:'美团发布骑手关怀白皮书：五年累计投入超百亿元',
+    summary:'美团研究院发布《骑手关怀五年白皮书》，数据显示美团过去五年在骑手保险、驿站建设、技能培训、困难援助等方面累计投入超过100亿元，骑手满意度从2019年的71%提升至2024年的89%。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 14, 0), views:'11,230'
+  },
+  {
+    tag:'工会', tagClass:'tag-green', source:'全国总工会', category:'care',
+    title:'全总推动骑手驿站标准化建设，全国已建成超15万个',
+    summary:'全国总工会联合各大外卖平台推动骑手驿站标准化建设，截至目前全国已建成符合标准的骑手驿站超过15万个，驿站须配备饮水、充电、休息、急救等基本设施，并纳入工会服务体系统一管理。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 10, 0), views:'6,780'
+  },
+  {
+    tag:'政策', tagClass:'tag-blue', source:'人社部', category:'care',
+    title:'人社部推动骑手职业伤害保障扩围，参保人数突破600万',
+    summary:'人力资源和社会保障部发布数据显示，骑手职业伤害保障制度覆盖范围持续扩大，全国参保骑手人数已突破600万，占全国骑手总数的约60%，预计2025年底前实现全国全覆盖。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 15, 0), views:'9,340'
+  },
+  {
+    tag:'美团', tagClass:'tag-red', source:'美团外卖', category:'care',
+    title:'美团骑手节日关怀礼包发放，春节期间每人补贴500元',
+    summary:'美团外卖宣布春节期间为坚守岗位的骑手发放节日关怀礼包，包含500元现金补贴、节日礼品及专属慰问信，同时为骑手家属提供免费视频通话服务，预计惠及全国超过200万名骑手。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 4, 9, 0), views:'14,560'
+  },
+  {
+    tag:'饿了么', tagClass:'tag-orange', source:'饿了么', category:'care',
+    title:'饿了么与中国人寿合作推出骑手专属重疾险，平台补贴50%保费',
+    summary:'饿了么与中国人寿保险公司签署战略合作协议，联合推出骑手专属重大疾病保险产品，保费由平台补贴50%，骑手自付部分每月不超过30元，保障范围涵盖30种重大疾病，已向全国骑手开放投保。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 4, 14, 0), views:'7,890'
+  },
+  {
+    tag:'顺丰', tagClass:'tag-blue', source:'顺丰同城', category:'care',
+    title:'顺丰同城设立骑手互助基金，重大疾病最高援助10万元',
+    summary:'顺丰同城宣布设立骑手互助基金，由平台和骑手共同出资，骑手每月缴纳20元，平台按1:2比例配捐。基金用于援助遭遇重大疾病或意外的骑手，单次最高援助金额为10万元，已有超过50万名骑手参与。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5, 10, 0), views:'5,670'
+  },
+  // ===== 宏观报告 report =====
+  {
+    tag:'报告', tagClass:'tag-purple', source:'艾瑞咨询', category:'report',
+    title:'艾瑞咨询：2024年即时配送市场规模达1.35万亿，骑手需求缺口超200万',
+    summary:'艾瑞咨询发布《2024年中国即时配送行业研究报告》，数据显示全年即时配送订单量同比增长28%，市场规模达1.35万亿元，预计2025年骑手需求缺口将超过200万人，行业人才竞争日趋激烈，薪酬水平有望持续上涨。',
+    ts: hoursAgo(4), views:'12,340'
+  },
+  {
+    tag:'报告', tagClass:'tag-purple', source:'中国物流联合会', category:'report',
+    title:'中物联报告：即时配送日均订单突破1.2亿单，骑手职业化趋势加速',
+    summary:'中国物流与采购联合会发布2024年上半年即时配送行业报告，全国即时配送日均订单量突破1.2亿单，同比增长23%，骑手职业化、规范化成为行业发展主旋律，持证骑手比例较去年提升15个百分点。',
+    ts: hoursAgo(7), views:'9,870'
+  },
+  {
+    tag:'报告', tagClass:'tag-purple', source:'美团研究院', category:'report',
+    title:'美团发布2024骑手职业发展报告：平均月收入6800元，超六成来自农村',
+    summary:'美团研究院发布《2024年外卖骑手职业发展与生活状况调查报告》，报告基于对全国32个城市逾5万名骑手的深度访谈，显示骑手群体平均月收入达6800元，较上年增长7.2%；超过62%的骑手来自农村地区，职业满意度73%。',
+    ts: hoursAgo(10), views:'18,450'
+  },
+  {
+    tag:'报告', tagClass:'tag-purple', source:'国家统计局', category:'report',
+    title:'国家统计局：灵活就业人员突破2亿，平台经济成重要就业渠道',
+    summary:'国家统计局最新数据显示，全国灵活就业人员规模已突破2亿人，其中依托平台经济从事配送、网约车等新业态的从业者占比持续上升，外卖骑手群体规模超过1000万人，成为稳就业的重要支撑力量。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 9, 0), views:'15,670'
+  },
+  {
+    tag:'报告', tagClass:'tag-purple', source:'清华大学', category:'report',
+    title:'清华大学研究：电动骑手每单碳排放仅为燃油车1/8，即时配送成绿色物流典范',
+    summary:'清华大学发布即时配送行业碳排放研究报告，数据显示电动自行车骑手每单配送碳排放量仅为燃油汽车的八分之一，全国即时配送行业每年减少碳排放约1200万吨，相当于种植约6亿棵树的固碳效果。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 14, 0), views:'8,230'
+  },
+  {
+    tag:'报告', tagClass:'tag-purple', source:'商务部', category:'report',
+    title:'商务部：即时零售渗透率持续提升，2024年市场规模突破6000亿',
+    summary:'商务部发布即时零售行业发展报告，数据显示2024年即时零售市场规模突破6000亿元，同比增长45%，渗透率从2022年的3.2%提升至8.7%，骑手配送品类从餐饮向商超、医药、鲜花等全品类扩展。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 10, 0), views:'11,890'
+  },
+  {
+    tag:'报告', tagClass:'tag-purple', source:'中国青年报', category:'report',
+    title:'调查报告：六成骑手希望平台提供职业技能培训，安全驾驶需求最迫切',
+    summary:'中国青年报联合多家机构对3000名外卖骑手进行调查，结果显示超过60%的骑手希望平台提供驾驶安全、急救技能等职业培训，其中安全驾驶培训需求最为迫切，占比达78%，职业发展通道也是骑手最关注的议题之一。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 15, 0), views:'7,450'
+  },
+  {
+    tag:'报告', tagClass:'tag-purple', source:'新华社', category:'report',
+    title:'新华社：外卖骑手群体心理健康调查，四成骑手存在不同程度焦虑',
+    summary:'新华社报道，一项针对5000名外卖骑手的心理健康调查显示，约40%的骑手存在不同程度的焦虑情绪，主要来源于配送时效压力、交通安全担忧和收入不稳定性，多地已启动骑手心理援助热线项目。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 9, 0), views:'13,780'
+  },
+  {
+    tag:'报告', tagClass:'tag-purple', source:'财新网', category:'report',
+    title:'财新报告：骑手职业伤害保险全国推广提速，参保人数突破500万',
+    summary:'财新网报道，国家职业伤害保险试点范围持续扩大，目前已覆盖全国22个省份，参保骑手人数突破500万，占全国骑手总数的约50%。业内人士预计，2025年底前有望实现全国全覆盖，制度红利将惠及千万骑手。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 14, 0), views:'9,120'
+  },
+  {
+    tag:'报告', tagClass:'tag-purple', source:'第一财经', category:'report',
+    title:'第一财经：骑手收入两极分化报告，头部骑手月入过万，新手不足3000',
+    summary:'第一财经调查显示，外卖骑手收入两极分化明显，接单效率高、熟悉路况的头部骑手月收入可超过1万元，而新手或兼职骑手月收入往往不足3000元，平台激励机制有待进一步优化，收入分配公平性亟需关注。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 4, 10, 0), views:'16,340'
+  },
+  {
+    tag:'报告', tagClass:'tag-purple', source:'经济观察报', category:'report',
+    title:'经济观察报：骑手群体老龄化趋势显现，40岁以上占比升至18%',
+    summary:'经济观察报调查显示，外卖骑手群体中40岁以上人员占比已升至18%，较五年前增长近一倍。这一群体普遍面临体力下降、学习新技术困难等挑战，如何保障中老年骑手的职业发展成为行业新课题。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 4, 15, 0), views:'7,890'
+  },
+  {
+    tag:'报告', tagClass:'tag-purple', source:'人民网', category:'report',
+    title:'人民网舆情报告：骑手权益话题持续高热，公众关注度创三年新高',
+    summary:'人民网舆情数据中心发布报告显示，2024年骑手权益相关话题在各大平台的讨论热度创三年新高，全年相关话题总阅读量超过200亿次，公众对骑手群体的关注和同情程度持续上升，政策回应速度也明显加快。',
+    ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5, 9, 0), views:'21,450'
+  },
 ];
 
 // ===== 全部资讯历史数据（首页图文卡片，24条，含无图卡片） =====
 const HISTORY_NEWS = [
-  { category:'industry', source:'人社部',
+  { category:'policy', source:'人社部',
     title:'人社部发布新就业形态劳动者权益保障指导意见',
     img:'https://picsum.photos/seed/hn1/600/338',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 10, 20) },
@@ -1315,11 +1471,11 @@ const HISTORY_NEWS = [
     summary:'市场监管总局联合交通运输部发布外卖平台算法负面清单，明确禁止平台以最严算法为基准设置配送时限，要求预留合理缓冲并向骑手公示算法规则。',
     img:null,
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 16, 0) },
-  { category:'industry', source:'中国物流联合会',
+  { category:'policy', source:'中国物流联合会',
     title:'即时配送市场规模突破万亿，骑手职业化趋势加速',
     img:'https://picsum.photos/seed/hn4/600/338',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 9, 0) },
-  { category:'rider', source:'工会联合会',
+  { category:'rider_story', source:'工会联合会',
     title:'多地工会启动骑手集体协商试点',
     img:'https://picsum.photos/seed/hn5/600/338',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 11, 15) },
@@ -1332,7 +1488,7 @@ const HISTORY_NEWS = [
     title:'社交媒体热议骑手"困在系统里"，平台承诺优化算法',
     img:'https://picsum.photos/seed/hn7/600/338',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 17, 0) },
-  { category:'industry', source:'交通运输部',
+  { category:'policy', source:'交通运输部',
     title:'交通运输部发布网约配送员职业技能标准征求意见稿',
     img:'https://picsum.photos/seed/hn8/600/338',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 9, 30) },
@@ -1340,7 +1496,7 @@ const HISTORY_NEWS = [
     title:'饿了么骑手意外险保额提升至60万元',
     img:'https://picsum.photos/seed/hn9/600/338',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 11, 0) },
-  { category:'rider', source:'上海市人社局',
+  { category:'rider_story', source:'上海市人社局',
     title:'上海骑手职业伤害保障试点落地，首批2万人纳入',
     summary:'上海市人社局宣布骑手职业伤害保障试点正式落地，首批2万名外卖骑手纳入保障范围，每月缴费约60元，可享受与工伤同等的医疗和赔付待遇。',
     img:null,
@@ -1349,7 +1505,7 @@ const HISTORY_NEWS = [
     title:'北京发布骑手交通安全专项整治通知',
     img:'https://picsum.photos/seed/hn11/600/338',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 16, 45) },
-  { category:'industry', source:'艾瑞咨询',
+  { category:'policy', source:'艾瑞咨询',
     title:'2024外卖行业报告：骑手规模突破千万，收入分化加剧',
     img:'https://picsum.photos/seed/hn12/600/338',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 4, 10, 0) },
@@ -1358,7 +1514,7 @@ const HISTORY_NEWS = [
     summary:'美团外卖发布2024年第二季度骑手收入报告，全国日均活跃骑手数量首次突破300万人，骑手人均月收入同比增长8.3%，一线城市骑手收入增幅最为显著。',
     img:null,
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 4, 13, 30) },
-  { category:'rider', source:'蜂鸟配送',
+  { category:'rider_story', source:'蜂鸟配送',
     title:'蜂鸟配送积分体系升级，老骑手享专属福利通道',
     img:'https://picsum.photos/seed/hn14/600/338',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 4, 15, 0) },
@@ -1366,7 +1522,7 @@ const HISTORY_NEWS = [
     title:'外卖骑手群体调查：七成骑手月收入不足6000元',
     img:'https://picsum.photos/seed/hn15/600/338',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 4, 18, 0) },
-  { category:'industry', source:'国家统计局',
+  { category:'policy', source:'国家统计局',
     title:'灵活就业人员突破2亿，平台经济成重要就业渠道',
     summary:'国家统计局最新数据显示，全国灵活就业人员规模已突破2亿人，其中依托平台经济从事配送、网约车等新业态的从业者占比持续上升，成为稳就业的重要支撑。',
     img:null,
@@ -1375,7 +1531,7 @@ const HISTORY_NEWS = [
     title:'京东外卖骑手招募启动，底薪高于行业均值20%',
     img:'https://picsum.photos/seed/hn17/600/338',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5, 11, 30) },
-  { category:'rider', source:'中国青年报',
+  { category:'rider_story', source:'中国青年报',
     title:'骑手群体年轻化：90后占比超六成，00后快速增长',
     img:'https://picsum.photos/seed/hn18/600/338',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5, 14, 0) },
@@ -1384,7 +1540,7 @@ const HISTORY_NEWS = [
     summary:'人民日报发表评论文章指出，平台经济快速发展的同时，不能以牺牲骑手基本权益为代价，呼吁各平台切实落实劳动保障政策，让骑手群体共享发展红利。',
     img:null,
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5, 16, 30) },
-  { category:'industry', source:'商务部',
+  { category:'policy', source:'商务部',
     title:'商务部：即时零售渗透率持续提升，配送需求旺盛',
     img:'https://picsum.photos/seed/hn20/600/338',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 6, 10, 0) },
@@ -1392,7 +1548,7 @@ const HISTORY_NEWS = [
     title:'达达骑手保障计划升级，新增心理援助服务',
     img:'https://picsum.photos/seed/hn21/600/338',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 6, 13, 0) },
-  { category:'rider', source:'工人日报',
+  { category:'rider_story', source:'工人日报',
     title:'骑手职业病调查：腰椎颈椎问题高发，亟需保障',
     summary:'工人日报调查显示，超过六成骑手存在不同程度的腰椎、颈椎问题，长期久坐骑行和负重配送是主因。专家呼吁将相关职业病纳入骑手保险保障范围。',
     img:null,
@@ -1401,53 +1557,53 @@ const HISTORY_NEWS = [
     title:'新华社：外卖平台算法改革需真正落地见效',
     img:'https://picsum.photos/seed/hn23/600/338',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7, 9, 0) },
-  { category:'industry', source:'中国邮政快递报',
+  { category:'policy', source:'中国邮政快递报',
     title:'即时配送进入精细化运营阶段，骑手培训体系完善',
     img:'https://picsum.photos/seed/hn24/600/338',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7, 11, 0) },
 
   // ── 行业动态补充 ──
-  { tag:'行业', tagClass:'tag-gray', source:'中国物流与采购联合会', category:'industry',
+  { tag:'行业', tagClass:'tag-gray', source:'中国物流与采购联合会', category:'policy',
     title:'即时配送日均订单突破1.2亿单，骑手缺口约30万人',
     summary:'中国物流与采购联合会发布2024年上半年即时配送行业报告，全国即时配送日均订单量突破1.2亿单，同比增长23%，但受暑期旺季影响，全国骑手缺口约30万人，部分城市配送时效有所延长。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 9, 0) },
-  { tag:'政策', tagClass:'tag-blue', source:'广东省人社厅', category:'industry',
+  { tag:'政策', tagClass:'tag-blue', source:'广东省人社厅', category:'policy',
     title:'广东出台骑手灵活就业社保补贴政策，每月最高补贴200元',
     summary:'广东省人力资源和社会保障厅发布通知，对主动参加社会保险的外卖骑手给予补贴，按缴费基数的20%给予补贴，每人每月最高200元，补贴期限12个月，预计惠及全省约45万名骑手。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 14, 30) },
-  { tag:'监管', tagClass:'tag-purple', source:'国家网信办', category:'industry',
+  { tag:'监管', tagClass:'tag-purple', source:'国家网信办', category:'policy',
     title:'网信办发布平台算法透明度新规，外卖配送算法须向骑手公示',
     summary:'国家互联网信息办公室发布《互联网平台算法推荐管理规定》补充细则，明确要求外卖平台向骑手公示配送时间计算规则、超时认定标准及申诉流程，违规平台将被列入重点监管名单。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 10, 0) },
-  { tag:'行业', tagClass:'tag-gray', source:'交通运输部', category:'industry',
+  { tag:'行业', tagClass:'tag-gray', source:'交通运输部', category:'policy',
     title:'交通运输部：网约配送员职业技能等级认定标准年内落地',
     summary:'交通运输部相关负责人表示，《网约配送员职业技能等级认定标准》将于年内正式落地，骑手可通过考核获得初级、中级、高级证书，持证骑手有望享受额外补贴和优先接单权益。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 15, 0) },
-  { tag:'行业', tagClass:'tag-gray', source:'人社部', category:'industry',
+  { tag:'行业', tagClass:'tag-gray', source:'人社部', category:'policy',
     title:'人社部明确平台企业须为骑手缴纳工伤保险，过渡期至年底',
     summary:'人力资源和社会保障部发布补充通知，明确要求各外卖平台在今年年底前完成骑手工伤保险参保工作，过渡期内可采用职业伤害保障替代方案，但保障标准不得低于工伤保险待遇。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 9, 0) },
-  { tag:'行业', tagClass:'tag-gray', source:'中华全国总工会', category:'industry',
+  { tag:'行业', tagClass:'tag-gray', source:'中华全国总工会', category:'policy',
     title:'全总发布新就业形态劳动者入会指引，骑手可就近加入工会',
     summary:'中华全国总工会发布《新就业形态劳动者工会入会工作指引》，明确外卖骑手、网约车司机等可就近向所在地工会申请入会，享受法律援助、困难帮扶等会员权益，全国已有超200万名骑手完成入会。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 14, 0) },
-  { tag:'行业', tagClass:'tag-gray', source:'中国青年报', category:'industry',
+  { tag:'行业', tagClass:'tag-gray', source:'中国青年报', category:'policy',
     title:'即时配送行业人才争夺加剧，多平台上调新人入职奖励',
     summary:'中国青年报报道，受骑手缺口扩大影响，美团、饿了么、顺丰同城等主要平台纷纷上调新人入职奖励，部分城市新骑手入职奖励已提升至3000元以上，行业人才争夺进入白热化阶段。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 4, 10, 0) },
-  { tag:'行业', tagClass:'tag-gray', source:'第一财经', category:'industry',
+  { tag:'行业', tagClass:'tag-gray', source:'第一财经', category:'policy',
     title:'外卖行业进入存量竞争时代，平台加速布局即时零售赛道',
     summary:'第一财经分析指出，外卖行业用户规模增速放缓，各大平台加速向即时零售延伸，美团闪购、饿了么超市等业务增速均超过50%，骑手配送品类从餐饮向商超、医药、鲜花等全品类扩展。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 4, 15, 0) },
-  { tag:'行业', tagClass:'tag-gray', source:'经济观察报', category:'industry',
+  { tag:'行业', tagClass:'tag-gray', source:'经济观察报', category:'policy',
     title:'电动自行车新国标实施，外卖骑手换车成本引关注',
     summary:'经济观察报报道，新版电动自行车国家标准正式实施，对车速、重量、电池容量等指标提出更严格要求，部分骑手现有车辆不符合新标准，换车成本约3000至5000元，多地平台已启动补贴换车计划。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5, 9, 0) },
-  { tag:'行业', tagClass:'tag-gray', source:'南方周末', category:'industry',
+  { tag:'行业', tagClass:'tag-gray', source:'南方周末', category:'policy',
     title:'外卖骑手职业伤害保障扩围，全国参保人数突破500万',
     summary:'南方周末报道，随着职业伤害保障制度在全国范围内推广，外卖骑手参保人数已突破500万，较年初增长120%，但仍有大量骑手游离在保障体系之外，制度覆盖面有待进一步扩大。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5, 14, 0) },
-  { tag:'行业', tagClass:'tag-gray', source:'财新网', category:'industry',
+  { tag:'行业', tagClass:'tag-gray', source:'财新网', category:'policy',
     title:'即时配送碳排放研究：电动骑手每单碳排放仅为燃油车的1/8',
     summary:'财新网报道，清华大学发布即时配送行业碳排放研究报告，数据显示电动自行车骑手每单配送碳排放量仅为燃油汽车的八分之一，即时配送行业已成为城市绿色物流的重要组成部分。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 6, 9, 0) },
@@ -1558,10 +1714,15 @@ function formatHistoryDate(ts){
 }
 
 const NC_CAT_MAP = {
-  rider:    {label:'骑手新闻', cls:'tag-yellow'},
-  industry: {label:'行业动态', cls:'tag-purple'},
-  platform: {label:'平台动作', cls:'tag-green'},
-  opinion:  {label:'舆情信息', cls:'tag-red'},
+  rider_story: {label:'骑手故事', cls:'tag-yellow'},
+  care:        {label:'骑手关怀', cls:'tag-teal'},
+  policy:      {label:'行业政策', cls:'tag-red'},
+  report:      {label:'宏观报告', cls:'tag-purple'},
+  platform:    {label:'平台动作', cls:'tag-green'},
+  opinion:     {label:'舆情信息', cls:'tag-orange'},
+  // 旧分类兼容
+  rider:       {label:'骑手故事', cls:'tag-yellow'},
+  industry:    {label:'行业政策', cls:'tag-red'},
 };
 function renderNcTag(category){
   const info = NC_CAT_MAP[category];
@@ -1781,7 +1942,7 @@ function renderCategoryPage(container, category){
     // 分页配置
     const ALL_PAGE_SIZE = 20;
     let _allOffset = 0;
-    const tmCatMap = {rider:{label:'骑手新闻',cls:'tag-yellow'},industry:{label:'行业动态',cls:'tag-purple'},platform:{label:'平台动作',cls:'tag-green'},opinion:{label:'舆情信息',cls:'tag-red'}};
+    const tmCatMap = {rider_story:{label:'骑手故事',cls:'tag-yellow'},care:{label:'骑手关怀',cls:'tag-teal'},policy:{label:'行业政策',cls:'tag-red'},report:{label:'宏观报告',cls:'tag-purple'},platform:{label:'平台动作',cls:'tag-green'},opinion:{label:'舆情信息',cls:'tag-orange'},rider:{label:'骑手故事',cls:'tag-yellow'},industry:{label:'行业政策',cls:'tag-red'}};
     const WEEK_CN = ['日','一','二','三','四','五','六'];
 
     // 渲染新闻列表（按日期分组，支持分页追加）
@@ -2035,10 +2196,15 @@ const data = allForCat.filter(n => n.category === category).sort((a,b) => b.ts -
 
   // 分类标签映射
   const _catTagMap = {
-    rider:    {label:'骑手新闻', cls:'tag-yellow'},
-    industry: {label:'行业动态', cls:'tag-purple'},
-    platform: {label:'平台动作', cls:'tag-green'},
-    opinion:  {label:'舆情信息', cls:'tag-red'},
+    rider_story: {label:'骑手故事', cls:'tag-yellow'},
+    care:        {label:'骑手关怀', cls:'tag-teal'},
+    policy:      {label:'行业政策', cls:'tag-red'},
+    report:      {label:'宏观报告', cls:'tag-purple'},
+    platform:    {label:'平台动作', cls:'tag-green'},
+    opinion:     {label:'舆情信息', cls:'tag-orange'},
+    // 旧分类兼容
+    rider:       {label:'骑手故事', cls:'tag-yellow'},
+    industry:    {label:'行业政策', cls:'tag-red'},
   };
 
   // 分页配置

@@ -8,7 +8,8 @@
 # 子分类 tag 由 scripts/transform.py 在转换阶段根据关键词匹配写入
 # ⚠️ 数据源说明：
 #   - RSSHub 公共实例（rsshub.app）在 GitHub Actions 境外服务器可正常访问
-#   - 直接 RSS 源（36氪/虎嗅/澎湃等）URL 直接指向原文，无中转跳转
+#   - 直接 RSS 源（36氪/虎嗅/澎湃/百度新闻/新华网等）URL 直接指向原文，无中转跳转
+#   - 百度新闻关键词 RSS：http://news.baidu.com/ns?word=关键词&tn=rss&cl=2（官方接口）
 #   - Bing News RSS 在 GitHub Actions 环境返回 302，不可用
 #   - Google News RSS 已全部移除（URL 为中间链接，国内无法访问）
 
@@ -314,6 +315,116 @@ rss:
       priority: "P1"
       category: "auto"
       tag: "auto"
+
+    # ══════════════════════════════════════════════════════════════
+    # 【百度新闻关键词 RSS】官方接口，直接返回新闻列表
+    # URL 格式：http://news.baidu.com/ns?word=关键词&tn=rss&cl=2
+    #   cl=2 表示全文搜索；cl=1 表示仅标题搜索
+    # 注意：百度新闻 RSS 条目的 link 指向 news.baidu.com 聚合页，
+    #       非原文直链，但聚合页可正常访问，点击后跳转原文
+    # ══════════════════════════════════════════════════════════════
+
+    - id: "baidu_news_rider"
+      name: "百度新闻-骑手"
+      url: "http://news.baidu.com/ns?word=%E9%AA%91%E6%89%8B&tn=rss&cl=2"
+      priority: "P3"
+      category: "auto"
+      tag: "auto"
+
+    - id: "baidu_news_waimai_rider"
+      name: "百度新闻-外卖骑手"
+      url: "http://news.baidu.com/ns?word=%E5%A4%96%E5%8D%96%E9%AA%91%E6%89%8B&tn=rss&cl=2"
+      priority: "P3"
+      category: "auto"
+      tag: "auto"
+
+    - id: "baidu_news_meituan"
+      name: "百度新闻-美团骑手"
+      url: "http://news.baidu.com/ns?word=%E7%BE%8E%E5%9B%A2%E9%AA%91%E6%89%8B&tn=rss&cl=2"
+      priority: "P3"
+      category: "platform"
+      tag: "auto"
+
+    - id: "baidu_news_eleme"
+      name: "百度新闻-饿了么骑手"
+      url: "http://news.baidu.com/ns?word=%E9%A5%BF%E4%BA%86%E4%B9%88%E9%AA%91%E6%89%8B&tn=rss&cl=2"
+      priority: "P3"
+      category: "platform"
+      tag: "auto"
+
+    - id: "baidu_news_labor"
+      name: "百度新闻-新就业形态"
+      url: "http://news.baidu.com/ns?word=%E6%96%B0%E5%B0%B1%E4%B8%9A%E5%BD%A2%E6%80%81&tn=rss&cl=2"
+      priority: "P3"
+      category: "industry"
+      tag: "industry.labor"
+
+    - id: "baidu_news_platform_labor"
+      name: "百度新闻-平台用工"
+      url: "http://news.baidu.com/ns?word=%E5%B9%B3%E5%8F%B0%E7%94%A8%E5%B7%A5&tn=rss&cl=2"
+      priority: "P3"
+      category: "industry"
+      tag: "industry.policy"
+
+    # ══════════════════════════════════════════════════════════════
+    # 【P0 权威官媒直接 RSS】新华网 / 中国新闻网 / 凤凰网
+    # 新华网 RSS：http://rss.xinhuanet.com/rss/频道.xml
+    # 中国新闻网 RSS：https://www.chinanews.com.cn/rss/频道.xml
+    # ══════════════════════════════════════════════════════════════
+
+    - id: "xinhua_society"
+      name: "新华网-社会"
+      url: "http://rss.xinhuanet.com/rss/society.xml"
+      priority: "P0"
+      category: "auto"
+      tag: "auto"
+
+    - id: "xinhua_finance"
+      name: "新华网-财经"
+      url: "http://rss.xinhuanet.com/rss/finance.xml"
+      priority: "P0"
+      category: "auto"
+      tag: "auto"
+
+    - id: "chinanews_society"
+      name: "中国新闻网-社会"
+      url: "https://www.chinanews.com.cn/rss/society.xml"
+      priority: "P0"
+      category: "auto"
+      tag: "auto"
+
+    - id: "chinanews_finance"
+      name: "中国新闻网-财经"
+      url: "https://www.chinanews.com.cn/rss/finance.xml"
+      priority: "P0"
+      category: "auto"
+      tag: "auto"
+
+    - id: "ifeng_society"
+      name: "凤凰网-社会"
+      url: "https://news.ifeng.com/rss/society.xml"
+      priority: "P2"
+      category: "auto"
+      tag: "auto"
+
+    # ══════════════════════════════════════════════════════════════
+    # 【RSSHub - 百度热搜榜】补充到 RSS 管道（crawler 管道已有百度热榜）
+    # 双管道覆盖，提高抓取成功率
+    # ══════════════════════════════════════════════════════════════
+
+    - id: "rsshub_baidu_hot"
+      name: "百度热搜(RSSHub)"
+      url: "https://rsshub.app/baidu/hot"
+      priority: "P5"
+      category: "opinion"
+      tag: "opinion.viral"
+
+    - id: "shab_baidu_hot"
+      name: "百度热搜(备用RSSHub)"
+      url: "https://rss.shab.fun/baidu/hot"
+      priority: "P5"
+      category: "opinion"
+      tag: "opinion.viral"
 
 
 # ===== 关键词过滤 =====
