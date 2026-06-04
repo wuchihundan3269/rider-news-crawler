@@ -222,9 +222,15 @@ def is_global_filtered(title: str, summary: str, global_filter: list) -> bool:
 
 
 def matches_base_keywords(title: str, summary: str, base_keywords: list) -> bool:
-    """检查是否命中基础关键词（任意一个即可）"""
+    """检查是否命中基础关键词（任意一个即可）
+    支持空格分隔的 AND 复合词，如 '即时配送 骑手' 表示两个词都要出现
+    """
     text = title + " " + summary
-    return any(kw in text for kw in base_keywords)
+    for kw in base_keywords:
+        parts = kw.split()
+        if all(p in text for p in parts):
+            return True
+    return False
 
 
 # ── 分类映射 ──────────────────────────────────────────────────────────────────
@@ -500,7 +506,9 @@ def main():
 
     # 基础关键词
     base_keywords = config.get("filter", {}).get("base_keywords", [
-        "骑手", "外卖", "配送员", "送餐", "即时配送", "新就业形态"
+        "外卖骑手", "外卖小哥", "配送员", "骑手权益", "骑手收入",
+        "骑手政策", "骑手社保", "骑手事故", "骑手关爱", "骑手驿站",
+        "美团骑手", "饿了么骑手"
     ])
 
     # RSS 配置
