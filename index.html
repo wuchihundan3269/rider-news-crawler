@@ -717,12 +717,36 @@ async function loadData(){
     const latestRes = await fetch('data/latest.json?_=' + Date.now());
     if(!latestRes.ok) throw new Error('latest.json not found');
     const latest = await latestRes.json();
-    const dateFile = latest.file || ('data/' + latest.date + '.json');
 
-    // 2. 读当天数据文件
-    const dataRes = await fetch(dateFile + '?_=' + Date.now());
-    if(!dataRes.ok) throw new Error('data file not found: ' + dateFile);
-    const data = await dataRes.json();
+    // 2. 尝试加载数据：优先今天，若为空则往前最多找3天
+    let data = null;
+    let usedDate = latest.date;
+    const datesToTry = [latest.file || ('data/' + latest.date + '.json')];
+    // 往前补充最多3天的备选文件
+    const baseDate = new Date(latest.date + 'T00:00:00Z');
+    for(let i = 1; i <= 3; i++){
+      const d = new Date(baseDate);
+      d.setUTCDate(d.getUTCDate() - i);
+      const ds = d.toISOString().slice(0,10);
+      datesToTry.push('data/' + ds + '.json');
+    }
+
+    for(const dateFile of datesToTry){
+      try {
+        const dataRes = await fetch(dateFile + '?_=' + Date.now());
+        if(!dataRes.ok) continue;
+        const candidate = await dataRes.json();
+        const count = (candidate.articles||[]).length + (candidate.featured||[]).length;
+        if(count > 0){
+          data = candidate;
+          usedDate = dateFile.replace('data/','').replace('.json','');
+          console.log('[data] 使用数据文件:', dateFile, '共', count, '条');
+          break;
+        }
+      } catch(_){}
+    }
+
+    if(!data) throw new Error('所有数据文件均为空，使用 fallback');
 
     // 3. 转换格式
     const articles = (data.articles || []).map((a, i) => apiToNews(a, i));
@@ -731,19 +755,19 @@ async function loadData(){
 
     // featured 优先用于轮播，不足则从 articles 补
     NEWS = featured.length ? featured : articles.slice(0, 5);
-    if(NEWS.length === 0) NEWS = articles.slice(0, 5);
+    if(NEWS.length === 0) NEWS = SAMPLE_NEWS;
 
-    // FLASH_DATA：今日快讯，按时间倒序
-    FLASH_DATA = flash.length ? flash : articles;
+    // FLASH_DATA：今日快讯，按时间倒序；为空时 fallback 到 articles
+    FLASH_DATA = flash.length ? flash : (articles.length ? articles : SAMPLE_FLASH);
     FLASH_DATA.sort((a,b) => b.ts - a.ts);
 
     // 把全量 articles 也挂到全局供历史页面用
-    window._allArticles = articles;
-    window._dataDate = latest.date;
+    window._allArticles = articles.length ? articles : SAMPLE_NEWS;
+    window._dataDate = usedDate;
     window._dataUpdatedAt = latest.updated_at;
 
     _dataLoaded = true;
-    console.log('[data] 加载成功', latest.date, '共', articles.length, '条');
+    console.log('[data] 加载成功', usedDate, 'NEWS:', NEWS.length, 'FLASH:', FLASH_DATA.length);
   } catch(e) {
     console.warn('[data] 加载失败，使用 fallback 数据', e.message);
     NEWS = SAMPLE_NEWS;
