@@ -412,6 +412,142 @@ rss:
       category: "opinion"
       tag: "opinion.viral"
 
+    # ══════════════════════════════════════════════════════════════
+    # 【P0-P1 国内门户综合频道】新华网 / 人民网 / 新浪 / 网易 / 搜狐 / 凤凰
+    # 覆盖面广，适合捕捉综合新闻中的骑手相关报道
+    # ══════════════════════════════════════════════════════════════
+
+    # 新华网（P0 官媒）
+    - id: "xinhua_politics"
+      name: "新华网-时政"
+      url: "http://rss.xinhuanet.com/rss/politics.xml"
+      priority: "P0"
+      category: "auto"
+      tag: "auto"
+
+    - id: "xinhua_legal"
+      name: "新华网-法治"
+      url: "http://rss.xinhuanet.com/rss/legal.xml"
+      priority: "P0"
+      category: "auto"
+      tag: "auto"
+
+    # 人民网（P0 官媒）
+    - id: "people_society"
+      name: "人民网-社会"
+      url: "http://politics.people.com.cn/rss/society.xml"
+      priority: "P0"
+      category: "auto"
+      tag: "auto"
+
+    - id: "people_economy"
+      name: "人民网-经济"
+      url: "http://finance.people.com.cn/rss/finance.xml"
+      priority: "P0"
+      category: "auto"
+      tag: "auto"
+
+    # 新浪新闻（P1）
+    - id: "sina_society"
+      name: "新浪新闻-社会"
+      url: "https://rss.sina.com.cn/news/society/focus15.xml"
+      priority: "P1"
+      category: "auto"
+      tag: "auto"
+
+    - id: "sina_finance"
+      name: "新浪新闻-财经"
+      url: "https://rss.sina.com.cn/finance/china/cj.xml"
+      priority: "P1"
+      category: "auto"
+      tag: "auto"
+
+    - id: "sina_tech"
+      name: "新浪新闻-科技"
+      url: "https://rss.sina.com.cn/tech/internet/focus15.xml"
+      priority: "P1"
+      category: "auto"
+      tag: "auto"
+
+    # 网易新闻（P1）
+    - id: "netease_society"
+      name: "网易新闻-社会"
+      url: "https://www.163.com/rss/channel/social.xml"
+      priority: "P1"
+      category: "auto"
+      tag: "auto"
+
+    - id: "netease_finance"
+      name: "网易新闻-财经"
+      url: "https://www.163.com/rss/channel/money.xml"
+      priority: "P1"
+      category: "auto"
+      tag: "auto"
+
+    # 搜狐新闻（P1）
+    - id: "sohu_news"
+      name: "搜狐新闻-综合"
+      url: "https://www.sohu.com/rss/news.xml"
+      priority: "P1"
+      category: "auto"
+      tag: "auto"
+
+    - id: "sohu_finance"
+      name: "搜狐新闻-财经"
+      url: "https://www.sohu.com/rss/finance.xml"
+      priority: "P1"
+      category: "auto"
+      tag: "auto"
+
+    # 凤凰网（P2）
+    - id: "ifeng_finance"
+      name: "凤凰网-财经"
+      url: "https://finance.ifeng.com/rss/index.xml"
+      priority: "P2"
+      category: "auto"
+      tag: "auto"
+
+    - id: "ifeng_tech"
+      name: "凤凰网-科技"
+      url: "https://tech.ifeng.com/rss/index.xml"
+      priority: "P2"
+      category: "auto"
+      tag: "auto"
+
+    # ══════════════════════════════════════════════════════════════
+    # 【P3 百度新闻分类频道 RSS】
+    # 按新闻分类抓取，补充门户综合覆盖
+    # URL 格式：http://news.baidu.com/n?cmd=4&class=分类&tn=rss
+    # ══════════════════════════════════════════════════════════════
+
+    - id: "baidu_channel_society"
+      name: "百度新闻-社会频道"
+      url: "http://news.baidu.com/n?cmd=4&class=society&tn=rss"
+      priority: "P3"
+      category: "auto"
+      tag: "auto"
+
+    - id: "baidu_channel_finance"
+      name: "百度新闻-财经频道"
+      url: "http://news.baidu.com/n?cmd=4&class=finance&tn=rss"
+      priority: "P3"
+      category: "auto"
+      tag: "auto"
+
+    - id: "baidu_channel_tech"
+      name: "百度新闻-科技频道"
+      url: "http://news.baidu.com/n?cmd=4&class=internet&tn=rss"
+      priority: "P3"
+      category: "auto"
+      tag: "auto"
+
+    - id: "baidu_channel_politics"
+      name: "百度新闻-国内频道"
+      url: "http://news.baidu.com/n?cmd=4&class=politics&tn=rss"
+      priority: "P3"
+      category: "auto"
+      tag: "auto"
+
 
 # ===== 关键词过滤 =====
 filter:
