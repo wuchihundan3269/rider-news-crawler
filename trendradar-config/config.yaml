@@ -1,15 +1,16 @@
 # ===== 骑手行业新闻监控 · TrendRadar 配置 =====
-# 数据来源方案：学城文档 2763869388
+# 数据来源方案：RSSHub + 直接 RSS 源（替换 Google News，URL 直链无中转）
 # 三管道：热榜平台 / RSS订阅 / 搜索引擎关键词
 # 四分类：骑手新闻(rider) / 行业动态(industry) / 平台动作(platform) / 舆情信息(opinion)
 # 媒体优先级：P0（权威官媒）→ P5（自媒体/论坛）
 # 去重规则：同一事件只保留最高优先级来源
 # 排序规则：时效优先，同一天内按 P0→P5 降序
 # 子分类 tag 由 scripts/transform.py 在转换阶段根据关键词匹配写入
-# ⚠️ 搜索引擎 RSS 说明：
+# ⚠️ 数据源说明：
+#   - RSSHub 公共实例（rsshub.app）在 GitHub Actions 境外服务器可正常访问
+#   - 直接 RSS 源（36氪/虎嗅/澎湃等）URL 直接指向原文，无中转跳转
 #   - Bing News RSS 在 GitHub Actions 环境返回 302，不可用
-#   - 百度新闻 RSS 已 301 跳转，不可用
-#   - Google News RSS 稳定返回 100 条/关键词，为主力来源
+#   - Google News RSS 已全部移除（URL 为中间链接，国内无法访问）
 
 base:
   timezone: "Asia/Shanghai"
@@ -84,9 +85,10 @@ crawler:
     - "新就业形态"
 
 # ===== 管道二：RSS 订阅（核心数据源）=====
-# Google News RSS 格式：
-#   https://news.google.com/rss/search?q=<URL编码关键词>&hl=zh-CN&gl=CN&ceid=CN:zh-Hans
-# 每个关键词最多返回 100 条，经过时效过滤后保留 max_age_days 天内的内容
+# 数据源策略：
+#   优先级1：直接 RSS 源（媒体官方提供，URL 直链原文）
+#   优先级2：RSSHub 抓取（rsshub.app，GitHub Actions 境外服务器可访问）
+#   备用：rss.shab.fun（RSSHub 备用实例）
 rss:
   enable_rss: true
   freshness_filter:
@@ -95,266 +97,223 @@ rss:
   feeds:
 
     # ══════════════════════════════════════════════════════════════
-    # 【宽泛基础词】覆盖所有骑手相关新闻（category=auto，靠关键词分类）
+    # 【P1 权威媒体直接 RSS】澎湃新闻
+    # 澎湃官方 RSS，URL 直链原文（thepaper.cn/newsDetail_forward_xxx）
     # ══════════════════════════════════════════════════════════════
 
-    - id: "g_rider_all"
-      name: "Google新闻-骑手"
-      url: "https://news.google.com/rss/search?q=%E9%AA%91%E6%89%8B&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
-      priority: "P3"
+    - id: "thepaper_society"
+      name: "澎湃新闻-社会"
+      url: "https://www.thepaper.cn/rss_channel_empArticleList.jsp?channelId=25941"
+      priority: "P1"
       category: "auto"
       tag: "auto"
 
-    - id: "g_waimai_rider"
-      name: "Google新闻-外卖骑手"
-      url: "https://news.google.com/rss/search?q=%E5%A4%96%E5%8D%96%E9%AA%91%E6%89%8B&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
-      priority: "P3"
+    - id: "thepaper_finance"
+      name: "澎湃新闻-财经"
+      url: "https://www.thepaper.cn/rss_channel_empArticleList.jsp?channelId=19164"
+      priority: "P1"
       category: "auto"
       tag: "auto"
 
-    - id: "g_delivery_worker"
-      name: "Google新闻-配送员"
-      url: "https://news.google.com/rss/search?q=%E9%85%8D%E9%80%81%E5%91%98&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
-      priority: "P3"
-      category: "auto"
-      tag: "auto"
-
-    - id: "g_instant_delivery"
-      name: "Google新闻-即时配送"
-      url: "https://news.google.com/rss/search?q=%E5%8D%B3%E6%97%B6%E9%85%8D%E9%80%81&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
-      priority: "P3"
-      category: "auto"
-      tag: "auto"
-
-    - id: "g_new_employment"
-      name: "Google新闻-新就业形态"
-      url: "https://news.google.com/rss/search?q=%E6%96%B0%E5%B0%B1%E4%B8%9A%E5%BD%A2%E6%80%81&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
-      priority: "P3"
+    - id: "thepaper_politics"
+      name: "澎湃新闻-政务"
+      url: "https://www.thepaper.cn/rss_channel_empArticleList.jsp?channelId=19165"
+      priority: "P1"
       category: "auto"
       tag: "auto"
 
     # ══════════════════════════════════════════════════════════════
-    # 【平台专项】美团 / 饿了么 / 京东外卖
+    # 【P2 科技财经媒体直接 RSS】36氪 / 虎嗅 / 钛媒体
     # ══════════════════════════════════════════════════════════════
 
-    - id: "g_meituan_rider"
-      name: "Google新闻-美团骑手"
-      url: "https://news.google.com/rss/search?q=%E7%BE%8E%E5%9B%A2+%E9%AA%91%E6%89%8B&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
-      priority: "P3"
+    - id: "36kr_feed"
+      name: "36氪"
+      url: "https://36kr.com/feed"
+      priority: "P2"
       category: "auto"
       tag: "auto"
 
-    - id: "g_ele_rider"
-      name: "Google新闻-饿了么骑手"
-      url: "https://news.google.com/rss/search?q=%E9%A5%BF%E4%BA%86%E4%B9%88+%E9%AA%91%E6%89%8B&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
-      priority: "P3"
+    - id: "huxiu_feed"
+      name: "虎嗅"
+      url: "https://www.huxiu.com/rss/0.xml"
+      priority: "P2"
       category: "auto"
       tag: "auto"
 
-    - id: "g_jd_waimai"
-      name: "Google新闻-京东外卖骑手"
-      url: "https://news.google.com/rss/search?q=%E4%BA%AC%E4%B8%9C%E5%A4%96%E5%8D%96+%E9%AA%91%E6%89%8B&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
-      priority: "P3"
-      category: "industry"
-      tag: "industry.market"
+    - id: "tmtpost_feed"
+      name: "钛媒体"
+      url: "https://www.tmtpost.com/feed"
+      priority: "P2"
+      category: "auto"
+      tag: "auto"
 
     # ══════════════════════════════════════════════════════════════
-    # 【骑手新闻 rider】正面/事故/故事/群体事件/职业
+    # 【RSSHub - 澎湃新闻频道】
+    # rsshub.app 在 GitHub Actions 境外服务器可访问
+    # URL 格式：https://www.thepaper.cn/newsDetail_forward_xxx（直链）
     # ══════════════════════════════════════════════════════════════
 
-    - id: "g_rider_positive"
-      name: "Google新闻-骑手好人好事"
-      url: "https://news.google.com/rss/search?q=%E9%AA%91%E6%89%8B+%E8%A7%81%E4%B9%89%E5%8B%87%E4%B8%BA&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
-      priority: "P3"
-      category: "rider"
-      tag: "rider.positive"
+    - id: "rsshub_thepaper_society"
+      name: "澎湃-社会(RSSHub)"
+      url: "https://rsshub.app/thepaper/channel/25941"
+      priority: "P1"
+      category: "auto"
+      tag: "auto"
 
-    - id: "g_rider_accident"
-      name: "Google新闻-骑手事故"
-      url: "https://news.google.com/rss/search?q=%E9%AA%91%E6%89%8B+%E4%BA%A4%E9%80%9A%E4%BA%8B%E6%95%85&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
-      priority: "P3"
-      category: "rider"
-      tag: "rider.accident"
+    - id: "rsshub_thepaper_finance"
+      name: "澎湃-财经(RSSHub)"
+      url: "https://rsshub.app/thepaper/channel/19164"
+      priority: "P1"
+      category: "auto"
+      tag: "auto"
 
-    - id: "g_rider_overwork"
-      name: "Google新闻-骑手猝死过劳"
-      url: "https://news.google.com/rss/search?q=%E9%AA%91%E6%89%8B+%E7%8C%9D%E6%AD%BB&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
-      priority: "P3"
-      category: "rider"
-      tag: "rider.accident"
-
-    - id: "g_rider_story"
-      name: "Google新闻-骑手故事"
-      url: "https://news.google.com/rss/search?q=%E9%AA%91%E6%89%8B+%E6%95%85%E4%BA%8B+%E7%94%9F%E6%B4%BB&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
-      priority: "P3"
-      category: "rider"
-      tag: "rider.story"
-
-    - id: "g_rider_incident"
-      name: "Google新闻-骑手群体事件"
-      url: "https://news.google.com/rss/search?q=%E9%AA%91%E6%89%8B+%E7%BD%A2%E5%B7%A5+%E8%AE%A8%E8%96%AA&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
-      priority: "P3"
-      category: "rider"
-      tag: "rider.incident"
-
-    - id: "g_rider_career"
-      name: "Google新闻-骑手职业发展"
-      url: "https://news.google.com/rss/search?q=%E9%AA%91%E6%89%8B+%E8%81%8C%E4%B8%9A%E5%8F%91%E5%B1%95&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
-      priority: "P3"
-      category: "rider"
-      tag: "rider.career"
+    - id: "rsshub_thepaper_politics"
+      name: "澎湃-政务(RSSHub)"
+      url: "https://rsshub.app/thepaper/channel/19165"
+      priority: "P1"
+      category: "auto"
+      tag: "auto"
 
     # ══════════════════════════════════════════════════════════════
-    # 【行业动态 industry】政策/劳动/标准/市场/地方/季节
+    # 【RSSHub - 36氪 / 虎嗅 / 界面新闻】
     # ══════════════════════════════════════════════════════════════
 
-    - id: "g_policy_rider"
-      name: "Google新闻-骑手政策"
-      url: "https://news.google.com/rss/search?q=%E9%AA%91%E6%89%8B+%E6%94%BF%E7%AD%96+%E7%9B%91%E7%AE%A1&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
-      priority: "P3"
-      category: "industry"
-      tag: "industry.policy"
+    - id: "rsshub_36kr_latest"
+      name: "36氪-最新(RSSHub)"
+      url: "https://rsshub.app/36kr/news/latest"
+      priority: "P2"
+      category: "auto"
+      tag: "auto"
 
-    - id: "g_policy_platform_economy"
-      name: "Google新闻-平台经济监管"
-      url: "https://news.google.com/rss/search?q=%E5%B9%B3%E5%8F%B0%E7%BB%8F%E6%B5%8E+%E7%9B%91%E7%AE%A1+%E9%AA%91%E6%89%8B&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
-      priority: "P3"
-      category: "industry"
-      tag: "industry.policy"
+    - id: "rsshub_36kr_platform"
+      name: "36氪-平台经济(RSSHub)"
+      url: "https://rsshub.app/36kr/search/articles/%E5%A4%96%E5%8D%96%E9%AA%91%E6%89%8B"
+      priority: "P2"
+      category: "auto"
+      tag: "auto"
 
-    - id: "g_labor_insurance"
-      name: "Google新闻-骑手社保工伤"
-      url: "https://news.google.com/rss/search?q=%E9%AA%91%E6%89%8B+%E7%A4%BE%E4%BF%9D+%E5%B7%A5%E4%BC%A4&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
-      priority: "P3"
+    - id: "rsshub_huxiu"
+      name: "虎嗅(RSSHub)"
+      url: "https://rsshub.app/huxiu/article"
+      priority: "P2"
+      category: "auto"
+      tag: "auto"
+
+    - id: "rsshub_jiemian_economy"
+      name: "界面新闻-经济(RSSHub)"
+      url: "https://rsshub.app/jiemian/news/1"
+      priority: "P2"
+      category: "auto"
+      tag: "auto"
+
+    - id: "rsshub_jiemian_business"
+      name: "界面新闻-商业(RSSHub)"
+      url: "https://rsshub.app/jiemian/news/2"
+      priority: "P2"
+      category: "auto"
+      tag: "auto"
+
+    # ══════════════════════════════════════════════════════════════
+    # 【RSSHub - 财新 / 工人日报】P1 权威媒体
+    # ══════════════════════════════════════════════════════════════
+
+    - id: "rsshub_caixin_finance"
+      name: "财新-财经(RSSHub)"
+      url: "https://rsshub.app/caixin/article/finance"
+      priority: "P1"
+      category: "auto"
+      tag: "auto"
+
+    - id: "rsshub_caixin_economy"
+      name: "财新-经济(RSSHub)"
+      url: "https://rsshub.app/caixin/article/economy"
+      priority: "P1"
+      category: "auto"
+      tag: "auto"
+
+    - id: "rsshub_workercn"
+      name: "工人日报(RSSHub)"
+      url: "https://rsshub.app/workercn/news"
+      priority: "P1"
       category: "industry"
       tag: "industry.labor"
 
-    - id: "g_labor_flexible"
-      name: "Google新闻-灵活就业劳动关系"
-      url: "https://news.google.com/rss/search?q=%E7%81%B5%E6%B4%BB%E5%B0%B1%E4%B8%9A+%E5%8A%B3%E5%8A%A8%E5%85%B3%E7%B3%BB&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
-      priority: "P3"
-      category: "industry"
-      tag: "industry.labor"
-
-    - id: "g_std_ebike"
-      name: "Google新闻-电动车新国标"
-      url: "https://news.google.com/rss/search?q=%E7%94%B5%E5%8A%A8%E8%87%AA%E8%A1%8C%E8%BD%A6+%E6%96%B0%E5%9B%BD%E6%A0%87+%E5%A4%96%E5%8D%96&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
-      priority: "P3"
-      category: "industry"
-      tag: "industry.std"
-
-    - id: "g_market_competition"
-      name: "Google新闻-外卖市场竞争"
-      url: "https://news.google.com/rss/search?q=%E5%A4%96%E5%8D%96+%E5%B8%82%E5%9C%BA+%E7%AB%9E%E4%BA%89+%E9%AA%91%E6%89%8B&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
-      priority: "P3"
-      category: "industry"
-      tag: "industry.market"
-
-    - id: "g_local_station"
-      name: "Google新闻-骑手驿站"
-      url: "https://news.google.com/rss/search?q=%E9%AA%91%E6%89%8B+%E9%A9%BF%E7%AB%99+%E5%BB%BA%E8%AE%BE&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
-      priority: "P3"
-      category: "industry"
-      tag: "industry.local"
-
-    - id: "g_season_heat"
-      name: "Google新闻-高温骑手"
-      url: "https://news.google.com/rss/search?q=%E9%AB%98%E6%B8%A9+%E9%AA%91%E6%89%8B+%E8%A1%A5%E8%B4%B4&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
-      priority: "P3"
-      category: "industry"
-      tag: "industry.season"
-
-    - id: "g_season_weather"
-      name: "Google新闻-极端天气配送"
-      url: "https://news.google.com/rss/search?q=%E6%9A%B4%E9%9B%A8+%E9%AA%91%E6%89%8B+%E9%85%8D%E9%80%81&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
-      priority: "P3"
-      category: "industry"
-      tag: "industry.season"
-
     # ══════════════════════════════════════════════════════════════
-    # 【平台动作 platform】运力/算法/收入/招募/安全/福利
+    # 【RSSHub - 微博搜索】骑手相关热搜词
+    # URL 格式：https://weibo.com/xxx（直链微博帖子）
     # ══════════════════════════════════════════════════════════════
 
-    - id: "g_platform_ops"
-      name: "Google新闻-美团运力调整"
-      url: "https://news.google.com/rss/search?q=%E7%BE%8E%E5%9B%A2+%E8%BF%90%E5%8A%9B+%E8%B0%83%E6%95%B4&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
-      priority: "P3"
-      category: "platform"
-      tag: "platform.ops"
+    - id: "rsshub_weibo_rider"
+      name: "微博-骑手(RSSHub)"
+      url: "https://rsshub.app/weibo/search/keyword/%E9%AA%91%E6%89%8B"
+      priority: "P5"
+      category: "auto"
+      tag: "auto"
 
-    - id: "g_platform_algo"
-      name: "Google新闻-派单算法"
-      url: "https://news.google.com/rss/search?q=%E7%BE%8E%E5%9B%A2+%E6%B4%BE%E5%8D%95%E7%AE%97%E6%B3%95+%E9%AA%91%E6%89%8B&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
-      priority: "P3"
-      category: "platform"
-      tag: "platform.algo"
+    - id: "rsshub_weibo_waimai"
+      name: "微博-外卖骑手(RSSHub)"
+      url: "https://rsshub.app/weibo/search/keyword/%E5%A4%96%E5%8D%96%E9%AA%91%E6%89%8B"
+      priority: "P5"
+      category: "opinion"
+      tag: "opinion.viral"
 
-    - id: "g_platform_pay"
-      name: "Google新闻-配送费调整"
-      url: "https://news.google.com/rss/search?q=%E9%85%8D%E9%80%81%E8%B4%B9+%E8%B0%83%E6%95%B4+%E9%AA%91%E6%89%8B&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
-      priority: "P3"
-      category: "platform"
-      tag: "platform.pay"
-
-    - id: "g_platform_safety"
-      name: "Google新闻-骑手安全举措"
-      url: "https://news.google.com/rss/search?q=%E7%BE%8E%E5%9B%A2+%E9%AA%91%E6%89%8B+%E5%AE%89%E5%85%A8&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
-      priority: "P3"
-      category: "platform"
-      tag: "platform.safety"
-
-    - id: "g_platform_welfare"
-      name: "Google新闻-骑手福利保障"
-      url: "https://news.google.com/rss/search?q=%E9%AA%91%E6%89%8B+%E7%A6%8F%E5%88%A9+%E4%BF%9D%E9%9A%9C&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
-      priority: "P3"
-      category: "platform"
-      tag: "platform.welfare"
+    - id: "rsshub_weibo_meituan"
+      name: "微博-美团骑手(RSSHub)"
+      url: "https://rsshub.app/weibo/search/keyword/%E7%BE%8E%E5%9B%A2%E9%AA%91%E6%89%8B"
+      priority: "P5"
+      category: "auto"
+      tag: "auto"
 
     # ══════════════════════════════════════════════════════════════
-    # 【舆情信息 opinion】权益/媒体曝光/热搜/消费者/商家/危机
+    # 【RSSHub - 知乎搜索】骑手相关话题
     # ══════════════════════════════════════════════════════════════
 
-    - id: "g_opinion_rights"
-      name: "Google新闻-骑手权益争议"
-      url: "https://news.google.com/rss/search?q=%E9%AA%91%E6%89%8B+%E6%9D%83%E7%9B%8A&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
-      priority: "P3"
+    - id: "rsshub_zhihu_rider"
+      name: "知乎-骑手话题(RSSHub)"
+      url: "https://rsshub.app/zhihu/search/%E5%A4%96%E5%8D%96%E9%AA%91%E6%89%8B"
+      priority: "P5"
       category: "opinion"
       tag: "opinion.rights"
 
-    - id: "g_opinion_media"
-      name: "Google新闻-骑手媒体曝光"
-      url: "https://news.google.com/rss/search?q=%E9%AA%91%E6%89%8B+%E6%9B%9D%E5%85%89+%E8%B0%83%E6%9F%A5&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
-      priority: "P3"
-      category: "opinion"
-      tag: "opinion.media"
+    # ══════════════════════════════════════════════════════════════
+    # 【RSSHub 备用实例 rss.shab.fun】
+    # 当 rsshub.app 不可用时的备用
+    # ══════════════════════════════════════════════════════════════
 
-    - id: "g_opinion_consumer"
-      name: "Google新闻-消费者骑手矛盾"
-      url: "https://news.google.com/rss/search?q=%E5%A4%96%E5%8D%96+%E9%AA%91%E6%89%8B+%E7%9F%9B%E7%9B%BE+%E6%8A%95%E8%AF%89&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
-      priority: "P3"
-      category: "opinion"
-      tag: "opinion.consumer"
+    - id: "shab_36kr"
+      name: "36氪(备用RSSHub)"
+      url: "https://rss.shab.fun/36kr/news/latest"
+      priority: "P2"
+      category: "auto"
+      tag: "auto"
 
-    - id: "g_opinion_merchant"
-      name: "Google新闻-商家骑手冲突"
-      url: "https://news.google.com/rss/search?q=%E5%95%86%E5%AE%B6+%E9%AA%91%E6%89%8B+%E5%86%B2%E7%AA%81&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
-      priority: "P3"
-      category: "opinion"
-      tag: "opinion.merchant"
+    - id: "shab_huxiu"
+      name: "虎嗅(备用RSSHub)"
+      url: "https://rss.shab.fun/huxiu/article"
+      priority: "P2"
+      category: "auto"
+      tag: "auto"
 
-    - id: "g_opinion_crisis"
-      name: "Google新闻-骑手舆情"
-      url: "https://news.google.com/rss/search?q=%E9%AA%91%E6%89%8B+%E8%88%86%E8%AE%BA+%E7%83%AD%E6%90%9C&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
-      priority: "P3"
-      category: "opinion"
-      tag: "opinion.crisis"
+    - id: "shab_thepaper"
+      name: "澎湃社会(备用RSSHub)"
+      url: "https://rss.shab.fun/thepaper/channel/25941"
+      priority: "P1"
+      category: "auto"
+      tag: "auto"
 
-    - id: "g_opinion_access"
-      name: "Google新闻-骑手门禁上楼"
-      url: "https://news.google.com/rss/search?q=%E9%AA%91%E6%89%8B+%E9%97%A8%E7%A6%81+%E4%B8%8A%E6%A5%BC&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
-      priority: "P3"
-      category: "opinion"
-      tag: "opinion.consumer"
+    - id: "shab_jiemian"
+      name: "界面新闻(备用RSSHub)"
+      url: "https://rss.shab.fun/jiemian/news/1"
+      priority: "P2"
+      category: "auto"
+      tag: "auto"
+
+    - id: "shab_caixin"
+      name: "财新(备用RSSHub)"
+      url: "https://rss.shab.fun/caixin/article/finance"
+      priority: "P1"
+      category: "auto"
+      tag: "auto"
 
 
 # ===== 关键词过滤 =====
@@ -370,6 +329,10 @@ filter:
     - "新就业形态"
     - "平台用工"
     - "灵活就业"
+    - "美团"
+    - "饿了么"
+    - "闪送"
+    - "顺丰同城"
 
 # ===== 报告模式 =====
 report:

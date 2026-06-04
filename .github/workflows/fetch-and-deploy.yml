@@ -226,40 +226,6 @@ jobs:
             exit 0
           fi
 
-          # 调试：测试单条 URL 解析（验证境外服务器重定向是否可用）
-          echo "=== 调试：测试 Google News URL 解析 ==="
-          python3 -c "
-          import json, requests, sys
-          with open('$DATA_FILE') as f:
-              d = json.load(f)
-          all_items = d.get('featured', []) + d.get('articles', []) + d.get('flash', [])
-          test_url = next((a['url'] for a in all_items if 'news.google.com' in a.get('url','')), None)
-          if not test_url:
-              print('无 Google News URL 可测试')
-              sys.exit(0)
-          print(f'测试 URL: {test_url[:80]}')
-          headers = {
-              'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-              'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-          }
-          session = requests.Session()
-          session.headers.update(headers)
-          current = test_url
-          for i in range(6):
-              resp = session.get(current, allow_redirects=False, timeout=10)
-              loc = resp.headers.get('Location', '')
-              print(f'  [{i+1}] {resp.status_code} -> {loc[:100] if loc else \"(no redirect)\"}')
-              if resp.status_code in (301,302,303,307,308) and loc:
-                  if 'news.google.com' not in loc and loc.startswith('http'):
-                      print(f'  ✅ 真实 URL: {loc}')
-                      break
-                  current = loc
-              else:
-                  print(f'  ⚠️  停止（状态码 {resp.status_code}，无法继续跟随）')
-                  break
-          " || echo "调试脚本执行失败（不影响主流程）"
-          echo "=== 调试结束 ==="
-
           python scripts/generate_html_content.py \
             --template "$TEMPLATE" \
             --data "$DATA_FILE" \
@@ -267,22 +233,6 @@ jobs:
             --output "$OUTPUT"
 
           echo "htmlContent.js 生成完成，大小: $(wc -c < $OUTPUT) 字节"
-
-          # 验证解析结果
-          echo "=== 验证 URL 解析结果 ==="
-          python3 -c "
-          import re
-          with open('$OUTPUT') as f:
-              content = f.read()
-          google_urls = len(re.findall(r'news\.google\.com', content))
-          real_urls = len(re.findall(r'https?://(?!news\.google\.com)[a-zA-Z0-9]', content))
-          print(f'Google News URL 数量: {google_urls}')
-          print(f'真实 URL 数量（估算）: {real_urls}')
-          if google_urls > 50:
-              print('⚠️  WARNING: 仍有大量 Google News URL，解析可能未生效')
-          else:
-              print('✅ URL 解析效果良好')
-          " || true
 
       - name: 推送到 NoCode 仓库
         run: |
