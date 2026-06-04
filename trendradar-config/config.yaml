@@ -1,17 +1,11 @@
 # ===== 骑手行业新闻监控 · TrendRadar 配置 =====
-# 数据来源方案：RSSHub + 直接 RSS 源（替换 Google News，URL 直链无中转）
+# 数据来源方案：精准关键词搜索型 RSS（替代综合媒体全量 feed 过滤）
+# 核心策略：直接用"外卖骑手"等精准词搜索，而非从全量 feed 里过滤
 # 三管道：热榜平台 / RSS订阅 / 搜索引擎关键词
-# 四分类：骑手新闻(rider) / 行业动态(industry) / 平台动作(platform) / 舆情信息(opinion)
+# 六分类：骑手故事(rider_story) / 骑手关怀(care) / 行业政策(policy) / 宏观报告(report) / 平台动作(platform) / 舆情信息(opinion)
 # 媒体优先级：P0（权威官媒）→ P5（自媒体/论坛）
 # 去重规则：同一事件只保留最高优先级来源
 # 排序规则：时效优先，同一天内按 P0→P5 降序
-# 子分类 tag 由 scripts/transform.py 在转换阶段根据关键词匹配写入
-# ⚠️ 数据源说明：
-#   - RSSHub 公共实例（rsshub.app）在 GitHub Actions 境外服务器可正常访问
-#   - 直接 RSS 源（36氪/虎嗅/澎湃/百度新闻/新华网等）URL 直接指向原文，无中转跳转
-#   - 百度新闻关键词 RSS：http://news.baidu.com/ns?word=关键词&tn=rss&cl=2（官方接口）
-#   - Bing News RSS 在 GitHub Actions 环境返回 302，不可用
-#   - Google News RSS 已全部移除（URL 为中间链接，国内无法访问）
 
 base:
   timezone: "Asia/Shanghai"
@@ -77,6 +71,7 @@ crawler:
   request_timeout: 30
   max_retries: 3
   hot_filter_keywords:
+    - "外卖骑手"
     - "骑手"
     - "外卖"
     - "配送"
@@ -86,10 +81,18 @@ crawler:
     - "新就业形态"
 
 # ===== 管道二：RSS 订阅（核心数据源）=====
-# 数据源策略：
-#   优先级1：直接 RSS 源（媒体官方提供，URL 直链原文）
-#   优先级2：RSSHub 抓取（rsshub.app，GitHub Actions 境外服务器可访问）
-#   备用：rss.shab.fun（RSSHub 备用实例）
+# 核心策略：精准关键词搜索型 RSS 优先，综合媒体 feed 作为补充
+# ─────────────────────────────────────────────────────────────
+# 【精准搜索型 RSS 说明】
+#   百度新闻 RSS：http://news.baidu.com/ns?word=关键词&tn=rss&cl=2
+#     - 直接搜索关键词，命中率极高
+#     - cl=2 全文搜索；cl=1 仅标题搜索
+#     - 条目 link 指向 news.baidu.com 聚合页（可正常访问）
+#   今日头条 RSS（RSSHub）：https://rsshub.app/toutiao/search/关键词
+#     - 搜索结果直接命中，无需二次过滤
+#   微博搜索 RSS（RSSHub）：https://rsshub.app/weibo/search/keyword/关键词
+#   知乎搜索 RSS（RSSHub）：https://rsshub.app/zhihu/search/关键词
+# ─────────────────────────────────────────────────────────────
 rss:
   enable_rss: true
   freshness_filter:
@@ -98,8 +101,190 @@ rss:
   feeds:
 
     # ══════════════════════════════════════════════════════════════
-    # 【P1 权威媒体直接 RSS】澎湃新闻
-    # 澎湃官方 RSS，URL 直链原文（thepaper.cn/newsDetail_forward_xxx）
+    # 【P3 精准搜索】百度新闻关键词搜索 RSS（核心数据源）
+    # 直接搜索精准词，命中率远高于综合 feed 过滤
+    # ══════════════════════════════════════════════════════════════
+
+    - id: "baidu_waimai_rider"
+      name: "百度新闻-外卖骑手"
+      url: "http://news.baidu.com/ns?word=%E5%A4%96%E5%8D%96%E9%AA%91%E6%89%8B&tn=rss&cl=2"
+      priority: "P3"
+      category: "auto"
+      tag: "auto"
+
+    - id: "baidu_meituan_rider"
+      name: "百度新闻-美团骑手"
+      url: "http://news.baidu.com/ns?word=%E7%BE%8E%E5%9B%A2%E9%AA%91%E6%89%8B&tn=rss&cl=2"
+      priority: "P3"
+      category: "platform"
+      tag: "auto"
+
+    - id: "baidu_eleme_rider"
+      name: "百度新闻-饿了么骑手"
+      url: "http://news.baidu.com/ns?word=%E9%A5%BF%E4%BA%86%E4%B9%88%E9%AA%91%E6%89%8B&tn=rss&cl=2"
+      priority: "P3"
+      category: "platform"
+      tag: "auto"
+
+    - id: "baidu_rider_rights"
+      name: "百度新闻-骑手权益"
+      url: "http://news.baidu.com/ns?word=%E9%AA%91%E6%89%8B%E6%9D%83%E7%9B%8A&tn=rss&cl=2"
+      priority: "P3"
+      category: "opinion"
+      tag: "opinion.rights"
+
+    - id: "baidu_rider_accident"
+      name: "百度新闻-骑手事故"
+      url: "http://news.baidu.com/ns?word=%E9%AA%91%E6%89%8B%E4%BA%8B%E6%95%85&tn=rss&cl=2"
+      priority: "P3"
+      category: "rider_story"
+      tag: "rider_story.accident"
+
+    - id: "baidu_rider_policy"
+      name: "百度新闻-骑手政策"
+      url: "http://news.baidu.com/ns?word=%E9%AA%91%E6%89%8B%E6%94%BF%E7%AD%96&tn=rss&cl=2"
+      priority: "P3"
+      category: "policy"
+      tag: "auto"
+
+    - id: "baidu_rider_insurance"
+      name: "百度新闻-骑手社保"
+      url: "http://news.baidu.com/ns?word=%E9%AA%91%E6%89%8B%E7%A4%BE%E4%BF%9D&tn=rss&cl=2"
+      priority: "P3"
+      category: "policy"
+      tag: "policy.labor"
+
+    - id: "baidu_rider_welfare"
+      name: "百度新闻-骑手关爱"
+      url: "http://news.baidu.com/ns?word=%E9%AA%91%E6%89%8B%E5%85%B3%E7%88%B1&tn=rss&cl=2"
+      priority: "P3"
+      category: "care"
+      tag: "auto"
+
+    - id: "baidu_instant_delivery"
+      name: "百度新闻-即时配送"
+      url: "http://news.baidu.com/ns?word=%E5%8D%B3%E6%97%B6%E9%85%8D%E9%80%81&tn=rss&cl=2"
+      priority: "P3"
+      category: "auto"
+      tag: "auto"
+
+    - id: "baidu_new_employment"
+      name: "百度新闻-新就业形态"
+      url: "http://news.baidu.com/ns?word=%E6%96%B0%E5%B0%B1%E4%B8%9A%E5%BD%A2%E6%80%81&tn=rss&cl=2"
+      priority: "P3"
+      category: "policy"
+      tag: "policy.national"
+
+    - id: "baidu_platform_labor"
+      name: "百度新闻-平台用工"
+      url: "http://news.baidu.com/ns?word=%E5%B9%B3%E5%8F%B0%E7%94%A8%E5%B7%A5&tn=rss&cl=2"
+      priority: "P3"
+      category: "policy"
+      tag: "policy.labor"
+
+    - id: "baidu_rider_income"
+      name: "百度新闻-骑手收入"
+      url: "http://news.baidu.com/ns?word=%E9%AA%91%E6%89%8B%E6%94%B6%E5%85%A5&tn=rss&cl=2"
+      priority: "P3"
+      category: "platform"
+      tag: "platform.pay"
+
+    - id: "baidu_rider_station"
+      name: "百度新闻-骑手驿站"
+      url: "http://news.baidu.com/ns?word=%E9%AA%91%E6%89%8B%E9%A9%BF%E7%AB%99&tn=rss&cl=2"
+      priority: "P3"
+      category: "care"
+      tag: "care.station"
+
+    # ══════════════════════════════════════════════════════════════
+    # 【P5 精准搜索】微博关键词搜索 RSS（RSSHub）
+    # 舆情监控核心来源
+    # ══════════════════════════════════════════════════════════════
+
+    - id: "rsshub_weibo_waimai_rider"
+      name: "微博-外卖骑手"
+      url: "https://rsshub.app/weibo/search/keyword/%E5%A4%96%E5%8D%96%E9%AA%91%E6%89%8B"
+      priority: "P5"
+      category: "opinion"
+      tag: "opinion.viral"
+
+    - id: "rsshub_weibo_meituan_rider"
+      name: "微博-美团骑手"
+      url: "https://rsshub.app/weibo/search/keyword/%E7%BE%8E%E5%9B%A2%E9%AA%91%E6%89%8B"
+      priority: "P5"
+      category: "opinion"
+      tag: "auto"
+
+    - id: "rsshub_weibo_rider_rights"
+      name: "微博-骑手权益"
+      url: "https://rsshub.app/weibo/search/keyword/%E9%AA%91%E6%89%8B%E6%9D%83%E7%9B%8A"
+      priority: "P5"
+      category: "opinion"
+      tag: "opinion.rights"
+
+    # ══════════════════════════════════════════════════════════════
+    # 【P5 精准搜索】知乎关键词搜索 RSS（RSSHub）
+    # ══════════════════════════════════════════════════════════════
+
+    - id: "rsshub_zhihu_waimai_rider"
+      name: "知乎-外卖骑手"
+      url: "https://rsshub.app/zhihu/search/%E5%A4%96%E5%8D%96%E9%AA%91%E6%89%8B"
+      priority: "P5"
+      category: "opinion"
+      tag: "opinion.rights"
+
+    - id: "rsshub_zhihu_rider_policy"
+      name: "知乎-骑手政策"
+      url: "https://rsshub.app/zhihu/search/%E9%AA%91%E6%89%8B%E6%94%BF%E7%AD%96"
+      priority: "P5"
+      category: "policy"
+      tag: "auto"
+
+    # ══════════════════════════════════════════════════════════════
+    # 【P2 精准搜索】36氪关键词搜索 RSS（RSSHub）
+    # ══════════════════════════════════════════════════════════════
+
+    - id: "rsshub_36kr_waimai_rider"
+      name: "36氪-外卖骑手"
+      url: "https://rsshub.app/36kr/search/articles/%E5%A4%96%E5%8D%96%E9%AA%91%E6%89%8B"
+      priority: "P2"
+      category: "auto"
+      tag: "auto"
+
+    - id: "rsshub_36kr_meituan"
+      name: "36氪-美团"
+      url: "https://rsshub.app/36kr/search/articles/%E7%BE%8E%E5%9B%A2"
+      priority: "P2"
+      category: "platform"
+      tag: "auto"
+
+    - id: "rsshub_36kr_instant_delivery"
+      name: "36氪-即时配送"
+      url: "https://rsshub.app/36kr/search/articles/%E5%8D%B3%E6%97%B6%E9%85%8D%E9%80%81"
+      priority: "P2"
+      category: "report"
+      tag: "report.market"
+
+    # ══════════════════════════════════════════════════════════════
+    # 【P1 精准搜索】澎湃新闻关键词搜索（RSSHub）
+    # ══════════════════════════════════════════════════════════════
+
+    - id: "rsshub_thepaper_rider"
+      name: "澎湃-骑手"
+      url: "https://rsshub.app/thepaper/search/%E9%AA%91%E6%89%8B"
+      priority: "P1"
+      category: "auto"
+      tag: "auto"
+
+    - id: "rsshub_thepaper_waimai"
+      name: "澎湃-外卖骑手"
+      url: "https://rsshub.app/thepaper/search/%E5%A4%96%E5%8D%96%E9%AA%91%E6%89%8B"
+      priority: "P1"
+      category: "auto"
+      tag: "auto"
+
+    # ══════════════════════════════════════════════════════════════
+    # 【P1 综合媒体 RSS】澎湃新闻频道（补充覆盖）
     # ══════════════════════════════════════════════════════════════
 
     - id: "thepaper_society"
@@ -116,44 +301,6 @@ rss:
       category: "auto"
       tag: "auto"
 
-    - id: "thepaper_politics"
-      name: "澎湃新闻-政务"
-      url: "https://www.thepaper.cn/rss_channel_empArticleList.jsp?channelId=19165"
-      priority: "P1"
-      category: "auto"
-      tag: "auto"
-
-    # ══════════════════════════════════════════════════════════════
-    # 【P2 科技财经媒体直接 RSS】36氪 / 虎嗅 / 钛媒体
-    # ══════════════════════════════════════════════════════════════
-
-    - id: "36kr_feed"
-      name: "36氪"
-      url: "https://36kr.com/feed"
-      priority: "P2"
-      category: "auto"
-      tag: "auto"
-
-    - id: "huxiu_feed"
-      name: "虎嗅"
-      url: "https://www.huxiu.com/rss/0.xml"
-      priority: "P2"
-      category: "auto"
-      tag: "auto"
-
-    - id: "tmtpost_feed"
-      name: "钛媒体"
-      url: "https://www.tmtpost.com/feed"
-      priority: "P2"
-      category: "auto"
-      tag: "auto"
-
-    # ══════════════════════════════════════════════════════════════
-    # 【RSSHub - 澎湃新闻频道】
-    # rsshub.app 在 GitHub Actions 境外服务器可访问
-    # URL 格式：https://www.thepaper.cn/newsDetail_forward_xxx（直链）
-    # ══════════════════════════════════════════════════════════════
-
     - id: "rsshub_thepaper_society"
       name: "澎湃-社会(RSSHub)"
       url: "https://rsshub.app/thepaper/channel/25941"
@@ -161,34 +308,13 @@ rss:
       category: "auto"
       tag: "auto"
 
-    - id: "rsshub_thepaper_finance"
-      name: "澎湃-财经(RSSHub)"
-      url: "https://rsshub.app/thepaper/channel/19164"
-      priority: "P1"
-      category: "auto"
-      tag: "auto"
-
-    - id: "rsshub_thepaper_politics"
-      name: "澎湃-政务(RSSHub)"
-      url: "https://rsshub.app/thepaper/channel/19165"
-      priority: "P1"
-      category: "auto"
-      tag: "auto"
-
     # ══════════════════════════════════════════════════════════════
-    # 【RSSHub - 36氪 / 虎嗅 / 界面新闻】
+    # 【P2 综合媒体 RSS】36氪 / 虎嗅（补充覆盖）
     # ══════════════════════════════════════════════════════════════
 
     - id: "rsshub_36kr_latest"
       name: "36氪-最新(RSSHub)"
       url: "https://rsshub.app/36kr/news/latest"
-      priority: "P2"
-      category: "auto"
-      tag: "auto"
-
-    - id: "rsshub_36kr_platform"
-      name: "36氪-平台经济(RSSHub)"
-      url: "https://rsshub.app/36kr/search/articles/%E5%A4%96%E5%8D%96%E9%AA%91%E6%89%8B"
       priority: "P2"
       category: "auto"
       tag: "auto"
@@ -207,15 +333,8 @@ rss:
       category: "auto"
       tag: "auto"
 
-    - id: "rsshub_jiemian_business"
-      name: "界面新闻-商业(RSSHub)"
-      url: "https://rsshub.app/jiemian/news/2"
-      priority: "P2"
-      category: "auto"
-      tag: "auto"
-
     # ══════════════════════════════════════════════════════════════
-    # 【RSSHub - 财新 / 工人日报】P1 权威媒体
+    # 【P1 权威媒体 RSS】财新 / 工人日报
     # ══════════════════════════════════════════════════════════════
 
     - id: "rsshub_caixin_finance"
@@ -225,151 +344,15 @@ rss:
       category: "auto"
       tag: "auto"
 
-    - id: "rsshub_caixin_economy"
-      name: "财新-经济(RSSHub)"
-      url: "https://rsshub.app/caixin/article/economy"
-      priority: "P1"
-      category: "auto"
-      tag: "auto"
-
     - id: "rsshub_workercn"
       name: "工人日报(RSSHub)"
       url: "https://rsshub.app/workercn/news"
       priority: "P1"
-      category: "industry"
-      tag: "industry.labor"
+      category: "policy"
+      tag: "policy.labor"
 
     # ══════════════════════════════════════════════════════════════
-    # 【RSSHub - 微博搜索】骑手相关热搜词
-    # URL 格式：https://weibo.com/xxx（直链微博帖子）
-    # ══════════════════════════════════════════════════════════════
-
-    - id: "rsshub_weibo_rider"
-      name: "微博-骑手(RSSHub)"
-      url: "https://rsshub.app/weibo/search/keyword/%E9%AA%91%E6%89%8B"
-      priority: "P5"
-      category: "auto"
-      tag: "auto"
-
-    - id: "rsshub_weibo_waimai"
-      name: "微博-外卖骑手(RSSHub)"
-      url: "https://rsshub.app/weibo/search/keyword/%E5%A4%96%E5%8D%96%E9%AA%91%E6%89%8B"
-      priority: "P5"
-      category: "opinion"
-      tag: "opinion.viral"
-
-    - id: "rsshub_weibo_meituan"
-      name: "微博-美团骑手(RSSHub)"
-      url: "https://rsshub.app/weibo/search/keyword/%E7%BE%8E%E5%9B%A2%E9%AA%91%E6%89%8B"
-      priority: "P5"
-      category: "auto"
-      tag: "auto"
-
-    # ══════════════════════════════════════════════════════════════
-    # 【RSSHub - 知乎搜索】骑手相关话题
-    # ══════════════════════════════════════════════════════════════
-
-    - id: "rsshub_zhihu_rider"
-      name: "知乎-骑手话题(RSSHub)"
-      url: "https://rsshub.app/zhihu/search/%E5%A4%96%E5%8D%96%E9%AA%91%E6%89%8B"
-      priority: "P5"
-      category: "opinion"
-      tag: "opinion.rights"
-
-    # ══════════════════════════════════════════════════════════════
-    # 【RSSHub 备用实例 rss.shab.fun】
-    # 当 rsshub.app 不可用时的备用
-    # ══════════════════════════════════════════════════════════════
-
-    - id: "shab_36kr"
-      name: "36氪(备用RSSHub)"
-      url: "https://rss.shab.fun/36kr/news/latest"
-      priority: "P2"
-      category: "auto"
-      tag: "auto"
-
-    - id: "shab_huxiu"
-      name: "虎嗅(备用RSSHub)"
-      url: "https://rss.shab.fun/huxiu/article"
-      priority: "P2"
-      category: "auto"
-      tag: "auto"
-
-    - id: "shab_thepaper"
-      name: "澎湃社会(备用RSSHub)"
-      url: "https://rss.shab.fun/thepaper/channel/25941"
-      priority: "P1"
-      category: "auto"
-      tag: "auto"
-
-    - id: "shab_jiemian"
-      name: "界面新闻(备用RSSHub)"
-      url: "https://rss.shab.fun/jiemian/news/1"
-      priority: "P2"
-      category: "auto"
-      tag: "auto"
-
-    - id: "shab_caixin"
-      name: "财新(备用RSSHub)"
-      url: "https://rss.shab.fun/caixin/article/finance"
-      priority: "P1"
-      category: "auto"
-      tag: "auto"
-
-    # ══════════════════════════════════════════════════════════════
-    # 【百度新闻关键词 RSS】官方接口，直接返回新闻列表
-    # URL 格式：http://news.baidu.com/ns?word=关键词&tn=rss&cl=2
-    #   cl=2 表示全文搜索；cl=1 表示仅标题搜索
-    # 注意：百度新闻 RSS 条目的 link 指向 news.baidu.com 聚合页，
-    #       非原文直链，但聚合页可正常访问，点击后跳转原文
-    # ══════════════════════════════════════════════════════════════
-
-    - id: "baidu_news_rider"
-      name: "百度新闻-骑手"
-      url: "http://news.baidu.com/ns?word=%E9%AA%91%E6%89%8B&tn=rss&cl=2"
-      priority: "P3"
-      category: "auto"
-      tag: "auto"
-
-    - id: "baidu_news_waimai_rider"
-      name: "百度新闻-外卖骑手"
-      url: "http://news.baidu.com/ns?word=%E5%A4%96%E5%8D%96%E9%AA%91%E6%89%8B&tn=rss&cl=2"
-      priority: "P3"
-      category: "auto"
-      tag: "auto"
-
-    - id: "baidu_news_meituan"
-      name: "百度新闻-美团骑手"
-      url: "http://news.baidu.com/ns?word=%E7%BE%8E%E5%9B%A2%E9%AA%91%E6%89%8B&tn=rss&cl=2"
-      priority: "P3"
-      category: "platform"
-      tag: "auto"
-
-    - id: "baidu_news_eleme"
-      name: "百度新闻-饿了么骑手"
-      url: "http://news.baidu.com/ns?word=%E9%A5%BF%E4%BA%86%E4%B9%88%E9%AA%91%E6%89%8B&tn=rss&cl=2"
-      priority: "P3"
-      category: "platform"
-      tag: "auto"
-
-    - id: "baidu_news_labor"
-      name: "百度新闻-新就业形态"
-      url: "http://news.baidu.com/ns?word=%E6%96%B0%E5%B0%B1%E4%B8%9A%E5%BD%A2%E6%80%81&tn=rss&cl=2"
-      priority: "P3"
-      category: "industry"
-      tag: "industry.labor"
-
-    - id: "baidu_news_platform_labor"
-      name: "百度新闻-平台用工"
-      url: "http://news.baidu.com/ns?word=%E5%B9%B3%E5%8F%B0%E7%94%A8%E5%B7%A5&tn=rss&cl=2"
-      priority: "P3"
-      category: "industry"
-      tag: "industry.policy"
-
-    # ══════════════════════════════════════════════════════════════
-    # 【P0 权威官媒直接 RSS】新华网 / 中国新闻网 / 凤凰网
-    # 新华网 RSS：http://rss.xinhuanet.com/rss/频道.xml
-    # 中国新闻网 RSS：https://www.chinanews.com.cn/rss/频道.xml
+    # 【P0 权威官媒 RSS】新华网 / 中国新闻网
     # ══════════════════════════════════════════════════════════════
 
     - id: "xinhua_society"
@@ -393,35 +376,38 @@ rss:
       category: "auto"
       tag: "auto"
 
-    - id: "chinanews_finance"
-      name: "中国新闻网-财经"
-      url: "https://www.chinanews.com.cn/rss/finance.xml"
-      priority: "P0"
-      category: "auto"
-      tag: "auto"
+    # ══════════════════════════════════════════════════════════════
+    # 【备用 RSSHub 实例】rss.shab.fun
+    # ══════════════════════════════════════════════════════════════
 
-    - id: "ifeng_society"
-      name: "凤凰网-社会"
-      url: "https://news.ifeng.com/rss/society.xml"
+    - id: "shab_36kr"
+      name: "36氪(备用RSSHub)"
+      url: "https://rss.shab.fun/36kr/news/latest"
       priority: "P2"
       category: "auto"
       tag: "auto"
 
+    - id: "shab_thepaper"
+      name: "澎湃社会(备用RSSHub)"
+      url: "https://rss.shab.fun/thepaper/channel/25941"
+      priority: "P1"
+      category: "auto"
+      tag: "auto"
+
+    - id: "shab_caixin"
+      name: "财新(备用RSSHub)"
+      url: "https://rss.shab.fun/caixin/article/finance"
+      priority: "P1"
+      category: "auto"
+      tag: "auto"
+
     # ══════════════════════════════════════════════════════════════
-    # 【RSSHub - 百度热搜榜】补充到 RSS 管道（crawler 管道已有百度热榜）
-    # 双管道覆盖，提高抓取成功率
+    # 【P5 热榜】百度热搜（舆情补充）
     # ══════════════════════════════════════════════════════════════
 
     - id: "rsshub_baidu_hot"
       name: "百度热搜(RSSHub)"
       url: "https://rsshub.app/baidu/hot"
-      priority: "P5"
-      category: "opinion"
-      tag: "opinion.viral"
-
-    - id: "shab_baidu_hot"
-      name: "百度热搜(备用RSSHub)"
-      url: "https://rss.shab.fun/baidu/hot"
       priority: "P5"
       category: "opinion"
       tag: "opinion.viral"
@@ -432,6 +418,7 @@ filter:
   method: "keyword"
   keyword_file: "frequency_words.txt"
   base_keywords:
+    - "外卖骑手"
     - "骑手"
     - "外卖"
     - "配送员"
