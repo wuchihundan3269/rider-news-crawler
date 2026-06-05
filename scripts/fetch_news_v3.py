@@ -30,6 +30,43 @@ import feedparser
 import requests
 import yaml
 from dateutil import parser as dateparser
+try:
+    from bs4 import BeautifulSoup as _BS
+    _HAS_BS4 = True
+except ImportError:
+    _HAS_BS4 = False
+
+
+def fetch_og_image(url: str, timeout: int = 6) -> str | None:
+    """抓取文章页面的 og:image 元标签，返回图片 URL 或 None"""
+    if not url or not _HAS_BS4:
+        return None
+    try:
+        resp = requests.get(
+            url,
+            timeout=timeout,
+            headers={
+                "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+                              "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+                "Accept": "text/html,application/xhtml+xml,*/*;q=0.8",
+                "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
+            },
+            allow_redirects=True,
+        )
+        if resp.status_code != 200:
+            return None
+        soup = _BS(resp.text, "html.parser")
+        # 优先 og:image
+        tag = soup.find("meta", property="og:image")
+        if tag and tag.get("content"):
+            return tag["content"].strip()
+        # 备选 twitter:image
+        tag = soup.find("meta", attrs={"name": "twitter:image"})
+        if tag and tag.get("content"):
+            return tag["content"].strip()
+    except Exception:
+        pass
+    return None
 
 
 def resolve_google_news_url(url: str, timeout: int = 5) -> str:
@@ -314,6 +351,36 @@ SUB_TAG_LABEL = {
 
 # ── RSS 抓取 ──────────────────────────────────────────────────────────────────
 
+def _resolve_feed_url(url: str, timeout: int = 15) -> str:
+    """对会返回 301/302 的 RSS URL（如百度新闻），用 requests 跟随重定向拿到真实 URL。
+    feedparser 默认不跟随重定向，导致百度新闻 RSS 返回 0 条。
+    """
+    if not url:
+        return url
+    try:
+        resp = requests.get(
+            url,
+            allow_redirects=True,
+            timeout=timeout,
+            headers={
+                "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+                              "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+                "Accept": "application/rss+xml, application/xml, text/xml, */*",
+            }
+        )
+        # 如果最终 URL 与原始不同，说明发生了重定向
+        if resp.url and resp.url != url:
+            return resp.url
+        # 如果内容是 XML/RSS，直接返回原 URL（feedparser 可以处理）
+        ct = resp.headers.get("Content-Type", "")
+        if "xml" in ct or "rss" in ct or "atom" in ct:
+            return url
+        # 否则返回最终 URL
+        return resp.url or url
+    except Exception:
+        return url
+
+
 def fetch_rss_feed(feed_cfg: dict, keyword_rules: dict, base_keywords: list,
                    max_age_days: int = 3) -> list[dict]:
     """抓取单个 RSS 源，返回过滤后的文章列表"""
@@ -327,9 +394,16 @@ def fetch_rss_feed(feed_cfg: dict, keyword_rules: dict, base_keywords: list,
     if not url:
         return []
 
+    # 对百度新闻等会 301 重定向的 URL，先用 requests 跟随重定向
+    # feedparser 默认不跟随重定向，导致百度新闻 RSS 返回 0 条
+    fetch_url = url
+    if "news.baidu.com" in url or "163.com" in url:
+        fetch_url = _resolve_feed_url(url)
+
     try:
-        feed = feedparser.parse(url, request_headers={
-            "User-Agent": "Mozilla/5.0 (compatible; RiderNewsBot/3.0)"
+        feed = feedparser.parse(fetch_url, request_headers={
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+                          "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
         })
         entries = feed.entries
         print(f"  [{priority}] {name}: 获取 {len(entries)} 条")
@@ -397,6 +471,29 @@ def fetch_rss_feed(feed_cfg: dict, keyword_rules: dict, base_keywords: list,
         else:
             primary_tag = ""
 
+        # 尝试从 RSS 条目中获取图片（media:content / enclosure / media:thumbnail）
+        img_url = None
+        media_content = entry.get("media_content", [])
+        if media_content and isinstance(media_content, list):
+            for mc in media_content:
+                if mc.get("url") and mc.get("medium") in ("image", None):
+                    img_url = mc["url"]
+                    break
+        if not img_url:
+            enclosures = entry.get("enclosures", [])
+            for enc in enclosures:
+                if enc.get("type", "").startswith("image/") and enc.get("href"):
+                    img_url = enc["href"]
+                    break
+        if not img_url:
+            media_thumbnail = entry.get("media_thumbnail", [])
+            if media_thumbnail and isinstance(media_thumbnail, list):
+                img_url = media_thumbnail[0].get("url")
+
+        # RSS 中没有图片时，抓取文章页面的 og:image（仅对非 Google News 链接）
+        if not img_url and "news.google.com" not in url_str:
+            img_url = fetch_og_image(url_str)
+
         items.append({
             "title":        title,
             "summary":      summary or title,
@@ -409,6 +506,7 @@ def fetch_rss_feed(feed_cfg: dict, keyword_rules: dict, base_keywords: list,
             "priority":     priority,
             "feed_id":      feed_id,
             "url_hash":     url_hash(url_str),
+            "image":        img_url or None,
         })
 
     return items
@@ -566,6 +664,7 @@ def main():
             "tag":          item.get("tag", ""),
             "tags":         item.get("tags", []),   # 多标签（用于前端细粒度筛选）
             "priority":     item.get("priority", "P5"),
+            "image":        item.get("image"),      # og:image 或 RSS 媒体图片
         })
 
     output = {
