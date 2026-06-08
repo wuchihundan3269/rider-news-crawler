@@ -712,16 +712,19 @@ padding:12px 0;
 <div id="subPage" style="display:none"></div>
 
 <script>
-// ===== 工具函数：打开新闻链接 =====
-// 用动态 <a> 标签代替 window.open，兼容 sandbox iframe 环境
-// 数据源已切换为 RSSHub + 直接 RSS，URL 均为真实文章链接，直接打开即可
+// ===== 工具函数：打开新闻链接（始终新标签页，绝不跳转首页）=====
 function openNewsUrl(url, title) {
   if (!url) return;
-  // 优先用 window.open 新标签页打开；若被浏览器拦截则在当前页跳转
-  var win = window.open(url, '_blank', 'noopener,noreferrer');
-  if (!win || win.closed || typeof win.closed === 'undefined') {
-    window.location.href = url;
-  }
+  // 用动态 <a target="_blank"> 模拟点击，兼容 sandbox/iframe 环境
+  // 不使用 window.open（可能被拦截后 fallback 到当前页跳转）
+  // 不使用 window.location.href（会导致首页跳走）
+  var a = document.createElement('a');
+  a.href = url;
+  a.target = '_blank';
+  a.rel = 'noopener noreferrer';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 }
 
 // ===== 数据 =====
@@ -732,7 +735,13 @@ function hoursAgo(h){ return new Date(now - h*3600000); }
 // ===== 将 published_at 字符串转为 Date 对象 =====
 function parseTs(pub){
   if(!pub) return new Date(now - 3600000);
-  try{ return new Date(pub.replace(' ','T')); } catch(e){ return new Date(now - 3600000); }
+  try{
+    var d = new Date(pub.replace(' ','T'));
+    if(isNaN(d.getTime())) return new Date(now - 3600000);
+    // 超过当前时间 1 小时以上（爬虫写入了错误年份如 2026），截断为当前时间，防止排序靠前
+    if(d.getTime() > now + 3600000) return new Date(now);
+    return d;
+  } catch(e){ return new Date(now - 3600000); }
 }
 
 // ===== 从标题末尾提取真实媒体名（Google News RSS 格式："标题 - 媒体名"）=====
@@ -763,13 +772,21 @@ var SOURCE_EN_ZH = {
   'Titanium Media': '钛媒体',
 };
 
+// ===== 聚合平台黑名单：这些不是真实媒体，从标题提取到后丢弃 =====
+var AGGREGATOR_BLACKLIST = ['MSN', 'Yahoo', 'Yahoo News', 'Yahoo Finance',
+  'Google News', 'Google新闻', 'Apple News', 'SmartNews', 'Flipboard',
+  '今日头条', '腾讯新闻', '网易新闻', '百度新闻', '搜狐新闻'];
+
 // ===== 清洗 source 字段：优先从标题提取真实媒体名，否则去掉 "Google新闻-" 前缀 =====
 function cleanSource(s, rawTitle){
   // 优先从标题末尾提取真实媒体名
   var name = '';
   if (rawTitle) {
     var fromTitle = extractSourceFromTitle(rawTitle);
-    if (fromTitle) name = fromTitle;
+    // 如果提取到的是聚合平台，丢弃，降级用 source 字段
+    if (fromTitle && AGGREGATOR_BLACKLIST.indexOf(fromTitle) === -1) {
+      name = fromTitle;
+    }
   }
   if (!name) {
     if (!s) return '';
@@ -1038,14 +1055,31 @@ async function _fetchData(){
   }
 }
 
+// ===== 判断原始文章是否来自聚合平台（从标题末尾 " - 媒体名" 提取）=====
+function isAggregatorRaw(a){
+  var t = a.title || '';
+  var di = t.lastIndexOf(' - ');
+  if(di > 0){
+    var name = t.slice(di + 3).trim();
+    if(AGGREGATOR_BLACKLIST.indexOf(name) !== -1) return true;
+  }
+  return false;
+}
+
 // ===== 内部：将原始 JSON 数据填充到全局变量 =====
 function _applyData(latest, data){
+  // 在 map 之前先过滤聚合平台来源（MSN 等标题末尾可直接识别）
+  var rawFeatured = (data.featured || []).filter(function(a){ return !isAggregatorRaw(a); });
+
   var articles = (data.articles || []).map(function(a, i) { return apiToNews(a, i); });
-  var featured  = (data.featured  || []).map(function(a, i) { return apiToNews(a, i); });
+  var featured  = rawFeatured.map(function(a, i) { return apiToNews(a, i); });
   var flash     = (data.flash     || data.articles || []).map(function(a, i) { return apiToNews(a, i); });
 
   // 全部按发布时间倒序排列
   articles.sort(function(a, b) { return b.ts - a.ts; });
+
+  // featured 也按时间排序（确保最新的排前面）
+  featured.sort(function(a, b) { return b.ts - a.ts; });
 
   NEWS = featured.length ? featured : articles.slice(0, 5);
   if (NEWS.length === 0) NEWS = articles.slice(0, 5);
@@ -1126,8 +1160,12 @@ function renderHero(){
   listEl.innerHTML = LIST_NEWS.map((n,i) => {
     const _hc = _heroCatMap[n.category];
     const _htag = _hc ? `<span class="hero-list-tag ${_hc.cls}">${_hc.label}</span>` : '';
+    const _listUrl = n.url || '';
+    const _listClick = _listUrl
+      ? `goSlide(${i},true); openNewsUrl('${_listUrl}','${n.title.replace(/'/g,"\\'")}')`
+      : `goSlide(${i},true)`;
     return `
-    <div class="hero-list-item${i===0?' active':''}" data-idx="${i}" onclick="goSlide(${i},true)" onmouseenter="hoverSlide(${i})" onmouseleave="leaveSlide()" style="flex:1;align-items:center;">
+    <div class="hero-list-item${i===0?' active':''}" data-idx="${i}" onclick="${_listClick}" onmouseenter="hoverSlide(${i})" onmouseleave="leaveSlide()" style="flex:1;align-items:center;${_listUrl ? 'cursor:pointer' : ''}">
       <div class="hero-list-info">
         <div class="hero-list-title-row">
           <div class="hero-list-text">${n.title}</div>
