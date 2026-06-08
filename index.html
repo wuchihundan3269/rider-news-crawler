@@ -1055,14 +1055,31 @@ async function _fetchData(){
   }
 }
 
+// ===== 判断原始文章是否来自聚合平台（从标题末尾 " - 媒体名" 提取）=====
+function isAggregatorRaw(a){
+  var t = a.title || '';
+  var di = t.lastIndexOf(' - ');
+  if(di > 0){
+    var name = t.slice(di + 3).trim();
+    if(AGGREGATOR_BLACKLIST.indexOf(name) !== -1) return true;
+  }
+  return false;
+}
+
 // ===== 内部：将原始 JSON 数据填充到全局变量 =====
 function _applyData(latest, data){
+  // 在 map 之前先过滤聚合平台来源（MSN 等标题末尾可直接识别）
+  var rawFeatured = (data.featured || []).filter(function(a){ return !isAggregatorRaw(a); });
+
   var articles = (data.articles || []).map(function(a, i) { return apiToNews(a, i); });
-  var featured  = (data.featured  || []).map(function(a, i) { return apiToNews(a, i); });
+  var featured  = rawFeatured.map(function(a, i) { return apiToNews(a, i); });
   var flash     = (data.flash     || data.articles || []).map(function(a, i) { return apiToNews(a, i); });
 
   // 全部按发布时间倒序排列
   articles.sort(function(a, b) { return b.ts - a.ts; });
+
+  // featured 也按时间排序（确保最新的排前面）
+  featured.sort(function(a, b) { return b.ts - a.ts; });
 
   NEWS = featured.length ? featured : articles.slice(0, 5);
   if (NEWS.length === 0) NEWS = articles.slice(0, 5);

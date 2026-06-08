@@ -534,8 +534,25 @@ def transform(input_path: str, hot_path: str | None, output_path: str):
     print(f"     hot      : {len(hot)}")
 
 
+_AGGREGATOR_SOURCES = {"MSN", "Yahoo", "Yahoo News", "Yahoo Finance",
+                       "Google News", "Apple News", "SmartNews", "Flipboard",
+                       "今日头条", "腾讯新闻", "网易新闻", "百度新闻", "搜狐新闻"}
+
+def _is_aggregator(article: dict) -> bool:
+    """判断文章是否来自聚合平台（标题末尾 ' - 媒体名' 或 source 字段）"""
+    title = article.get("title", "")
+    # 从标题末尾提取媒体名（Google News RSS 格式）
+    di = title.rfind(" - ")
+    if di > 0:
+        name = title[di + 3:].strip()
+        if name in _AGGREGATOR_SOURCES:
+            return True
+    return False
+
 def _pick_featured(articles: list, n: int = 5) -> list:
     """从文章列表中挑选轮播精选：优先有图，各分类均衡（Wiki 六分类体系）"""
+    # 先过滤掉聚合平台来源（MSN、Yahoo 等不是真实媒体）
+    articles = [a for a in articles if not _is_aggregator(a)]
     cats = ["rider_story", "care", "policy", "report", "platform", "opinion"]
     buckets = {c: [] for c in cats}
     others = []
