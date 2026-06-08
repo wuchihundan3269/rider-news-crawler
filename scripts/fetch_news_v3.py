@@ -443,8 +443,9 @@ def fetch_rss_feed(feed_cfg: dict, keyword_rules: dict, base_keywords: list,
         if is_global_filtered(title, summary, keyword_rules["global_filter"]):
             continue
 
-        # 基础关键词过滤（auto 分类的源需要过滤，固定分类的源直接保留）
-        if category == "auto" and not matches_base_keywords(title, summary, base_keywords):
+        # 基础关键词过滤：所有分类的源都必须命中骑手相关词才保留
+        # （防止"新就业形态""平台用工"等宽泛关键词抓入大量无关文章）
+        if not matches_base_keywords(title, summary, base_keywords):
             continue
 
         # 子分类打标（多标签）
