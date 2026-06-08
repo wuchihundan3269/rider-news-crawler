@@ -25,7 +25,7 @@ on:
           - "false"
           - "true"
 
-# 允许 Actions 写入仓库（用于 gh-pages 部署）
+# 允许 Actions 写入仓库
 permissions:
   contents: write
   pages: write
@@ -42,11 +42,13 @@ jobs:
     timeout-minutes: 30
 
     steps:
-      # ── 1. 检出仓库 ──────────────────────────────────────────────
+      # ── 1. 检出仓库（完整历史，push 时不会 non-fast-forward）──────
       - name: 检出代码
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          # 使用 PAT 或默认 GITHUB_TOKEN，确保有写权限
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       # ── 2. 设置 Python ───────────────────────────────────────────
       - name: 设置 Python 3.11
@@ -80,9 +82,7 @@ jobs:
       - name: 测试 RSS 源可用性
         run: python scripts/_test_rss.py || true
 
-      # ── 5b. 运行独立抓取脚本（不依赖 TrendRadar）───────────────
-      # fetch_news_v3.py 直接读取 trendradar-config/config.yaml
-      # 三管道：RSS(P0-P5媒体) + 搜索引擎关键词 + 热榜平台
+      # ── 5b. 运行新闻抓取 ─────────────────────────────────────────
       - name: 运行新闻抓取
         run: |
           DATE="${{ steps.date.outputs.date }}"
@@ -105,12 +105,6 @@ jobs:
           fi
 
       # ── 6. 转换数据格式 ──────────────────────────────────────────
-      # transform.py 负责：
-      #   - 四分类打标（rider/industry/platform/opinion）
-      #   - 子分类打标（rider.positive/industry.policy 等22个子分类）
-      #   - 去重（标题相似度）
-      #   - 排序（时效优先，同天按P0→P5）
-      #   - 生成 featured/articles/flash/hot 四个数据块
       - name: 转换数据为网站格式
         run: |
           DATE="${{ steps.date.outputs.date }}"
@@ -129,6 +123,32 @@ jobs:
             fi
           fi
 
+          # ★ 关键保护：若本次抓取结果为空（0条），且已有当天数据，则跳过覆盖
+          NEW_TOTAL=$(python3 -c "
+          import json, sys
+          try:
+              d = json.load(open('$NEWS_FILE'))
+              print(d.get('total', 0))
+          except:
+              print(0)
+          ")
+          echo "本次抓取: ${NEW_TOTAL} 条"
+
+          if [ "$NEW_TOTAL" = "0" ] && [ -f "$OUTPUT_FILE" ]; then
+            EXISTING_TOTAL=$(python3 -c "
+          import json
+          try:
+              d = json.load(open('$OUTPUT_FILE'))
+              print(len(d.get('articles', [])))
+          except:
+              print(0)
+          ")
+            if [ "$EXISTING_TOTAL" != "0" ]; then
+              echo "本次抓取为空，已有数据 ${EXISTING_TOTAL} 条，跳过覆盖，保留现有数据"
+              exit 0
+            fi
+          fi
+
           mkdir -p data
           python scripts/transform.py --input "$NEWS_FILE" --output "$OUTPUT_FILE"
           echo "数据文件已生成: $OUTPUT_FILE"
@@ -141,7 +161,6 @@ jobs:
           DATETIME="${{ steps.date.outputs.datetime }}"
           DATA_FILE="data/${DATE}.json"
           if [ -f "$DATA_FILE" ]; then
-            # 统计各分类文章数
             TOTAL=$(python3 -c "
           import json
           with open('$DATA_FILE') as f:
@@ -166,15 +185,14 @@ jobs:
             echo "WARNING: 数据文件不存在，跳过 latest.json 更新"
           fi
 
-      # ── 8. 清理7天前的旧数据 ────────────────────────────────────
-      - name: 清理旧数据
+      # ── 8. 永久保留所有历史数据（长期网站，不删除旧文件）────────
+      - name: 列出当前数据文件
         run: |
-          find data/ -name "*.json" -not -name "latest.json" -not -name "sample.json" \
-            -mtime +7 -delete 2>/dev/null || true
-          echo "旧数据清理完成，当前 data/ 文件列表："
-          ls -la data/ | head -20
+          echo "当前 data/ 文件列表（全部保留）："
+          ls -lh data/*.json 2>/dev/null | sort || echo "暂无数据文件"
+          echo "共 $(ls data/*.json 2>/dev/null | wc -l) 个数据文件"
 
-      # ── 9. 提交数据文件 ─────────────────────────────────────────
+      # ── 9. 提交数据文件（带自动重试，彻底解决 non-fast-forward）──
       - name: 提交数据到仓库
         run: |
           git config user.name  "github-actions[bot]"
@@ -184,8 +202,31 @@ jobs:
             echo "没有新数据，跳过提交"
           else
             git commit -m "data: ${{ steps.date.outputs.datetime }} 自动更新"
-            git pull --rebase origin main
-            git push
+
+            # ★ 核心修复：push 前先 pull --rebase origin main（正确分支名）
+            # 最多重试 3 次，彻底解决并发写导致的 non-fast-forward
+            MAX_RETRY=3
+            for i in $(seq 1 $MAX_RETRY); do
+              echo "第 ${i} 次尝试 push..."
+              git pull --rebase origin main
+              if git push origin main; then
+                echo "push 成功！"
+                break
+              else
+                echo "push 失败，等待 ${i}0 秒后重试..."
+                sleep $((i * 10))
+                if [ "$i" = "$MAX_RETRY" ]; then
+                  echo "::error::push 失败，已重试 ${MAX_RETRY} 次，请检查仓库状态"
+                  # ★ 写入错误日志到仓库，方便排查
+                  mkdir -p logs
+                  echo "${{ steps.date.outputs.datetime }} push失败(重试${MAX_RETRY}次)" >> logs/push_errors.log
+                  git add logs/push_errors.log
+                  git commit -m "log: push 失败记录 ${{ steps.date.outputs.datetime }}" || true
+                  git push origin main --force-with-lease || true
+                  exit 1
+                fi
+              fi
+            done
           fi
 
       # ── 10. 部署到 GitHub Pages ──────────────────────────────────
@@ -195,6 +236,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./
           publish_branch: gh-pages
-          exclude_assets: ".github,trendradar,trendradar-config,scripts/__pycache__"
+          exclude_assets: ".github,trendradar,trendradar-config,scripts/__pycache__,logs"
           commit_message: "deploy: ${{ steps.date.outputs.datetime }}"
-
