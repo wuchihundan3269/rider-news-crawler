@@ -1,10 +1,15 @@
 {
-  "date": "2026-06-05",
-  "hour": "07",
-  "updated_at": "2026-06-05 07:56",
-  "file": "data/2026-06-05.json",
+  "date": "2026-06-08",
+  "hour": "15",
+  "updated_at": "2026-06-08 15:10",
+  "file": "data/2026-06-08.json",
   "stats": {
-    "total": 0,
-    "by_category": {}
+    "total": 24,
+    "by_category": {
+      "industry": 20,
+      "opinion": 2,
+      "platform": 1,
+      "rider": 1
+    }
   }
 }

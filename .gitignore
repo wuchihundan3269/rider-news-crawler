@@ -33,6 +33,7 @@ designs/
 rider-news/
 rider-news-site/
 github-upload/
+nocode-repo-check/
 *.txt
 # 例外：TrendRadar 关键词配置文件必须跟踪
 !trendradar-config/frequency_words.txt
@@ -48,3 +49,18 @@ upload_workflow.py
 screenshot_all.js
 screenshot_d21.js
 screenshot_designs.ps1
+
+# 本地临时文件 / 调试产物（不部署）
+_base_nocode.html
+_tmp_local.html
+_tmp_nocode.html
+fetch_news.py
+fetch_news_v3.py
+fix_htmlcontent.py
+nocode-current-htmlContent.js
+screenshot*.png
+server.ps1
+today-data.json
+启动服务器.bat
+trendradar/output/
+scripts/_tmp_*.py
