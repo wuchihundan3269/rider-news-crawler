@@ -6,7 +6,7 @@ fetch_news_v3.py — 骑手行业新闻独立抓取脚本
 功能：
   - 直接读取 trendradar-config/config.yaml，无需 TrendRadar
   - 三管道：RSS订阅(P0-P5媒体) + 搜索引擎关键词(Bing News) + 热榜平台
-  - 六分类：骑手故事(rider_story) / 骑手关怀(care) / 行业政策(policy) / 宏观报告(report) / 平台动作(platform) / 舆情信息(opinion)
+  - 六分类：骑手故事(rider_story) / 骑手关怀(care) / 行业政策(policy) / 宏观报告(report) / 平台动作(platform) / 舆论信息(opinion)
   - 媒体优先级：P0→P5，去重时保留最高优先级来源
   - 排序：时效优先，同天按P0→P5
   - 输出：TrendRadar 兼容格式（output/news/YYYY-MM-DD.json）
@@ -228,7 +228,7 @@ def match_sub_tags(title: str, summary: str, rules: list) -> list[str]:
     根据标题+摘要匹配所有命中的子分类 tag（支持多标签共存）。
 
     优先级规则（来自 Wiki）：
-    1. 舆情(opinion.*) 具有最高优先级——只要命中任意 opinion.* 标签，
+    1. 舆论(opinion.*) 具有最高优先级——只要命中任意 opinion.* 标签，
        最终 category 强制为 opinion，但其他标签仍保留用于细粒度展示。
     2. 同一条新闻可同时命中多个标签（如 rider.positive + platform.welfare）。
     """
@@ -301,7 +301,7 @@ SUB_TAG_TO_CATEGORY = {
     "platform.pay":          "platform",
     "platform.recruit":      "platform",
     "platform.safety":       "platform",
-    # 舆情信息
+    # 舆论信息
     "opinion.rights":        "opinion",
     "opinion.media":         "opinion",
     "opinion.viral":         "opinion",
@@ -339,13 +339,13 @@ SUB_TAG_LABEL = {
     "platform.pay":          "收入费用",
     "platform.recruit":      "招募合作",
     "platform.safety":       "安全合规",
-    # 舆情信息
+    # 舆论信息
     "opinion.rights":        "权益争议",
     "opinion.media":         "媒体曝光",
     "opinion.viral":         "热搜发声",
     "opinion.consumer":      "消费者矛盾",
     "opinion.merchant":      "商家摩擦",
-    "opinion.crisis":        "舆情发酵",
+    "opinion.crisis":        "舆论发酵",
 }
 
 
@@ -450,10 +450,10 @@ def fetch_rss_feed(feed_cfg: dict, keyword_rules: dict, base_keywords: list,
 
         # 一级分类：
         #   - 固定分类源直接使用配置的 category
-        #   - auto 源：舆情(opinion.*) 优先级最高，其次按第一个命中的子分类决定
+        #   - auto 源：舆论(opinion.*) 优先级最高，其次按第一个命中的子分类决定
         if category == "auto":
             if sub_tags:
-                # 舆情优先：只要有任意 opinion.* 标签，强制归入 opinion
+                # 舆论优先：只要有任意 opinion.* 标签，强制归入 opinion
                 opinion_tags = [t for t in sub_tags if t.startswith("opinion.")]
                 if opinion_tags:
                     final_category = "opinion"
@@ -464,7 +464,7 @@ def fetch_rss_feed(feed_cfg: dict, keyword_rules: dict, base_keywords: list,
         else:
             final_category = category
 
-        # 主标签：舆情优先时取第一个 opinion.* 标签，否则取第一个命中标签
+        # 主标签：舆论优先时取第一个 opinion.* 标签，否则取第一个命中标签
         if sub_tags:
             opinion_tags = [t for t in sub_tags if t.startswith("opinion.")]
             primary_tag = opinion_tags[0] if opinion_tags else sub_tags[0]
@@ -650,7 +650,7 @@ def main():
                     "policy":      "行业政策",
                     "report":      "宏观报告",
                     "platform":    "平台动作",
-                    "opinion":     "舆情信息",
+                    "opinion":     "舆论信息",
                 }.get(cat, cat),
                 "category": cat,
                 "items":    []
@@ -684,7 +684,7 @@ def main():
         "policy":      "行业政策",
         "report":      "宏观报告",
         "platform":    "平台动作",
-        "opinion":     "舆情信息",
+        "opinion":     "舆论信息",
     }
     print(f"\n[OK] 输出完成: {output_path}")
     print(f"     总计: {len(final_items)} 条")

@@ -2,7 +2,7 @@ name: 抓取新闻 & 部署 GitHub Pages
 
 # 数据来源方案：学城文档 2763869388
 # 三管道：RSS订阅(P0-P5媒体) / 搜索引擎关键词 / 热榜平台
-# 四分类：骑手新闻 / 行业动态 / 平台动作 / 舆情信息
+# 四分类：骑手新闻 / 行业动态 / 平台动作 / 舆论信息
 # 去重：同一事件保留最高优先级来源；排序：时效优先，同天按P0→P5
 
 on:
@@ -184,7 +184,7 @@ jobs:
             echo "没有新数据，跳过提交"
           else
             git commit -m "data: ${{ steps.date.outputs.datetime }} 自动更新"
-            git pull --rebase origin master
+            git pull --rebase origin main
             git push
           fi
 
