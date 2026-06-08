@@ -6,7 +6,7 @@ fetch_news_v3.py — 骑手行业新闻独立抓取脚本
 功能：
   - 直接读取 trendradar-config/config.yaml，无需 TrendRadar
   - 三管道：RSS订阅(P0-P5媒体) + 搜索引擎关键词(Bing News) + 热榜平台
-  - 六分类：骑手故事(rider_story) / 骑手关怀(care) / 行业政策(policy) / 宏观报告(report) / 平台动作(platform) / 舆论信息(opinion)
+  - 六分类：骑手故事(rider_story) / 骑手关怀(care) / 行业观察(policy) / 宏观报告(report) / 平台动作(platform) / 舆论信息(opinion)
   - 媒体优先级：P0→P5，去重时保留最高优先级来源
   - 排序：时效优先，同天按P0→P5
   - 输出：TrendRadar 兼容格式（output/news/YYYY-MM-DD.json）
@@ -206,7 +206,10 @@ def load_keyword_rules(words_path: Path) -> dict:
                 rules.append((current_tag, []))
                 continue
             if in_global:
-                global_filter.append(line)
+                # 去掉行首的 '!' 前缀（frequency_words.txt 用 !词 表示过滤词）
+                word = line.lstrip("!")
+                if word:
+                    global_filter.append(word)
             elif current_tag:
                 # 解析 AND 词组（空格分隔）和 OR（| 分隔）
                 if "|" in line:
@@ -230,7 +233,7 @@ def match_sub_tags(title: str, summary: str, rules: list) -> list[str]:
     优先级规则（来自 Wiki）：
     1. 舆论(opinion.*) 具有最高优先级——只要命中任意 opinion.* 标签，
        最终 category 强制为 opinion，但其他标签仍保留用于细粒度展示。
-    2. 同一条新闻可同时命中多个标签（如 rider.positive + platform.welfare）。
+    2. 同一条新闻可同时命中多个标签（如 rider_story.positive + care.welfare）。
     """
     text = title + " " + summary
     matched = []
@@ -301,6 +304,7 @@ SUB_TAG_TO_CATEGORY = {
     "platform.pay":          "platform",
     "platform.recruit":      "platform",
     "platform.safety":       "platform",
+    "platform.data":         "platform",   # 经营数据/财报/公关
     # 舆论信息
     "opinion.rights":        "opinion",
     "opinion.media":         "opinion",
@@ -339,6 +343,7 @@ SUB_TAG_LABEL = {
     "platform.pay":          "收入费用",
     "platform.recruit":      "招募合作",
     "platform.safety":       "安全合规",
+    "platform.data":         "经营数据",
     # 舆论信息
     "opinion.rights":        "权益争议",
     "opinion.media":         "媒体曝光",
@@ -641,13 +646,13 @@ def main():
     # 按分类分组
     sources_map = {}
     for item in final_items:
-        cat = item.get("category", "industry")
+        cat = item.get("category", "policy")
         if cat not in sources_map:
             sources_map[cat] = {
                 "name":     {
                     "rider_story": "骑手故事",
                     "care":        "骑手关怀",
-                    "policy":      "行业政策",
+                    "policy":      "行业观察",
                     "report":      "宏观报告",
                     "platform":    "平台动作",
                     "opinion":     "舆论信息",
@@ -681,7 +686,7 @@ def main():
     CAT_NAMES = {
         "rider_story": "骑手故事",
         "care":        "骑手关怀",
-        "policy":      "行业政策",
+        "policy":      "行业观察",
         "report":      "宏观报告",
         "platform":    "平台动作",
         "opinion":     "舆论信息",

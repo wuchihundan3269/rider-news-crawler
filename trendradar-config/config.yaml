@@ -2,7 +2,7 @@
 # 数据来源方案：精准关键词搜索型 RSS（替代综合媒体全量 feed 过滤）
 # 核心策略：直接用"外卖骑手"等精准词搜索，而非从全量 feed 里过滤
 # 三管道：热榜平台 / RSS订阅 / 搜索引擎关键词
-# 六分类：骑手故事(rider_story) / 骑手关怀(care) / 行业政策(policy) / 宏观报告(report) / 平台动作(platform) / 舆论信息(opinion)
+# 六分类：骑手故事(rider_story) / 骑手关怀(care) / 行业观察(policy) / 宏观报告(report) / 平台动作(platform) / 舆论信息(opinion)
 # 媒体优先级：P0（权威官媒）→ P5（自媒体/论坛）
 # 去重规则：同一事件只保留最高优先级来源
 # 排序规则：时效优先，同一天内按 P0→P5 降序
@@ -164,8 +164,8 @@ rss:
       name: "Google新闻-骑手事故"
       url: "https://news.google.com/rss/search?q=%E9%AA%91%E6%89%8B+%E4%BA%8B%E6%95%85&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
       priority: "P2"
-      category: "rider"
-      tag: "rider.accident"
+      category: "rider_story"
+      tag: "rider_story.accident"
 
     - id: "gnews_rider_income"
       name: "Google新闻-骑手收入"
@@ -187,6 +187,138 @@ rss:
       priority: "P2"
       category: "auto"
       tag: "auto"
+
+    # ── 骑手关怀（care）专项关键词 ──────────────────────────────────
+    - id: "gnews_rider_welfare"
+      name: "Google新闻-骑手福利"
+      url: "https://news.google.com/rss/search?q=%E9%AA%91%E6%89%8B+%E7%A6%8F%E5%88%A9&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
+      priority: "P2"
+      category: "care"
+      tag: "care.welfare"
+
+    - id: "gnews_rider_health"
+      name: "Google新闻-骑手健康"
+      url: "https://news.google.com/rss/search?q=%E9%AA%91%E6%89%8B+%E5%81%A5%E5%BA%B7&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
+      priority: "P2"
+      category: "care"
+      tag: "care.health"
+
+    - id: "gnews_rider_station"
+      name: "Google新闻-骑手驿站"
+      url: "https://news.google.com/rss/search?q=%E9%AA%91%E6%89%8B+%E9%A9%BF%E7%AB%99&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
+      priority: "P2"
+      category: "care"
+      tag: "care.station"
+
+    - id: "gnews_rider_care"
+      name: "Google新闻-骑手关爱"
+      url: "https://news.google.com/rss/search?q=%E9%AA%91%E6%89%8B+%E5%85%B3%E7%88%B1&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
+      priority: "P2"
+      category: "care"
+      tag: "care.social"
+
+    # ── 宏观报告（report）专项关键词 ────────────────────────────────
+    - id: "gnews_instant_market"
+      name: "Google新闻-即时配送市场"
+      url: "https://news.google.com/rss/search?q=%E5%8D%B3%E6%97%B6%E9%85%8D%E9%80%81+%E5%B8%82%E5%9C%BA&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
+      priority: "P2"
+      category: "report"
+      tag: "report.market"
+
+    - id: "gnews_delivery_report"
+      name: "Google新闻-外卖行业报告"
+      url: "https://news.google.com/rss/search?q=%E5%A4%96%E5%8D%96+%E8%A1%8C%E4%B8%9A%E6%8A%A5%E5%91%8A&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
+      priority: "P2"
+      category: "report"
+      tag: "report.research"
+
+    - id: "gnews_gig_economy"
+      name: "Google新闻-灵活就业经济"
+      url: "https://news.google.com/rss/search?q=%E7%81%B5%E6%B4%BB%E5%B0%B1%E4%B8%9A+%E7%BB%8F%E6%B5%8E&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
+      priority: "P2"
+      category: "report"
+      tag: "report.economy"
+
+    # ── 行业政策（policy）补充关键词 ────────────────────────────────
+    - id: "gnews_labor_law"
+      name: "Google新闻-劳动法规"
+      url: "https://news.google.com/rss/search?q=%E6%96%B0%E5%B0%B1%E4%B8%9A%E5%BD%A2%E6%80%81+%E5%8A%B3%E5%8A%A8&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
+      priority: "P2"
+      category: "policy"
+      tag: "policy.labor"
+
+    - id: "gnews_platform_regulation"
+      name: "Google新闻-平台监管"
+      url: "https://news.google.com/rss/search?q=%E5%B9%B3%E5%8F%B0%E7%BB%8F%E6%B5%8E+%E7%9B%91%E7%AE%A1&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
+      priority: "P2"
+      category: "policy"
+      tag: "policy.national"
+
+    - id: "gnews_rider_local_policy"
+      name: "Google新闻-骑手地方政策"
+      url: "https://news.google.com/rss/search?q=%E9%AA%91%E6%89%8B+%E7%AE%A1%E7%90%86%E5%8A%9E%E6%B3%95&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
+      priority: "P2"
+      category: "policy"
+      tag: "policy.local"
+
+    # ── 平台动作（platform）补充关键词 ──────────────────────────────
+    - id: "gnews_meituan_algo"
+      name: "Google新闻-美团算法"
+      url: "https://news.google.com/rss/search?q=%E7%BE%8E%E5%9B%A2+%E7%AE%97%E6%B3%95&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
+      priority: "P2"
+      category: "platform"
+      tag: "platform.algo"
+
+    - id: "gnews_platform_safety"
+      name: "Google新闻-平台骑手安全"
+      url: "https://news.google.com/rss/search?q=%E5%B9%B3%E5%8F%B0+%E9%AA%91%E6%89%8B+%E5%AE%89%E5%85%A8&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
+      priority: "P2"
+      category: "platform"
+      tag: "platform.safety"
+
+    - id: "gnews_delivery_fee"
+      name: "Google新闻-配送费调整"
+      url: "https://news.google.com/rss/search?q=%E9%85%8D%E9%80%81%E8%B4%B9+%E8%B0%83%E6%95%B4&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
+      priority: "P2"
+      category: "platform"
+      tag: "platform.pay"
+
+    # ── 舆论信息（opinion）补充关键词 ───────────────────────────────
+    - id: "gnews_rider_rights_dispute"
+      name: "Google新闻-骑手维权"
+      url: "https://news.google.com/rss/search?q=%E9%AA%91%E6%89%8B+%E7%BB%B4%E6%9D%83&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
+      priority: "P2"
+      category: "opinion"
+      tag: "opinion.rights"
+
+    - id: "gnews_rider_media"
+      name: "Google新闻-骑手媒体曝光"
+      url: "https://news.google.com/rss/search?q=%E9%AA%91%E6%89%8B+%E6%9B%9D%E5%85%89&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
+      priority: "P2"
+      category: "opinion"
+      tag: "opinion.media"
+
+    - id: "gnews_rider_viral"
+      name: "Google新闻-骑手热搜"
+      url: "https://news.google.com/rss/search?q=%E9%AA%91%E6%89%8B+%E7%83%AD%E6%90%9C&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
+      priority: "P2"
+      category: "opinion"
+      tag: "opinion.viral"
+
+    # ── 骑手故事（rider_story）补充关键词 ───────────────────────────
+    - id: "gnews_rider_story"
+      name: "Google新闻-骑手故事"
+      url: "https://news.google.com/rss/search?q=%E9%AA%91%E6%89%8B+%E6%95%85%E4%BA%8B&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
+      priority: "P2"
+      category: "rider_story"
+      tag: "rider_story.life"
+
+    - id: "gnews_rider_positive"
+      name: "Google新闻-骑手正能量"
+      url: "https://news.google.com/rss/search?q=%E9%AA%91%E6%89%8B+%E6%AD%A3%E8%83%BD%E9%87%8F&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
+      priority: "P2"
+      category: "rider_story"
+      tag: "rider_story.positive"
 
     # ══════════════════════════════════════════════════════════════
     # 【P0-P2 官方 RSS】36氪 / 新浪 / 中国新闻网（本地+境外均可用）
