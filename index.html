@@ -1044,6 +1044,9 @@ function _applyData(latest, data){
   var featured  = (data.featured  || []).map(function(a, i) { return apiToNews(a, i); });
   var flash     = (data.flash     || data.articles || []).map(function(a, i) { return apiToNews(a, i); });
 
+  // 全部按发布时间倒序排列
+  articles.sort(function(a, b) { return b.ts - a.ts; });
+
   NEWS = featured.length ? featured : articles.slice(0, 5);
   if (NEWS.length === 0) NEWS = articles.slice(0, 5);
 
