@@ -732,7 +732,13 @@ function hoursAgo(h){ return new Date(now - h*3600000); }
 // ===== 将 published_at 字符串转为 Date 对象 =====
 function parseTs(pub){
   if(!pub) return new Date(now - 3600000);
-  try{ return new Date(pub.replace(' ','T')); } catch(e){ return new Date(now - 3600000); }
+  try{
+    var d = new Date(pub.replace(' ','T'));
+    if(isNaN(d.getTime())) return new Date(now - 3600000);
+    // 超过当前时间 1 小时以上（爬虫写入了错误年份如 2026），截断为当前时间，防止排序靠前
+    if(d.getTime() > now + 3600000) return new Date(now);
+    return d;
+  } catch(e){ return new Date(now - 3600000); }
 }
 
 // ===== 从标题末尾提取真实媒体名（Google News RSS 格式："标题 - 媒体名"）=====
@@ -763,13 +769,21 @@ var SOURCE_EN_ZH = {
   'Titanium Media': '钛媒体',
 };
 
+// ===== 聚合平台黑名单：这些不是真实媒体，从标题提取到后丢弃 =====
+var AGGREGATOR_BLACKLIST = ['MSN', 'Yahoo', 'Yahoo News', 'Yahoo Finance',
+  'Google News', 'Google新闻', 'Apple News', 'SmartNews', 'Flipboard',
+  '今日头条', '腾讯新闻', '网易新闻', '百度新闻', '搜狐新闻'];
+
 // ===== 清洗 source 字段：优先从标题提取真实媒体名，否则去掉 "Google新闻-" 前缀 =====
 function cleanSource(s, rawTitle){
   // 优先从标题末尾提取真实媒体名
   var name = '';
   if (rawTitle) {
     var fromTitle = extractSourceFromTitle(rawTitle);
-    if (fromTitle) name = fromTitle;
+    // 如果提取到的是聚合平台，丢弃，降级用 source 字段
+    if (fromTitle && AGGREGATOR_BLACKLIST.indexOf(fromTitle) === -1) {
+      name = fromTitle;
+    }
   }
   if (!name) {
     if (!s) return '';
