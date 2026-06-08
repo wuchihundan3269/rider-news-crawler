@@ -747,16 +747,37 @@ function extractSourceFromTitle(t){
   return '';
 }
 
+// ===== 英文媒体名 → 中文映射（Google News RSS 有时返回英文名）=====
+var SOURCE_EN_ZH = {
+  'Sina finance': '新浪财经', 'Sina Finance': '新浪财经',
+  'Sina News': '新浪新闻', 'Sina': '新浪',
+  'People\'s Daily': '人民日报', "People's Daily": '人民日报',
+  'Xinhua': '新华社', 'Xinhua News': '新华社',
+  'CCTV': '央视新闻', 'CGTN': '中国国际电视台',
+  'China Daily': '中国日报', 'Global Times': '环球时报',
+  'Caixin': '财新', 'Caixin Global': '财新',
+  'The Paper': '澎湃新闻', 'Jiemian': '界面新闻',
+  'Yicai': '第一财经', 'Yicai Global': '第一财经',
+  '36Kr': '36氪', '36kr': '36氪',
+  'Huxiu': '虎嗅', 'LatePost': '晚点LatePost',
+  'Titanium Media': '钛媒体',
+};
+
 // ===== 清洗 source 字段：优先从标题提取真实媒体名，否则去掉 "Google新闻-" 前缀 =====
 function cleanSource(s, rawTitle){
   // 优先从标题末尾提取真实媒体名
+  var name = '';
   if (rawTitle) {
     var fromTitle = extractSourceFromTitle(rawTitle);
-    if (fromTitle) return fromTitle;
+    if (fromTitle) name = fromTitle;
   }
-  if (!s) return '';
-  // 降级：去掉 "Google新闻-" 前缀，剩余关键词作为来源
-  return s.replace(/^Google新闻[\u002d\u2013\u2014]\s*/i, '').trim();
+  if (!name) {
+    if (!s) return '';
+    // 降级：去掉 "Google新闻-" 前缀
+    name = s.replace(/^Google新闻[\u002d\u2013\u2014]\s*/i, '').trim();
+  }
+  // 英文媒体名转中文
+  return SOURCE_EN_ZH[name] || name;
 }
 
 // ===== 清洗标题：去掉末尾 " - 媒体名" 后缀（Google News RSS 格式）=====
