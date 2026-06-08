@@ -644,7 +644,7 @@ padding:12px 0;
       <span class="nav-sep">|</span>
       <div class="tab" data-page="all" onclick="showPage('all')">更多资讯</div>
       <span class="nav-sep">|</span>
-      <div class="tab" data-page="rider_story" onclick="showPage('rider_story')">骑手故事</div>
+      <div class="tab" data-page="rider_story" onclick="showPage('rider_story')">骑手新闻</div>
       <span class="nav-sep">|</span>
       <div class="tab" data-page="care" onclick="showPage('care')">骑手关怀</div>
       <span class="nav-sep">|</span>
@@ -1044,7 +1044,7 @@ const SLIDE_DURATION = 3000;
 function renderHero(){
   const stage = document.getElementById('heroStage');
   const listEl = document.getElementById('heroListItems');
-  const _heroCatMap = {rider_story:{label:'骑手故事',cls:'tag-orange'},care:{label:'骑手关怀',cls:'tag-green'},policy:{label:'行业观察',cls:'tag-blue'},report:{label:'行业观察',cls:'tag-blue'},platform:{label:'平台动作',cls:'tag-purple'},opinion:{label:'舆论信息',cls:'tag-red'},rider:{label:'骑手故事',cls:'tag-orange'},industry:{label:'行业观察',cls:'tag-blue'}};
+  const _heroCatMap = {rider_story:{label:'骑手新闻',cls:'tag-orange'},care:{label:'骑手关怀',cls:'tag-green'},policy:{label:'行业观察',cls:'tag-blue'},report:{label:'行业观察',cls:'tag-blue'},platform:{label:'平台动作',cls:'tag-purple'},opinion:{label:'舆论信息',cls:'tag-red'},rider:{label:'骑手新闻',cls:'tag-orange'},industry:{label:'行业观察',cls:'tag-blue'}};
 
   const slidesHtml = NEWS.map((n,i) => {
     const _bgStyle = n.img ? 'url(' + n.img + '), ' + n.grad : n.grad;
@@ -1192,7 +1192,7 @@ updateClock();
 setInterval(updateClock, 30000);
 
 // ===== 路由 =====
-const PAGE_TITLES = {all:'更多资讯', rider_story:'骑手故事', care:'骑手关怀', policy:'行业观察', report:'行业观察', platform:'平台动作', opinion:'舆论信息'};
+const PAGE_TITLES = {all:'更多资讯', rider_story:'骑手新闻', care:'骑手关怀', policy:'行业观察', report:'行业观察', platform:'平台动作', opinion:'舆论信息'};
 
 const ALL_NEWS = [
   {
@@ -1979,14 +1979,14 @@ function formatHistoryDate(ts){
 }
 
 const NC_CAT_MAP = {
-rider_story: {label:'骑手故事', cls:'tag-orange'},
+rider_story: {label:'骑手新闻', cls:'tag-orange'},
 care:        {label:'骑手关怀', cls:'tag-green'},
 policy:      {label:'行业观察', cls:'tag-blue'},
 report:      {label:'行业观察', cls:'tag-blue'},
 platform:    {label:'平台动作', cls:'tag-purple'},
 opinion:     {label:'舆论信息', cls:'tag-red'},
 // 旧分类兼容
-rider:       {label:'骑手故事', cls:'tag-orange'},
+rider:       {label:'骑手新闻', cls:'tag-orange'},
 industry:    {label:'行业观察', cls:'tag-blue'},
 };
 function renderNcTag(category){
@@ -2228,7 +2228,7 @@ function renderCategoryPage(container, category){
     // 分页配置
     const ALL_PAGE_SIZE = 20;
     let _allOffset = 0;
-    const tmCatMap = {rider_story:{label:'骑手故事',cls:'tag-orange'},care:{label:'骑手关怀',cls:'tag-green'},policy:{label:'行业观察',cls:'tag-blue'},report:{label:'行业观察',cls:'tag-blue'},platform:{label:'平台动作',cls:'tag-purple'},opinion:{label:'舆论信息',cls:'tag-red'},rider:{label:'骑手故事',cls:'tag-orange'},industry:{label:'行业观察',cls:'tag-blue'}};
+    const tmCatMap = {rider_story:{label:'骑手新闻',cls:'tag-orange'},care:{label:'骑手关怀',cls:'tag-green'},policy:{label:'行业观察',cls:'tag-blue'},report:{label:'行业观察',cls:'tag-blue'},platform:{label:'平台动作',cls:'tag-purple'},opinion:{label:'舆论信息',cls:'tag-red'},rider:{label:'骑手新闻',cls:'tag-orange'},industry:{label:'行业观察',cls:'tag-blue'}};
     const WEEK_CN = ['日','一','二','三','四','五','六'];
 
     // 渲染新闻列表（按日期分组，支持分页追加）
@@ -2482,14 +2482,14 @@ const data = allForCat.filter(n => n.category === category).sort((a,b) => b.ts -
 
 // 分类标签映射
 const _catTagMap = {
-rider_story: {label:'骑手故事', cls:'tag-orange'},
+rider_story: {label:'骑手新闻', cls:'tag-orange'},
 care:        {label:'骑手关怀', cls:'tag-green'},
 policy:      {label:'行业观察', cls:'tag-blue'},
 report:      {label:'行业观察', cls:'tag-blue'},
 platform:    {label:'平台动作', cls:'tag-purple'},
 opinion:     {label:'舆论信息', cls:'tag-red'},
 // 旧分类兼容
-rider:       {label:'骑手故事', cls:'tag-orange'},
+rider:       {label:'骑手新闻', cls:'tag-orange'},
 industry:    {label:'行业观察', cls:'tag-blue'},
 };
 
@@ -2758,14 +2758,14 @@ function renderFlashPage(container){
   const day = String(baseDay.getDate()).padStart(2,'0');
 
 const catTagMap = {
-rider_story: {label:'骑手故事', cls:'tag-orange'},
+rider_story: {label:'骑手新闻', cls:'tag-orange'},
 care:        {label:'骑手关怀', cls:'tag-green'},
 policy:      {label:'行业观察', cls:'tag-blue'},
 report:      {label:'行业观察', cls:'tag-blue'},
 platform:    {label:'平台动作', cls:'tag-purple'},
 opinion:     {label:'舆论信息', cls:'tag-red'},
 // 旧分类兼容
-rider:       {label:'骑手故事', cls:'tag-orange'},
+rider:       {label:'骑手新闻', cls:'tag-orange'},
 industry:    {label:'行业观察', cls:'tag-blue'},
 };
 
@@ -2854,7 +2854,7 @@ function renderKingkong(){
     { page:'flash',      icon:'⚡', bg:'#fff3f3', color:'#e8312a', label:'今日快讯',  cat:null },
     { page:'platform',   icon:'🏢', bg:'#fff8ec', color:'#f5a623', label:'平台动作',  cat:'platform' },
     { page:'policy',     icon:'📋', bg:'#f0f7ff', color:'#4A90E2', label:'行业观察',  cat:'policy' },
-    { page:'rider_story',icon:'🏍', bg:'#f0fff4', color:'#27ae60', label:'骑手故事',  cat:'rider_story' },
+    { page:'rider_story',icon:'🏍', bg:'#f0fff4', color:'#27ae60', label:'骑手新闻',  cat:'rider_story' },
     { page:'opinion',    icon:'💬', bg:'#f8f0ff', color:'#8e44ad', label:'舆论信息',  cat:'opinion' },
   ];
 
