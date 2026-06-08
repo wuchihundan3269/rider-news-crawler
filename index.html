@@ -712,16 +712,19 @@ padding:12px 0;
 <div id="subPage" style="display:none"></div>
 
 <script>
-// ===== 工具函数：打开新闻链接 =====
-// 用动态 <a> 标签代替 window.open，兼容 sandbox iframe 环境
-// 数据源已切换为 RSSHub + 直接 RSS，URL 均为真实文章链接，直接打开即可
+// ===== 工具函数：打开新闻链接（始终新标签页，绝不跳转首页）=====
 function openNewsUrl(url, title) {
   if (!url) return;
-  // 优先用 window.open 新标签页打开；若被浏览器拦截则在当前页跳转
-  var win = window.open(url, '_blank', 'noopener,noreferrer');
-  if (!win || win.closed || typeof win.closed === 'undefined') {
-    window.location.href = url;
-  }
+  // 用动态 <a target="_blank"> 模拟点击，兼容 sandbox/iframe 环境
+  // 不使用 window.open（可能被拦截后 fallback 到当前页跳转）
+  // 不使用 window.location.href（会导致首页跳走）
+  var a = document.createElement('a');
+  a.href = url;
+  a.target = '_blank';
+  a.rel = 'noopener noreferrer';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 }
 
 // ===== 数据 =====
@@ -1140,8 +1143,12 @@ function renderHero(){
   listEl.innerHTML = LIST_NEWS.map((n,i) => {
     const _hc = _heroCatMap[n.category];
     const _htag = _hc ? `<span class="hero-list-tag ${_hc.cls}">${_hc.label}</span>` : '';
+    const _listUrl = n.url || '';
+    const _listClick = _listUrl
+      ? `goSlide(${i},true); openNewsUrl('${_listUrl}','${n.title.replace(/'/g,"\\'")}')`
+      : `goSlide(${i},true)`;
     return `
-    <div class="hero-list-item${i===0?' active':''}" data-idx="${i}" onclick="goSlide(${i},true)" onmouseenter="hoverSlide(${i})" onmouseleave="leaveSlide()" style="flex:1;align-items:center;">
+    <div class="hero-list-item${i===0?' active':''}" data-idx="${i}" onclick="${_listClick}" onmouseenter="hoverSlide(${i})" onmouseleave="leaveSlide()" style="flex:1;align-items:center;${_listUrl ? 'cursor:pointer' : ''}">
       <div class="hero-list-info">
         <div class="hero-list-title-row">
           <div class="hero-list-text">${n.title}</div>
