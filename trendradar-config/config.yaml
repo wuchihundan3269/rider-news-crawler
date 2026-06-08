@@ -384,6 +384,61 @@ rss:
       tag: "auto"
 
     # ══════════════════════════════════════════════════════════════
+    # 【P2 Google News 中文关键词搜索 RSS】
+    # GitHub Actions 境外服务器可直接访问，命中率高
+    # URL 格式：https://news.google.com/rss/search?q=关键词&hl=zh-CN&gl=CN&ceid=CN:zh-Hans
+    # ══════════════════════════════════════════════════════════════
+
+    - id: "gnews_waimai_rider"
+      name: "Google新闻-外卖骑手"
+      url: "https://news.google.com/rss/search?q=%E5%A4%96%E5%8D%96%E9%AA%91%E6%89%8B&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
+      priority: "P2"
+      category: "auto"
+      tag: "auto"
+
+    - id: "gnews_meituan_rider"
+      name: "Google新闻-美团骑手"
+      url: "https://news.google.com/rss/search?q=%E7%BE%8E%E5%9B%A2%E9%AA%91%E6%89%8B&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
+      priority: "P2"
+      category: "platform"
+      tag: "auto"
+
+    - id: "gnews_rider_policy"
+      name: "Google新闻-骑手政策"
+      url: "https://news.google.com/rss/search?q=%E9%AA%91%E6%89%8B+%E6%94%BF%E7%AD%96&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
+      priority: "P2"
+      category: "policy"
+      tag: "auto"
+
+    - id: "gnews_rider_rights"
+      name: "Google新闻-骑手权益"
+      url: "https://news.google.com/rss/search?q=%E9%AA%91%E6%89%8B+%E6%9D%83%E7%9B%8A&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
+      priority: "P2"
+      category: "opinion"
+      tag: "opinion.rights"
+
+    - id: "gnews_instant_delivery"
+      name: "Google新闻-即时配送"
+      url: "https://news.google.com/rss/search?q=%E5%8D%B3%E6%97%B6%E9%85%8D%E9%80%81&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
+      priority: "P2"
+      category: "auto"
+      tag: "auto"
+
+    - id: "gnews_new_employment"
+      name: "Google新闻-新就业形态"
+      url: "https://news.google.com/rss/search?q=%E6%96%B0%E5%B0%B1%E4%B8%9A%E5%BD%A2%E6%80%81&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
+      priority: "P2"
+      category: "policy"
+      tag: "policy.national"
+
+    - id: "gnews_eleme_rider"
+      name: "Google新闻-饿了么骑手"
+      url: "https://news.google.com/rss/search?q=%E9%A5%BF%E4%BA%86%E4%B9%88%E9%AA%91%E6%89%8B&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
+      priority: "P2"
+      category: "platform"
+      tag: "auto"
+
+    # ══════════════════════════════════════════════════════════════
     # 【P5 热榜】百度热搜（舆情补充）
     # ══════════════════════════════════════════════════════════════
 
@@ -536,6 +591,7 @@ filter:
   method: "keyword"
   keyword_file: "frequency_words.txt"
   base_keywords:
+    # ── 精准复合词（高置信度，直接命中）──
     - "外卖骑手"
     - "外卖小哥"
     - "配送员"
@@ -546,12 +602,19 @@ filter:
     - "骑手事故"
     - "骑手关爱"
     - "骑手驿站"
+    - "美团骑手"
+    - "饿了么骑手"
     - "即时配送 骑手"
     - "新就业形态 骑手"
     - "平台用工 骑手"
     - "灵活就业 骑手"
-    - "美团骑手"
-    - "饿了么骑手"
+    # ── 单独关键词（覆盖综合媒体，配合 frequency_words.txt 二次过滤）──
+    # 注意：这些词较宽泛，依赖 frequency_words.txt 的子分类规则做精细过滤
+    - "骑手"
+    - "即时配送"
+    - "新就业形态"
+    - "平台用工"
+    - "职业伤害保障"
 
 # ===== 报告模式 =====
 report:

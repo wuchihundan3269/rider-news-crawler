@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html><!-- v26 -->
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -55,16 +55,16 @@ a{text-decoration:none;color:inherit}
 /* ===== 英雄轮播区 ===== */
 .hero{background:#f5f5f5;position:relative;overflow:visible}
 .hero-outer{max-width:1440px;margin:0 auto;overflow:hidden}
-.hero-inner{width:100%;display:grid;grid-template-columns:65fr 35fr;height:480px}
+.hero-inner{width:100%;display:grid;grid-template-columns:1fr 520px;padding-left:24px}
 @media(max-width:420px){.hero-inner{grid-template-columns:1fr}.hero-list{display:none}}
 
 /* 左侧大图 */
-.hero-stage{position:relative;overflow:hidden;cursor:pointer;width:100%;min-width:0;height:480px}
+.hero-stage{position:relative;overflow:visible;cursor:pointer;width:100%;min-width:0;align-self:stretch}
 .hero-slides-clip{overflow:hidden;position:relative;width:100%;height:100%}
-.hero-slide{position:absolute;inset:0;opacity:0;transition:opacity .6s ease;pointer-events:none}
-.hero-slide.active{opacity:1;pointer-events:auto}
+.hero-slide{position:absolute;inset:0;opacity:0;transition:opacity .6s ease}
+.hero-slide.active{opacity:1;position:relative;height:100%}
 .hero-slide-bg{
-width:100%;height:480px;
+width:100%;height:100%;
 display:flex;align-items:flex-end;
 padding:28px 48px 32px;
 position:relative;
@@ -82,7 +82,7 @@ position:relative;
   line-height:1.45;
   margin-bottom:10px;
   text-shadow:0 1px 6px rgba(0,0,0,.5);
-  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
 .hero-summary{
   font-size:15px;
@@ -107,13 +107,12 @@ position:relative;
   font-weight:400;
   border:1px solid rgba(255,255,255,.25);
 }
-.hero-source-tag.tag-yellow{color:hsl(60,90%,75%)}
-.hero-source-tag.tag-purple{color:hsl(270,90%,80%);border-color:hsl(270,90%,80%)}
-.hero-source-tag.tag-green{color:hsl(120,70%,70%);border-color:hsl(120,70%,70%)}
-.hero-source-tag.tag-red{color:hsl(0,90%,80%)}
-.hero-source-tag.tag-orange{color:hsl(0,90%,80%);border-color:hsl(0,90%,80%)}
-.hero-source-tag.tag-blue{color:hsl(210,90%,80%)}
-.hero-source-tag.tag-teal{color:hsl(30,90%,80%);border-color:hsl(30,90%,80%)}
+.hero-source-tag.tag-yellow{color:#fde68a;border-color:#fde68a}
+.hero-source-tag.tag-purple{color:#c97fff;border-color:#c97fff}
+.hero-source-tag.tag-green{color:#a8e85a;border-color:#a8e85a}
+.hero-source-tag.tag-red{color:#ff6b6b;border-color:#ff6b6b}
+.hero-source-tag.tag-orange{color:#f9c76a;border-color:#f9c76a}
+.hero-source-tag.tag-blue{color:#93c5fd;border-color:#93c5fd}
 
 /* 左右箭头 */
 .hero-arrow{
@@ -134,7 +133,8 @@ position:relative;
 .hero-dot-btn.active{width:18px;border-radius:3px;background:#e8312a}
 
 /* 右侧快讯列表 */
-.hero-list{background:#fff;border-left:1px solid rgba(0,0,0,.06);display:flex;flex-direction:column;height:480px;overflow:hidden;min-width:0}
+.hero-list{background:#fff;border-left:1px solid rgba(0,0,0,.06);display:flex;flex-direction:column}
+#heroListItems{flex:1;display:flex;flex-direction:column;overflow:hidden}
 .hero-list-header{
   padding:14px 18px 12px;
   display:flex;align-items:center;justify-content:space-between;
@@ -156,10 +156,9 @@ position:relative;
 .hero-list-info{flex:1;min-width:0}
 .hero-list-title-row{display:flex;align-items:center;gap:8px;min-width:0;margin-bottom:5px}
 .hero-list-text{
-  font-size:14px;font-weight:500;color:#3d3d3d;
-  line-height:1.45;
-  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
-  overflow:hidden;
+  font-size:15px;font-weight:500;color:#3d3d3d;
+  line-height:1.55;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
   flex:1;min-width:0;
 }
 .hero-list-item.active .hero-list-text{font-weight:700;color:#1a1a1a}
@@ -180,12 +179,12 @@ position:relative;
   flex-shrink:0;
   font-weight:500;
 }
-.hero-list-tag.tag-yellow{background:transparent;color:hsl(60,80%,50%);border-color:hsl(60,80%,50%)}
-.hero-list-tag.tag-purple{background:transparent;color:hsl(270,80%,50%);border-color:hsl(270,80%,50%)}
-.hero-list-tag.tag-green{background:transparent;color:hsl(120,80%,50%);border-color:hsl(120,80%,50%)}
-.hero-list-tag.tag-red{background:transparent;color:hsl(0,80%,50%);border-color:hsl(0,80%,50%)}
-.hero-list-tag.tag-orange{background:transparent;color:hsl(0,80%,50%);border-color:hsl(0,80%,50%)}
-.hero-list-tag.tag-teal{background:transparent;color:hsl(30,80%,50%);border-color:hsl(30,80%,50%)}
+.hero-list-tag.tag-yellow{background:transparent;color:#b45309;border-color:#b45309}
+.hero-list-tag.tag-purple{background:transparent;color:#9013FE;border-color:#9013FE}
+.hero-list-tag.tag-green{background:transparent;color:#F8B195;border-color:#F8B195}
+.hero-list-tag.tag-red{background:transparent;color:#D0021B;border-color:#D0021B}
+.hero-list-tag.tag-orange{background:transparent;color:#F6A623;border-color:#F6A623}
+.hero-list-tag.tag-blue{background:transparent;color:#4A90E2;border-color:#4A90E2}
 
 /* 进度条（隐藏） */
 .hero-progress{display:none}
@@ -237,14 +236,13 @@ position:relative;
   line-height:1;
   opacity:.85;
 }
-.tag-red{color:hsl(0,80%,50%)}
-.tag-blue{color:#1677ff}
-.tag-orange{color:hsl(0,80%,50%)}
-.tag-green{color:hsl(120,80%,50%)}
-.tag-purple{color:hsl(270,80%,50%)}
-.tag-gray{color:#888}
-.tag-yellow{color:hsl(60,80%,50%)}
-.tag-teal{color:hsl(30,80%,50%)}
+.tag-red{color:#D0021B}
+.tag-blue{color:#4A90E2}
+.tag-orange{color:#F6A623}
+.tag-green{color:#F8B195}
+.tag-purple{color:#9013FE}
+.tag-gray{color:#ababab}
+.tag-yellow{color:#d48806}
 .art-source{font-size:11px;font-weight:600;color:#555;flex-shrink:0}
 .art-time{font-size:11px;color:#bbb;flex-shrink:0}
 .art-dot{color:transparent;font-size:11px;margin:0 8px;line-height:1;flex-shrink:0;user-select:none}
@@ -263,12 +261,12 @@ position:relative;
 .tm-row-time{display:none}
 .tm-row-title-wrap{flex:1;display:flex;align-items:center;gap:10px;padding:0 16px 0 0;min-width:0}
 .tm-row-tag{flex-shrink:0;width:52px;text-align:center;display:inline-block;font-size:10px;padding:1px 0;border-radius:3px;font-weight:500;border:1px solid transparent}
-.tm-row-tag.tag-yellow{background:transparent;color:hsl(60,80%,50%);border-color:hsl(60,80%,50%)}
-.tm-row-tag.tag-purple{background:transparent;color:hsl(270,80%,50%);border-color:hsl(270,80%,50%)}
-.tm-row-tag.tag-green{background:transparent;color:hsl(120,80%,50%);border-color:hsl(120,80%,50%)}
-.tm-row-tag.tag-red{background:transparent;color:hsl(0,80%,50%);border-color:hsl(0,80%,50%)}
-.tm-row-tag.tag-orange{background:transparent;color:hsl(0,80%,50%);border-color:hsl(0,80%,50%)}
-.tm-row-tag.tag-teal{background:transparent;color:hsl(30,80%,50%);border-color:hsl(30,80%,50%)}
+.tm-row-tag.tag-yellow{background:transparent;color:#b45309;border-color:#b45309}
+.tm-row-tag.tag-purple{background:transparent;color:#9013FE;border-color:#9013FE}
+.tm-row-tag.tag-green{background:transparent;color:#F8B195;border-color:#F8B195}
+.tm-row-tag.tag-red{background:transparent;color:#D0021B;border-color:#D0021B}
+.tm-row-tag.tag-orange{background:transparent;color:#F6A623;border-color:#F6A623}
+.tm-row-tag.tag-blue{background:transparent;color:#4A90E2;border-color:#4A90E2}
 .tm-row-tag.tag-empty{visibility:hidden}
 .tm-row-divider{width:1px;height:12px;background:rgba(0,0,0,.15);flex-shrink:0}
 .tm-row-title{flex:1;font-size:14px;color:#1a1a1a;line-height:1.55;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .12s;min-width:0}
@@ -326,18 +324,18 @@ position:relative;
 .tag-purple-bg{background:#f3e5f5;color:#6a1b9a;border-color:#e1bee7}
 /* platform 平台动作 → 绿色 */
 .tag-green-bg{background:#e8f5e9;color:#2e7d32;border-color:#c8e6c9}
-/* opinion 舆情信息 → 红色 */
+/* opinion 舆论信息 → 红色 */
 .tag-red-bg{background:#fff0f0;color:#c62828;border-color:#f8bbd0}
 /* 平台品牌（蜂鸟/饿了么/顺丰等） */
 .tag-orange-bg{background:#fff3e0;color:#e65100;border-color:#ffcc80}
 
 .tm-tag{display:inline-block;font-size:10px;padding:1px 5px;border-radius:3px;margin-left:8px;vertical-align:middle;flex-shrink:0;font-weight:500;border:1px solid transparent}
-.tm-tag.tag-yellow{background:transparent;color:hsl(60,80%,50%);border-color:hsl(60,80%,50%)}
-.tm-tag.tag-purple{background:transparent;color:hsl(270,80%,50%);border-color:hsl(270,80%,50%)}
-.tm-tag.tag-green{background:transparent;color:hsl(120,80%,50%);border-color:hsl(120,80%,50%)}
-.tm-tag.tag-red{background:transparent;color:hsl(0,80%,50%);border-color:hsl(0,80%,50%)}
-.tm-tag.tag-orange{background:transparent;color:hsl(0,80%,50%);border-color:hsl(0,80%,50%)}
-.tm-tag.tag-teal{background:transparent;color:hsl(30,80%,50%);border-color:hsl(30,80%,50%)}
+.tm-tag.tag-yellow{background:transparent;color:#b45309;border-color:#b45309}
+.tm-tag.tag-purple{background:transparent;color:#9013FE;border-color:#9013FE}
+.tm-tag.tag-green{background:transparent;color:#F8B195;border-color:#F8B195}
+.tm-tag.tag-red{background:transparent;color:#D0021B;border-color:#D0021B}
+.tm-tag.tag-orange{background:transparent;color:#F6A623;border-color:#F6A623}
+.tm-tag.tag-blue{background:transparent;color:#4A90E2;border-color:#4A90E2}
 .load-more{background:#fff;text-align:center;padding:18px;font-size:13px;color:#bbb;cursor:pointer;border-top:0.8px solid rgba(0,0,0,.06);letter-spacing:.5px}
 .load-more:hover{color:#e8312a}
 /* 时光机页查看更多按钮：宽度与新闻列表对齐 */
@@ -403,8 +401,52 @@ position:relative;
   transition:color .15s;white-space:nowrap;
 }
 .section-more:hover{color:#e8312a}
+/* ===== 金刚位：5个分类快捷入口 ===== */
+.kingkong{
+  background:#fff;
+  border-radius:8px;
+  margin:0 0 12px;
+  padding:12px 20px;
+  box-shadow:0 1px 4px rgba(0,0,0,.07);
+}
+.kingkong-list{
+  display:flex;gap:0;
+}
+.kingkong-item{
+  flex:1;
+  display:flex;flex-direction:column;align-items:center;
+  gap:8px;
+  padding:10px 8px;
+  cursor:pointer;
+  border-radius:8px;
+  transition:background .15s;
+  position:relative;
+}
+.kingkong-item:hover{background:#fafafa}
+.kingkong-item:not(:last-child)::after{
+  content:'';position:absolute;right:0;top:50%;transform:translateY(-50%);
+  width:1px;height:40%;background:rgba(0,0,0,.07);
+}
+.kingkong-icon{
+  width:44px;height:44px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+}
+.kingkong-label{
+  font-size:12px;font-weight:600;color:#3d3d3d;
+  white-space:nowrap;
+}
+.kingkong-sub{
+  font-size:11px;color:#bbb;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  max-width:90px;text-align:center;
+  line-height:1.4;
+}
 /* ===== 全部资讯网格：4列卡片 ===== */
-.news-grid{display:grid;grid-template-columns:repeat(4,1fr);column-gap:24px;row-gap:40px}
+.news-grid{display:grid;grid-template-columns:repeat(4,1fr);column-gap:24px;row-gap:24px}
+@media(max-width:1200px){.news-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:860px){.news-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:540px){.news-grid{grid-template-columns:1fr}}
 .news-card{
   background:#fff;border-radius:6px;overflow:hidden;
   box-shadow:0 1px 4px rgba(0,0,0,.08);
@@ -425,37 +467,25 @@ position:relative;
 /* 无图卡片：纯白底，标题+摘要布局 */
 .news-card.nc-noimg{
   background:#fff;
-  min-height:220px;
 }
-.news-card.nc-noimg .nc-body{padding:20px 20px 16px;justify-content:space-between;flex:1}
+.news-card.nc-noimg .nc-body{padding:20px 20px 16px;justify-content:flex-start;flex:1}
 .news-card.nc-noimg .nc-title{
   font-size:17px;font-weight:700;color:#1a1a1a;
   line-height:1.5;margin-bottom:12px;
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
   flex:none;min-width:0;transition:color .15s;
 }
-/* 渐变色块占位图（无真实图片时） */
-.nc-grad{
-  width:100%;aspect-ratio:16/9;overflow:hidden;
-  flex-shrink:0;position:relative;
-  transition:transform .35s;
-}
-.nc-grad-inner{
-  width:100%;height:100%;display:flex;align-items:center;justify-content:center;
-  padding:16px;
-}
-.nc-grad-label{
-  font-size:13px;font-weight:700;color:rgba(255,255,255,.75);
-  letter-spacing:1px;text-align:center;
-  border:1px solid rgba(255,255,255,.25);border-radius:4px;
-  padding:4px 10px;
-}
-.news-card:hover .nc-grad{transform:scale(1.03)}
+/* 渐变色块（已弃用，保留兼容） */
+.nc-grad{ display:none; }
+.nc-grad-inner{ display:none; }
+.nc-grad-label{ display:none; }
 .nc-summary{
   font-size:15px;color:#999;line-height:1.7;
-  display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;
-  margin-bottom:12px;flex:none;min-width:0;
+  overflow:hidden;max-height:calc(1.7em * 4);
+  flex-grow:1;min-width:0;margin-bottom:12px;
 }
+/* nc-content-wrap 已废弃，保留空规则兼容旧DOM */
+.nc-content-wrap{display:contents;}
 /* 通用 body */
 .nc-body{padding:14px 16px 14px;flex:1;display:flex;flex-direction:column;min-width:0}
 .nc-title{
@@ -587,13 +617,13 @@ padding:12px 0;
 .fl-meta-sep{margin:0 10px;color:transparent;flex-shrink:0;user-select:none}
 .fl-meta-time{flex-shrink:0}
 .tag-badge{font-size:11px;font-weight:500;padding:1px 6px;border-radius:3px;border:1px solid transparent;line-height:1.6;flex-shrink:0}
-.tag-badge.tag-yellow{background:transparent;color:hsl(60,80%,50%);border-color:hsl(60,80%,50%)}
-.tag-badge.tag-purple{background:transparent;color:hsl(270,80%,50%);border-color:hsl(270,80%,50%)}
-.tag-badge.tag-green{background:transparent;color:hsl(120,80%,50%);border-color:hsl(120,80%,50%)}
-.tag-badge.tag-red{background:transparent;color:hsl(0,80%,50%);border-color:hsl(0,80%,50%)}
-.tag-badge.tag-orange{background:transparent;color:hsl(0,80%,50%);border-color:hsl(0,80%,50%)}
-.tag-badge.tag-teal{background:transparent;color:hsl(30,80%,50%);border-color:hsl(30,80%,50%)}
-.tag-badge.tag-blue{background:transparent;color:#1255cc;border-color:hsl(210,80%,50%)}
+.tag-badge.tag-yellow{background:transparent;color:#b45309;border-color:#b45309}
+.tag-badge.tag-purple{background:transparent;color:#9013FE;border-color:#9013FE}
+.tag-badge.tag-green{background:transparent;color:#F8B195;border-color:#F8B195}
+.tag-badge.tag-red{background:transparent;color:#D0021B;border-color:#D0021B}
+.tag-badge.tag-orange{background:transparent;color:#F6A623;border-color:#F6A623}
+.tag-badge.tag-teal{background:transparent;color:#F8B195;border-color:#F8B195}
+.tag-badge.tag-blue{background:transparent;color:#4A90E2;border-color:#4A90E2}
 .tag-badge.tag-gray{background:transparent;color:#888;border-color:#bbb}
 
 /* 占位页 */
@@ -618,13 +648,11 @@ padding:12px 0;
       <span class="nav-sep">|</span>
       <div class="tab" data-page="care" onclick="showPage('care')">骑手关怀</div>
       <span class="nav-sep">|</span>
-      <div class="tab" data-page="policy" onclick="showPage('policy')">行业政策</div>
+<div class="tab" data-page="policy" onclick="showPage('policy')">行业观察</div>
+<span class="nav-sep">|</span>
+<div class="tab" data-page="platform" onclick="showPage('platform')">平台动作</div>
       <span class="nav-sep">|</span>
-      <div class="tab" data-page="report" onclick="showPage('report')">宏观报告</div>
-      <span class="nav-sep">|</span>
-      <div class="tab" data-page="platform" onclick="showPage('platform')">平台动作</div>
-      <span class="nav-sep">|</span>
-      <div class="tab" data-page="opinion" onclick="showPage('opinion')">舆情信息</div>
+      <div class="tab" data-page="opinion" onclick="showPage('opinion')">舆论信息</div>
     </div>
     <div class="nav-right">
       <div class="nav-clock" id="navClock"></div>
@@ -649,6 +677,13 @@ padding:12px 0;
     </div>
   </div>
 </div>
+</div>
+
+<!-- 金刚位：已隐藏 -->
+<div class="wrap" id="kingkongWrap" style="display:none">
+  <div class="kingkong">
+    <div class="kingkong-list" id="kingkongList"><!-- 由JS渲染 --></div>
+  </div>
 </div>
 
 <!-- 主体内容 -->
@@ -721,16 +756,48 @@ function cleanTitle(t){
 }
 
 // ===== 清洗摘要：去掉末尾重复的媒体名（Google News RSS 格式：标题&nbsp;&nbsp;媒体名）=====
-function cleanSummary(s){
+function cleanSummary(s, title){
   if (!s) return '';
-  // Google News RSS 摘要格式：正文内容&nbsp;&nbsp;媒体名
-  var idx = s.indexOf('&nbsp;&nbsp;');
-  if (idx > 0) return s.slice(0, idx).trim();
-  return s.trim();
+  var r = s.trim();
+  // 处理 &nbsp;&nbsp; 分隔符（RSS 格式）
+  var idx = r.indexOf('&nbsp;&nbsp;');
+  if (idx > 0) r = r.slice(0, idx).trim();
+  // 若摘要与标题完全相同（清洗后），则置空
+  if (title) {
+    var ct = cleanTitle(title).trim().toLowerCase();
+    var cr = r.toLowerCase();
+    // 直接相同
+    if (cr === ct) return '';
+    // 摘要 = 标题 + 空格 + 媒体名（单空格分隔，末尾无标点）
+    if (cr.startsWith(ct) && cr.slice(ct.length).trim().indexOf(' ') === -1) return '';
+  }
+  return r;
 }
 
 // ===== 将 API 文章格式转为前端 NEWS 格式 =====
 function apiToNews(a, idx){
+  var _ts = parseTs(a.published_at);
+// 格式化日期：YYYY-MM-DD
+var _date = '';
+try {
+var _yyyy = String(_ts.getFullYear());
+var _mm = String(_ts.getMonth()+1).padStart(2,'0');
+var _dd = String(_ts.getDate()).padStart(2,'0');
+_date = _yyyy + '-' + _mm + '-' + _dd;
+} catch(e){}
+  // 摘要：先用 cleanSummary 清洗，若为空则尝试从原始 summary 提取（去掉媒体名后缀）
+  var _rawSum = (a.summary || '').trim();
+  // 去掉 &nbsp;&nbsp; 后面的媒体名
+  var _nbIdx = _rawSum.indexOf('&nbsp;&nbsp;');
+  if (_nbIdx > 0) _rawSum = _rawSum.slice(0, _nbIdx).trim();
+  var _cleanedSum = cleanSummary(a.summary || '', a.title || '');
+  // 若清洗后为空（RSS摘要=标题被过滤），生成模拟摘要：取标题内容 + 来源补充说明
+  var _finalSum = _cleanedSum;
+  if (!_finalSum) {
+    // 模拟摘要：用原始 summary 去掉媒体名后的内容（即标题本身）
+    // 字号小、颜色浅，和标题形成视觉层次；后端爬取真实摘要后自动替换
+    _finalSum = cleanTitle(a.title || '');
+  }
   return {
     id: idx,
     tag: a.tag || a.category,
@@ -738,8 +805,9 @@ function apiToNews(a, idx){
     source: cleanSource(a.source || ''),
     category: a.category || 'industry',
     title: cleanTitle(a.title || ''),
-    summary: cleanSummary(a.summary || ''),
-    ts: parseTs(a.published_at),
+    summary: _finalSum,
+    ts: _ts,
+    date: _date,
     url: a.url || null,
     img: a.img || null,
     grad: a.grad || 'linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)'
@@ -760,7 +828,7 @@ const SAMPLE_NEWS = [
     title:'文明看“界”里｜“爱心车位” 破解骑手“停车之困” - 搜狐网',
     summary:'文明看“界”里｜“爱心车位” 破解骑手“停车之困” 搜狐网',
     ts: hoursAgo(5), img:null, grad:'linear-gradient(135deg,#1a2e1a 0%,#0d2b0d 45%,#1a3a1a 100%)' },
-  { id:4, tag:'舆情信息', tagClass:'tag-purple', source:'Google新闻-骑手权益争议', category:'opinion',
+  { id:4, tag:'舆论信息', tagClass:'tag-purple', source:'Google新闻-骑手权益争议', category:'opinion',
     title:'司法为民 | 守护骑手权益 化解劳资纠纷 - 新浪财经',
     summary:'司法为民 | 守护骑手权益 化解劳资纠纷 新浪财经',
     ts: hoursAgo(7), img:null, grad:'linear-gradient(135deg,#1e0a2e 0%,#180820 45%,#2a0f3a 100%)' },
@@ -976,7 +1044,7 @@ const SLIDE_DURATION = 3000;
 function renderHero(){
   const stage = document.getElementById('heroStage');
   const listEl = document.getElementById('heroListItems');
-  const _heroCatMap = {rider_story:{label:'骑手故事',cls:'tag-yellow'},care:{label:'骑手关怀',cls:'tag-teal'},policy:{label:'行业政策',cls:'tag-red'},report:{label:'宏观报告',cls:'tag-purple'},platform:{label:'平台动作',cls:'tag-green'},opinion:{label:'舆情信息',cls:'tag-orange'},rider:{label:'骑手故事',cls:'tag-yellow'},industry:{label:'行业政策',cls:'tag-red'}};
+  const _heroCatMap = {rider_story:{label:'骑手故事',cls:'tag-orange'},care:{label:'骑手关怀',cls:'tag-green'},policy:{label:'行业观察',cls:'tag-blue'},report:{label:'行业观察',cls:'tag-blue'},platform:{label:'平台动作',cls:'tag-purple'},opinion:{label:'舆论信息',cls:'tag-red'},rider:{label:'骑手故事',cls:'tag-orange'},industry:{label:'行业观察',cls:'tag-blue'}};
 
   const slidesHtml = NEWS.map((n,i) => {
     const _bgStyle = n.img ? 'url(' + n.img + '), ' + n.grad : n.grad;
@@ -990,13 +1058,13 @@ function renderHero(){
         <div class="hero-slide-content">
           <span class="hero-source-tag ${_catCls}">${_catLabel}</span>
           <div class="hero-title">${n.title}</div>
-          <div class="hero-summary">${n.summary}</div>
+          ${cleanSummary(n.summary||'',n.title||'') ? `<div class="hero-summary">${cleanSummary(n.summary||'',n.title||'')}</div>` : ''}
           <div class="hero-meta">
             <div class="hero-meta-left">
 <span class="hero-source-name">${n.source}</span>
               <span class="hero-meta-time">${formatTime(n.ts)}</span>
             </div>
-            ${n.url ? '<span class="hero-read-more">阅读原文 &rsaquo;</span>' : ''}
+            
           </div>
         </div>
       </div>
@@ -1013,13 +1081,13 @@ function renderHero(){
   + `<button class="hero-arrow next" id="heroNext" onclick="arrowSlide(1)">&#8250;</button>`
   + dotsHtml;
 
-  // 右侧列表：标签·来源·时间
-  listEl.innerHTML = NEWS.map((n,i) => {
+  // 右侧列表：标签·来源·时间（最多5条，均匀撑满剩余高度）
+  const LIST_NEWS = NEWS.slice(0, 5);
+  listEl.innerHTML = LIST_NEWS.map((n,i) => {
     const _hc = _heroCatMap[n.category];
     const _htag = _hc ? `<span class="hero-list-tag ${_hc.cls}">${_hc.label}</span>` : '';
-    const _listUrl = n.url || '';
     return `
-    <div class="hero-list-item${i===0?' active':''}" data-idx="${i}" onclick="goSlide(${i},true)" onmouseenter="hoverSlide(${i})" onmouseleave="leaveSlide()">
+    <div class="hero-list-item${i===0?' active':''}" data-idx="${i}" onclick="goSlide(${i},true)" onmouseenter="hoverSlide(${i})" onmouseleave="leaveSlide()" style="flex:1;align-items:center;">
       <div class="hero-list-info">
         <div class="hero-list-title-row">
           <div class="hero-list-text">${n.title}</div>
@@ -1124,7 +1192,7 @@ updateClock();
 setInterval(updateClock, 30000);
 
 // ===== 路由 =====
-const PAGE_TITLES = {all:'更多资讯', rider_story:'骑手故事', care:'骑手关怀', policy:'行业政策', report:'宏观报告', platform:'平台动作', opinion:'舆情信息'};
+const PAGE_TITLES = {all:'更多资讯', rider_story:'骑手故事', care:'骑手关怀', policy:'行业观察', report:'行业观察', platform:'平台动作', opinion:'舆论信息'};
 
 const ALL_NEWS = [
   {
@@ -1198,7 +1266,7 @@ const ALL_NEWS = [
     ts: hoursAgo(7), views:'5,890'
   },
   {
-    tag:'舆情', tagClass:'tag-orange', source:'新媒体观察', category:'opinion',
+    tag:'舆论', tagClass:'tag-orange', source:'新媒体观察', category:'opinion',
     title:'社交媒体热议骑手"困在系统里"现象，平台回应将优化算法',
     summary:'近期多篇关于外卖骑手被算法压榨的深度报道在社交媒体引发广泛讨论，相关话题阅读量超过5亿次。美团、饿了么相继发表声明，承诺将在算法中增加更多人性化设计。',
     keywords:['外卖 骑手 算法 透明','美团 骑手体验 舆论','外卖 大V 发声 热搜'],
@@ -1226,7 +1294,7 @@ const ALL_NEWS = [
     ts: hoursAgo(11), views:'15,670'
   },
   {
-    tag:'舆情', tagClass:'tag-orange', source:'人民日报', category:'opinion',
+    tag:'舆论', tagClass:'tag-orange', source:'人民日报', category:'opinion',
     title:'人民日报评论：保障骑手权益不能只靠平台自律，立法层面亟需补位',
     summary:'人民日报发表评论文章指出，近年来外卖骑手群体规模持续扩大，但相关劳动权益保障长期依赖平台企业自律，缺乏强制性法律约束，导致骑手在工伤认定、社保缴纳、最低工资保障等方面处于法律灰色地带。文章呼吁全国人大加快推进《新就业形态劳动者权益保障法》立法进程，明确平台企业的用工主体责任，同时建立跨部门联合执法机制，防止平台以"合作关系"规避劳动法律义务，切实保障数千万骑手群体的合法权益。',
     keywords:['外卖 骑手 劳动保障 新规','平台经济 监管 新规 骑手'],
@@ -1438,9 +1506,9 @@ const ALL_NEWS = [
     summary:'美团外卖宣布启动年度"骑手节"系列活动，为全国300万名骑手提供包括免费体检、技能培训、家庭探访、子女夏令营等多项福利，活动持续一个月，总投入超过5亿元。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5, 9, 0), views:'13,780'
   },
-  // ===== 舆情信息 opinion =====
+  // ===== 舆论信息 opinion =====
   {
-    tag:'舆情', tagClass:'tag-orange', source:'微博热搜', category:'opinion',
+    tag:'舆论', tagClass:'tag-orange', source:'微博热搜', category:'opinion',
     title:'"骑手被恶意差评"话题冲上热搜，网友呼吁平台完善申诉机制',
     summary:'一名骑手因顾客恶意差评导致当月奖金全部扣除的遭遇在微博引发广泛关注，相关话题阅读量超过3亿次。大量网友留言支持骑手，呼吁平台建立更公平的差评申诉机制，美团随后回应将优化相关规则。',
     ts: hoursAgo(2), views:'35,670'
@@ -1452,7 +1520,7 @@ const ALL_NEWS = [
     ts: hoursAgo(4), views:'28,450'
   },
   {
-    tag:'舆情', tagClass:'tag-orange', source:'抖音', category:'opinion',
+    tag:'舆论', tagClass:'tag-orange', source:'抖音', category:'opinion',
     title:'骑手雨中送餐视频走红，引发全网对骑手群体的关注与讨论',
     summary:'一段骑手在暴雨中坚持送餐的视频在抖音获得超过500万点赞，评论区充满对骑手辛苦付出的感谢与敬意。该视频引发全网对骑手群体工作条件的广泛讨论，多位知名博主发文呼吁善待骑手。',
     ts: hoursAgo(6), views:'52,340'
@@ -1464,7 +1532,7 @@ const ALL_NEWS = [
     ts: hoursAgo(8), views:'19,870'
   },
   {
-    tag:'舆情', tagClass:'tag-orange', source:'知乎', category:'opinion',
+    tag:'舆论', tagClass:'tag-orange', source:'知乎', category:'opinion',
     title:'知乎高赞回答揭示骑手收入真相：到手远低于平台宣传数字',
     summary:'知乎一篇题为"外卖骑手月入过万是真的吗"的回答获得超过10万赞，作者通过详细的收支分析揭示骑手实际到手收入远低于平台宣传数字，扣除油费、维修费、保险费后，多数骑手月净收入不足5000元。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 10, 0), views:'41,230'
@@ -1476,7 +1544,7 @@ const ALL_NEWS = [
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 15, 0), views:'23,560'
   },
   {
-    tag:'舆情', tagClass:'tag-orange', source:'微信公众号', category:'opinion',
+    tag:'舆论', tagClass:'tag-orange', source:'微信公众号', category:'opinion',
     title:'10万+爆文：一位骑手父亲的自述，戳中无数人泪点',
     summary:'一篇题为《我送了三年外卖，只为让孩子上大学》的骑手自述文章在微信公众号引发刷屏，阅读量突破1000万，文章真实记录了一位父亲为供孩子读书而坚持送外卖的艰辛历程，引发社会对骑手群体的广泛同情与关注。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 9, 0), views:'67,890'
@@ -1488,7 +1556,7 @@ const ALL_NEWS = [
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 10, 0), views:'15,430'
   },
   {
-    tag:'舆情', tagClass:'tag-orange', source:'B站', category:'opinion',
+    tag:'舆论', tagClass:'tag-orange', source:'B站', category:'opinion',
     title:'UP主卧底骑手30天纪录片播放破千万，真实还原骑手日常引热议',
     summary:'B站知名UP主发布卧底外卖骑手30天的纪录片，全程记录骑手的工作日常、收入构成和生活状态，播放量突破1000万，弹幕和评论区引发大量讨论，多位媒体人转发并呼吁关注骑手群体权益。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 15, 0), views:'48,900'
@@ -1500,9 +1568,9 @@ const ALL_NEWS = [
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 4, 9, 0), views:'21,340'
   },
   {
-    tag:'舆情', tagClass:'tag-orange', source:'人民网', category:'opinion',
-    title:'人民网舆情报告：骑手权益话题持续高热，公众关注度创三年新高',
-    summary:'人民网舆情数据中心发布报告显示，2024年骑手权益相关话题在各大平台的讨论热度创三年新高，全年相关话题总阅读量超过200亿次，公众对骑手群体的关注和同情程度持续上升，政策回应速度也明显加快。',
+    tag:'舆论', tagClass:'tag-orange', source:'人民网', category:'opinion',
+    title:'人民网舆论报告：骑手权益话题持续高热，公众关注度创三年新高',
+    summary:'人民网舆论数据中心发布报告显示，2024年骑手权益相关话题在各大平台的讨论热度创三年新高，全年相关话题总阅读量超过200亿次，公众对骑手群体的关注和同情程度持续上升，政策回应速度也明显加快。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5, 10, 0), views:'16,780'
   },
   // ===== 骑手关怀 care =====
@@ -1647,8 +1715,8 @@ const ALL_NEWS = [
   },
   {
     tag:'报告', tagClass:'tag-purple', source:'人民网', category:'report',
-    title:'人民网舆情报告：骑手权益话题持续高热，公众关注度创三年新高',
-    summary:'人民网舆情数据中心发布报告显示，2024年骑手权益相关话题在各大平台的讨论热度创三年新高，全年相关话题总阅读量超过200亿次，公众对骑手群体的关注和同情程度持续上升，政策回应速度也明显加快。',
+    title:'人民网舆论报告：骑手权益话题持续高热，公众关注度创三年新高',
+    summary:'人民网舆论数据中心发布报告显示，2024年骑手权益相关话题在各大平台的讨论热度创三年新高，全年相关话题总阅读量超过200亿次，公众对骑手群体的关注和同情程度持续上升，政策回应速度也明显加快。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5, 9, 0), views:'21,450'
   },
 ];
@@ -1851,48 +1919,48 @@ const HISTORY_NEWS = [
     summary:'顺丰同城宣布启动"安全护航"计划，为全国在册骑手统一配发新款智能头盔，新头盔内置碰撞传感器，发生事故时可自动向平台发送报警信号，并附带意外伤害保险，预计覆盖骑手超80万人。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 6, 9, 0) },
 
-  // ── 舆情信息补充 ──
-  { tag:'舆情', tagClass:'tag-orange', source:'微博热搜', category:'opinion',
+  // ── 舆论信息补充 ──
+  { tag:'舆论', tagClass:'tag-orange', source:'微博热搜', category:'opinion',
     title:'"骑手被困电梯"话题冲上热搜，引发配送时效讨论',
     summary:'一段骑手被困电梯导致超时遭差评的视频在微博引发广泛讨论，话题阅读量突破2亿。多位网友呼吁平台将电梯故障等不可抗力纳入免责范围，美团、饿了么客服相继回应称正在优化申诉机制。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 11, 0) },
-  { tag:'舆情', tagClass:'tag-orange', source:'澎湃新闻', category:'opinion',
+  { tag:'舆论', tagClass:'tag-orange', source:'澎湃新闻', category:'opinion',
     title:'深度报道：外卖骑手"困在系统里"两年后，改变了多少？',
     summary:'澎湃新闻发布深度追踪报道，回顾《外卖骑手，困在系统里》发布两年来各平台的整改情况，数据显示骑手超时申诉通过率提升了约40%，但算法压力、交通安全等核心问题仍未根本解决。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 16, 0) },
-  { tag:'舆情', tagClass:'tag-orange', source:'人民日报', category:'opinion',
+  { tag:'舆论', tagClass:'tag-orange', source:'人民日报', category:'opinion',
     title:'人民日报：外卖小哥是城市运转的"毛细血管"，权益保障不能缺位',
     summary:'人民日报刊发评论文章，将外卖骑手比作城市运转的"毛细血管"，指出骑手群体为城市生活提供了不可或缺的服务，其劳动权益保障理应得到社会各界的高度重视和制度性保障。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 9, 0) },
-  { tag:'舆情', tagClass:'tag-orange', source:'新京报', category:'opinion',
+  { tag:'舆论', tagClass:'tag-orange', source:'新京报', category:'opinion',
     title:'骑手遭遇恶意差评维权难，平台申诉机制亟待完善',
     summary:'新京报调查发现，部分用户利用差评机制恶意投诉骑手，导致骑手收入受损甚至被封号，而平台申诉流程繁琐、处理周期长，骑手维权成本极高，多位骑手呼吁平台建立更公平的申诉机制。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 14, 0) },
-  { tag:'舆情', tagClass:'tag-orange', source:'央视新闻', category:'opinion',
+  { tag:'舆论', tagClass:'tag-orange', source:'央视新闻', category:'opinion',
     title:'央视曝光外卖平台"幽灵商家"问题，骑手成受害者',
     summary:'央视新闻报道，部分外卖平台存在"幽灵商家"现象，商家实际地址与平台标注不符，导致骑手频繁跑空单、超时，不仅损害骑手利益，也影响用户体验，相关部门已介入调查。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 10, 0) },
-  { tag:'舆情', tagClass:'tag-orange', source:'南方都市报', category:'opinion',
+  { tag:'舆论', tagClass:'tag-orange', source:'南方都市报', category:'opinion',
     title:'外卖骑手雨天事故频发，网友呼吁平台暂停恶劣天气配送',
     summary:'南方都市报报道，近期多地强降雨期间外卖骑手交通事故明显增多，相关话题在社交媒体引发热议，大量网友呼吁平台在极端天气下暂停或减少配送任务，将骑手安全置于效率之上。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3, 15, 0) },
-  { tag:'舆情', tagClass:'tag-orange', source:'财经杂志', category:'opinion',
+  { tag:'舆论', tagClass:'tag-orange', source:'财经杂志', category:'opinion',
     title:'调查：七成消费者愿意为骑手安全多等5分钟',
     summary:'财经杂志联合调研机构发布消费者调查报告，数据显示超过70%的受访消费者表示愿意为保障骑手安全多等5分钟，超过85%的受访者支持平台取消对骑手的现金罚款制度，消费者对骑手权益的关注度持续提升。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 4, 9, 0) },
-  { tag:'舆情', tagClass:'tag-orange', source:'中国青年报', category:'opinion',
+  { tag:'舆论', tagClass:'tag-orange', source:'中国青年报', category:'opinion',
     title:'骑手节日无休引热议：平台应保障骑手节假日休息权',
     summary:'中国青年报报道，春节、中秋等传统节日期间外卖骑手仍需大量上岗，相关话题引发社会广泛讨论，法律专家指出平台应依法保障骑手节假日休息权，并支付相应加班报酬，目前多地已启动专项检查。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 4, 14, 0) },
-  { tag:'舆情', tagClass:'tag-orange', source:'观察者网', category:'opinion',
+  { tag:'舆论', tagClass:'tag-orange', source:'观察者网', category:'opinion',
     title:'外卖平台算法"黑箱"争议持续，学界呼吁建立第三方审计机制',
     summary:'观察者网报道，外卖平台算法透明度问题持续引发学界和媒体关注，多位学者呼吁建立独立的第三方算法审计机制，对平台配送时间计算、派单规则等核心算法进行定期审查，防止算法侵权。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5, 10, 0) },
-  { tag:'舆情', tagClass:'tag-orange', source:'新浪财经', category:'opinion',
+  { tag:'舆论', tagClass:'tag-orange', source:'新浪财经', category:'opinion',
     title:'骑手群体消费力报告：年消费总额超3000亿，不可忽视的新兴消费群体',
     summary:'新浪财经援引消费研究报告指出，全国外卖骑手群体年消费总额超过3000亿元，在餐饮、住房、通讯、娱乐等领域均有较强消费能力，是不可忽视的重要消费群体，多个品牌已开始针对骑手群体推出专属产品。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5, 15, 0) },
-  { tag:'舆情', tagClass:'tag-orange', source:'工人日报', category:'opinion',
+  { tag:'舆论', tagClass:'tag-orange', source:'工人日报', category:'opinion',
     title:'工人日报：骑手权益保障需要"组合拳"，单靠平台自律远远不够',
     summary:'工人日报发表评论指出，保障骑手权益需要立法、监管、平台、工会、社会多方协同发力，单靠平台自律远远不够。文章建议尽快推动新就业形态劳动者权益保障专项立法，明确各方责任边界。',
     ts: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 6, 9, 0) },
@@ -1903,23 +1971,23 @@ const HISTORY_NEWS = [
 function formatHistoryDate(ts){
   const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const yesterdayStart = new Date(todayStart - 86400000);
-  if(ts >= yesterdayStart && ts < todayStart) return '昨日';
-  const y = ts.getFullYear();
+  if(ts >= todayStart) return '今日';
+  if(ts >= yesterdayStart) return '昨日';
   const m = String(ts.getMonth()+1).padStart(2,'0');
   const d = String(ts.getDate()).padStart(2,'0');
-  return y + '-' + m + '-' + d;
+  return m + '-' + d;
 }
 
 const NC_CAT_MAP = {
-  rider_story: {label:'骑手故事', cls:'tag-yellow'},
-  care:        {label:'骑手关怀', cls:'tag-teal'},
-  policy:      {label:'行业政策', cls:'tag-red'},
-  report:      {label:'宏观报告', cls:'tag-purple'},
-  platform:    {label:'平台动作', cls:'tag-green'},
-  opinion:     {label:'舆情信息', cls:'tag-orange'},
-  // 旧分类兼容
-  rider:       {label:'骑手故事', cls:'tag-yellow'},
-  industry:    {label:'行业政策', cls:'tag-red'},
+rider_story: {label:'骑手故事', cls:'tag-orange'},
+care:        {label:'骑手关怀', cls:'tag-green'},
+policy:      {label:'行业观察', cls:'tag-blue'},
+report:      {label:'行业观察', cls:'tag-blue'},
+platform:    {label:'平台动作', cls:'tag-purple'},
+opinion:     {label:'舆论信息', cls:'tag-red'},
+// 旧分类兼容
+rider:       {label:'骑手故事', cls:'tag-orange'},
+industry:    {label:'行业观察', cls:'tag-blue'},
 };
 function renderNcTag(category){
   const info = NC_CAT_MAP[category];
@@ -1938,27 +2006,47 @@ function renderHistoryNews(){
   const baseData = liveNews.length ? liveNews : HISTORY_NEWS;
   const visible = baseData.slice(0, 16);
   const cards = visible.map(n => {
-    const imgHtml = n.img
-      ? `<div class="nc-img"><img src="${n.img}" alt="${n.title}" loading="lazy"></div>`
-      : '';
-    const cardCls = n.img ? 'news-card' : 'news-card nc-noimg';
-    const summaryHtml = n.img ? '' : (n.summary ? `<div class="nc-summary">${n.summary}</div>` : '');
     const _cardUrl = n.url || '';
-    return `
-    <div class="${cardCls}" style="${_cardUrl ? 'cursor:pointer' : ''}" onclick="${_cardUrl ? `openNewsUrl('${_cardUrl}','${n.title.replace(/'/g,"\\'")}')` : `showPage('all')`}">
-      ${imgHtml}
-      <div class="nc-body">
-        <div class="nc-title">${n.title}</div>
-        ${summaryHtml}
-        <div class="nc-meta">
-          <div class="nc-meta-left">
-            <span class="nc-source">${n.source}</span>
-            <span class="nc-date">${formatHistoryDate(n.ts)}</span>
+    const _onclick = _cardUrl ? `openNewsUrl('${_cardUrl}','${n.title.replace(/'/g,"\\'")}')`  : `showPage('all')`;
+
+    if(n.img){
+      // ── 有图卡片：图片 + 标题 + meta ──
+      return `
+      <div class="news-card" style="cursor:pointer" onclick="${_onclick}">
+        <div class="nc-img"><img src="${n.img}" alt="${n.title}" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+        <div class="nc-body">
+          <div class="nc-title">${n.title}</div>
+          <div class="nc-meta">
+            <div class="nc-meta-left">
+              <span class="nc-source">${cleanSource(n.source)}</span>
+              ${n.date ? `<span class="nc-date">${n.date}</span>` : ''}
+            </div>
+            ${renderNcTag(n.category)}
           </div>
-          ${renderNcTag(n.category)}
         </div>
-      </div>
-    </div>`;
+      </div>`;
+    } else {
+      // ── 无图卡片：nc-noimg + nc-body（标题 + 摘要 + meta），对齐参考文件结构 ──
+      // n.summary 已在 apiToNews() 中清洗并兜底，此处直接使用，不再二次过滤
+      const summaryHtml = n.summary ? `<div class="nc-summary">${n.summary}</div>` : '';
+      return `
+      <div class="news-card nc-noimg" style="cursor:pointer" onclick="${_onclick}">
+        <div class="nc-body">
+          <div class="nc-content-wrap">
+            <div class="nc-title">${n.title}</div>
+            ${summaryHtml}
+          </div>
+          <div class="nc-meta">
+            <div class="nc-meta-left">
+                            <span class="nc-source">${cleanSource(n.source)}</span>
+              ${n.date ? `<span class="nc-date">${n.date}</span>` : ''}
+            </div>
+            ${renderNcTag(n.category)}
+          </div>
+        </div>
+
+      </div>`;
+    }
   }).join('');
 
   grid.innerHTML = cards + `<div class="news-grid-more" onclick="showPage('all')">查看更多资讯 &rsaquo;</div>`;
@@ -2082,21 +2170,24 @@ function showPage(name){
 
   document.querySelectorAll('.tab').forEach(t => t.classList.toggle('on', t.dataset.page === name));
 
-  const hero = document.getElementById('heroSection');
-  const wrap = document.getElementById('homeWrap');
-  const sub  = document.getElementById('subPage');
+const hero    = document.getElementById('heroSection');
+const kkWrap  = document.getElementById('kingkongWrap');
+const wrap    = document.getElementById('homeWrap');
+const sub     = document.getElementById('subPage');
 
-  if(name === 'home'){
-    hero.style.display = '';
-    wrap.style.display = '';
-    sub.style.display  = 'none';
-    sub.innerHTML = '';
-    return;
-  }
+if(name === 'home'){
+hero.style.display   = '';
+kkWrap.style.display = 'none';
+wrap.style.display   = '';
+sub.style.display    = 'none';
+sub.innerHTML = '';
+return;
+}
 
-  hero.style.display = 'none';
-  wrap.style.display = 'none';
-  sub.style.display  = 'block';
+hero.style.display   = 'none';
+kkWrap.style.display = 'none';
+wrap.style.display   = 'none';
+sub.style.display    = 'block';
 
   if(name === 'flash'){
     renderFlashPage(sub);
@@ -2137,7 +2228,7 @@ function renderCategoryPage(container, category){
     // 分页配置
     const ALL_PAGE_SIZE = 20;
     let _allOffset = 0;
-    const tmCatMap = {rider_story:{label:'骑手故事',cls:'tag-yellow'},care:{label:'骑手关怀',cls:'tag-teal'},policy:{label:'行业政策',cls:'tag-red'},report:{label:'宏观报告',cls:'tag-purple'},platform:{label:'平台动作',cls:'tag-green'},opinion:{label:'舆情信息',cls:'tag-orange'},rider:{label:'骑手故事',cls:'tag-yellow'},industry:{label:'行业政策',cls:'tag-red'}};
+    const tmCatMap = {rider_story:{label:'骑手故事',cls:'tag-orange'},care:{label:'骑手关怀',cls:'tag-green'},policy:{label:'行业观察',cls:'tag-blue'},report:{label:'行业观察',cls:'tag-blue'},platform:{label:'平台动作',cls:'tag-purple'},opinion:{label:'舆论信息',cls:'tag-red'},rider:{label:'骑手故事',cls:'tag-orange'},industry:{label:'行业观察',cls:'tag-blue'}};
     const WEEK_CN = ['日','一','二','三','四','五','六'];
 
     // 渲染新闻列表（按日期分组，支持分页追加）
@@ -2389,18 +2480,18 @@ const data = allForCat.filter(n => n.category === category).sort((a,b) => b.ts -
   // 当前年月（用于控制栏）
   let _selYear = now.getFullYear(), _selMonth = now.getMonth();
 
-  // 分类标签映射
-  const _catTagMap = {
-    rider_story: {label:'骑手故事', cls:'tag-yellow'},
-    care:        {label:'骑手关怀', cls:'tag-teal'},
-    policy:      {label:'行业政策', cls:'tag-red'},
-    report:      {label:'宏观报告', cls:'tag-purple'},
-    platform:    {label:'平台动作', cls:'tag-green'},
-    opinion:     {label:'舆情信息', cls:'tag-orange'},
-    // 旧分类兼容
-    rider:       {label:'骑手故事', cls:'tag-yellow'},
-    industry:    {label:'行业政策', cls:'tag-red'},
-  };
+// 分类标签映射
+const _catTagMap = {
+rider_story: {label:'骑手故事', cls:'tag-orange'},
+care:        {label:'骑手关怀', cls:'tag-green'},
+policy:      {label:'行业观察', cls:'tag-blue'},
+report:      {label:'行业观察', cls:'tag-blue'},
+platform:    {label:'平台动作', cls:'tag-purple'},
+opinion:     {label:'舆论信息', cls:'tag-red'},
+// 旧分类兼容
+rider:       {label:'骑手故事', cls:'tag-orange'},
+industry:    {label:'行业观察', cls:'tag-blue'},
+};
 
   // 分页配置
   const CAT_PAGE_SIZE = 15;
@@ -2410,7 +2501,7 @@ const data = allForCat.filter(n => n.category === category).sort((a,b) => b.ts -
   function _buildCardHtml(n, isTop){
     const _catInfo = _catTagMap[n.category];
     const tagHtml = '';  // 垂类频道页不显示分类标签
-    const summary = n.summary || '';
+    const summary = cleanSummary(n.summary || '', n.title || '');
     const summaryShort = isTop
       ? (summary.length > 200 ? summary.slice(0,200)+'…' : summary)
       : (summary.length > 150 ? summary.slice(0,150)+'…' : summary);
@@ -2667,15 +2758,15 @@ function renderFlashPage(container){
   const day = String(baseDay.getDate()).padStart(2,'0');
 
 const catTagMap = {
-  rider_story: {label:'骑手故事', cls:'tag-yellow'},
-  care:        {label:'骑手关怀', cls:'tag-teal'},
-  policy:      {label:'行业政策', cls:'tag-red'},
-  report:      {label:'宏观报告', cls:'tag-purple'},
-  platform:    {label:'平台动作', cls:'tag-green'},
-  opinion:     {label:'舆情信息', cls:'tag-orange'},
-  // 旧分类兼容
-  rider:       {label:'骑手故事', cls:'tag-yellow'},
-  industry:    {label:'行业政策', cls:'tag-red'},
+rider_story: {label:'骑手故事', cls:'tag-orange'},
+care:        {label:'骑手关怀', cls:'tag-green'},
+policy:      {label:'行业观察', cls:'tag-blue'},
+report:      {label:'行业观察', cls:'tag-blue'},
+platform:    {label:'平台动作', cls:'tag-purple'},
+opinion:     {label:'舆论信息', cls:'tag-red'},
+// 旧分类兼容
+rider:       {label:'骑手故事', cls:'tag-orange'},
+industry:    {label:'行业观察', cls:'tag-blue'},
 };
 
   const items = todayData.map((n) => {
@@ -2683,7 +2774,8 @@ const catTagMap = {
     const catBadge = catInfo
       ? `<span class="fl-meta-sep">·</span><span class="tag-badge ${catInfo.cls}">${catInfo.label}</span>`
       : '';
-    const summary100 = n.summary && n.summary.length > 100 ? n.summary.slice(0,100) + '...' : (n.summary||'');
+    const _sumClean = cleanSummary(n.summary || '', n.title || '');
+    const summary100 = _sumClean.length > 100 ? _sumClean.slice(0,100) + '...' : _sumClean;
     const hhmm = String(n.ts.getHours()).padStart(2,'0') + ':' + String(n.ts.getMinutes()).padStart(2,'0');
 const _flUrl = n.url || '';
     return `
@@ -2752,6 +2844,45 @@ const _flUrl = n.url || '';
   });
 }
 
+// ===== 金刚位渲染：5个分类快捷入口 =====
+function renderKingkong(){
+  const el = document.getElementById('kingkongList');
+  if(!el) return;
+
+  // 5个固定分类入口，副标题取该分类最新一条新闻标题
+  const ENTRIES = [
+    { page:'flash',      icon:'⚡', bg:'#fff3f3', color:'#e8312a', label:'今日快讯',  cat:null },
+    { page:'platform',   icon:'🏢', bg:'#fff8ec', color:'#f5a623', label:'平台动作',  cat:'platform' },
+    { page:'policy',     icon:'📋', bg:'#f0f7ff', color:'#4A90E2', label:'行业观察',  cat:'policy' },
+    { page:'rider_story',icon:'🏍', bg:'#f0fff4', color:'#27ae60', label:'骑手故事',  cat:'rider_story' },
+    { page:'opinion',    icon:'💬', bg:'#f8f0ff', color:'#8e44ad', label:'舆论信息',  cat:'opinion' },
+  ];
+
+  // 取各分类最新一条新闻标题作为副标题
+  const allPool = [
+    ...(window._allArticles || []),
+    ...FLASH_DATA,
+    ...HISTORY_NEWS,
+  ];
+
+  el.innerHTML = ENTRIES.map(e => {
+    let sub = '';
+    if(e.cat){
+      const hit = allPool.find(n => (n.category === e.cat || n.tag === e.label));
+      if(hit) sub = cleanTitle(hit.title);
+    } else {
+      // 今日快讯：取最新一条
+      const hit = FLASH_DATA[0] || allPool[0];
+      if(hit) sub = cleanTitle(hit.title);
+    }
+    return `<div class="kingkong-item" onclick="showPage('${e.page}')">
+      <div class="kingkong-icon" style="background:${e.bg};color:${e.color}">${e.icon}</div>
+      <div class="kingkong-label">${e.label}</div>
+      ${sub ? `<div class="kingkong-sub">${sub}</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
 // ===== 初始化 =====
 (async function(){
   // 显示加载中占位
@@ -2765,6 +2896,7 @@ const _flUrl = n.url || '';
 
   // 渲染
   renderHero();
+  renderKingkong();
   renderHistoryNews();
   renderHotSection();
   renderHotUpdateTime();

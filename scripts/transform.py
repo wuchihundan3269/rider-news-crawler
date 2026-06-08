@@ -68,6 +68,12 @@ try:
 except ImportError:
     _HAS_REQUESTS = False
 
+try:
+    from bs4 import BeautifulSoup as _BS
+    _HAS_BS4 = True
+except ImportError:
+    _HAS_BS4 = False
+
 
 def resolve_google_news_url(url: str, timeout: int = 5) -> str:
     """
@@ -127,6 +133,92 @@ def resolve_google_news_url(url: str, timeout: int = 5) -> str:
             pass
 
     return url
+
+def fetch_article_summary(url: str, title: str, timeout: int = 10, max_chars: int = 150) -> str:
+    """
+    爬取原文页面，提取正文摘要（前 max_chars 字）。
+    策略：
+      0. 若是 Google News 中间链接，先解析为真实 URL
+      1. 优先取 <meta name="description"> / <meta property="og:description">
+      2. 其次取正文段落中第一段有实质内容的文字
+      3. 失败或内容与标题重复则返回空字符串
+    """
+    if not url or not _HAS_REQUESTS or not _HAS_BS4:
+        return ""
+    # 若是 Google News 中间链接，先解析为真实 URL
+    if "news.google.com" in url:
+        real_url = resolve_google_news_url(url, timeout=timeout)
+        if not real_url or "news.google.com" in real_url:
+            return ""  # 解析失败，跳过
+        url = real_url
+    try:
+        resp = _requests.get(
+            url,
+            timeout=timeout,
+            headers={
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                              "AppleWebKit/537.36 (KHTML, like Gecko) "
+                              "Chrome/124.0 Safari/537.36",
+                "Accept-Language": "zh-CN,zh;q=0.9",
+            },
+            allow_redirects=True,
+        )
+        if resp.status_code != 200:
+            return ""
+        # 检测编码
+        resp.encoding = resp.apparent_encoding or "utf-8"
+        soup = _BS(resp.text, "lxml")
+
+        # 策略1：meta description
+        for attr in (
+            {"name": "description"},
+            {"property": "og:description"},
+            {"name": "twitter:description"},
+        ):
+            tag = soup.find("meta", attrs=attr)
+            if tag and tag.get("content", "").strip():
+                text = tag["content"].strip()
+                if _is_valid_summary(text, title, max_chars):
+                    return text[:max_chars]
+
+        # 策略2：正文段落
+        # 移除干扰标签
+        for noise in soup(["script", "style", "nav", "header", "footer",
+                            "aside", "figure", "figcaption", "noscript"]):
+            noise.decompose()
+
+        # 优先在 article / main / .content 等语义容器里找
+        containers = (
+            soup.find("article") or
+            soup.find("main") or
+            soup.find(class_=re.compile(r"(article|content|body|text|detail)", re.I)) or
+            soup.body
+        )
+        if containers:
+            for p in containers.find_all("p"):
+                text = p.get_text(" ", strip=True)
+                if _is_valid_summary(text, title, max_chars):
+                    return text[:max_chars]
+
+    except Exception:
+        pass
+    return ""
+
+
+def _is_valid_summary(text: str, title: str, max_chars: int) -> bool:
+    """判断提取到的文本是否是有效摘要（非空、够长、与标题不重复）"""
+    if not text or len(text) < 15:
+        return False
+    # 去掉标题末尾媒体名后缀再比较
+    clean_t = re.sub(r'\s*[-–—|｜]\s*\S+$', '', title).strip().lower()
+    clean_s = text.lower()
+    # 与标题完全相同，或摘要就是「标题+媒体名」（单词结尾）
+    if clean_s == clean_t:
+        return False
+    if clean_s.startswith(clean_t) and len(clean_s) - len(clean_t) < 15:
+        return False
+    return True
+
 
 # ===== 一级分类映射（category → 页面展示信息）=====
 CATEGORY_MAP = {
@@ -248,6 +340,13 @@ def parse_article(item: dict, cat_info: dict, date_str: str) -> dict:
     raw_url = item.get("url", item.get("link", ""))
     resolved_url = resolve_google_news_url(raw_url)
 
+    # 摘要增强：若 summary 为空或与标题重复，爬取原文提取真实摘要
+    if not _is_valid_summary(summary, title, 200):
+        fetched = fetch_article_summary(resolved_url, title)
+        if fetched:
+            summary = fetched
+            print(f"    [摘要] {title[:30]}… → {summary[:40]}…")
+
     return {
         "title":        title,
         "summary":      summary,
@@ -284,8 +383,18 @@ def transform(input_path: str, hot_path: str | None, output_path: str):
                 updates["sub_label"] = SUB_TAG_LABEL.get(sub_tag, "") if sub_tag else ""
             # 解析 Google News 中间链接
             raw_url = a.get("url", "")
+            resolved_url = raw_url
             if raw_url and "news.google.com" in raw_url:
-                updates["url"] = resolve_google_news_url(raw_url)
+                resolved_url = resolve_google_news_url(raw_url)
+                updates["url"] = resolved_url
+            # 摘要增强：summary 为空或与标题重复时爬取原文
+            title = a.get("title", "")
+            summary = a.get("summary", "")
+            if not _is_valid_summary(summary, title, 200):
+                fetched = fetch_article_summary(resolved_url, title)
+                if fetched:
+                    updates["summary"] = fetched
+                    print(f"    [摘要] {title[:30]}… → {fetched[:40]}…")
             if updates:
                 a = {**a, **updates}
             articles.append(a)
