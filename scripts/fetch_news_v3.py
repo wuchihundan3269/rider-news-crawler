@@ -368,11 +368,11 @@ SUB_TAG_TO_CATEGORY = {
     "policy.labor":          "policy",
     "policy.local":          "policy",
     "policy.standard":       "policy",
-    # 宏观报告
-    "report.market":         "report",
-    "report.economy":        "report",
-    "report.research":       "report",
-    "report.season":         "report",
+    # 宏观报告（并入行业观察）
+    "report.market":         "policy",
+    "report.economy":        "policy",
+    "report.research":       "policy",
+    "report.season":         "policy",
     # 平台动作
     "platform.ops":          "platform",
     "platform.algo":         "platform",
@@ -539,26 +539,43 @@ def fetch_rss_feed(feed_cfg: dict, keyword_rules: dict, base_keywords: list,
 
         # 一级分类：
         #   - 固定分类源直接使用配置的 category
-        #   - auto 源：舆论(opinion.*) 优先级最高，其次按第一个命中的子分类决定
+        #   - auto 源：按优先级规则决定分类
+        #
+        # 优先级规则（从高到低）：
+        #   1. policy / care 有豁免权：事实性动作（政策发布、关爱落地）优先于观点性讨论
+        #      只要同时命中 policy.* 或 care.* 标签，opinion 不得覆盖
+        #   2. opinion 次优先：未被 policy/care 豁免时，opinion 仍高于 platform/report/rider_story
+        #   3. 其余按第一个命中的子分类决定
         if category == "auto":
             if sub_tags:
-                # 舆论优先：只要有任意 opinion.* 标签，强制归入 opinion
-                opinion_tags = [t for t in sub_tags if t.startswith("opinion.")]
-                if opinion_tags:
+                opinion_tags    = [t for t in sub_tags if t.startswith("opinion.")]
+                policy_tags     = [t for t in sub_tags if t.startswith("policy.")]
+                care_tags       = [t for t in sub_tags if t.startswith("care.")]
+                # policy/care 豁免：同时命中 opinion 和 policy/care 时，policy/care 胜出
+                if opinion_tags and (policy_tags or care_tags):
+                    if policy_tags:
+                        final_category = "policy"
+                        primary_tag    = policy_tags[0]
+                    else:
+                        final_category = "care"
+                        primary_tag    = care_tags[0]
+                elif opinion_tags:
+                    # 纯 opinion（无 policy/care 豁免）
                     final_category = "opinion"
+                    primary_tag    = opinion_tags[0]
                 else:
                     final_category = SUB_TAG_TO_CATEGORY.get(sub_tags[0], "policy")
+                    primary_tag    = sub_tags[0]
             else:
                 final_category = "policy"
+                primary_tag    = ""
         else:
             final_category = category
-
-        # 主标签：舆论优先时取第一个 opinion.* 标签，否则取第一个命中标签
-        if sub_tags:
-            opinion_tags = [t for t in sub_tags if t.startswith("opinion.")]
-            primary_tag = opinion_tags[0] if opinion_tags else sub_tags[0]
-        else:
-            primary_tag = ""
+            # 固定分类源：主标签取第一个命中标签（opinion 不覆盖固定分类）
+            if sub_tags:
+                primary_tag = sub_tags[0]
+            else:
+                primary_tag = ""
 
         # 尝试从 RSS 条目中获取图片（media:content / enclosure / media:thumbnail）
         img_url = None
