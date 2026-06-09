@@ -551,6 +551,7 @@ def fetch_rss_feed(feed_cfg: dict, keyword_rules: dict, base_keywords: list,
                 opinion_tags    = [t for t in sub_tags if t.startswith("opinion.")]
                 policy_tags     = [t for t in sub_tags if t.startswith("policy.")]
                 care_tags       = [t for t in sub_tags if t.startswith("care.")]
+                platform_tags   = [t for t in sub_tags if t.startswith("platform.")]
                 # policy/care 豁免：同时命中 opinion 和 policy/care 时，policy/care 胜出
                 if opinion_tags and (policy_tags or care_tags):
                     if policy_tags:
@@ -563,6 +564,10 @@ def fetch_rss_feed(feed_cfg: dict, keyword_rules: dict, base_keywords: list,
                     # 纯 opinion（无 policy/care 豁免）
                     final_category = "opinion"
                     primary_tag    = opinion_tags[0]
+                elif platform_tags:
+                    # 竞对平台动作：platform 优先于 policy（report.market 词可能同时命中）
+                    final_category = "platform"
+                    primary_tag    = platform_tags[0]
                 else:
                     final_category = SUB_TAG_TO_CATEGORY.get(sub_tags[0], "policy")
                     primary_tag    = sub_tags[0]
