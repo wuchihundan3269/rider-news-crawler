@@ -10,6 +10,13 @@ on:
   # 每小时整点运行（北京时间 = UTC+8，覆盖全天24小时）
   schedule:
     - cron: "0 * * * *"   # 每小时 UTC :00 触发，即北京时间每小时整点
+  # push main 时自动部署（代码/配置变更立刻生效，data/ 变更由 Actions 自身处理，忽略避免循环）
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'data/**'        # Actions 自动 push data 时不再触发，避免死循环
+      - 'logs/**'
   # 允许手动触发，可指定日期
   workflow_dispatch:
     inputs:
