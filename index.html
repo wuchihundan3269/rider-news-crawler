@@ -1055,25 +1055,56 @@ async function _fetchData(){
   }
 }
 
-// ===== 判断原始文章是否来自聚合平台（从标题末尾 " - 媒体名" 提取）=====
+// ===== 外媒域名后缀正则（如 L'Unione Sarda.it）=====
+var _FOREIGN_DOMAIN_RE = /\.(it|fr|de|jp|uk|au|ca|ru|kr|tw|hk|sg|us|eu|net|org|io|co)\s*$/i;
+
+// ===== 已知外媒黑名单 =====
+var FOREIGN_MEDIA_BLACKLIST = [
+  'China Digital Times', 'Radio Free Asia', 'RFA',
+  'Voice of America', 'VOA', 'BBC', 'BBC Chinese',
+  'Reuters', 'AP', 'AFP', 'Bloomberg', 'The Guardian',
+  'New York Times', 'Washington Post', 'Financial Times',
+  'South China Morning Post', 'SCMP',
+  'Nikkei', 'Nikkei Asia', 'Deutsche Welle', 'DW',
+  'The Diplomat', 'Foreign Policy', 'Asia Times'
+];
+
+// ===== 国内英文媒体白名单（不过滤）=====
+var DOMESTIC_EN_WHITELIST = [
+  'Sina finance', 'Sina Finance', 'Sina News', 'Sina',
+  "People's Daily", 'Xinhua', 'Xinhua News',
+  'CCTV', 'CGTN', 'China Daily', 'Global Times',
+  'Caixin', 'Caixin Global', 'The Paper', 'Jiemian',
+  'Yicai', 'Yicai Global', '36Kr', '36kr',
+  'Huxiu', 'LatePost', 'Titanium Media',
+  'China News Service', 'CNS'
+];
+
+// ===== 判断原始文章是否来自外媒或聚合平台（从标题末尾 " - 媒体名" 提取）=====
 function isAggregatorRaw(a){
   var t = a.title || '';
   var di = t.lastIndexOf(' - ');
-  if(di > 0){
-    var name = t.slice(di + 3).trim();
-    if(AGGREGATOR_BLACKLIST.indexOf(name) !== -1) return true;
-  }
+  if(di <= 0) return false;
+  var name = t.slice(di + 3).trim();
+  // 聚合平台黑名单
+  if(AGGREGATOR_BLACKLIST.indexOf(name) !== -1) return true;
+  // 外媒黑名单
+  if(FOREIGN_MEDIA_BLACKLIST.indexOf(name) !== -1) return true;
+  // 含境外域名后缀（如 .it .fr .de）
+  if(_FOREIGN_DOMAIN_RE.test(name)) return true;
+  // 全 ASCII 且不在国内英文媒体白名单内
+  if(name && /^[\x00-\x7F]+$/.test(name) && DOMESTIC_EN_WHITELIST.indexOf(name) === -1) return true;
   return false;
 }
 
 // ===== 内部：将原始 JSON 数据填充到全局变量 =====
 function _applyData(latest, data){
-  // 在 map 之前先过滤聚合平台来源（MSN 等标题末尾可直接识别）
-  var rawFeatured = (data.featured || []).filter(function(a){ return !isAggregatorRaw(a); });
+  // 在 map 之前先过滤外媒和聚合平台（MSN/L'Unione Sarda.it/China Digital Times 等）
+  function filterDomestic(arr){ return (arr||[]).filter(function(a){ return !isAggregatorRaw(a); }); }
 
-  var articles = (data.articles || []).map(function(a, i) { return apiToNews(a, i); });
-  var featured  = rawFeatured.map(function(a, i) { return apiToNews(a, i); });
-  var flash     = (data.flash     || data.articles || []).map(function(a, i) { return apiToNews(a, i); });
+  var articles = filterDomestic(data.articles).map(function(a, i) { return apiToNews(a, i); });
+  var featured  = filterDomestic(data.featured).map(function(a, i) { return apiToNews(a, i); });
+  var flash     = filterDomestic(data.flash || data.articles).map(function(a, i) { return apiToNews(a, i); });
 
   // 全部按发布时间倒序排列
   articles.sort(function(a, b) { return b.ts - a.ts; });
@@ -1368,76 +1399,38 @@ function renderHistoryNews(){
   grid.innerHTML = cards + `<div class="news-grid-more" onclick="showPage('all')">查看更多资讯 &rsaquo;</div>`;
 }
 
-// ===== 全网热点数据 =====
-const HOT_PLATFORMS = [
+// ===== 全网热点：动态拉取配置 =====
+// 使用 freejk 公开热榜 API（无需注册/key，完全免费）
+// 文档：https://freejk.com/api/38  支持平台：https://api.freejk.com/shuju/hotlist/all
+const HOT_PLATFORM_CONFIG = [
   {
-    id:'weibo', name:'微博',
-    logo:`<img src="https://favicon.im/weibo.com?larger=true" width="18" height="18" style="border-radius:3px;display:block">`,
-    link:'https://s.weibo.com/top/summary',
-    items:[
-      {rank:1,text:'女子耳环示不到100元的耳环'},
-      {rank:2,text:'白玉兰利剑收场'},
-      {rank:3,text:'暴雨山洪来了怎么办'},
-      {rank:4,text:'现在在发展'},
-      {rank:5,text:'30个太阳过一天'},
-      {rank:6,text:'人工的优雅大了兰'},
-      {rank:7,text:'骑手薪酬调整方案出炉'},
-      {rank:8,text:'cp是一个很私人的事儿'},
-      {rank:9,text:'肖德菲地平面'},
-      {rank:10,text:'外卖骑手法负面清单落地'},
-    ]
+    id: 'weibo',
+    name: '微博',
+    apiPath: 'weibo',
+    logo: `<img src="https://favicon.im/weibo.com?larger=true" width="18" height="18" style="border-radius:3px;display:block">`,
+    link: 'https://s.weibo.com/top/summary',
   },
   {
-    id:'douyin', name:'抖音',
-    logo:`<img src="https://favicon.im/tiktok.com?larger=true" width="18" height="18" style="border-radius:3px;display:block">`,
-    link:'https://www.douyin.com/search/%E7%83%AD%E6%90%9C',
-    items:[
-      {rank:1,text:'中方强烈谴责巴基斯坦恐袭事件'},
-      {rank:2,text:'送全体考生高考最后100题'},
-      {rank:3,text:'中国盾构机向世界输出中国方案'},
-      {rank:4,text:'夏天的味道你感受到了吗'},
-      {rank:5,text:'重庆永川暴雨数9死11失联'},
-      {rank:6,text:'网友自制歼35航模超低空飞'},
-      {rank:7,text:'骑手月收入不足6000元调查'},
-      {rank:8,text:'8张太空全家福来了'},
-      {rank:9,text:'CBA总决赛你更看好谁'},
-      {rank:10,text:'外卖骑手取消金扣款新规'},
-    ]
+    id: 'douyin',
+    name: '抖音',
+    apiPath: 'douyin',
+    logo: `<img src="https://favicon.im/tiktok.com?larger=true" width="18" height="18" style="border-radius:3px;display:block">`,
+    link: 'https://www.douyin.com/search/%E7%83%AD%E6%90%9C',
   },
   {
-    id:'kuaishou', name:'快手',
-    logo:`<img src="https://favicon.im/kuaishou.com?larger=true" width="18" height="18" style="border-radius:3px;display:block">`,
-    link:'https://www.kuaishou.com/',
-    items:[
-      {rank:1,text:'德祝警犬大报告有不合格的'},
-      {rank:2,text:'广大老家卜大赛后组出来些组'},
-      {rank:3,text:'别在德平宇地划拆破坏了'},
-      {rank:4,text:'骑手兄弟互助基金成立'},
-      {rank:5,text:'这种天天上长长的小水稻'},
-      {rank:6,text:'汉些状况不是紧最大脑在求救'},
-      {rank:7,text:'外卖小哥送餐途中救人'},
-      {rank:8,text:'骑手收入真实记录vlog'},
-      {rank:9,text:'配送路线优化AI新算法'},
-      {rank:10,text:'即时配送行业招聘旺季'},
-    ]
+    id: 'kuaishou',
+    name: '快手',
+    apiPath: 'kuaishou',
+    logo: `<img src="https://favicon.im/kuaishou.com?larger=true" width="18" height="18" style="border-radius:3px;display:block">`,
+    link: 'https://www.kuaishou.com/',
   },
   {
-    id:'baidu', name:'百度',
-    logo:`<img src="https://favicon.im/baidu.com?larger=true" width="18" height="18" style="border-radius:3px;display:block">`,
-    link:'https://top.baidu.com/board?tab=realtime',
-    items:[
-      {rank:1,text:'中泰铁杆友谊树一棵'},
-      {rank:2,text:'新能源车尾号以马路越快停不住'},
-      {rank:3,text:'从三客客三角出门以绕省道'},
-      {rank:4,text:'骑手薪酬调整方案'},
-      {rank:5,text:'杭州道度90%山门被装修了'},
-      {rank:6,text:'外卖平台算法压单被禁止'},
-      {rank:7,text:'二手巴拉特3年款80万行迹板发发'},
-      {rank:8,text:'全网骑手的骑会让它不来遭遇'},
-      {rank:9,text:'2亿属人的甲状腺作用胃气'},
-      {rank:10,text:'即时配送市场规模突破万亿'},
-    ]
-  }
+    id: 'baidu',
+    name: '百度',
+    apiPath: 'baidu',
+    logo: `<img src="https://favicon.im/baidu.com?larger=true" width="18" height="18" style="border-radius:3px;display:block">`,
+    link: 'https://top.baidu.com/board?tab=realtime',
+  },
 ];
 
 // 骑手相关关键词
@@ -1449,23 +1442,83 @@ function truncate(text, max){
   return text.length > max ? text.slice(0, max) + '...' : text;
 }
 
-function renderHotUpdateTime(){
-  const el = document.getElementById('hotUpdateTime');
-  if(!el) return;
-  // 模拟：页面加载时随机 3~15 分钟前更新
-  const mins = Math.floor(Math.random() * 13) + 3;
-  el.textContent = mins + ' 分钟前更新';
+// 热点数据缓存（避免同一批次重复请求）
+let _hotCache = null;
+let _hotCacheTime = 0;
+const HOT_CACHE_TTL = 5 * 60 * 1000; // 5分钟缓存
+
+// 拉取单个平台热榜
+async function fetchPlatformHot(cfg) {
+  // freejk API：无需 key，完全免费，返回格式 {code:200, data:[{title, url, ...}]}
+  const url = `https://api.freejk.com/shuju/hotlist/${cfg.apiPath}`;
+  try {
+    const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const json = await res.json();
+    if (json.code !== 200 || !Array.isArray(json.data)) throw new Error('格式异常');
+    return json.data.slice(0, 10).map((item, i) => ({
+      rank: i + 1,
+      text: item.title || item.name || '',
+      url: item.url || item.mobileUrl || cfg.link,
+    }));
+  } catch(e) {
+    console.warn(`[热点] ${cfg.name} 拉取失败:`, e.message);
+    return null; // 失败返回 null，保留旧数据
+  }
 }
 
-function renderHotSection(){
+// 并发拉取所有平台
+async function fetchAllHot() {
+  const now = Date.now();
+  if (_hotCache && (now - _hotCacheTime) < HOT_CACHE_TTL) {
+    return _hotCache; // 命中缓存
+  }
+  const results = await Promise.all(HOT_PLATFORM_CONFIG.map(cfg => fetchPlatformHot(cfg)));
+  const platforms = HOT_PLATFORM_CONFIG.map((cfg, i) => ({
+    ...cfg,
+    items: results[i] || ((_hotCache && _hotCache.find(p => p.id === cfg.id)?.items) || []),
+  }));
+  _hotCache = platforms;
+  _hotCacheTime = now;
+  return platforms;
+}
+
+function renderHotUpdateTime(ts) {
+  const el = document.getElementById('hotUpdateTime');
+  if (!el) return;
+  if (ts) {
+    const d = new Date(ts);
+    const hh = String(d.getHours()).padStart(2, '0');
+    const mm = String(d.getMinutes()).padStart(2, '0');
+    el.textContent = `${hh}:${mm} 更新`;
+  } else {
+    el.textContent = '加载中…';
+  }
+}
+
+function renderHotCards(platforms) {
   const grid = document.getElementById('hotGrid');
-  if(!grid) return;
-  grid.innerHTML = HOT_PLATFORMS.map(p => {
-    const items = p.items.map((item,i) => {
+  if (!grid) return;
+  if (!platforms || platforms.length === 0) {
+    grid.innerHTML = '<div style="color:#999;padding:20px;text-align:center;grid-column:1/-1">热点数据加载中，请稍候…</div>';
+    return;
+  }
+  grid.innerHTML = platforms.map(p => {
+    if (!p.items || p.items.length === 0) {
+      return `<div class="hot-card">
+        <div class="hot-card-header">
+          <div class="hot-card-title"><span class="hot-card-logo">${p.logo}</span>${p.name}热点</div>
+          <span class="hot-card-more" onclick="openNewsUrl('${p.link}','')">查看全榜 &rsaquo;</span>
+        </div>
+        <div style="color:#bbb;font-size:13px;padding:12px 0;text-align:center">暂无数据</div>
+      </div>`;
+    }
+    const items = p.items.map((item, i) => {
       const rankClass = i===0?'r1':i===1?'r2':i===2?'r3':'rn';
       const label = truncate(item.text, 16);
       const riderTag = isRiderRelated(item.text) ? `<span class="hot-item-rider">骑手</span>` : '';
-      return `<div class="hot-item" onclick="openNewsUrl('${p.link}','${item.text.replace(/'/g,"\\'")}')" >
+      const itemUrl = item.url || p.link;
+      return `<div class="hot-item" onclick="openNewsUrl('${itemUrl}','${item.text.replace(/'/g,"\\'").replace(/"/g,'&quot;')}')">
         <span class="hot-rank ${rankClass}">${item.rank}</span>
         <span class="hot-item-text">${label}</span>${riderTag}
       </div>`;
@@ -1478,6 +1531,25 @@ function renderHotSection(){
       ${items}
     </div>`;
   }).join('');
+}
+
+async function renderHotSection() {
+  renderHotUpdateTime(null); // 先显示"加载中"
+  const platforms = await fetchAllHot();
+  renderHotCards(platforms);
+  renderHotUpdateTime(Date.now());
+}
+
+// 5分钟自动刷新热点
+let _hotRefreshTimer = null;
+function startHotAutoRefresh() {
+  if (_hotRefreshTimer) clearInterval(_hotRefreshTimer);
+  _hotRefreshTimer = setInterval(async () => {
+    _hotCacheTime = 0; // 强制过期缓存，触发重新拉取
+    const platforms = await fetchAllHot();
+    renderHotCards(platforms);
+    renderHotUpdateTime(Date.now());
+  }, HOT_CACHE_TTL);
 }
 
 function showPage(name){
@@ -2214,8 +2286,8 @@ function renderKingkong(){
   renderHero();
   renderKingkong();
   renderHistoryNews();
-  renderHotSection();
-  renderHotUpdateTime();
+  renderHotSection();       // 异步拉取真实热点数据
+  startHotAutoRefresh();    // 启动5分钟自动刷新
 
   // 更新导航栏时间显示（如果有数据更新时间）
   if(window._dataUpdatedAt){
