@@ -499,6 +499,23 @@ def fetch_rss_feed(feed_cfg: dict, keyword_rules: dict, base_keywords: list,
         except Exception:
             pass
 
+        # ── 新华网/人民网 URL 年份校验 ──────────────────────────────
+        # 这两个媒体会把历史旧文章重新推入 RSS，但时间戳用当前时间
+        # 通过 URL 路径中的年份（如 /2022-12/13/...）来识别真实发布年份
+        # 若 URL 年份与 RSS 时间戳年份相差 > 1 年，则认为是旧文章，丢弃
+        if ("xinhuanet.com" in url_str or "people.com.cn" in url_str):
+            # 新华网格式: /2022-12/13/  人民网格式: /n1/2022/1213/
+            url_year_match = re.search(r'/(\d{4})[-/]\d{2,4}/', url_str)
+            if url_year_match:
+                url_year = int(url_year_match.group(1))
+                try:
+                    rss_year = datetime.fromisoformat(pub_str).year
+                    if abs(rss_year - url_year) > 1:
+                        print(f"  [跳过旧文章] URL年份={url_year} RSS年份={rss_year}: {title[:40]}")
+                        continue
+                except Exception:
+                    pass
+
         # 全局过滤
         if is_global_filtered(title, summary, keyword_rules["global_filter"]):
             continue
