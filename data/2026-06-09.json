@@ -1,6 +1,6 @@
 {
   "date": "2026-06-09",
-  "generated_at": "2026-06-09T07:37:34Z",
+  "generated_at": "2026-06-09T08:03:00Z",
   "featured": [
     {
       "title": "善“粮”暖羊城 肯德基食物驿站全国首次推出社区骑手驿站联动模式 - 中华网",
@@ -33,11 +33,11 @@
       "grad": "linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"
     },
     {
-      "title": "外卖骑手严重过剩，为什么这条路上还挤满了人 - 搜狐网",
-      "summary": "外卖骑手严重过剩，为什么这条路上还挤满了人&nbsp;&nbsp;搜狐网",
+      "title": "《经济学人》：超级系统下，中国的外卖小哥成为最明显的社会底层 - 加拿大新闻网",
+      "summary": "《经济学人》：超级系统下，中国的外卖小哥成为最明显的社会底层&nbsp;&nbsp;加拿大新闻网",
       "source": "Google新闻-骑手收入",
-      "url": "https://news.google.com/articles/CBMijAFBVV95cUxOTmNUMnBPbWs3QnFSaTEzUTZ5all0dnExZjVnclVSNHRkZWc4UzhCSmlLdmR6M1FqTkI0ZC10SE5YallLV2lwdTBZRWhGN25qcTY4amlLSDV4TUUweFF5RWtIallxaTctWWhZRE5qYnhEb0ZKejdTdS0wY2FUMHM3ZE9MSEZnWU9sLVVHVw?oc=5",
-      "published_at": "2026-06-08T10:40:32",
+      "url": "https://news.google.com/articles/CBMiREFVX3lxTE1XbnZsbFM0VC1vYjJRa3JSTmYyR24ySGRRclo3Q1IxUHhxcDVyT3U0MkozalY2LVhoLVd4a2VFR2F1YUxi?oc=5",
+      "published_at": "2026-06-09T08:19:00",
       "category": "platform",
       "tag": "平台动作",
       "tagClass": "tag-purple",
@@ -97,17 +97,17 @@
     {
       "title": "《经济学人》：超级系统下，中国的外卖小哥成为最明显的社会底层 - 加拿大新闻网",
       "summary": "《经济学人》：超级系统下，中国的外卖小哥成为最明显的社会底层&nbsp;&nbsp;加拿大新闻网",
-      "source": "Google新闻-骑手政策",
+      "source": "Google新闻-骑手收入",
       "url": "https://news.google.com/articles/CBMiREFVX3lxTE1XbnZsbFM0VC1vYjJRa3JSTmYyR24ySGRRclo3Q1IxUHhxcDVyT3U0MkozalY2LVhoLVd4a2VFR2F1YUxi?oc=5",
       "published_at": "2026-06-09T08:19:00",
-      "category": "policy",
-      "tag": "行业观察",
-      "tagClass": "tag-blue",
-      "sub_tag": null,
-      "sub_label": "",
+      "category": "platform",
+      "tag": "平台动作",
+      "tagClass": "tag-purple",
+      "sub_tag": "platform.pay",
+      "sub_label": "收入费用",
       "priority": "P2",
       "img": null,
-      "grad": "linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"
+      "grad": "linear-gradient(135deg,#1a1a2e 0%,#16213e 45%,#0f3460 100%)"
     },
     {
       "title": "善“粮”暖羊城 肯德基食物驿站全国首次推出社区骑手驿站联动模式 - 中华网",
@@ -309,17 +309,17 @@
     {
       "title": "《经济学人》：超级系统下，中国的外卖小哥成为最明显的社会底层 - 加拿大新闻网",
       "summary": "《经济学人》：超级系统下，中国的外卖小哥成为最明显的社会底层&nbsp;&nbsp;加拿大新闻网",
-      "source": "Google新闻-骑手政策",
+      "source": "Google新闻-骑手收入",
       "url": "https://news.google.com/articles/CBMiREFVX3lxTE1XbnZsbFM0VC1vYjJRa3JSTmYyR24ySGRRclo3Q1IxUHhxcDVyT3U0MkozalY2LVhoLVd4a2VFR2F1YUxi?oc=5",
       "published_at": "2026-06-09T08:19:00",
-      "category": "policy",
-      "tag": "行业观察",
-      "tagClass": "tag-blue",
-      "sub_tag": null,
-      "sub_label": "",
+      "category": "platform",
+      "tag": "平台动作",
+      "tagClass": "tag-purple",
+      "sub_tag": "platform.pay",
+      "sub_label": "收入费用",
       "priority": "P2",
       "img": null,
-      "grad": "linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"
+      "grad": "linear-gradient(135deg,#1a1a2e 0%,#16213e 45%,#0f3460 100%)"
     }
   ],
   "hot": []
