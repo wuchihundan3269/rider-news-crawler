@@ -178,6 +178,16 @@ def _is_valid_summary(text: str, title: str, max_chars: int) -> bool:
     return True
 
 
+# ===== 标题归一化 & 媒体优先级（去重用）=====
+def _normalize_title(title: str) -> str:
+    """去掉末尾 ' - 媒体名' 后缀、空白，转小写，用于去重比较。"""
+    t = re.sub(r'\s*[-–—|｜]\s*[^\s].{0,20}$', '', title)
+    t = re.sub(r'\s+', '', t)
+    return t.lower()
+
+_PRIORITY_ORDER = {"P0": 0, "P1": 1, "P2": 2, "P3": 3, "P4": 4, "P5": 5}
+
+
 # ===== 一级分类映射（category → 页面展示信息）=====
 # Wiki 六分类体系：骑手新闻 / 骑手关怀 / 行业观察 / 宏观报告 / 平台动作 / 舆论信息
 CATEGORY_MAP = {
@@ -441,14 +451,21 @@ def transform(input_path: str, hot_path: str | None, output_path: str, existing_
     # 按时间倒序
     articles.sort(key=lambda x: x.get("published_at", ""), reverse=True)
 
-    # 去重（按标题）
-    seen_titles = set()
-    deduped = []
+    # 去重（归一化标题 + 优先级择优，同一事件多来源只保留最高优先级）
+    best_in_batch: dict[str, dict] = {}
     for a in articles:
-        if a["title"] not in seen_titles:
-            seen_titles.add(a["title"])
-            deduped.append(a)
-    articles = deduped
+        raw_title = a.get("title", "").strip()
+        if not raw_title:
+            continue
+        norm = _normalize_title(raw_title)
+        if norm not in best_in_batch:
+            best_in_batch[norm] = a
+        else:
+            cur_p = _PRIORITY_ORDER.get(best_in_batch[norm].get("priority", "P5"), 5)
+            new_p = _PRIORITY_ORDER.get(a.get("priority", "P5"), 5)
+            if new_p < cur_p:
+                best_in_batch[norm] = a
+    articles = sorted(best_in_batch.values(), key=lambda x: x.get("published_at", ""), reverse=True)
 
     # 今日快讯：当天文章，按时间倒序，最多40条
     flash = [a for a in articles if a.get("published_at", "").startswith(date_str)][:40]
@@ -525,43 +542,44 @@ def _is_aggregator(article: dict) -> bool:
 def _merge_with_existing(new_articles: list, existing_path: str | None, date_str: str) -> list:
     """
     将新抓取的文章与已有数据文件中的文章合并去重，实现累积追加。
-    去重键：标题（title）。
+    去重键：归一化标题（去掉末尾媒体名后缀后比较）。
+    同标题多来源：保留媒体优先级最高（P0 > P5）的那条。
     排序：按 published_at 倒序。
     """
-    if not existing_path:
-        return new_articles
+    existing_articles: list[dict] = []
+    if existing_path:
+        try:
+            ep = Path(existing_path)
+            if ep.exists():
+                with open(ep, "r", encoding="utf-8") as f:
+                    existing_data = json.load(f)
+                existing_articles = existing_data.get("articles", [])
+                print(f"[merge] 已有数据: {len(existing_articles)} 条，本次新抓取: {len(new_articles)} 条")
+        except Exception as e:
+            print(f"[merge] 读取已有数据失败，跳过合并: {e}")
+            existing_articles = []
 
-    existing_articles = []
-    try:
-        ep = Path(existing_path)
-        if ep.exists():
-            with open(ep, "r", encoding="utf-8") as f:
-                existing_data = json.load(f)
-            existing_articles = existing_data.get("articles", [])
-            print(f"[merge] 已有数据: {len(existing_articles)} 条，本次新抓取: {len(new_articles)} 条")
-    except Exception as e:
-        print(f"[merge] 读取已有数据失败，跳过合并: {e}")
-        return new_articles
+    # 合并所有文章（新数据在前，已有数据在后）
+    all_articles = new_articles + existing_articles
 
-    # 以标题为去重键，新数据优先（新数据在前，已有数据补充）
-    seen_titles: set[str] = set()
-    merged: list[dict] = []
+    # 按归一化标题去重，同标题保留优先级最高的那条
+    best: dict[str, dict] = {}
+    for a in all_articles:
+        raw_title = a.get("title", "").strip()
+        if not raw_title:
+            continue
+        norm = _normalize_title(raw_title)
+        if norm not in best:
+            best[norm] = a
+        else:
+            cur_p = _PRIORITY_ORDER.get(best[norm].get("priority", "P5"), 5)
+            new_p = _PRIORITY_ORDER.get(a.get("priority", "P5"), 5)
+            if new_p < cur_p:
+                best[norm] = a  # 用更高优先级的来源替换
 
-    for a in new_articles:
-        t = a.get("title", "").strip()
-        if t and t not in seen_titles:
-            seen_titles.add(t)
-            merged.append(a)
-
-    for a in existing_articles:
-        t = a.get("title", "").strip()
-        if t and t not in seen_titles:
-            seen_titles.add(t)
-            merged.append(a)
-
-    # 按时间倒序
+    merged = list(best.values())
     merged.sort(key=lambda x: x.get("published_at", ""), reverse=True)
-    print(f"[merge] 合并后共 {len(merged)} 条")
+    print(f"[merge] 合并后共 {len(merged)} 条（去重前 {len(all_articles)} 条）")
     return merged
 
 
