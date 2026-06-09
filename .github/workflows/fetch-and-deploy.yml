@@ -131,7 +131,7 @@ jobs:
             fi
           fi
 
-          # ★ 关键保护：若本次抓取结果为空（0条），且已有当天数据，则跳过覆盖
+          # ★ 关键保护：若本次抓取条数 < 已有条数，跳过覆盖，保留更多的那份数据
           NEW_TOTAL=$(python3 -c "
           import json, sys
           try:
@@ -142,7 +142,7 @@ jobs:
           ")
           echo "本次抓取: ${NEW_TOTAL} 条"
 
-          if [ "$NEW_TOTAL" = "0" ] && [ -f "$OUTPUT_FILE" ]; then
+          if [ -f "$OUTPUT_FILE" ]; then
             EXISTING_TOTAL=$(python3 -c "
           import json
           try:
@@ -151,8 +151,9 @@ jobs:
           except:
               print(0)
           ")
-            if [ "$EXISTING_TOTAL" != "0" ]; then
-              echo "本次抓取为空，已有数据 ${EXISTING_TOTAL} 条，跳过覆盖，保留现有数据"
+            echo "已有数据: ${EXISTING_TOTAL} 条"
+            if [ "$EXISTING_TOTAL" != "0" ] && [ "$NEW_TOTAL" -le "$EXISTING_TOTAL" ] 2>/dev/null; then
+              echo "本次抓取(${NEW_TOTAL}条) <= 已有数据(${EXISTING_TOTAL}条)，跳过覆盖，保留现有数据"
               exit 0
             fi
           fi
