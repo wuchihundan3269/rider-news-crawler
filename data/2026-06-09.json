@@ -1,22 +1,7 @@
 {
   "date": "2026-06-09",
-  "generated_at": "2026-06-09T06:56:53Z",
+  "generated_at": "2026-06-09T07:07:32Z",
   "featured": [
-    {
-      "title": "训练AI取代自己？纺织工和外卖骑手正收集“第一人称视角数据” - 新浪财经",
-      "summary": "训练AI取代自己？纺织工和外卖骑手正收集“第一人称视角数据”&nbsp;&nbsp;新浪财经",
-      "source": "Google新闻-外卖骑手",
-      "url": "https://news.google.com/articles/CBMi8ARBVV95cUxQQjFRWjZnYnhuTWpHTWl6XzhubzJkT19BLXh1X2NUQWdpZkk4aVVOcG5ESV9Dc0w2R2ZzSUlMeDk2MkZ5Z29TNkhTUkNtV24yeUdrQ2RIWDc0Y25mYmpueUZKanc5LWduUVBHSmZnSFdzNEtNVWxTWHJFX2hwUXVxd3l6cHJjS2MyVFY2UzdpZUpUc3F1aWpCMHlqUmlCRGM3amxRM01UYldMb0VINzI4WUlVTGZ4dTdBQWlxTl84VVo4ZG9OWmZvRHJrV0dzLVU4U3ZVZlh1NkpScWQ0RElkVDFEaEVSZGRjYjZ4YlZhUG9tbHpmdlRmNGZpT2ZCVDhaV1B0MmJpYWc4TUpuSGxNdlktN1RsNjEwcm1ER2YyX25idXNpM1JNckQwWGpueU5ZR29YUFJTektmZ28xYkMtOUJORE1lWERxVGtlV09Dc2tNdG9mQmhDTTA0RTJadW1kdlFUcHduVldpcFJzaXV0M0Nnc2ZFWkRSMVM1QU1PMzB4S2t0YjhSVVQ5WFQzVHVYMlczdEZUNzh3aUxzeGNkTUItcFg5WWZFVXlWT2E2SE9rMWk3THkzQ3RNaDBfZlpJVDNyUlpkLWlfREJSNFZ0MG9tODhIVm5fdzVSTGtNMTZWbUEzUk9aLWpBZlNnZHZvSHRUNk9TNnQ2YnJsajVReDhjTW90Vy1tN3RIVHc2Vld2dmZheFJmSzB0NmJlSnVzSjBjbTg1OG5Qc3Z3T3k4SjlKTFhpSlBZTmZnMnBwR3drOHVKWHJCQ0ZodDlvSVNFU1FaNEltSE1ROWszYlhHVncxX3dWMXhobkIzLUpRSkU?oc=5",
-      "published_at": "2026-06-06T13:06:26",
-      "category": "rider_story",
-      "tag": "骑手新闻",
-      "tagClass": "tag-orange",
-      "sub_tag": "rider_story.life",
-      "sub_label": "生活百态",
-      "priority": "P2",
-      "img": null,
-      "grad": "linear-gradient(135deg,#1a2e1a 0%,#0d2b0d 45%,#1a3a1a 100%)"
-    },
     {
       "title": "善“粮”暖羊城 肯德基食物驿站全国首次推出社区骑手驿站联动模式 - 中华网",
       "summary": "善“粮”暖羊城 肯德基食物驿站全国首次推出社区骑手驿站联动模式&nbsp;&nbsp;中华网",
@@ -48,16 +33,16 @@
       "grad": "linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"
     },
     {
-      "title": "外卖骑手严重过剩，为什么这条路上还挤满了人 - 搜狐网",
-      "summary": "外卖骑手严重过剩，为什么这条路上还挤满了人&nbsp;&nbsp;搜狐网",
-      "source": "Google新闻-骑手收入",
-      "url": "https://news.google.com/articles/CBMijAFBVV95cUxOTmNUMnBPbWs3QnFSaTEzUTZ5all0dnExZjVnclVSNHRkZWc4UzhCSmlLdmR6M1FqTkI0ZC10SE5YallLV2lwdTBZRWhGN25qcTY4amlLSDV4TUUweFF5RWtIallxaTctWWhZRE5qYnhEb0ZKejdTdS0wY2FUMHM3ZE9MSEZnWU9sLVVHVw?oc=5",
-      "published_at": "2026-06-08T10:40:32",
+      "title": "株洲恺德医院为美团骑手开展应急救护培训 - 湖南红网",
+      "summary": "株洲恺德医院为美团骑手开展应急救护培训&nbsp;&nbsp;湖南红网",
+      "source": "Google新闻-美团骑手",
+      "url": "https://news.google.com/articles/CBMiYkFVX3lxTFBYMS15RVZfLTJmQlJmWEliV1V5SVlaZ0M0aE9CeVFaVTZ3XzBOcU5RelgtNElGUnd3TW1LWVhsdHdEZXZSOUZCbkdKeXhlbHM1c180MjlCRXJKRkR6WU1qbkJn?oc=5",
+      "published_at": "2026-06-08T10:00:06",
       "category": "platform",
       "tag": "平台动作",
       "tagClass": "tag-purple",
-      "sub_tag": "platform.pay",
-      "sub_label": "收入费用",
+      "sub_tag": "rider_story.career",
+      "sub_label": "职业发展",
       "priority": "P2",
       "img": null,
       "grad": "linear-gradient(135deg,#1a1a2e 0%,#16213e 45%,#0f3460 100%)"
@@ -76,6 +61,21 @@
       "priority": "P2",
       "img": null,
       "grad": "linear-gradient(135deg,#1e0a2e 0%,#180820 45%,#2a0f3a 100%)"
+    },
+    {
+      "title": "心跳突然失速？这场健康义诊为外卖骑手答疑解惑 - Sina finance",
+      "summary": "心跳突然失速？这场健康义诊为外卖骑手答疑解惑&nbsp;&nbsp;Sina finance",
+      "source": "Google新闻-骑手健康",
+      "url": "https://news.google.com/articles/CBMieEFVX3lxTE5zRjBTYWM2TmgxLVdVN2dDZVJsaFRKWk9MMHpxc3NseVhuRUdDOXg0akpjVndvVTNPZVktSzhMYlBoR1lud2N3Y18zc20wcks0eUYtS2Q4cG9MOTVVTGNFc2RVNXJXNzB5aVI0ckFFUkQ5eXh2OERMYQ?oc=5",
+      "published_at": "2026-06-08T18:10:00",
+      "category": "care",
+      "tag": "骑手关怀",
+      "tagClass": "tag-green",
+      "sub_tag": "care.health",
+      "sub_label": "健康安全",
+      "priority": "P2",
+      "img": null,
+      "grad": "linear-gradient(135deg,#0d2e1a 0%,#0a2818 45%,#0f3a20 100%)"
     }
   ],
   "articles": [
@@ -155,36 +155,6 @@
       "grad": "linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"
     },
     {
-      "title": "外卖骑手严重过剩，为什么这条路上还挤满了人 - 搜狐网",
-      "summary": "外卖骑手严重过剩，为什么这条路上还挤满了人&nbsp;&nbsp;搜狐网",
-      "source": "Google新闻-骑手收入",
-      "url": "https://news.google.com/articles/CBMijAFBVV95cUxOTmNUMnBPbWs3QnFSaTEzUTZ5all0dnExZjVnclVSNHRkZWc4UzhCSmlLdmR6M1FqTkI0ZC10SE5YallLV2lwdTBZRWhGN25qcTY4amlLSDV4TUUweFF5RWtIallxaTctWWhZRE5qYnhEb0ZKejdTdS0wY2FUMHM3ZE9MSEZnWU9sLVVHVw?oc=5",
-      "published_at": "2026-06-08T10:40:32",
-      "category": "platform",
-      "tag": "平台动作",
-      "tagClass": "tag-purple",
-      "sub_tag": "platform.pay",
-      "sub_label": "收入费用",
-      "priority": "P2",
-      "img": null,
-      "grad": "linear-gradient(135deg,#1a1a2e 0%,#16213e 45%,#0f3460 100%)"
-    },
-    {
-      "title": "株洲恺德医院为美团骑手开展应急救护培训 - 新浪财经",
-      "summary": "株洲恺德医院为美团骑手开展应急救护培训&nbsp;&nbsp;新浪财经",
-      "source": "Google新闻-骑手健康",
-      "url": "https://news.google.com/articles/CBMifEFVX3lxTE5Uc2I1QUxWQ3BIb0pURGJSdEo3djBFVnNPTkV6dXdndUpUbjdvRFcwX25DZThZQVp1SDNZdTlXVUpaVHFyUGFzNi02U1VvRFZLOVBEdWJOZXdtMzItQUV2YzZqR1RpWTVDekJVLWdUQlZfQ1prM01BdklIZk4?oc=5",
-      "published_at": "2026-06-08T10:11:48",
-      "category": "care",
-      "tag": "骑手关怀",
-      "tagClass": "tag-green",
-      "sub_tag": "care.health",
-      "sub_label": "健康安全",
-      "priority": "P2",
-      "img": null,
-      "grad": "linear-gradient(135deg,#0d2e1a 0%,#0a2818 45%,#0f3a20 100%)"
-    },
-    {
       "title": "株洲恺德医院为美团骑手开展应急救护培训 - 湖南红网",
       "summary": "株洲恺德医院为美团骑手开展应急救护培训&nbsp;&nbsp;湖南红网",
       "source": "Google新闻-美团骑手",
@@ -245,11 +215,11 @@
       "grad": "linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"
     },
     {
-      "title": "外卖骑手新任务已送达！内蒙古两地鼓励骑手“随手拍”监督食品安全 - Sina finance",
-      "summary": "外卖骑手新任务已送达！内蒙古两地鼓励骑手“随手拍”监督食品安全&nbsp;&nbsp;Sina finance",
+      "title": "外卖骑手新任务已送达！内蒙古两地鼓励骑手“随手拍”监督食品安全 - 新浪财经",
+      "summary": "外卖骑手新任务已送达！内蒙古两地鼓励骑手“随手拍”监督食品安全&nbsp;&nbsp;新浪财经",
       "source": "Google新闻-外卖骑手",
-      "url": "https://news.google.com/articles/CBMidkFVX3lxTE95MjNFYk1fRzFDX1hnUnNGeFE2Z3dXRlp1bW82enBEZ3JQWUFHRkJITmZhclh0WGtoeXNfaFQ0MmxuVllTNEV3cHJXWU9wQTlIY3hZdWd2aU1JSEJTTlYwZFhVbWFiSHM3ZXlZbE9fS01LdklqUWc?oc=5",
-      "published_at": "2026-06-06T20:45:00",
+      "url": "https://news.google.com/articles/CBMimAFBVV95cUxNU3FyWGRvcXlxeFM2S0V0d0VST3BMMzVfN2swVzFzUnBOMndMVURXd0VoM2trUGN0cXVCOXRCV0w2QnR5RlFHN0JlZWp3bnZjbVJfbDVEZTU4R3J5ZkpBbDVjRUo0alBZWDM2V1BHYWJPTGdCYldtMHhtY29femlUZ1BPOHBiX1hNa01CcFRZa2FvX0Q0aGIyMg?oc=5",
+      "published_at": "2026-06-07T01:04:37",
       "category": "policy",
       "tag": "行业观察",
       "tagClass": "tag-blue",
@@ -275,11 +245,11 @@
       "grad": "linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"
     },
     {
-      "title": "外卖骑手过剩，应对供需错配迫在眉睫 - 搜狐网",
-      "summary": "外卖骑手过剩，应对供需错配迫在眉睫&nbsp;&nbsp;搜狐网",
-      "source": "Google新闻-外卖行业",
-      "url": "https://news.google.com/articles/CBMijAFBVV95cUxNekFJSHFBRlJYajkxeEpfR0R6d2g4cWlCREQwTEd3Sy0xZzRWUVB5YmM5TWZnb0NKWjFpNjdtemVIRlo0dXNkYUJqOTVEMGdlMXdXZFZwV3BtaGV3akdabktPVEVVaks3YUFLUUJVUDlMeXRtSUhzQ0tjdDFhR2lXaHRHb05aT3dqRGRITg?oc=5",
-      "published_at": "2026-06-06T14:54:09",
+      "title": "外卖骑手过剩，应对供需错配迫在眉睫 - Sina finance",
+      "summary": "外卖骑手过剩，应对供需错配迫在眉睫&nbsp;&nbsp;Sina finance",
+      "source": "Google新闻-外卖骑手",
+      "url": "https://news.google.com/articles/CBMieEFVX3lxTFAzWEpjOEpvbHhmNldDRXBoYzFmaENYb2FRSmZ2dk5GVWhXSThxdGNjQWloemF2Qk5tMmhxZXEzMkhUQ1Q5Y3R3TUJGSVE2UG5va1FVbDFIcUhhRE9tYm5BZUdqS3h3clFHVE16QnNLQjZvejVPVFotdA?oc=5",
+      "published_at": "2026-06-06T14:54:00",
       "category": "policy",
       "tag": "行业观察",
       "tagClass": "tag-blue",
@@ -290,25 +260,10 @@
       "grad": "linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"
     },
     {
-      "title": "训练AI取代自己？纺织工和外卖骑手正收集“第一人称视角数据” - 新浪财经",
-      "summary": "训练AI取代自己？纺织工和外卖骑手正收集“第一人称视角数据”&nbsp;&nbsp;新浪财经",
-      "source": "Google新闻-外卖骑手",
-      "url": "https://news.google.com/articles/CBMi8ARBVV95cUxQQjFRWjZnYnhuTWpHTWl6XzhubzJkT19BLXh1X2NUQWdpZkk4aVVOcG5ESV9Dc0w2R2ZzSUlMeDk2MkZ5Z29TNkhTUkNtV24yeUdrQ2RIWDc0Y25mYmpueUZKanc5LWduUVBHSmZnSFdzNEtNVWxTWHJFX2hwUXVxd3l6cHJjS2MyVFY2UzdpZUpUc3F1aWpCMHlqUmlCRGM3amxRM01UYldMb0VINzI4WUlVTGZ4dTdBQWlxTl84VVo4ZG9OWmZvRHJrV0dzLVU4U3ZVZlh1NkpScWQ0RElkVDFEaEVSZGRjYjZ4YlZhUG9tbHpmdlRmNGZpT2ZCVDhaV1B0MmJpYWc4TUpuSGxNdlktN1RsNjEwcm1ER2YyX25idXNpM1JNckQwWGpueU5ZR29YUFJTektmZ28xYkMtOUJORE1lWERxVGtlV09Dc2tNdG9mQmhDTTA0RTJadW1kdlFUcHduVldpcFJzaXV0M0Nnc2ZFWkRSMVM1QU1PMzB4S2t0YjhSVVQ5WFQzVHVYMlczdEZUNzh3aUxzeGNkTUItcFg5WWZFVXlWT2E2SE9rMWk3THkzQ3RNaDBfZlpJVDNyUlpkLWlfREJSNFZ0MG9tODhIVm5fdzVSTGtNMTZWbUEzUk9aLWpBZlNnZHZvSHRUNk9TNnQ2YnJsajVReDhjTW90Vy1tN3RIVHc2Vld2dmZheFJmSzB0NmJlSnVzSjBjbTg1OG5Qc3Z3T3k4SjlKTFhpSlBZTmZnMnBwR3drOHVKWHJCQ0ZodDlvSVNFU1FaNEltSE1ROWszYlhHVncxX3dWMXhobkIzLUpRSkU?oc=5",
-      "published_at": "2026-06-06T13:06:26",
-      "category": "rider_story",
-      "tag": "骑手新闻",
-      "tagClass": "tag-orange",
-      "sub_tag": "rider_story.life",
-      "sub_label": "生活百态",
-      "priority": "P2",
-      "img": null,
-      "grad": "linear-gradient(135deg,#1a2e1a 0%,#0d2b0d 45%,#1a3a1a 100%)"
-    },
-    {
       "title": "外卖骑手严重过剩了吗？ - Sina finance",
       "summary": "外卖骑手严重过剩了吗？&nbsp;&nbsp;Sina finance",
       "source": "Google新闻-外卖骑手",
-      "url": "https://news.google.com/articles/CBMihAFBVV95cUxNS1RMUS1YS3p3UFcwRGtucGN4blFlMThPTEtaaVlJQXI5MERJOUREZzZBS0taYi0zWGdzSllRc1F1dXc4dU15OVZPcWM2WkEybU4tYXloZTkwSG96dmJ5ai1oT19BdXpyaXRxcXdadzZPaGxiOU56RWk5cHpFS2dSSU9wQ2E?oc=5",
+      "url": "https://news.google.com/articles/CBMidkFVX3lxTFA5UWhaYkJXWkRoX0t4eE9HenRXRG85alVPLVQxOTM4RWVLdFJycmhseVIzY1lIOUtmOTI0YlExR3AtLUpOVlctVnlYV2RWUFMxNDFZUHJrVTBxbDFaTmJiNTNrc0lOSWd6TnR0aWdDRTZtRTNzaEE?oc=5",
       "published_at": "2026-06-06T10:52:00",
       "category": "policy",
       "tag": "行业观察",
