@@ -273,6 +273,58 @@ def matches_base_keywords(title: str, summary: str, base_keywords: list) -> bool
     return False
 
 
+# 外媒/聚合平台黑名单：标题末尾 " - 媒体名" 命中则丢弃
+# 规则：含非中文字母域名后缀(.it/.com/.org 等)、已知外媒名、聚合平台
+_FOREIGN_MEDIA_BLACKLIST = {
+    # 聚合平台
+    "MSN", "Yahoo", "Yahoo News", "Yahoo Finance",
+    "Google News", "Apple News", "SmartNews", "Flipboard",
+    "今日头条", "腾讯新闻", "网易新闻", "百度新闻", "搜狐新闻",
+    # 已知外媒（英文名）
+    "China Digital Times", "Radio Free Asia", "RFA",
+    "Voice of America", "VOA", "BBC", "BBC Chinese",
+    "Reuters", "AP", "AFP", "Bloomberg", "The Guardian",
+    "New York Times", "Washington Post", "Financial Times",
+    "South China Morning Post", "SCMP",
+    "Nikkei", "Nikkei Asia",
+    "Deutsche Welle", "DW",
+    "The Diplomat", "Foreign Policy",
+    "Asia Times", "Asia Nikkei",
+}
+
+import re as _re
+_FOREIGN_DOMAIN_RE = _re.compile(
+    r'\.(it|fr|de|jp|uk|au|ca|ru|kr|tw|hk|sg|us|eu|net|org|io|co)\s*$',
+    _re.IGNORECASE
+)
+
+def is_foreign_media(title: str) -> bool:
+    """从标题末尾 ' - 媒体名' 判断是否为外媒或聚合平台，是则返回 True（应丢弃）"""
+    di = title.rfind(" - ")
+    if di <= 0:
+        return False
+    media_name = title[di + 3:].strip()
+    # 命中黑名单
+    if media_name in _FOREIGN_MEDIA_BLACKLIST:
+        return True
+    # 媒体名含境外域名后缀（如 L'Unione Sarda.it）
+    if _FOREIGN_DOMAIN_RE.search(media_name):
+        return True
+    # 媒体名全为 ASCII 且不在已知国内英文媒体白名单内
+    _DOMESTIC_EN = {
+        "Sina finance", "Sina Finance", "Sina News", "Sina",
+        "People's Daily", "Xinhua", "Xinhua News",
+        "CCTV", "CGTN", "China Daily", "Global Times",
+        "Caixin", "Caixin Global", "The Paper", "Jiemian",
+        "Yicai", "Yicai Global", "36Kr", "36kr",
+        "Huxiu", "LatePost", "Titanium Media",
+        "China News Service", "CNS",
+    }
+    if media_name and media_name.isascii() and media_name not in _DOMESTIC_EN:
+        return True
+    return False
+
+
 # ── 分类映射 ──────────────────────────────────────────────────────────────────
 
 # 子分类 → 一级分类（六分类体系 v2）
@@ -446,6 +498,10 @@ def fetch_rss_feed(feed_cfg: dict, keyword_rules: dict, base_keywords: list,
         # 基础关键词过滤：所有分类的源都必须命中骑手相关词才保留
         # （防止"新就业形态""平台用工"等宽泛关键词抓入大量无关文章）
         if not matches_base_keywords(title, summary, base_keywords):
+            continue
+
+        # 外媒/聚合平台过滤：只保留国内媒体来源
+        if is_foreign_media(title):
             continue
 
         # 子分类打标（多标签）

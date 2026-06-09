@@ -1055,25 +1055,56 @@ async function _fetchData(){
   }
 }
 
-// ===== 判断原始文章是否来自聚合平台（从标题末尾 " - 媒体名" 提取）=====
+// ===== 外媒域名后缀正则（如 L'Unione Sarda.it）=====
+var _FOREIGN_DOMAIN_RE = /\.(it|fr|de|jp|uk|au|ca|ru|kr|tw|hk|sg|us|eu|net|org|io|co)\s*$/i;
+
+// ===== 已知外媒黑名单 =====
+var FOREIGN_MEDIA_BLACKLIST = [
+  'China Digital Times', 'Radio Free Asia', 'RFA',
+  'Voice of America', 'VOA', 'BBC', 'BBC Chinese',
+  'Reuters', 'AP', 'AFP', 'Bloomberg', 'The Guardian',
+  'New York Times', 'Washington Post', 'Financial Times',
+  'South China Morning Post', 'SCMP',
+  'Nikkei', 'Nikkei Asia', 'Deutsche Welle', 'DW',
+  'The Diplomat', 'Foreign Policy', 'Asia Times'
+];
+
+// ===== 国内英文媒体白名单（不过滤）=====
+var DOMESTIC_EN_WHITELIST = [
+  'Sina finance', 'Sina Finance', 'Sina News', 'Sina',
+  "People's Daily", 'Xinhua', 'Xinhua News',
+  'CCTV', 'CGTN', 'China Daily', 'Global Times',
+  'Caixin', 'Caixin Global', 'The Paper', 'Jiemian',
+  'Yicai', 'Yicai Global', '36Kr', '36kr',
+  'Huxiu', 'LatePost', 'Titanium Media',
+  'China News Service', 'CNS'
+];
+
+// ===== 判断原始文章是否来自外媒或聚合平台（从标题末尾 " - 媒体名" 提取）=====
 function isAggregatorRaw(a){
   var t = a.title || '';
   var di = t.lastIndexOf(' - ');
-  if(di > 0){
-    var name = t.slice(di + 3).trim();
-    if(AGGREGATOR_BLACKLIST.indexOf(name) !== -1) return true;
-  }
+  if(di <= 0) return false;
+  var name = t.slice(di + 3).trim();
+  // 聚合平台黑名单
+  if(AGGREGATOR_BLACKLIST.indexOf(name) !== -1) return true;
+  // 外媒黑名单
+  if(FOREIGN_MEDIA_BLACKLIST.indexOf(name) !== -1) return true;
+  // 含境外域名后缀（如 .it .fr .de）
+  if(_FOREIGN_DOMAIN_RE.test(name)) return true;
+  // 全 ASCII 且不在国内英文媒体白名单内
+  if(name && /^[\x00-\x7F]+$/.test(name) && DOMESTIC_EN_WHITELIST.indexOf(name) === -1) return true;
   return false;
 }
 
 // ===== 内部：将原始 JSON 数据填充到全局变量 =====
 function _applyData(latest, data){
-  // 在 map 之前先过滤聚合平台来源（MSN 等标题末尾可直接识别）
-  var rawFeatured = (data.featured || []).filter(function(a){ return !isAggregatorRaw(a); });
+  // 在 map 之前先过滤外媒和聚合平台（MSN/L'Unione Sarda.it/China Digital Times 等）
+  function filterDomestic(arr){ return (arr||[]).filter(function(a){ return !isAggregatorRaw(a); }); }
 
-  var articles = (data.articles || []).map(function(a, i) { return apiToNews(a, i); });
-  var featured  = rawFeatured.map(function(a, i) { return apiToNews(a, i); });
-  var flash     = (data.flash     || data.articles || []).map(function(a, i) { return apiToNews(a, i); });
+  var articles = filterDomestic(data.articles).map(function(a, i) { return apiToNews(a, i); });
+  var featured  = filterDomestic(data.featured).map(function(a, i) { return apiToNews(a, i); });
+  var flash     = filterDomestic(data.flash || data.articles).map(function(a, i) { return apiToNews(a, i); });
 
   // 全部按发布时间倒序排列
   articles.sort(function(a, b) { return b.ts - a.ts; });
