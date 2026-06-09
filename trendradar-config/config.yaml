@@ -81,22 +81,24 @@ crawler:
     - "新就业形态"
 
 # ===== 管道二：RSS 订阅（核心数据源）=====
-# 核心策略：Google News 精准关键词搜索（境外服务器稳定可用）+ 官方 RSS 补充
+# 核心策略：Google News 精准关键词搜索 + 国内权威媒体官方 RSS
 # ─────────────────────────────────────────────────────────────
-# 【数据源可用性（2026-06 实测）】
+# 【数据源可用性（2026-06 实测，GitHub Actions 境外服务器）】
 #   Google News RSS：全部可用，每个关键词最多100条，境外服务器直连
+#   新华网 RSS：可用，每频道 300 条（http，fetch_news_v3 自动预处理）
+#   人民网 RSS：可用，每频道 100 条（http，fetch_news_v3 自动预处理）
+#   中国新闻网 RSS：可用，每频道 30 条
+#   新浪新闻 RSS：可用，每频道 15 条
 #   36kr 官方 feed：可用，30条
-#   新浪新闻-社会：可用，15条
-#   中国新闻网-社会：可用，30条
-#   rsshub.app：境外服务器 403/超时，已移除
-#   百度新闻 RSS：境外 301 重定向失败，已移除
-#   新华网/人民网/澎湃官方 RSS：境外 307/0 失败，已移除
+#   rsshub.app：境外服务器超时，已移除
+#   百度新闻 RSS：返回 HTML 非 XML，已移除
+#   澎湃/财新/虎嗅/界面：境外返回 HTML 或 404，已移除
 # ─────────────────────────────────────────────────────────────
 rss:
   enable_rss: true
   freshness_filter:
     enabled: true
-    max_age_days: 3
+    max_age_days: 7
   feeds:
 
     # ══════════════════════════════════════════════════════════════
@@ -321,16 +323,70 @@ rss:
       tag: "rider_story.positive"
 
     # ══════════════════════════════════════════════════════════════
-    # 【P0-P2 官方 RSS】36氪 / 新浪 / 中国新闻网（本地+境外均可用）
+    # 【P0-P2 官方 RSS】国内权威媒体（境外服务器实测可用，2026-06）
+    # 新华网(300条) / 人民网(100条) / 中国新闻网(30条) / 新浪(15条) / 36氪(30条)
     # ══════════════════════════════════════════════════════════════
 
-    - id: "kr36_official"
-      name: "36氪-官方feed"
-      url: "https://36kr.com/feed"
-      priority: "P2"
+    # ── 新华网（P0，境外可直连，每频道 300 条）──────────────────────
+    - id: "xinhua_domestic"
+      name: "新华网-国内"
+      url: "http://www.xinhuanet.com/politics/news_politics.xml"
+      priority: "P0"
       category: "auto"
       tag: "auto"
 
+    - id: "xinhua_finance"
+      name: "新华网-财经"
+      url: "http://www.xinhuanet.com/fortune/news_fortune.xml"
+      priority: "P0"
+      category: "auto"
+      tag: "auto"
+
+    # ── 人民网（P0，境外可直连，每频道 100 条）──────────────────────
+    - id: "people_society"
+      name: "人民网-社会"
+      url: "http://www.people.com.cn/rss/society.xml"
+      priority: "P0"
+      category: "auto"
+      tag: "auto"
+
+    - id: "people_finance"
+      name: "人民网-财经"
+      url: "http://www.people.com.cn/rss/finance.xml"
+      priority: "P0"
+      category: "auto"
+      tag: "auto"
+
+    - id: "people_politics"
+      name: "人民网-时政"
+      url: "http://www.people.com.cn/rss/politics.xml"
+      priority: "P0"
+      category: "auto"
+      tag: "auto"
+
+    # ── 中国新闻网（P0，境外可直连，每频道 30 条）──────────────────
+    - id: "chinanews_society"
+      name: "中国新闻网-社会"
+      url: "https://www.chinanews.com.cn/rss/society.xml"
+      priority: "P0"
+      category: "auto"
+      tag: "auto"
+
+    - id: "chinanews_finance"
+      name: "中国新闻网-财经"
+      url: "https://www.chinanews.com.cn/rss/finance.xml"
+      priority: "P0"
+      category: "auto"
+      tag: "auto"
+
+    - id: "chinanews_domestic"
+      name: "中国新闻网-国内"
+      url: "https://www.chinanews.com.cn/rss/china.xml"
+      priority: "P0"
+      category: "auto"
+      tag: "auto"
+
+    # ── 新浪新闻（P1，境外可直连，每频道 15 条）────────────────────
     - id: "sina_society"
       name: "新浪新闻-社会"
       url: "https://rss.sina.com.cn/news/society/focus15.xml"
@@ -338,10 +394,18 @@ rss:
       category: "auto"
       tag: "auto"
 
-    - id: "chinanews_society"
-      name: "中国新闻网-社会"
-      url: "https://www.chinanews.com.cn/rss/society.xml"
-      priority: "P0"
+    - id: "sina_domestic"
+      name: "新浪新闻-国内"
+      url: "https://rss.sina.com.cn/news/china/focus15.xml"
+      priority: "P1"
+      category: "auto"
+      tag: "auto"
+
+    # ── 36氪（P2，境外可直连，30 条）────────────────────────────────
+    - id: "kr36_official"
+      name: "36氪-官方feed"
+      url: "https://36kr.com/feed"
+      priority: "P2"
       category: "auto"
       tag: "auto"
 

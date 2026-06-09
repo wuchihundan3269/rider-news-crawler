@@ -452,10 +452,17 @@ def fetch_rss_feed(feed_cfg: dict, keyword_rules: dict, base_keywords: list,
     if not url:
         return []
 
-    # 对百度新闻等会 301 重定向的 URL，先用 requests 跟随重定向
-    # feedparser 默认不跟随重定向，导致百度新闻 RSS 返回 0 条
+    # 对会 301/302 重定向或需要特定 UA 的 URL，先用 requests 跟随重定向
+    # feedparser 默认不跟随重定向，导致部分国内 RSS 返回 0 条
+    # 覆盖：百度新闻 / 网易 / 新华网(http) / 人民网(http)
     fetch_url = url
-    if "news.baidu.com" in url or "163.com" in url:
+    _needs_preresolve = (
+        "news.baidu.com" in url
+        or "163.com" in url
+        or url.startswith("http://www.xinhuanet.com")
+        or url.startswith("http://www.people.com.cn")
+    )
+    if _needs_preresolve:
         fetch_url = _resolve_feed_url(url)
 
     try:
