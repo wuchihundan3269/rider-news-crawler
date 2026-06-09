@@ -323,6 +323,68 @@ rss:
       tag: "rider_story.positive"
 
     # ══════════════════════════════════════════════════════════════
+    # 【P2 补充】Bing News 中文精准关键词搜索 RSS
+    # 微软必应，境外服务器直连，与 Google News 互补，覆盖不同媒体来源
+    # 每个关键词最多返回15条，时效性好
+    # ══════════════════════════════════════════════════════════════
+
+    - id: "bing_waimai_rider"
+      name: "Bing新闻-外卖骑手"
+      url: "https://www.bing.com/news/search?q=%E5%A4%96%E5%8D%96%E9%AA%91%E6%89%8B&format=rss&mkt=zh-CN&setlang=zh-CN&cc=CN"
+      priority: "P2"
+      category: "auto"
+      tag: "auto"
+
+    - id: "bing_rider_rights"
+      name: "Bing新闻-骑手权益"
+      url: "https://www.bing.com/news/search?q=%E9%AA%91%E6%89%8B+%E6%9D%83%E7%9B%8A&format=rss&mkt=zh-CN&setlang=zh-CN&cc=CN"
+      priority: "P2"
+      category: "opinion"
+      tag: "opinion.rights"
+
+    - id: "bing_rider_income"
+      name: "Bing新闻-骑手收入"
+      url: "https://www.bing.com/news/search?q=%E9%AA%91%E6%89%8B+%E6%94%B6%E5%85%A5&format=rss&mkt=zh-CN&setlang=zh-CN&cc=CN"
+      priority: "P2"
+      category: "platform"
+      tag: "platform.pay"
+
+    - id: "bing_rider_insurance"
+      name: "Bing新闻-骑手社保"
+      url: "https://www.bing.com/news/search?q=%E9%AA%91%E6%89%8B+%E7%A4%BE%E4%BF%9D&format=rss&mkt=zh-CN&setlang=zh-CN&cc=CN"
+      priority: "P2"
+      category: "policy"
+      tag: "policy.labor"
+
+    - id: "bing_new_employment"
+      name: "Bing新闻-新就业形态"
+      url: "https://www.bing.com/news/search?q=%E6%96%B0%E5%B0%B1%E4%B8%9A%E5%BD%A2%E6%80%81&format=rss&mkt=zh-CN&setlang=zh-CN&cc=CN"
+      priority: "P2"
+      category: "policy"
+      tag: "policy.national"
+
+    - id: "bing_instant_delivery"
+      name: "Bing新闻-即时配送"
+      url: "https://www.bing.com/news/search?q=%E5%8D%B3%E6%97%B6%E9%85%8D%E9%80%81&format=rss&mkt=zh-CN&setlang=zh-CN&cc=CN"
+      priority: "P2"
+      category: "auto"
+      tag: "auto"
+
+    - id: "bing_meituan_rider"
+      name: "Bing新闻-美团骑手"
+      url: "https://www.bing.com/news/search?q=%E7%BE%8E%E5%9B%A2%E9%AA%91%E6%89%8B&format=rss&mkt=zh-CN&setlang=zh-CN&cc=CN"
+      priority: "P2"
+      category: "platform"
+      tag: "auto"
+
+    - id: "bing_gig_economy"
+      name: "Bing新闻-灵活就业骑手"
+      url: "https://www.bing.com/news/search?q=%E7%81%B5%E6%B4%BB%E5%B0%B1%E4%B8%9A+%E9%AA%91%E6%89%8B&format=rss&mkt=zh-CN&setlang=zh-CN&cc=CN"
+      priority: "P2"
+      category: "policy"
+      tag: "policy.labor"
+
+    # ══════════════════════════════════════════════════════════════
     # 【P0-P2 官方 RSS】国内权威媒体（境外服务器实测可用，2026-06）
     # 新华网(300条) / 人民网(100条) / 中国新闻网(30条) / 新浪(15条) / 36氪(30条)
     # ══════════════════════════════════════════════════════════════
