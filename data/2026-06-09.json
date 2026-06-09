@@ -80,21 +80,6 @@
   ],
   "articles": [
     {
-      "title": "“外卖骑手也应适用最低工资”……成最低工资委最大“雷管”议题 - 아시아경제",
-      "summary": "“外卖骑手也应适用最低工资”……成最低工资委最大“雷管”议题&nbsp;&nbsp;아시아경제",
-      "source": "Google新闻-外卖骑手",
-      "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTE00cmlRU09Ub3pXODQtV3JZak51OXFJZEZPR2tjRWdjZjNHbDJuS3hYSHJMWGZ6U0wta2NhZ1Y0bEFnQnhMMnJpdmNWRTBYV0h3SWN5YjFtUkJXLVItbGlYLWV6cmxyWVlPZmd5QkFhY0xhY1Zkb1NBelBrVQ?oc=5",
-      "published_at": "2026-06-09T10:27:13",
-      "category": "policy",
-      "tag": "行业观察",
-      "tagClass": "tag-blue",
-      "sub_tag": "policy.labor",
-      "sub_label": "劳动法规",
-      "priority": "P2",
-      "img": null,
-      "grad": "linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"
-    },
-    {
       "title": "《经济学人》：超级系统下，中国的外卖小哥成为最明显的社会底层- 手机版 - 加拿大新闻网",
       "summary": "《经济学人》：超级系统下，中国的外卖小哥成为最明显的社会底层- 手机版&nbsp;&nbsp;加拿大新闻网",
       "source": "Google新闻-骑手政策",
@@ -337,5 +322,6 @@
       "grad": "linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"
     }
   ],
-  "hot": []
+  "hot": [],
+  "total": 14
 }
