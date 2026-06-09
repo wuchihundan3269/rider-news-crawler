@@ -341,7 +341,7 @@ def parse_article(item: dict, cat_info: dict, date_str: str) -> dict:
     }
 
 
-def transform(input_path: str, hot_path: str | None, output_path: str):
+def transform(input_path: str, hot_path: str | None, output_path: str, existing_path: str | None = None):
     # 读取新闻数据
     with open(input_path, "r", encoding="utf-8") as f:
         raw = json.load(f)
@@ -388,6 +388,12 @@ def transform(input_path: str, hot_path: str | None, output_path: str):
         flash    = _resolve_list(raw.get("flash", []))
         featured = _resolve_list(raw.get("featured", _pick_featured(articles)))
         hot      = raw.get("hot", [])
+        # ── 合并已有数据（累积追加模式）──────────────────────────────
+        articles = _merge_with_existing(articles, existing_path, date_str)
+
+        flash    = [a for a in articles if a.get("published_at", "").startswith(date_str)][:40]
+        featured = _pick_featured(articles, n=5)
+
         output = {
             "date":         date_str,
             "generated_at": generated_at,
@@ -469,6 +475,15 @@ def transform(input_path: str, hot_path: str | None, output_path: str):
                 ]
             })
 
+    # ── 合并已有数据（累积追加模式）──────────────────────────────────
+    articles = _merge_with_existing(articles, existing_path, date_str)
+
+    # 今日快讯：当天文章，按时间倒序，最多40条（合并后重新计算）
+    flash = [a for a in articles if a.get("published_at", "").startswith(date_str)][:40]
+
+    # 轮播：合并后重新挑选
+    featured = _pick_featured(articles, n=5)
+
     # 构建输出
     output = {
         "date":         date_str,
@@ -506,6 +521,49 @@ def _is_aggregator(article: dict) -> bool:
         if name in _AGGREGATOR_SOURCES:
             return True
     return False
+
+def _merge_with_existing(new_articles: list, existing_path: str | None, date_str: str) -> list:
+    """
+    将新抓取的文章与已有数据文件中的文章合并去重，实现累积追加。
+    去重键：标题（title）。
+    排序：按 published_at 倒序。
+    """
+    if not existing_path:
+        return new_articles
+
+    existing_articles = []
+    try:
+        ep = Path(existing_path)
+        if ep.exists():
+            with open(ep, "r", encoding="utf-8") as f:
+                existing_data = json.load(f)
+            existing_articles = existing_data.get("articles", [])
+            print(f"[merge] 已有数据: {len(existing_articles)} 条，本次新抓取: {len(new_articles)} 条")
+    except Exception as e:
+        print(f"[merge] 读取已有数据失败，跳过合并: {e}")
+        return new_articles
+
+    # 以标题为去重键，新数据优先（新数据在前，已有数据补充）
+    seen_titles: set[str] = set()
+    merged: list[dict] = []
+
+    for a in new_articles:
+        t = a.get("title", "").strip()
+        if t and t not in seen_titles:
+            seen_titles.add(t)
+            merged.append(a)
+
+    for a in existing_articles:
+        t = a.get("title", "").strip()
+        if t and t not in seen_titles:
+            seen_titles.add(t)
+            merged.append(a)
+
+    # 按时间倒序
+    merged.sort(key=lambda x: x.get("published_at", ""), reverse=True)
+    print(f"[merge] 合并后共 {len(merged)} 条")
+    return merged
+
 
 def _pick_featured(articles: list, n: int = 5) -> list:
     """从文章列表中挑选轮播精选：优先有图，各分类均衡（Wiki 六分类体系）"""
@@ -556,8 +614,9 @@ def _pick_featured(articles: list, n: int = 5) -> list:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="TrendRadar → 骑手快讯 JSON 转换器")
-    parser.add_argument("--input",  required=True, help="TrendRadar 新闻输出 JSON 路径")
-    parser.add_argument("--hot",    default=None,  help="TrendRadar 热榜输出 JSON 路径（可选）")
-    parser.add_argument("--output", required=True, help="输出 JSON 路径（如 data/2025-06-10.json）")
+    parser.add_argument("--input",    required=True, help="TrendRadar 新闻输出 JSON 路径")
+    parser.add_argument("--hot",      default=None,  help="TrendRadar 热榜输出 JSON 路径（可选）")
+    parser.add_argument("--output",   required=True, help="输出 JSON 路径（如 data/2025-06-10.json）")
+    parser.add_argument("--existing", default=None,  help="已有数据 JSON 路径，用于累积追加（如 data/2025-06-10.json）")
     args = parser.parse_args()
-    transform(args.input, args.hot, args.output)
+    transform(args.input, args.hot, args.output, args.existing)

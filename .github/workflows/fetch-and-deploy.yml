@@ -112,7 +112,7 @@ jobs:
           "
           fi
 
-      # ── 6. 转换数据格式 ──────────────────────────────────────────
+      # ── 6. 转换数据格式（累积追加模式）──────────────────────────
       - name: 转换数据为网站格式
         run: |
           DATE="${{ steps.date.outputs.date }}"
@@ -131,35 +131,21 @@ jobs:
             fi
           fi
 
-          # ★ 关键保护：若本次抓取条数 < 已有条数，跳过覆盖，保留更多的那份数据
-          NEW_TOTAL=$(python3 -c "
-          import json, sys
-          try:
-              d = json.load(open('$NEWS_FILE'))
-              print(d.get('total', 0))
-          except:
-              print(0)
-          ")
-          echo "本次抓取: ${NEW_TOTAL} 条"
-
-          if [ -f "$OUTPUT_FILE" ]; then
-            EXISTING_TOTAL=$(python3 -c "
-          import json
-          try:
-              d = json.load(open('$OUTPUT_FILE'))
-              print(len(d.get('articles', [])))
-          except:
-              print(0)
-          ")
-            echo "已有数据: ${EXISTING_TOTAL} 条"
-            if [ "$EXISTING_TOTAL" != "0" ] && [ "$NEW_TOTAL" -le "$EXISTING_TOTAL" ] 2>/dev/null; then
-              echo "本次抓取(${NEW_TOTAL}条) <= 已有数据(${EXISTING_TOTAL}条)，跳过覆盖，保留现有数据"
-              exit 0
-            fi
-          fi
-
           mkdir -p data
-          python scripts/transform.py --input "$NEWS_FILE" --output "$OUTPUT_FILE"
+
+          # ★ 累积追加：若已有数据文件，传入 --existing 合并去重，新旧文章都保留
+          if [ -f "$OUTPUT_FILE" ]; then
+            echo "已有数据文件: $OUTPUT_FILE，执行累积追加合并"
+            python scripts/transform.py \
+              --input "$NEWS_FILE" \
+              --output "$OUTPUT_FILE" \
+              --existing "$OUTPUT_FILE"
+          else
+            echo "首次生成: $OUTPUT_FILE"
+            python scripts/transform.py \
+              --input "$NEWS_FILE" \
+              --output "$OUTPUT_FILE"
+          fi
           echo "数据文件已生成: $OUTPUT_FILE"
 
       # ── 7. 生成 latest.json 指针（含小时信息）────────────────────
