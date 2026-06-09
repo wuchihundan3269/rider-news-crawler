@@ -2129,39 +2129,34 @@ ${metaBot}
 
 // ===== 今日快讯二级页面（澎湃时间线风格）=====
 function renderFlashPage(container){
-  // 优先显示今天数据；若今天无数据，退回到数据中最新的那一天
-  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const hasTodayData = FLASH_DATA.some(n => n.ts >= todayStart);
-  let baseDay;
-  if (hasTodayData) {
-    baseDay = todayStart;
-  } else if (FLASH_DATA.length) {
-    const latestTs = FLASH_DATA.reduce((m, n) => n.ts > m ? n.ts : m, FLASH_DATA[0].ts);
-    baseDay = new Date(latestTs.getFullYear(), latestTs.getMonth(), latestTs.getDate());
-  } else {
-    baseDay = todayStart;
-  }
-  const todayData = FLASH_DATA.filter(n => {
+  // 显示全部 FLASH_DATA，按日期分组（不再只显示某一天）
+  const allData = (FLASH_DATA || []).slice().sort((a, b) => b.ts - a.ts);
+
+  const catTagMap = {
+    rider_story: {label:'骑手新闻', cls:'tag-orange'},
+    care:        {label:'骑手关怀', cls:'tag-green'},
+    policy:      {label:'行业观察', cls:'tag-blue'},
+    report:      {label:'行业观察', cls:'tag-blue'},
+    platform:    {label:'平台动作', cls:'tag-purple'},
+    opinion:     {label:'舆论信息', cls:'tag-red'},
+    rider:       {label:'骑手新闻', cls:'tag-orange'},
+    industry:    {label:'行业观察', cls:'tag-blue'},
+  };
+
+  // 按日期分组
+  const groups = [];
+  const groupMap = {};
+  allData.forEach(n => {
     const d = new Date(n.ts.getFullYear(), n.ts.getMonth(), n.ts.getDate());
-    return d.getTime() === baseDay.getTime();
-  }).sort((a, b) => b.ts - a.ts);
+    const key = d.getTime();
+    if (!groupMap[key]) {
+      groupMap[key] = { date: d, items: [] };
+      groups.push(groupMap[key]);
+    }
+    groupMap[key].items.push(n);
+  });
 
-  const yearMonth = baseDay.getFullYear() + '.' + String(baseDay.getMonth()+1).padStart(2,'0');
-  const day = String(baseDay.getDate()).padStart(2,'0');
-
-const catTagMap = {
-rider_story: {label:'骑手新闻', cls:'tag-orange'},
-care:        {label:'骑手关怀', cls:'tag-green'},
-policy:      {label:'行业观察', cls:'tag-blue'},
-report:      {label:'行业观察', cls:'tag-blue'},
-platform:    {label:'平台动作', cls:'tag-purple'},
-opinion:     {label:'舆论信息', cls:'tag-red'},
-// 旧分类兼容
-rider:       {label:'骑手新闻', cls:'tag-orange'},
-industry:    {label:'行业观察', cls:'tag-blue'},
-};
-
-  const items = todayData.map((n) => {
+  function renderItem(n) {
     const catInfo = catTagMap[n.category];
     const catBadge = catInfo
       ? `<span class="fl-meta-sep">·</span><span class="tag-badge ${catInfo.cls}">${catInfo.label}</span>`
@@ -2169,7 +2164,7 @@ industry:    {label:'行业观察', cls:'tag-blue'},
     const _sumClean = cleanSummary(n.summary || '', n.title || '');
     const summary100 = _sumClean.length > 100 ? _sumClean.slice(0,100) + '...' : _sumClean;
     const hhmm = String(n.ts.getHours()).padStart(2,'0') + ':' + String(n.ts.getMinutes()).padStart(2,'0');
-const _flUrl = n.url || '';
+    const _flUrl = n.url || '';
     return `
     <div class="fl-item" style="${_flUrl ? 'cursor:pointer' : ''}" onclick="${_flUrl ? `openNewsUrl('${_flUrl}','${n.title.replace(/'/g,"\\'")}')` : ''}">
     <div class="fl-time-col">
@@ -2186,53 +2181,65 @@ const _flUrl = n.url || '';
         </div>
       </div>
     </div>`;
+  }
+
+  // 渲染各日期分组
+  const groupsHtml = groups.map((g, gi) => {
+    const yearMonth = g.date.getFullYear() + '.' + String(g.date.getMonth()+1).padStart(2,'0');
+    const day = String(g.date.getDate()).padStart(2,'0');
+    const axisId = 'flAxis_' + gi;
+    const contentId = 'flContent_' + gi;
+    return `
+      <div class="flash-timeline-wrap" style="${gi > 0 ? 'margin-top:32px;padding-top:24px;border-top:1px solid rgba(0,0,0,.06)' : ''}">
+        <div class="fl-date-col">
+          <div class="fl-date-year-month">${yearMonth}</div>
+          <div class="fl-date-day">${day}</div>
+        </div>
+        <div class="fl-axis" id="${axisId}"></div>
+        <div class="fl-content-col" id="${contentId}">
+          ${g.items.map(renderItem).join('')}
+        </div>
+      </div>`;
   }).join('');
 
   container.innerHTML = `
     <div class="page-wrap">
       <div class="page-main">
-        <div class="flash-timeline-wrap">
-          <div class="fl-date-col">
-            <div class="fl-date-year-month">${yearMonth}</div>
-            <div class="fl-date-day">${day}</div>
-          </div>
-          <div class="fl-axis" id="flAxis"></div>
-          <div class="fl-content-col" id="flContent">
-            ${todayData.length ? items : '<div style="padding:40px 24px;color:#bbb;font-size:14px">今日暂无快讯</div>'}
-          </div>
-        </div>
+        ${allData.length ? groupsHtml : '<div style="padding:40px 24px;color:#bbb;font-size:14px">暂无快讯</div>'}
       </div>
     </div>`;
 
-  // 渲染后动态将圆点插入轴线，并让轴线只在第一个到最后一个圆点之间绘制
+  // 渲染后动态将圆点插入各分组轴线
   requestAnimationFrame(() => {
-    const axis = container.querySelector('#flAxis');
-    if(!axis) return;
-    const axisRect = axis.getBoundingClientRect();
-    const tops = [];
-    container.querySelectorAll('.fl-item').forEach(item => {
-      const timeText = item.querySelector('.fl-time-text');
-      if(!timeText) return;
-      const tr = timeText.getBoundingClientRect();
-      const top = tr.top + tr.height / 2 - axisRect.top;
-      tops.push(top);
-      const dot = document.createElement('div');
-      dot.className = 'fl-axis-dot';
-      dot.style.top = top + 'px';
-      axis.appendChild(dot);
-    });
-    // 轴线只从第一个圆点到最后一个圆点
-    if(tops.length >= 1) {
-      const first = tops[0];
-      const last = tops[tops.length - 1];
-      axis.style.top = first + 'px';
-      axis.style.height = (last - first) + 'px';
-      axis.style.alignSelf = 'auto';
-      // 圆点 top 已相对于原始 axisRect.top，需减去 first 偏移
-      axis.querySelectorAll('.fl-axis-dot').forEach((dot, i) => {
-        dot.style.top = (tops[i] - first) + 'px';
+    container.querySelectorAll('.fl-axis').forEach(axis => {
+      // 找到同一 flash-timeline-wrap 内的所有 fl-item
+      const wrap = axis.closest('.flash-timeline-wrap');
+      if (!wrap) return;
+      const axisRect = axis.getBoundingClientRect();
+      const tops = [];
+      wrap.querySelectorAll('.fl-item').forEach(item => {
+        const timeText = item.querySelector('.fl-time-text');
+        if (!timeText) return;
+        const tr = timeText.getBoundingClientRect();
+        const top = tr.top + tr.height / 2 - axisRect.top;
+        tops.push(top);
+        const dot = document.createElement('div');
+        dot.className = 'fl-axis-dot';
+        dot.style.top = top + 'px';
+        axis.appendChild(dot);
       });
-    }
+      // 轴线只从第一个圆点到最后一个圆点
+      if (tops.length >= 1) {
+        const first = tops[0];
+        const last = tops[tops.length - 1];
+        axis.style.top = first + 'px';
+        axis.style.height = (last - first) + 'px';
+        axis.style.alignSelf = 'auto';
+        axis.querySelectorAll('.fl-axis-dot').forEach((dot, i) => {
+          dot.style.top = (tops[i] - first) + 'px';
+        });
+      }
+    });
   });
 }
 

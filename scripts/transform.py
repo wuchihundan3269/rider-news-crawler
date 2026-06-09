@@ -48,7 +48,7 @@ TrendRadar 原始格式（output/news/YYYY-MM-DD.json）：
   "generated_at": "2025-06-10T12:00:00Z",
   "featured": [...],   // 轮播5条（最新 + 最重要）
   "articles": [...],   // 全部文章
-  "flash": [...],      // 今日快讯（当天文章，按时间倒序）
+  "flash": [...],      // 今日快讯（最近7天文章，按时间倒序，最多40条）
   "hot": [...]         // 全网热点
 }
 """
@@ -401,7 +401,7 @@ def transform(input_path: str, hot_path: str | None, output_path: str, existing_
         # ── 合并已有数据（累积追加模式）──────────────────────────────
         articles = _merge_with_existing(articles, existing_path, date_str)
 
-        flash    = [a for a in articles if a.get("published_at", "").startswith(date_str)][:40]
+        flash    = articles[:40]   # 取最近40条，不限当天
         featured = _pick_featured(articles, n=5)
 
         output = {
@@ -467,8 +467,8 @@ def transform(input_path: str, hot_path: str | None, output_path: str, existing_
                 best_in_batch[norm] = a
     articles = sorted(best_in_batch.values(), key=lambda x: x.get("published_at", ""), reverse=True)
 
-    # 今日快讯：当天文章，按时间倒序，最多40条
-    flash = [a for a in articles if a.get("published_at", "").startswith(date_str)][:40]
+    # 今日快讯：最近40条，不限当天（文章时间戳经常是昨天/前天）
+    flash = articles[:40]
 
     # 轮播：优先有图 + 各分类均衡，取5条
     featured = _pick_featured(articles, n=5)
@@ -495,8 +495,8 @@ def transform(input_path: str, hot_path: str | None, output_path: str, existing_
     # ── 合并已有数据（累积追加模式）──────────────────────────────────
     articles = _merge_with_existing(articles, existing_path, date_str)
 
-    # 今日快讯：当天文章，按时间倒序，最多40条（合并后重新计算）
-    flash = [a for a in articles if a.get("published_at", "").startswith(date_str)][:40]
+    # 今日快讯：最近40条，不限当天（合并后重新计算）
+    flash = articles[:40]
 
     # 轮播：合并后重新挑选
     featured = _pick_featured(articles, n=5)
