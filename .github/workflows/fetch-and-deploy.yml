@@ -112,6 +112,18 @@ jobs:
           "
           fi
 
+      # ── 5c. 抓取热榜数据 ─────────────────────────────────────────
+      - name: 抓取热榜数据
+        run: |
+          python scripts/fetch_hot.py --output data/hot.json
+          echo "热榜数据已生成"
+          cat data/hot.json | python3 -c "
+          import json,sys
+          d=json.load(sys.stdin)
+          for p in d.get('platforms',[]):
+              print(f'  {p[\"name\"]}: {len(p[\"items\"])} 条')
+          " || true
+
       # ── 6. 转换数据格式（累积追加模式）──────────────────────────
       - name: 转换数据为网站格式
         run: |

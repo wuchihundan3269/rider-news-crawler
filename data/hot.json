@@ -1,0 +1,186 @@
+{
+  "updated_at": "2026-06-09T16:01:14",
+  "platforms": [
+    {
+      "id": "weibo",
+      "name": "微博",
+      "logo_url": "https://favicon.im/weibo.com?larger=true",
+      "link": "https://s.weibo.com/top/summary",
+      "items": [
+        {
+          "rank": 1,
+          "text": "安阳辟谣为奔跑吧录制支付80万",
+          "url": "https://s.weibo.com/weibo?q=%E5%AE%89%E9%98%B3%E8%BE%9F%E8%B0%A3%E4%B8%BA%E5%A5%94%E8%B7%91%E5%90%A7%E5%BD%95%E5%88%B6%E6%94%AF%E4%BB%9880%E4%B8%87"
+        },
+        {
+          "rank": 2,
+          "text": "何超琼套现逾1.4亿美元",
+          "url": "https://s.weibo.com/weibo?q=%E4%BD%95%E8%B6%85%E7%90%BC%E5%A5%97%E7%8E%B0%E9%80%BE1.4%E4%BA%BF%E7%BE%8E%E5%85%83"
+        },
+        {
+          "rank": 3,
+          "text": "平壤体育馆专场文艺演出高清大图",
+          "url": "https://s.weibo.com/weibo?q=%E5%B9%B3%E5%A3%A4%E4%BD%93%E8%82%B2%E9%A6%86%E4%B8%93%E5%9C%BA%E6%96%87%E8%89%BA%E6%BC%94%E5%87%BA%E9%AB%98%E6%B8%85%E5%A4%A7%E5%9B%BE"
+        },
+        {
+          "rank": 4,
+          "text": "白鹿演技",
+          "url": "https://s.weibo.com/weibo?q=%E7%99%BD%E9%B9%BF%E6%BC%94%E6%8A%80"
+        },
+        {
+          "rank": 5,
+          "text": "客房现用过避孕套酒店赔4千又反悔",
+          "url": "https://s.weibo.com/weibo?q=%E5%AE%A2%E6%88%BF%E7%8E%B0%E7%94%A8%E8%BF%87%E9%81%BF%E5%AD%95%E5%A5%97%E9%85%92%E5%BA%97%E8%B5%944%E5%8D%83%E5%8F%88%E5%8F%8D%E6%82%94"
+        },
+        {
+          "rank": 6,
+          "text": "在江浙沪如果没人送你杨梅",
+          "url": "https://s.weibo.com/weibo?q=%E5%9C%A8%E6%B1%9F%E6%B5%99%E6%B2%AA%E5%A6%82%E6%9E%9C%E6%B2%A1%E4%BA%BA%E9%80%81%E4%BD%A0%E6%9D%A8%E6%A2%85"
+        },
+        {
+          "rank": 7,
+          "text": "爱玛黑翼全速领航员周冠宇",
+          "url": "https://s.weibo.com/weibo?q=%E7%88%B1%E7%8E%9B%E9%BB%91%E7%BF%BC%E5%85%A8%E9%80%9F%E9%A2%86%E8%88%AA%E5%91%98%E5%91%A8%E5%86%A0%E5%AE%87"
+        },
+        {
+          "rank": 8,
+          "text": "莫离 锐化",
+          "url": "https://s.weibo.com/weibo?q=%E8%8E%AB%E7%A6%BB%20%E9%94%90%E5%8C%96"
+        },
+        {
+          "rank": 9,
+          "text": "高考地理",
+          "url": "https://s.weibo.com/weibo?q=%E9%AB%98%E8%80%83%E5%9C%B0%E7%90%86"
+        },
+        {
+          "rank": 10,
+          "text": "5月汽车销量前十已无燃油车",
+          "url": "https://s.weibo.com/weibo?q=5%E6%9C%88%E6%B1%BD%E8%BD%A6%E9%94%80%E9%87%8F%E5%89%8D%E5%8D%81%E5%B7%B2%E6%97%A0%E7%87%83%E6%B2%B9%E8%BD%A6"
+        }
+      ]
+    },
+    {
+      "id": "baidu",
+      "name": "百度",
+      "logo_url": "https://favicon.im/baidu.com?larger=true",
+      "link": "https://top.baidu.com/board?tab=realtime",
+      "items": [
+        {
+          "rank": 1,
+          "text": "最隆重礼遇欢迎最尊贵客人",
+          "url": "https://m.baidu.com/s?word=%E6%9C%80%E9%9A%86%E9%87%8D%E7%A4%BC%E9%81%87%E6%AC%A2%E8%BF%8E%E6%9C%80%E5%B0%8A%E8%B4%B5%E5%AE%A2%E4%BA%BA&sa=fyb_news"
+        },
+        {
+          "rank": 2,
+          "text": "世界杯主裁被美国拒签",
+          "url": "https://m.baidu.com/s?word=%E4%B8%96%E7%95%8C%E6%9D%AF%E4%B8%BB%E8%A3%81%E8%A2%AB%E7%BE%8E%E5%9B%BD%E6%8B%92%E7%AD%BE&sa=fyb_news"
+        },
+        {
+          "rank": 3,
+          "text": "新疆小羊摊主：每天只睡3、4个小时",
+          "url": "https://m.baidu.com/s?word=%E6%96%B0%E7%96%86%E5%B0%8F%E7%BE%8A%E6%91%8A%E4%B8%BB%EF%BC%9A%E6%AF%8F%E5%A4%A9%E5%8F%AA%E7%9D%A13%E3%80%814%E4%B8%AA%E5%B0%8F%E6%97%B6&sa=fyb_news"
+        },
+        {
+          "rank": 4,
+          "text": "这些中国歌曲引起全场共鸣",
+          "url": "https://m.baidu.com/s?word=%E8%BF%99%E4%BA%9B%E4%B8%AD%E5%9B%BD%E6%AD%8C%E6%9B%B2%E5%BC%95%E8%B5%B7%E5%85%A8%E5%9C%BA%E5%85%B1%E9%B8%A3&sa=fyb_news"
+        },
+        {
+          "rank": 5,
+          "text": "80岁黄百鸣被判处入狱5个月",
+          "url": "https://m.baidu.com/s?word=80%E5%B2%81%E9%BB%84%E7%99%BE%E9%B8%A3%E8%A2%AB%E5%88%A4%E5%A4%84%E5%85%A5%E7%8B%B15%E4%B8%AA%E6%9C%88&sa=fyb_news"
+        },
+        {
+          "rank": 6,
+          "text": "傅明得知执裁世界杯痛哭流涕",
+          "url": "https://m.baidu.com/s?word=%E5%82%85%E6%98%8E%E5%BE%97%E7%9F%A5%E6%89%A7%E8%A3%81%E4%B8%96%E7%95%8C%E6%9D%AF%E7%97%9B%E5%93%AD%E6%B5%81%E6%B6%95&sa=fyb_news"
+        },
+        {
+          "rank": 7,
+          "text": "考场外车辆故障鸣笛不止 车主求破窗",
+          "url": "https://m.baidu.com/s?word=%E8%80%83%E5%9C%BA%E5%A4%96%E8%BD%A6%E8%BE%86%E6%95%85%E9%9A%9C%E9%B8%A3%E7%AC%9B%E4%B8%8D%E6%AD%A2+%E8%BD%A6%E4%B8%BB%E6%B1%82%E7%A0%B4%E7%AA%97&sa=fyb_news"
+        },
+        {
+          "rank": 8,
+          "text": "A股收盘：创业板指大涨近4%",
+          "url": "https://m.baidu.com/s?word=A%E8%82%A1%E6%94%B6%E7%9B%98%EF%BC%9A%E5%88%9B%E4%B8%9A%E6%9D%BF%E6%8C%87%E5%A4%A7%E6%B6%A8%E8%BF%914%25&sa=fyb_news"
+        },
+        {
+          "rank": 9,
+          "text": "创始人去世24岁女儿拟继承近5亿家产",
+          "url": "https://m.baidu.com/s?word=%E5%88%9B%E5%A7%8B%E4%BA%BA%E5%8E%BB%E4%B8%9624%E5%B2%81%E5%A5%B3%E5%84%BF%E6%8B%9F%E7%BB%A7%E6%89%BF%E8%BF%915%E4%BA%BF%E5%AE%B6%E4%BA%A7&sa=fyb_news"
+        },
+        {
+          "rank": 10,
+          "text": "女生忘带准考证错过高考 母亲痛哭",
+          "url": "https://m.baidu.com/s?word=%E5%A5%B3%E7%94%9F%E5%BF%98%E5%B8%A6%E5%87%86%E8%80%83%E8%AF%81%E9%94%99%E8%BF%87%E9%AB%98%E8%80%83+%E6%AF%8D%E4%BA%B2%E7%97%9B%E5%93%AD&sa=fyb_news"
+        }
+      ]
+    },
+    {
+      "id": "douyin",
+      "name": "抖音",
+      "logo_url": "https://favicon.im/tiktok.com?larger=true",
+      "link": "https://www.douyin.com/search/%E7%83%AD%E6%90%9C",
+      "items": [
+        {
+          "rank": 1,
+          "text": "高考政治",
+          "url": "https://www.douyin.com/hot/2528425"
+        },
+        {
+          "rank": 2,
+          "text": "马刺115:111尼克斯",
+          "url": "https://www.douyin.com/hot/2527995"
+        },
+        {
+          "rank": 3,
+          "text": "平壤响起耳熟能详的中国歌曲",
+          "url": "https://www.douyin.com/hot/2528125"
+        },
+        {
+          "rank": 4,
+          "text": "中国男足将迎战泰国",
+          "url": "https://www.douyin.com/hot/2528063"
+        },
+        {
+          "rank": 5,
+          "text": "考场外超有爱名场面",
+          "url": "https://www.douyin.com/hot/2527688"
+        },
+        {
+          "rank": 6,
+          "text": "我来写高考作文",
+          "url": "https://www.douyin.com/hot/2528216"
+        },
+        {
+          "rank": 7,
+          "text": "用运动迎接夏天",
+          "url": "https://www.douyin.com/hot/2528205"
+        },
+        {
+          "rank": 8,
+          "text": "中国足球小将抵达巴西参赛",
+          "url": "https://www.douyin.com/hot/2528337"
+        },
+        {
+          "rank": 9,
+          "text": "当咸甜大战遇到水果冰粽",
+          "url": "https://www.douyin.com/hot/2527142"
+        },
+        {
+          "rank": 10,
+          "text": "两部门：人形机器人等完成应用验证",
+          "url": "https://www.douyin.com/hot/2528137"
+        }
+      ]
+    },
+    {
+      "id": "kuaishou",
+      "name": "快手",
+      "logo_url": "https://favicon.im/kuaishou.com?larger=true",
+      "link": "https://www.kuaishou.com/",
+      "items": []
+    }
+  ]
+}
