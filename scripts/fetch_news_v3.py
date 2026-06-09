@@ -321,6 +321,14 @@ _FOREIGN_DOMAIN_RE = _re.compile(
     _re.IGNORECASE
 )
 
+_NON_CN_EN_RE = _re.compile(
+    r'[\uAC00-\uD7A3'   # 韩文
+    r'\u3040-\u30FF'    # 日文平假名/片假名
+    r'\u0600-\u06FF'    # 阿拉伯文
+    r'\u0400-\u04FF'    # 西里尔文（俄文等）
+    r'\u0900-\u097F]',  # 梵文（印地语等）
+)
+
 def is_foreign_media(title: str) -> bool:
     """从标题末尾 ' - 媒体名' 判断是否为外媒或聚合平台，是则返回 True（应丢弃）"""
     di = title.rfind(" - ")
@@ -329,6 +337,9 @@ def is_foreign_media(title: str) -> bool:
     media_name = title[di + 3:].strip()
     # 命中黑名单
     if media_name in _FOREIGN_MEDIA_BLACKLIST:
+        return True
+    # 媒体名含韩文/日文/阿拉伯文等非中英文字符 → 外媒，丢弃
+    if _NON_CN_EN_RE.search(media_name):
         return True
     # 媒体名含境外域名后缀（如 L'Unione Sarda.it）
     if _FOREIGN_DOMAIN_RE.search(media_name):
