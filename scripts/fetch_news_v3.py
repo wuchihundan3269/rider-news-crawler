@@ -273,6 +273,29 @@ def matches_base_keywords(title: str, summary: str, base_keywords: list) -> bool
     return False
 
 
+# 非外卖骑手排除词：含这些词说明是摩托车/自行车/赛车等无关骑手内容
+_NON_DELIVERY_RIDER_WORDS = [
+    "摩托车骑手", "摩托车手", "摩托车赛", "摩托车事故",
+    "自行车骑手", "自行车手", "单车骑手",
+    "赛车骑手", "越野骑手", "公路骑手", "山地骑手",
+    "骑马", "马术骑手", "赛马骑手",
+    "骑行爱好者", "骑行活动", "骑行比赛",
+    "摩托骑手", "摩托手",
+]
+
+def is_non_delivery_rider(title: str, summary: str) -> bool:
+    """判断是否为非外卖骑手内容（摩托车/自行车/赛车骑手等），是则返回 True（应丢弃）
+    注意：只在文章已命中 base_keywords 后才调用，避免误杀
+    """
+    text = title + " " + summary
+    # 如果含明确的外卖标识词，直接放行（不误杀）
+    delivery_anchors = ["外卖", "配送", "美团", "饿了么", "京东外卖", "顺丰", "闪送", "达达", "即时配送"]
+    if any(w in text for w in delivery_anchors):
+        return False
+    # 含非外卖骑手词则丢弃
+    return any(w in text for w in _NON_DELIVERY_RIDER_WORDS)
+
+
 # 外媒/聚合平台黑名单：标题末尾 " - 媒体名" 命中则丢弃
 # 规则：含非中文字母域名后缀(.it/.com/.org 等)、已知外媒名、聚合平台
 _FOREIGN_MEDIA_BLACKLIST = {
@@ -502,6 +525,10 @@ def fetch_rss_feed(feed_cfg: dict, keyword_rules: dict, base_keywords: list,
 
         # 外媒/聚合平台过滤：只保留国内媒体来源
         if is_foreign_media(title):
+            continue
+
+        # 非外卖骑手过滤：排除摩托车/自行车/赛车骑手等无关内容
+        if is_non_delivery_rider(title, summary):
             continue
 
         # 子分类打标（多标签）
