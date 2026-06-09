@@ -1034,8 +1034,8 @@ async function loadData(){
 // ===== 内部：fetch JSON 数据文件 =====
 async function _fetchData(){
   try {
-    // 加时间戳参数，每小时变一次，绕过浏览器/CDN缓存
-    var cacheBust = Math.floor(Date.now() / (60 * 60 * 1000)); // 每小时变化一次
+    // 加时间戳参数，每5分钟变一次，绕过浏览器/CDN缓存
+    var cacheBust = Math.floor(Date.now() / (5 * 60 * 1000)); // 每5分钟变化一次
     var latestResp = await fetch('data/latest.json?v=' + cacheBust, { cache: 'no-cache' });
     if (!latestResp.ok) throw new Error('latest.json ' + latestResp.status);
     var latest = await latestResp.json();
