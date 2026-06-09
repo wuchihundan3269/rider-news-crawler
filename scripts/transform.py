@@ -77,60 +77,18 @@ except ImportError:
 
 def resolve_google_news_url(url: str, timeout: int = 5) -> str:
     """
-    将 Google News RSS 中间链接解析为真实原始 URL。
+    将 Google News RSS 中间链接转换为可点击的 Google News 文章链接。
     策略：
-      1. protobuf 字节解析（CBMi... 格式，最可靠）
-      2. HTTP GET 跟随重定向（境外服务器可用）
-      3. 失败则返回原 URL
+      将 /rss/articles/ 替换为 /articles/
+      浏览器访问 /articles/ 链接时会自动重定向到真实原文，无需服务端解析。
     """
     if not url or "news.google.com" not in url:
         return url
 
-    # 策略1：protobuf 字节解析
-    # Google News RSS URL 格式: .../articles/BASE64?oc=5
-    # BASE64 解码后是 protobuf 二进制，结构：
-    #   前缀 0x08 0x13 0x22（可选）+ 长度字节 + URL 字节
-    try:
-        import base64
-        match = re.search(r'/articles/([A-Za-z0-9_-]+)', url)
-        if match:
-            b64 = match.group(1)
-            b64 += '=' * (4 - len(b64) % 4)
-            data = base64.urlsafe_b64decode(b64)
-            # 去掉 protobuf 前缀 0x08 0x13 0x22
-            start = 0
-            if len(data) > 3 and data[0] == 0x08 and data[1] == 0x13 and data[2] == 0x22:
-                start = 3
-            # 读取长度字节（支持 varint 编码）
-            if start < len(data):
-                length = data[start]
-                if length >= 0x80:
-                    start += 2
-                    length = data[start - 1] + (length - 0x80) * 128
-                else:
-                    start += 1
-                # 提取 URL 字节
-                real_url = data[start:start + length].decode('utf-8', errors='ignore')
-                if real_url.startswith('http://') or real_url.startswith('https://'):
-                    if 'google.com' not in real_url:
-                        return real_url
-    except Exception:
-        pass
-
-    # 策略2：HTTP GET 跟随重定向（GitHub Actions 境外服务器可访问）
-    if _HAS_REQUESTS:
-        try:
-            resp = _requests.get(
-                url,
-                allow_redirects=True,
-                timeout=timeout,
-                headers={"User-Agent": "Mozilla/5.0 (compatible; RiderNewsBot/3.0)"}
-            )
-            final_url = resp.url
-            if final_url and "news.google.com" not in final_url:
-                return final_url
-        except Exception:
-            pass
+    # 将 RSS 中间链接转换为可点击的文章链接
+    # /rss/articles/CBMi... → /articles/CBMi...
+    if "/rss/articles/" in url:
+        return url.replace("/rss/articles/", "/articles/")
 
     return url
 

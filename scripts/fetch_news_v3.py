@@ -70,50 +70,17 @@ def fetch_og_image(url: str, timeout: int = 6) -> str | None:
 
 
 def resolve_google_news_url(url: str, timeout: int = 5) -> str:
-    """将 Google News RSS 中间链接解析为真实原始 URL
+    """将 Google News RSS 中间链接转换为可点击的 Google News 文章链接。
 
-    Google News 重定向链：
-      第1次 GET → 302 → 同一 URL（加 hl/gl/ceid 参数）
-      第2次 GET → 302 → 真实原文 URL（仅在境外服务器上）
-    因此必须手动跟随每一步重定向，不能用 allow_redirects=True。
+    策略：将 /rss/articles/ 替换为 /articles/
+    浏览器访问 /articles/ 链接时会自动重定向到真实原文，无需服务端解析。
     """
     if not url or "news.google.com" not in url:
         return url
 
-    headers = {
-        "User-Agent": (
-            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
-            "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-        ),
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
-    }
-
-    current = url
-    session = requests.Session()
-    session.headers.update(headers)
-
-    for _ in range(6):  # 最多跟随 6 次重定向
-        try:
-            resp = session.get(current, allow_redirects=False, timeout=timeout)
-        except Exception:
-            break
-
-        if resp.status_code in (301, 302, 303, 307, 308):
-            location = resp.headers.get("Location", "")
-            if not location:
-                break
-            # 处理相对路径
-            if location.startswith("/"):
-                from urllib.parse import urljoin
-                location = urljoin(current, location)
-            # 找到非 Google 的真实 URL
-            if "news.google.com" not in location and location.startswith("http"):
-                return location
-            current = location
-        else:
-            # 非重定向响应，无法继续跟随
-            break
+    # /rss/articles/CBMi... → /articles/CBMi...
+    if "/rss/articles/" in url:
+        return url.replace("/rss/articles/", "/articles/")
 
     return url
 
