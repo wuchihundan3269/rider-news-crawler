@@ -230,7 +230,14 @@ jobs:
             done
           fi
 
-      # ── 10. 部署到 GitHub Pages ──────────────────────────────────
+      # ── 10. 拉取最新 main（确保 step9 push 的 data/ 被纳入部署）──
+      - name: 拉取最新代码（含刚提交的数据）
+        run: |
+          git pull origin main --rebase
+          echo "当前 data/ 最新文件："
+          ls -lh data/*.json 2>/dev/null | sort -k6,7 | tail -5 || echo "暂无数据文件"
+
+      # ── 11. 部署到 GitHub Pages ──────────────────────────────────
       - name: 部署到 GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
