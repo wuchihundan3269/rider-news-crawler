@@ -1,6 +1,6 @@
 {
   "date": "2026-06-09",
-  "generated_at": "2026-06-09T07:07:32Z",
+  "generated_at": "2026-06-09T07:19:34Z",
   "featured": [
     {
       "title": "善“粮”暖羊城 肯德基食物驿站全国首次推出社区骑手驿站联动模式 - 中华网",
@@ -33,16 +33,16 @@
       "grad": "linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"
     },
     {
-      "title": "株洲恺德医院为美团骑手开展应急救护培训 - 湖南红网",
-      "summary": "株洲恺德医院为美团骑手开展应急救护培训&nbsp;&nbsp;湖南红网",
-      "source": "Google新闻-美团骑手",
-      "url": "https://news.google.com/articles/CBMiYkFVX3lxTFBYMS15RVZfLTJmQlJmWEliV1V5SVlaZ0M0aE9CeVFaVTZ3XzBOcU5RelgtNElGUnd3TW1LWVhsdHdEZXZSOUZCbkdKeXhlbHM1c180MjlCRXJKRkR6WU1qbkJn?oc=5",
-      "published_at": "2026-06-08T10:00:06",
+      "title": "外卖骑手严重过剩，为什么这条路上还挤满了人 - 搜狐网",
+      "summary": "外卖骑手严重过剩，为什么这条路上还挤满了人&nbsp;&nbsp;搜狐网",
+      "source": "Google新闻-骑手收入",
+      "url": "https://news.google.com/articles/CBMijAFBVV95cUxOTmNUMnBPbWs3QnFSaTEzUTZ5all0dnExZjVnclVSNHRkZWc4UzhCSmlLdmR6M1FqTkI0ZC10SE5YallLV2lwdTBZRWhGN25qcTY4amlLSDV4TUUweFF5RWtIallxaTctWWhZRE5qYnhEb0ZKejdTdS0wY2FUMHM3ZE9MSEZnWU9sLVVHVw?oc=5",
+      "published_at": "2026-06-08T10:40:32",
       "category": "platform",
       "tag": "平台动作",
       "tagClass": "tag-purple",
-      "sub_tag": "rider_story.career",
-      "sub_label": "职业发展",
+      "sub_tag": "platform.pay",
+      "sub_label": "收入费用",
       "priority": "P2",
       "img": null,
       "grad": "linear-gradient(135deg,#1a1a2e 0%,#16213e 45%,#0f3460 100%)"
@@ -155,6 +155,36 @@
       "grad": "linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"
     },
     {
+      "title": "外卖骑手严重过剩，为什么这条路上还挤满了人 - 搜狐网",
+      "summary": "外卖骑手严重过剩，为什么这条路上还挤满了人&nbsp;&nbsp;搜狐网",
+      "source": "Google新闻-骑手收入",
+      "url": "https://news.google.com/articles/CBMijAFBVV95cUxOTmNUMnBPbWs3QnFSaTEzUTZ5all0dnExZjVnclVSNHRkZWc4UzhCSmlLdmR6M1FqTkI0ZC10SE5YallLV2lwdTBZRWhGN25qcTY4amlLSDV4TUUweFF5RWtIallxaTctWWhZRE5qYnhEb0ZKejdTdS0wY2FUMHM3ZE9MSEZnWU9sLVVHVw?oc=5",
+      "published_at": "2026-06-08T10:40:32",
+      "category": "platform",
+      "tag": "平台动作",
+      "tagClass": "tag-purple",
+      "sub_tag": "platform.pay",
+      "sub_label": "收入费用",
+      "priority": "P2",
+      "img": null,
+      "grad": "linear-gradient(135deg,#1a1a2e 0%,#16213e 45%,#0f3460 100%)"
+    },
+    {
+      "title": "株洲恺德医院为美团骑手开展应急救护培训 - 新浪财经",
+      "summary": "株洲恺德医院为美团骑手开展应急救护培训&nbsp;&nbsp;新浪财经",
+      "source": "Google新闻-骑手健康",
+      "url": "https://news.google.com/articles/CBMifEFVX3lxTE5Uc2I1QUxWQ3BIb0pURGJSdEo3djBFVnNPTkV6dXdndUpUbjdvRFcwX25DZThZQVp1SDNZdTlXVUpaVHFyUGFzNi02U1VvRFZLOVBEdWJOZXdtMzItQUV2YzZqR1RpWTVDekJVLWdUQlZfQ1prM01BdklIZk4?oc=5",
+      "published_at": "2026-06-08T10:11:48",
+      "category": "care",
+      "tag": "骑手关怀",
+      "tagClass": "tag-green",
+      "sub_tag": "care.health",
+      "sub_label": "健康安全",
+      "priority": "P2",
+      "img": null,
+      "grad": "linear-gradient(135deg,#0d2e1a 0%,#0a2818 45%,#0f3a20 100%)"
+    },
+    {
       "title": "株洲恺德医院为美团骑手开展应急救护培训 - 湖南红网",
       "summary": "株洲恺德医院为美团骑手开展应急救护培训&nbsp;&nbsp;湖南红网",
       "source": "Google新闻-美团骑手",
@@ -215,11 +245,11 @@
       "grad": "linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"
     },
     {
-      "title": "外卖骑手新任务已送达！内蒙古两地鼓励骑手“随手拍”监督食品安全 - 新浪财经",
-      "summary": "外卖骑手新任务已送达！内蒙古两地鼓励骑手“随手拍”监督食品安全&nbsp;&nbsp;新浪财经",
+      "title": "外卖骑手新任务已送达！内蒙古两地鼓励骑手“随手拍”监督食品安全 - Sina finance",
+      "summary": "外卖骑手新任务已送达！内蒙古两地鼓励骑手“随手拍”监督食品安全&nbsp;&nbsp;Sina finance",
       "source": "Google新闻-外卖骑手",
-      "url": "https://news.google.com/articles/CBMimAFBVV95cUxNU3FyWGRvcXlxeFM2S0V0d0VST3BMMzVfN2swVzFzUnBOMndMVURXd0VoM2trUGN0cXVCOXRCV0w2QnR5RlFHN0JlZWp3bnZjbVJfbDVEZTU4R3J5ZkpBbDVjRUo0alBZWDM2V1BHYWJPTGdCYldtMHhtY29femlUZ1BPOHBiX1hNa01CcFRZa2FvX0Q0aGIyMg?oc=5",
-      "published_at": "2026-06-07T01:04:37",
+      "url": "https://news.google.com/articles/CBMidkFVX3lxTE95MjNFYk1fRzFDX1hnUnNGeFE2Z3dXRlp1bW82enBEZ3JQWUFHRkJITmZhclh0WGtoeXNfaFQ0MmxuVllTNEV3cHJXWU9wQTlIY3hZdWd2aU1JSEJTTlYwZFhVbWFiSHM3ZXlZbE9fS01LdklqUWc?oc=5",
+      "published_at": "2026-06-06T20:45:00",
       "category": "policy",
       "tag": "行业观察",
       "tagClass": "tag-blue",
