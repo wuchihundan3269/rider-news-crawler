@@ -88,7 +88,7 @@ jobs:
 
       # ── 5a. RSS 源可用性测试（可选，失败不阻断流程）────────────
       - name: 测试 RSS 源可用性
-        run: python scripts/_test_rss.py || true
+        run: python scripts/_test_sources3.py || true
 
       # ── 5b. 运行新闻抓取 ─────────────────────────────────────────
       - name: 运行新闻抓取
