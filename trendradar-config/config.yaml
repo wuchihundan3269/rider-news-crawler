@@ -448,18 +448,18 @@ rss:
       category: "auto"
       tag: "auto"
 
-    # ── 新浪新闻（P1，境外可直连，每频道 15 条）────────────────────
+    # ── 新浪新闻（P2，境外可直连，每频道 15 条）────────────────────
     - id: "sina_society"
       name: "新浪新闻-社会"
       url: "https://rss.sina.com.cn/news/society/focus15.xml"
-      priority: "P1"
+      priority: "P2"
       category: "auto"
       tag: "auto"
 
     - id: "sina_domestic"
       name: "新浪新闻-国内"
       url: "https://rss.sina.com.cn/news/china/focus15.xml"
-      priority: "P1"
+      priority: "P2"
       category: "auto"
       tag: "auto"
 
