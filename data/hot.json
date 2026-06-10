@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-10T19:56:21",
+  "updated_at": "2026-06-10T20:42:39",
   "platforms": [
     {
       "id": "weibo",
@@ -9,28 +9,28 @@
       "items": [
         {
           "rank": 1,
+          "text": "美国CPI",
+          "url": "https://s.weibo.com/weibo?q=%E7%BE%8E%E5%9B%BDCPI"
+        },
+        {
+          "rank": 2,
           "text": "世界杯",
           "url": "https://s.weibo.com/weibo?q=%E4%B8%96%E7%95%8C%E6%9D%AF"
         },
         {
-          "rank": 2,
-          "text": "上海市副市长陈宇剑被查",
-          "url": "https://s.weibo.com/weibo?q=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%89%AF%E5%B8%82%E9%95%BF%E9%99%88%E5%AE%87%E5%89%91%E8%A2%AB%E6%9F%A5"
-        },
-        {
           "rank": 3,
-          "text": "数读数字中国跨越式发展",
-          "url": "https://s.weibo.com/weibo?q=%E6%95%B0%E8%AF%BB%E6%95%B0%E5%AD%97%E4%B8%AD%E5%9B%BD%E8%B7%A8%E8%B6%8A%E5%BC%8F%E5%8F%91%E5%B1%95"
+          "text": "青春华章丝路逐光",
+          "url": "https://s.weibo.com/weibo?q=%E9%9D%92%E6%98%A5%E5%8D%8E%E7%AB%A0%E4%B8%9D%E8%B7%AF%E9%80%90%E5%85%89"
         },
         {
           "rank": 4,
-          "text": "世界杯揭幕战",
-          "url": "https://s.weibo.com/weibo?q=%E4%B8%96%E7%95%8C%E6%9D%AF%E6%8F%AD%E5%B9%95%E6%88%98"
+          "text": "papi酱私藏好物大公开",
+          "url": "https://s.weibo.com/weibo?q=papi%E9%85%B1%E7%A7%81%E8%97%8F%E5%A5%BD%E7%89%A9%E5%A4%A7%E5%85%AC%E5%BC%80"
         },
         {
           "rank": 5,
-          "text": "小米AI上岛",
-          "url": "https://s.weibo.com/weibo?q=%E5%B0%8F%E7%B1%B3AI%E4%B8%8A%E5%B2%9B"
+          "text": "谢娜演唱会被抵制的原因",
+          "url": "https://s.weibo.com/weibo?q=%E8%B0%A2%E5%A8%9C%E6%BC%94%E5%94%B1%E4%BC%9A%E8%A2%AB%E6%8A%B5%E5%88%B6%E7%9A%84%E5%8E%9F%E5%9B%A0"
         },
         {
           "rank": 6,
@@ -39,23 +39,23 @@
         },
         {
           "rank": 7,
-          "text": "南部档案到底播不播",
-          "url": "https://s.weibo.com/weibo?q=%E5%8D%97%E9%83%A8%E6%A1%A3%E6%A1%88%E5%88%B0%E5%BA%95%E6%92%AD%E4%B8%8D%E6%92%AD"
+          "text": "王鹤棣将门毒后台词听力测试",
+          "url": "https://s.weibo.com/weibo?q=%E7%8E%8B%E9%B9%A4%E6%A3%A3%E5%B0%86%E9%97%A8%E6%AF%92%E5%90%8E%E5%8F%B0%E8%AF%8D%E5%90%AC%E5%8A%9B%E6%B5%8B%E8%AF%95"
         },
         {
           "rank": 8,
+          "text": "整治用AI制作发布涉军虚假信息",
+          "url": "https://s.weibo.com/weibo?q=%E6%95%B4%E6%B2%BB%E7%94%A8AI%E5%88%B6%E4%BD%9C%E5%8F%91%E5%B8%83%E6%B6%89%E5%86%9B%E8%99%9A%E5%81%87%E4%BF%A1%E6%81%AF"
+        },
+        {
+          "rank": 9,
           "text": "第一批高考生已出发",
           "url": "https://s.weibo.com/weibo?q=%E7%AC%AC%E4%B8%80%E6%89%B9%E9%AB%98%E8%80%83%E7%94%9F%E5%B7%B2%E5%87%BA%E5%8F%91"
         },
         {
-          "rank": 9,
-          "text": "下周是很善良的一周",
-          "url": "https://s.weibo.com/weibo?q=%E4%B8%8B%E5%91%A8%E6%98%AF%E5%BE%88%E5%96%84%E8%89%AF%E7%9A%84%E4%B8%80%E5%91%A8"
-        },
-        {
           "rank": 10,
-          "text": "中国已补齐台湾岛东部海底地图",
-          "url": "https://s.weibo.com/weibo?q=%E4%B8%AD%E5%9B%BD%E5%B7%B2%E8%A1%A5%E9%BD%90%E5%8F%B0%E6%B9%BE%E5%B2%9B%E4%B8%9C%E9%83%A8%E6%B5%B7%E5%BA%95%E5%9C%B0%E5%9B%BE"
+          "text": "南部档案到底播不播",
+          "url": "https://s.weibo.com/weibo?q=%E5%8D%97%E9%83%A8%E6%A1%A3%E6%A1%88%E5%88%B0%E5%BA%95%E6%92%AD%E4%B8%8D%E6%92%AD"
         }
       ]
     },
@@ -67,38 +67,38 @@
       "items": [
         {
           "rank": 1,
-          "text": "枞树常绿 中朝友谊生生不息",
-          "url": "https://m.baidu.com/s?word=%E6%9E%9E%E6%A0%91%E5%B8%B8%E7%BB%BF+%E4%B8%AD%E6%9C%9D%E5%8F%8B%E8%B0%8A%E7%94%9F%E7%94%9F%E4%B8%8D%E6%81%AF&sa=fyb_news"
+          "text": "共同擘画中朝关系发展蓝图",
+          "url": "https://m.baidu.com/s?word=%E5%85%B1%E5%90%8C%E6%93%98%E7%94%BB%E4%B8%AD%E6%9C%9D%E5%85%B3%E7%B3%BB%E5%8F%91%E5%B1%95%E8%93%9D%E5%9B%BE&sa=fyb_news"
         },
         {
           "rank": 2,
+          "text": "新能源车不能再“胖”了",
+          "url": "https://m.baidu.com/s?word=%E6%96%B0%E8%83%BD%E6%BA%90%E8%BD%A6%E4%B8%8D%E8%83%BD%E5%86%8D%E2%80%9C%E8%83%96%E2%80%9D%E4%BA%86&sa=fyb_news"
+        },
+        {
+          "rank": 3,
           "text": "上海市副市长陈宇剑被查",
           "url": "https://m.baidu.com/s?word=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%89%AF%E5%B8%82%E9%95%BF%E9%99%88%E5%AE%87%E5%89%91%E8%A2%AB%E6%9F%A5&sa=fyb_news"
         },
         {
-          "rank": 3,
-          "text": "这届世界杯跟中国有什么关系",
-          "url": "https://m.baidu.com/s?word=%E8%BF%99%E5%B1%8A%E4%B8%96%E7%95%8C%E6%9D%AF%E8%B7%9F%E4%B8%AD%E5%9B%BD%E6%9C%89%E4%BB%80%E4%B9%88%E5%85%B3%E7%B3%BB&sa=fyb_news"
-        },
-        {
           "rank": 4,
-          "text": "高校毕业生请收下这份入职攻略",
-          "url": "https://m.baidu.com/s?word=%E9%AB%98%E6%A0%A1%E6%AF%95%E4%B8%9A%E7%94%9F%E8%AF%B7%E6%94%B6%E4%B8%8B%E8%BF%99%E4%BB%BD%E5%85%A5%E8%81%8C%E6%94%BB%E7%95%A5&sa=fyb_news"
+          "text": "怀孕到生娃能领7笔钱 谁能领？",
+          "url": "https://m.baidu.com/s?word=%E6%80%80%E5%AD%95%E5%88%B0%E7%94%9F%E5%A8%83%E8%83%BD%E9%A2%867%E7%AC%94%E9%92%B1+%E8%B0%81%E8%83%BD%E9%A2%86%EF%BC%9F&sa=fyb_news"
         },
         {
           "rank": 5,
-          "text": "中国已补齐台湾岛东部海底地图",
-          "url": "https://m.baidu.com/s?word=%E4%B8%AD%E5%9B%BD%E5%B7%B2%E8%A1%A5%E9%BD%90%E5%8F%B0%E6%B9%BE%E5%B2%9B%E4%B8%9C%E9%83%A8%E6%B5%B7%E5%BA%95%E5%9C%B0%E5%9B%BE&sa=fyb_news"
+          "text": "上海一水果店只卖苹果 1颗最贵293元",
+          "url": "https://m.baidu.com/s?word=%E4%B8%8A%E6%B5%B7%E4%B8%80%E6%B0%B4%E6%9E%9C%E5%BA%97%E5%8F%AA%E5%8D%96%E8%8B%B9%E6%9E%9C+1%E9%A2%97%E6%9C%80%E8%B4%B5293%E5%85%83&sa=fyb_news"
         },
         {
           "rank": 6,
-          "text": "顾客买滑板8个月申请仅退款 平台同意",
-          "url": "https://m.baidu.com/s?word=%E9%A1%BE%E5%AE%A2%E4%B9%B0%E6%BB%91%E6%9D%BF8%E4%B8%AA%E6%9C%88%E7%94%B3%E8%AF%B7%E4%BB%85%E9%80%80%E6%AC%BE+%E5%B9%B3%E5%8F%B0%E5%90%8C%E6%84%8F&sa=fyb_news"
+          "text": "下周是很善良的一周",
+          "url": "https://m.baidu.com/s?word=%E4%B8%8B%E5%91%A8%E6%98%AF%E5%BE%88%E5%96%84%E8%89%AF%E7%9A%84%E4%B8%80%E5%91%A8&sa=fyb_news"
         },
         {
           "rank": 7,
-          "text": "在北大读书一年要花多少钱",
-          "url": "https://m.baidu.com/s?word=%E5%9C%A8%E5%8C%97%E5%A4%A7%E8%AF%BB%E4%B9%A6%E4%B8%80%E5%B9%B4%E8%A6%81%E8%8A%B1%E5%A4%9A%E5%B0%91%E9%92%B1&sa=fyb_news"
+          "text": "中国已补齐台湾岛东部海底地图",
+          "url": "https://m.baidu.com/s?word=%E4%B8%AD%E5%9B%BD%E5%B7%B2%E8%A1%A5%E9%BD%90%E5%8F%B0%E6%B9%BE%E5%B2%9B%E4%B8%9C%E9%83%A8%E6%B5%B7%E5%BA%95%E5%9C%B0%E5%9B%BE&sa=fyb_news"
         },
         {
           "rank": 8,
@@ -107,8 +107,8 @@
         },
         {
           "rank": 9,
-          "text": "为啥定期存款不香了",
-          "url": "https://m.baidu.com/s?word=%E4%B8%BA%E5%95%A5%E5%AE%9A%E6%9C%9F%E5%AD%98%E6%AC%BE%E4%B8%8D%E9%A6%99%E4%BA%86&sa=fyb_news"
+          "text": "13岁男孩当志愿者弄丢全部家当",
+          "url": "https://m.baidu.com/s?word=13%E5%B2%81%E7%94%B7%E5%AD%A9%E5%BD%93%E5%BF%97%E6%84%BF%E8%80%85%E5%BC%84%E4%B8%A2%E5%85%A8%E9%83%A8%E5%AE%B6%E5%BD%93&sa=fyb_news"
         },
         {
           "rank": 10,
@@ -140,28 +140,28 @@
         },
         {
           "rank": 4,
+          "text": "高考结束后你最想干什么",
+          "url": "https://www.douyin.com/hot/2528801"
+        },
+        {
+          "rank": 5,
+          "text": "NBA总决赛主客场待遇拉满",
+          "url": "https://www.douyin.com/hot/2529833"
+        },
+        {
+          "rank": 6,
+          "text": "抖音创作者守护乡村孩子足球梦",
+          "url": "https://www.douyin.com/hot/2529770"
+        },
+        {
+          "rank": 7,
           "text": "全抖音寻找世界杯梗王",
           "url": "https://www.douyin.com/hot/2529535"
         },
         {
-          "rank": 5,
-          "text": "用AI复原孔子与苏格拉底教育之辩",
-          "url": "https://www.douyin.com/hot/2528746"
-        },
-        {
-          "rank": 6,
-          "text": "又学到了一款粽子的新包法",
-          "url": "https://www.douyin.com/hot/2528292"
-        },
-        {
-          "rank": 7,
+          "rank": 8,
           "text": "所有零食立刻打入冷宫",
           "url": "https://www.douyin.com/hot/2529124"
-        },
-        {
-          "rank": 8,
-          "text": "准大学生数码全家桶推荐",
-          "url": "https://www.douyin.com/hot/2529536"
         },
         {
           "rank": 9,
