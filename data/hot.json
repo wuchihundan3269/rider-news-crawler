@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-10T14:48:56",
+  "updated_at": "2026-06-10T15:12:01",
   "platforms": [
     {
       "id": "weibo",
@@ -9,13 +9,13 @@
       "items": [
         {
           "rank": 1,
-          "text": "莫离编剧团队打假蒙淇淇",
-          "url": "https://s.weibo.com/weibo?q=%E8%8E%AB%E7%A6%BB%E7%BC%96%E5%89%A7%E5%9B%A2%E9%98%9F%E6%89%93%E5%81%87%E8%92%99%E6%B7%87%E6%B7%87"
+          "text": "警方回应残障老人无薪扛水泥20年",
+          "url": "https://s.weibo.com/weibo?q=%E8%AD%A6%E6%96%B9%E5%9B%9E%E5%BA%94%E6%AE%8B%E9%9A%9C%E8%80%81%E4%BA%BA%E6%97%A0%E8%96%AA%E6%89%9B%E6%B0%B4%E6%B3%A520%E5%B9%B4"
         },
         {
           "rank": 2,
-          "text": "梅西赛后被冰岛球员围住了",
-          "url": "https://s.weibo.com/weibo?q=%E6%A2%85%E8%A5%BF%E8%B5%9B%E5%90%8E%E8%A2%AB%E5%86%B0%E5%B2%9B%E7%90%83%E5%91%98%E5%9B%B4%E4%BD%8F%E4%BA%86"
+          "text": "鹅腿阿姨 塌房",
+          "url": "https://s.weibo.com/weibo?q=%E9%B9%85%E8%85%BF%E9%98%BF%E5%A7%A8%20%E5%A1%8C%E6%88%BF"
         },
         {
           "rank": 3,
@@ -24,38 +24,38 @@
         },
         {
           "rank": 4,
+          "text": "papi上京东直播发福利",
+          "url": "https://s.weibo.com/weibo?q=papi%E4%B8%8A%E4%BA%AC%E4%B8%9C%E7%9B%B4%E6%92%AD%E5%8F%91%E7%A6%8F%E5%88%A9"
+        },
+        {
+          "rank": 5,
+          "text": "白鹿心态",
+          "url": "https://s.weibo.com/weibo?q=%E7%99%BD%E9%B9%BF%E5%BF%83%E6%80%81"
+        },
+        {
+          "rank": 6,
           "text": "妈妈确诊到离世39天",
           "url": "https://s.weibo.com/weibo?q=%E5%A6%88%E5%A6%88%E7%A1%AE%E8%AF%8A%E5%88%B0%E7%A6%BB%E4%B8%9639%E5%A4%A9"
         },
         {
-          "rank": 5,
+          "rank": 7,
           "text": "新疆旅游突然在韩国火了起来",
           "url": "https://s.weibo.com/weibo?q=%E6%96%B0%E7%96%86%E6%97%85%E6%B8%B8%E7%AA%81%E7%84%B6%E5%9C%A8%E9%9F%A9%E5%9B%BD%E7%81%AB%E4%BA%86%E8%B5%B7%E6%9D%A5"
         },
         {
-          "rank": 6,
-          "text": "还我扔垃圾自由",
-          "url": "https://s.weibo.com/weibo?q=%E8%BF%98%E6%88%91%E6%89%94%E5%9E%83%E5%9C%BE%E8%87%AA%E7%94%B1"
-        },
-        {
-          "rank": 7,
-          "text": "拿AI编造高考谣言多人被罚",
-          "url": "https://s.weibo.com/weibo?q=%E6%8B%BFAI%E7%BC%96%E9%80%A0%E9%AB%98%E8%80%83%E8%B0%A3%E8%A8%80%E5%A4%9A%E4%BA%BA%E8%A2%AB%E7%BD%9A"
-        },
-        {
           "rank": 8,
-          "text": "当猫想跳上床发现宝宝在床上时",
-          "url": "https://s.weibo.com/weibo?q=%E5%BD%93%E7%8C%AB%E6%83%B3%E8%B7%B3%E4%B8%8A%E5%BA%8A%E5%8F%91%E7%8E%B0%E5%AE%9D%E5%AE%9D%E5%9C%A8%E5%BA%8A%E4%B8%8A%E6%97%B6"
-        },
-        {
-          "rank": 9,
           "text": "孙千躲张凌赫怀里",
           "url": "https://s.weibo.com/weibo?q=%E5%AD%99%E5%8D%83%E8%BA%B2%E5%BC%A0%E5%87%8C%E8%B5%AB%E6%80%80%E9%87%8C"
         },
         {
+          "rank": 9,
+          "text": "当猫想跳上床发现宝宝在床上时",
+          "url": "https://s.weibo.com/weibo?q=%E5%BD%93%E7%8C%AB%E6%83%B3%E8%B7%B3%E4%B8%8A%E5%BA%8A%E5%8F%91%E7%8E%B0%E5%AE%9D%E5%AE%9D%E5%9C%A8%E5%BA%8A%E4%B8%8A%E6%97%B6"
+        },
+        {
           "rank": 10,
-          "text": "手机拍照不要只会用原相机",
-          "url": "https://s.weibo.com/weibo?q=%E6%89%8B%E6%9C%BA%E6%8B%8D%E7%85%A7%E4%B8%8D%E8%A6%81%E5%8F%AA%E4%BC%9A%E7%94%A8%E5%8E%9F%E7%9B%B8%E6%9C%BA"
+          "text": "梅西赛后被冰岛球员围住了",
+          "url": "https://s.weibo.com/weibo?q=%E6%A2%85%E8%A5%BF%E8%B5%9B%E5%90%8E%E8%A2%AB%E5%86%B0%E5%B2%9B%E7%90%83%E5%91%98%E5%9B%B4%E4%BD%8F%E4%BA%86"
         }
       ]
     },
@@ -77,8 +77,8 @@
         },
         {
           "rank": 3,
-          "text": "“避雷”“闭眼入”不能随便说了",
-          "url": "https://m.baidu.com/s?word=%E2%80%9C%E9%81%BF%E9%9B%B7%E2%80%9D%E2%80%9C%E9%97%AD%E7%9C%BC%E5%85%A5%E2%80%9D%E4%B8%8D%E8%83%BD%E9%9A%8F%E4%BE%BF%E8%AF%B4%E4%BA%86&sa=fyb_news"
+          "text": "为啥定期存款不香了",
+          "url": "https://m.baidu.com/s?word=%E4%B8%BA%E5%95%A5%E5%AE%9A%E6%9C%9F%E5%AD%98%E6%AC%BE%E4%B8%8D%E9%A6%99%E4%BA%86&sa=fyb_news"
         },
         {
           "rank": 4,
@@ -97,8 +97,8 @@
         },
         {
           "rank": 7,
-          "text": "存贷款利率时隔二十多年迎来大修",
-          "url": "https://m.baidu.com/s?word=%E5%AD%98%E8%B4%B7%E6%AC%BE%E5%88%A9%E7%8E%87%E6%97%B6%E9%9A%94%E4%BA%8C%E5%8D%81%E5%A4%9A%E5%B9%B4%E8%BF%8E%E6%9D%A5%E5%A4%A7%E4%BF%AE&sa=fyb_news"
+          "text": "国际油价金价大跌",
+          "url": "https://m.baidu.com/s?word=%E5%9B%BD%E9%99%85%E6%B2%B9%E4%BB%B7%E9%87%91%E4%BB%B7%E5%A4%A7%E8%B7%8C&sa=fyb_news"
         },
         {
           "rank": 8,
@@ -107,13 +107,13 @@
         },
         {
           "rank": 9,
-          "text": "国际油价金价大跌",
-          "url": "https://m.baidu.com/s?word=%E5%9B%BD%E9%99%85%E6%B2%B9%E4%BB%B7%E9%87%91%E4%BB%B7%E5%A4%A7%E8%B7%8C&sa=fyb_news"
+          "text": "谢娜官宣演唱会引争议 海淀文旅回应",
+          "url": "https://m.baidu.com/s?word=%E8%B0%A2%E5%A8%9C%E5%AE%98%E5%AE%A3%E6%BC%94%E5%94%B1%E4%BC%9A%E5%BC%95%E4%BA%89%E8%AE%AE+%E6%B5%B7%E6%B7%80%E6%96%87%E6%97%85%E5%9B%9E%E5%BA%94&sa=fyb_news"
         },
         {
           "rank": 10,
-          "text": "谢娜官宣演唱会引争议 海淀文旅回应",
-          "url": "https://m.baidu.com/s?word=%E8%B0%A2%E5%A8%9C%E5%AE%98%E5%AE%A3%E6%BC%94%E5%94%B1%E4%BC%9A%E5%BC%95%E4%BA%89%E8%AE%AE+%E6%B5%B7%E6%B7%80%E6%96%87%E6%97%85%E5%9B%9E%E5%BA%94&sa=fyb_news"
+          "text": "存贷款利率时隔二十多年迎来大修",
+          "url": "https://m.baidu.com/s?word=%E5%AD%98%E8%B4%B7%E6%AC%BE%E5%88%A9%E7%8E%87%E6%97%B6%E9%9A%94%E4%BA%8C%E5%8D%81%E5%A4%9A%E5%B9%B4%E8%BF%8E%E6%9D%A5%E5%A4%A7%E4%BF%AE&sa=fyb_news"
         }
       ]
     },
