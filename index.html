@@ -134,7 +134,9 @@ position:relative;
 
 /* 右侧快讯列表 */
 .hero-list{background:#fff;border-left:1px solid rgba(0,0,0,.06);display:flex;flex-direction:column}
-#heroListItems{flex:1;display:flex;flex-direction:column;overflow:hidden}
+#heroListItems{flex:1;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden}
+#heroListItems::-webkit-scrollbar{width:3px}
+#heroListItems::-webkit-scrollbar-thumb{background:#e0e0e0;border-radius:2px}
 .hero-list-header{
   padding:14px 18px 12px;
   display:flex;align-items:center;justify-content:space-between;
@@ -149,6 +151,7 @@ position:relative;
   cursor:pointer;
   display:flex;gap:0;align-items:flex-start;
   transition:background .15s;
+  flex-shrink:0;
 }
 .hero-list-item:hover{background:#fafafa}
 .hero-list-item.active{background:#f0f0f0}
@@ -738,8 +741,6 @@ function parseTs(pub){
   try{
     var d = new Date(pub.replace(' ','T'));
     if(isNaN(d.getTime())) return new Date(now - 3600000);
-    // 超过当前时间 1 小时以上（爬虫写入了错误年份如 2026），截断为当前时间，防止排序靠前
-    if(d.getTime() > now + 3600000) return new Date(now);
     return d;
   } catch(e){ return new Date(now - 3600000); }
 }
@@ -1194,17 +1195,15 @@ function renderHero(){
   + `<button class="hero-arrow next" id="heroNext" onclick="arrowSlide(1)">&#8250;</button>`
   + dotsHtml;
 
-  // 右侧列表：标签·来源·时间（最多5条，均匀撑满剩余高度）
-  const LIST_NEWS = NEWS.slice(0, 5);
+  // 右侧列表：展示全部 articles，独立滚动，不与轮播联动
+  const LIST_NEWS = (window._allArticles && window._allArticles.length ? window._allArticles : articles).slice();
+  LIST_NEWS.sort(function(a,b){ return b.ts - a.ts; });
   listEl.innerHTML = LIST_NEWS.map((n,i) => {
     const _hc = _heroCatMap[n.category];
     const _htag = _hc ? `<span class="hero-list-tag ${_hc.cls}">${_hc.label}</span>` : '';
     const _listUrl = n.url || '';
-    const _listClick = _listUrl
-      ? `goSlide(${i},true); openNewsUrl('${_listUrl}','${n.title.replace(/'/g,"\\'")}')`
-      : `goSlide(${i},true)`;
     return `
-    <div class="hero-list-item${i===0?' active':''}" data-idx="${i}" onclick="${_listClick}" onmouseenter="hoverSlide(${i})" onmouseleave="leaveSlide()" style="flex:1;align-items:center;${_listUrl ? 'cursor:pointer' : ''}">
+    <div class="hero-list-item" data-idx="${i}" onclick="${_listUrl ? `openNewsUrl('${_listUrl}','${n.title.replace(/'/g,"\\'").replace(/"/g,'&quot;')}')` : ''}" style="${_listUrl ? 'cursor:pointer' : ''}">
       <div class="hero-list-info">
         <div class="hero-list-title-row">
           <div class="hero-list-text">${n.title}</div>
