@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-10T17:43:49",
+  "updated_at": "2026-06-10T17:45:45",
   "platforms": [
     {
       "id": "weibo",
@@ -44,8 +44,8 @@
         },
         {
           "rank": 8,
-          "text": "花城610生日庆典",
-          "url": "https://s.weibo.com/weibo?q=%E8%8A%B1%E5%9F%8E610%E7%94%9F%E6%97%A5%E5%BA%86%E5%85%B8"
+          "text": "今日辟谣",
+          "url": "https://s.weibo.com/weibo?q=%E4%BB%8A%E6%97%A5%E8%BE%9F%E8%B0%A3"
         },
         {
           "rank": 9,
@@ -54,8 +54,8 @@
         },
         {
           "rank": 10,
-          "text": "运营商杀熟",
-          "url": "https://s.weibo.com/weibo?q=%E8%BF%90%E8%90%A5%E5%95%86%E6%9D%80%E7%86%9F"
+          "text": "新疆旅游突然在韩国火了起来",
+          "url": "https://s.weibo.com/weibo?q=%E6%96%B0%E7%96%86%E6%97%85%E6%B8%B8%E7%AA%81%E7%84%B6%E5%9C%A8%E9%9F%A9%E5%9B%BD%E7%81%AB%E4%BA%86%E8%B5%B7%E6%9D%A5"
         }
       ]
     },
