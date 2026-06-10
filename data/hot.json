@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-11T05:01:01",
+  "updated_at": "2026-06-11T05:05:40",
   "platforms": [
     {
       "id": "weibo",
@@ -24,8 +24,8 @@
         },
         {
           "rank": 4,
-          "text": "世界杯开幕喜剧上映 看球喝蒙牛",
-          "url": "https://s.weibo.com/weibo?q=%E4%B8%96%E7%95%8C%E6%9D%AF%E5%BC%80%E5%B9%95%E5%96%9C%E5%89%A7%E4%B8%8A%E6%98%A0%20%E7%9C%8B%E7%90%83%E5%96%9D%E8%92%99%E7%89%9B"
+          "text": "陈妍希经期喝古方五红气血夯爆了",
+          "url": "https://s.weibo.com/weibo?q=%E9%99%88%E5%A6%8D%E5%B8%8C%E7%BB%8F%E6%9C%9F%E5%96%9D%E5%8F%A4%E6%96%B9%E4%BA%94%E7%BA%A2%E6%B0%94%E8%A1%80%E5%A4%AF%E7%88%86%E4%BA%86"
         },
         {
           "rank": 5,
@@ -44,18 +44,18 @@
         },
         {
           "rank": 8,
+          "text": "五粮液喊大咖来预测世界杯冠军",
+          "url": "https://s.weibo.com/weibo?q=%E4%BA%94%E7%B2%AE%E6%B6%B2%E5%96%8A%E5%A4%A7%E5%92%96%E6%9D%A5%E9%A2%84%E6%B5%8B%E4%B8%96%E7%95%8C%E6%9D%AF%E5%86%A0%E5%86%9B"
+        },
+        {
+          "rank": 9,
           "text": "养了一只配得感很低的小猫",
           "url": "https://s.weibo.com/weibo?q=%E5%85%BB%E4%BA%86%E4%B8%80%E5%8F%AA%E9%85%8D%E5%BE%97%E6%84%9F%E5%BE%88%E4%BD%8E%E7%9A%84%E5%B0%8F%E7%8C%AB"
         },
         {
-          "rank": 9,
+          "rank": 10,
           "text": "最节俭的人投胎到我家了",
           "url": "https://s.weibo.com/weibo?q=%E6%9C%80%E8%8A%82%E4%BF%AD%E7%9A%84%E4%BA%BA%E6%8A%95%E8%83%8E%E5%88%B0%E6%88%91%E5%AE%B6%E4%BA%86"
-        },
-        {
-          "rank": 10,
-          "text": "孟羽童自媒体收入不稳定再次求职",
-          "url": "https://s.weibo.com/weibo?q=%E5%AD%9F%E7%BE%BD%E7%AB%A5%E8%87%AA%E5%AA%92%E4%BD%93%E6%94%B6%E5%85%A5%E4%B8%8D%E7%A8%B3%E5%AE%9A%E5%86%8D%E6%AC%A1%E6%B1%82%E8%81%8C"
         }
       ]
     },
