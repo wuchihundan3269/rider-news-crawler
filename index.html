@@ -59,7 +59,12 @@ a{text-decoration:none;color:inherit}
 @media(max-width:420px){.hero-inner{grid-template-columns:1fr}.hero-list{display:none}}
 
 /* 左侧大图 */
-.hero-stage{position:relative;overflow:visible;cursor:pointer;width:100%;min-width:0;align-self:stretch}
+.hero-stage{
+  position:relative;overflow:hidden;cursor:pointer;
+  width:100%;min-width:0;
+  /* 轮播区固定 16:9 长方形比例 */
+  aspect-ratio:16/9;
+}
 .hero-slides-clip{overflow:hidden;position:relative;width:100%;height:100%}
 .hero-slide{position:absolute;inset:0;opacity:0;transition:opacity .6s ease}
 .hero-slide.active{opacity:1;position:relative;height:100%}
@@ -67,9 +72,23 @@ a{text-decoration:none;color:inherit}
 width:100%;height:100%;
 display:flex;align-items:flex-end;
 padding:28px 48px 32px;
-position:relative;
+position:relative;z-index:1;
   background-size:cover!important;
   background-position:center!important;
+  /* 有图时背景透明，仅显文字叠加层；无图时自己显示渐变色块 */
+  background-color:transparent;
+}
+/* 轮播图片容器：16:9 + contain 保持原比例，不模糊 */
+.hero-slide-img{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  background:#000;
+  z-index:0;
+}
+.hero-slide-img img{
+  width:100%;height:100%;
+  object-fit:contain;
+  display:block;
 }
 .hero-slide-bg::after{
   content:'';position:absolute;inset:0;
@@ -736,13 +755,14 @@ function minsAgo(m){ return new Date(now - m*60000); }
 function hoursAgo(h){ return new Date(now - h*3600000); }
 
 // ===== 将 published_at 字符串转为 Date 对象 =====
+// 返回 null 表示时间未知（后端标记为 'unknown'）
 function parseTs(pub){
-  if(!pub) return new Date(now - 3600000);
+  if(!pub || pub === 'unknown') return null;
   try{
     var d = new Date(pub.replace(' ','T'));
-    if(isNaN(d.getTime())) return new Date(now - 3600000);
+    if(isNaN(d.getTime())) return null;
     return d;
-  } catch(e){ return new Date(now - 3600000); }
+  } catch(e){ return null; }
 }
 
 // ===== 从标题末尾提取真实媒体名（Google News RSS 格式："标题 - 媒体名"）=====
@@ -831,15 +851,17 @@ function cleanSummary(s, title){
 
 // ===== 将 API 文章格式转为前端 NEWS 格式 =====
 function apiToNews(a, idx){
-  var _ts = parseTs(a.published_at);
-// 格式化日期：YYYY-MM-DD
+  var _ts = parseTs(a.published_at);  // null = 时间未知
+// 格式化日期：YYYY-MM-DD，时间未知时为空字符串
 var _date = '';
+if(_ts) {
 try {
 var _yyyy = String(_ts.getFullYear());
 var _mm = String(_ts.getMonth()+1).padStart(2,'0');
 var _dd = String(_ts.getDate()).padStart(2,'0');
 _date = _yyyy + '-' + _mm + '-' + _dd;
 } catch(e){}
+}
   // 摘要：先用 cleanSummary 清洗，若为空则尝试从原始 summary 提取（去掉媒体名后缀）
   var _rawSum = (a.summary || '').trim();
   // 去掉 &nbsp;&nbsp; 后面的媒体名
@@ -1134,7 +1156,9 @@ function _applyData(latest, data){
 }
 
 // ===== 动态时间格式化 =====
+// ts 为 null 时返回空字符串（调用方自行决定显示来源名）
 function formatTime(ts){
+  if(!ts) return '';
   const diff = Math.floor((now - ts) / 1000);
   const mins = Math.floor(diff / 60);
   const hours = Math.floor(mins / 60);
@@ -1161,14 +1185,16 @@ function renderHero(){
   const _heroCatMap = {rider_story:{label:'骑手新闻',cls:'tag-orange'},care:{label:'骑手关怀',cls:'tag-green'},policy:{label:'行业观察',cls:'tag-blue'},report:{label:'行业观察',cls:'tag-blue'},platform:{label:'平台动作',cls:'tag-purple'},opinion:{label:'舆论信息',cls:'tag-red'},rider:{label:'骑手新闻',cls:'tag-orange'},industry:{label:'行业观察',cls:'tag-blue'}};
 
   const slidesHtml = NEWS.map((n,i) => {
-    const _bgStyle = n.img ? 'url(' + n.img + '), ' + n.grad : n.grad;
+    const _bgStyle = n.img ? '' : n.grad;
     const _catCls = _heroCatMap[n.category] ? _heroCatMap[n.category].cls : '';
     const _catLabel = _heroCatMap[n.category] ? _heroCatMap[n.category].label : (n.tag || '');
     const _urlAttr = n.url ? ` data-url="${n.url}"` : '';
     const _cursorStyle = n.url ? 'cursor:pointer' : '';
+    const _imgHtml = n.img ? `<div class="hero-slide-img"><img src="${n.img}" alt="" loading="lazy" onerror="this.parentElement.style.display='none'"></div>` : '';
     return `
     <div class="hero-slide${i===0?' active':''}" data-idx="${i}"${_urlAttr} data-title="${n.title.replace(/"/g,'&quot;')}" style="${_cursorStyle}" onclick="if(this.dataset.url) openNewsUrl(this.dataset.url, this.dataset.title)">
-      <div class="hero-slide-bg" style="background:${_bgStyle}">
+      ${_imgHtml}
+      <div class="hero-slide-bg" style="${n.img ? '' : 'background:' + _bgStyle}">
         <div class="hero-slide-content">
           <span class="hero-source-tag ${_catCls}">${_catLabel}</span>
           <div class="hero-title">${n.title}</div>
@@ -1195,10 +1221,8 @@ function renderHero(){
   + `<button class="hero-arrow next" id="heroNext" onclick="arrowSlide(1)">&#8250;</button>`
   + dotsHtml;
 
-  // 右侧列表：展示最新5条，与轮播联动高亮
-  const LIST_NEWS = (window._allArticles && window._allArticles.length ? window._allArticles : articles).slice();
-  LIST_NEWS.sort(function(a,b){ return b.ts - a.ts; });
-  listEl.innerHTML = LIST_NEWS.slice(0, 5).map((n,i) => {
+  // 右侧列表：与左侧轮播完全对应，使用同一个 NEWS 数组（精选文章）
+  listEl.innerHTML = NEWS.map((n,i) => {
     const _hc = _heroCatMap[n.category];
     const _htag = _hc ? `<span class="hero-list-tag ${_hc.cls}">${_hc.label}</span>` : '';
     const _listUrl = n.url || '';
@@ -1902,12 +1926,16 @@ industry:    {label:'行业观察', cls:'tag-blue'},
     const summaryShort = isTop
       ? (summary.length > 200 ? summary.slice(0,200)+'…' : summary)
       : (summary.length > 150 ? summary.slice(0,150)+'…' : summary);
-    const diff = now - n.ts;
-    const relT = diff < 3600000
-      ? Math.floor(diff/60000) + '分钟前'
-      : diff < 86400000
-        ? Math.floor(diff/3600000) + '小时前'
-        : (n.ts.getMonth()+1) + '月' + n.ts.getDate() + '日';
+    const relT = n.ts
+      ? (() => {
+          const diff = now - n.ts;
+          return diff < 3600000
+            ? Math.floor(diff/60000) + '分钟前'
+            : diff < 86400000
+              ? Math.floor(diff/3600000) + '小时前'
+              : (n.ts.getMonth()+1) + '月' + n.ts.getDate() + '日';
+        })()
+      : (n.source || '');  // 时间未知时显示来源名
     const metaBot = `<div class="cat-card-meta-bot">
       <span class="meta-source">${n.source||''}</span><span class="meta-time">${relT}</span>
     </div>`;
@@ -2148,12 +2176,19 @@ function renderFlashPage(container){
     industry:    {label:'行业观察', cls:'tag-blue'},
   };
 
-  // 按日期分组
+  // 按日期分组（ts 为 null 的文章归入「时间未知」组）
+  const _UNKNOWN_KEY = -1;
   const groups = [];
   const groupMap = {};
   allData.forEach(n => {
-    const d = new Date(n.ts.getFullYear(), n.ts.getMonth(), n.ts.getDate());
-    const key = d.getTime();
+    let key, d;
+    if (n.ts) {
+      d = new Date(n.ts.getFullYear(), n.ts.getMonth(), n.ts.getDate());
+      key = d.getTime();
+    } else {
+      key = _UNKNOWN_KEY;
+      d = null;
+    }
     if (!groupMap[key]) {
       groupMap[key] = { date: d, items: [] };
       groups.push(groupMap[key]);
@@ -2168,10 +2203,14 @@ function renderFlashPage(container){
       : '';
     const _sumClean = cleanSummary(n.summary || '', n.title || '');
     const summary100 = _sumClean.length > 100 ? _sumClean.slice(0,100) + '...' : _sumClean;
-    const hhmm = String(n.ts.getHours()).padStart(2,'0') + ':' + String(n.ts.getMinutes()).padStart(2,'0');
+    // ts 为 null 时显示来源名代替时间
+    const hhmm = n.ts
+      ? String(n.ts.getHours()).padStart(2,'0') + ':' + String(n.ts.getMinutes()).padStart(2,'0')
+      : '--';
+    const timeLabel = formatTime(n.ts) || (n.source || n.tag || '');
     const _flUrl = n.url || '';
     return `
-    <div class="fl-item" style="${_flUrl ? 'cursor:pointer' : ''}" onclick="${_flUrl ? `openNewsUrl('${_flUrl}','${n.title.replace(/'/g,"\\'")}')` : ''}">
+    <div class="fl-item" style="${_flUrl ? 'cursor:pointer' : ''}" onclick="${_flUrl ? `openNewsUrl('${_flUrl}','${n.title.replace(/'/g,"\\'")}')`  : ''}">
     <div class="fl-time-col">
     <div class="fl-time-text">${hhmm}</div>
     </div>
@@ -2181,7 +2220,7 @@ function renderFlashPage(container){
     <div class="fl-meta">
       <span class="fl-meta-source">${n.source || n.tag}</span>
           <span class="fl-meta-sep">·</span>
-          <span class="fl-meta-time">${formatTime(n.ts)}</span>
+          <span class="fl-meta-time">${timeLabel}</span>
           ${catBadge}
         </div>
       </div>
@@ -2190,8 +2229,8 @@ function renderFlashPage(container){
 
   // 渲染各日期分组
   const groupsHtml = groups.map((g, gi) => {
-    const yearMonth = g.date.getFullYear() + '.' + String(g.date.getMonth()+1).padStart(2,'0');
-    const day = String(g.date.getDate()).padStart(2,'0');
+    const yearMonth = g.date ? g.date.getFullYear() + '.' + String(g.date.getMonth()+1).padStart(2,'0') : '时间';
+    const day = g.date ? String(g.date.getDate()).padStart(2,'0') : '未知';
     const axisId = 'flAxis_' + gi;
     const contentId = 'flContent_' + gi;
     return `
