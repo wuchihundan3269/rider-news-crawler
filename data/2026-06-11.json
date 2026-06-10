@@ -1,6 +1,6 @@
 {
   "date": "2026-06-11",
-  "generated_at": "2026-06-10T21:05:43Z",
+  "generated_at": "2026-06-10T21:31:13Z",
   "featured": [
     {
       "title": "女子凌晨2点叫外卖,骑手离开后感觉不对劲,接下来的事令人感动",
@@ -636,8 +636,8 @@
     },
     {
       "title": "暖心慰问外卖骑手",
-      "summary": "暖心慰问外卖骑手&nbsp;&nbsp;新浪财经",
-      "source": "新浪财经",
+      "summary": "暖心慰问外卖骑手&nbsp;&nbsp;Sina finance",
+      "source": "Sina finance",
       "url": "https://www.baidu.com/s?wd=%E6%9A%96%E5%BF%83%E6%85%B0%E9%97%AE%E5%A4%96%E5%8D%96%E9%AA%91%E6%89%8B",
       "published_at": "2026-06-10T05:34:00",
       "category": "rider_story",
@@ -846,8 +846,8 @@
     },
     {
       "title": "外卖骑手过剩，应对供需错配迫在眉睫",
-      "summary": "外卖骑手过剩，应对供需错配迫在眉睫&nbsp;&nbsp;新浪财经",
-      "source": "新浪财经",
+      "summary": "外卖骑手过剩，应对供需错配迫在眉睫&nbsp;&nbsp;Sina finance",
+      "source": "Sina finance",
       "url": "https://www.baidu.com/s?wd=%E5%A4%96%E5%8D%96%E9%AA%91%E6%89%8B%E8%BF%87%E5%89%A9%EF%BC%8C%E5%BA%94%E5%AF%B9%E4%BE%9B%E9%9C%80%E9%94%99%E9%85%8D%E8%BF%AB%E5%9C%A8%E7%9C%89%E7%9D%AB",
       "published_at": "2026-06-06T14:54:00",
       "category": "policy",
@@ -861,8 +861,8 @@
     },
     {
       "title": "外卖骑手严重过剩了吗？",
-      "summary": "外卖骑手严重过剩了吗？&nbsp;&nbsp;新浪财经",
-      "source": "新浪财经",
+      "summary": "外卖骑手严重过剩了吗？&nbsp;&nbsp;Sina finance",
+      "source": "Sina finance",
       "url": "https://www.baidu.com/s?wd=%E5%A4%96%E5%8D%96%E9%AA%91%E6%89%8B%E4%B8%A5%E9%87%8D%E8%BF%87%E5%89%A9%E4%BA%86%E5%90%97%EF%BC%9F",
       "published_at": "2026-06-06T10:52:00",
       "category": "policy",
@@ -885,6 +885,21 @@
       "tagClass": "tag-blue",
       "sub_tag": null,
       "sub_label": "",
+      "priority": "P3",
+      "img": null,
+      "grad": "linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"
+    },
+    {
+      "title": "组建外卖骑手“食品安全监督队”！市场监管总局：切实增强外卖骑手食品安全监督能力",
+      "summary": "组建外卖骑手“食品安全监督队”！市场监管总局：切实增强外卖骑手食品安全监督能力&nbsp;&nbsp;搜狐网",
+      "source": "搜狐网",
+      "url": "https://www.baidu.com/s?wd=%E7%BB%84%E5%BB%BA%E5%A4%96%E5%8D%96%E9%AA%91%E6%89%8B%E2%80%9C%E9%A3%9F%E5%93%81%E5%AE%89%E5%85%A8%E7%9B%91%E7%9D%A3%E9%98%9F%E2%80%9D%EF%BC%81%E5%B8%82%E5%9C%BA%E7%9B%91%E7%AE%A1%E6%80%BB%E5%B1%80%EF%BC%9A%E5%88%87%E5%AE%9E%E5%A2%9E%E5%BC%BA%E5%A4%96%E5%8D%96%E9%AA%91%E6%89%8B%E9%A3%9F%E5%93%81%E5%AE%89%E5%85%A8%E7%9B%91%E7%9D%A3%E8%83%BD%E5%8A%9B",
+      "published_at": "2026-06-05T20:30:15",
+      "category": "policy",
+      "tag": "行业观察",
+      "tagClass": "tag-blue",
+      "sub_tag": "policy.national",
+      "sub_label": "国家政策",
       "priority": "P3",
       "img": null,
       "grad": "linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"
@@ -1523,8 +1538,8 @@
     },
     {
       "title": "暖心慰问外卖骑手",
-      "summary": "暖心慰问外卖骑手&nbsp;&nbsp;新浪财经",
-      "source": "新浪财经",
+      "summary": "暖心慰问外卖骑手&nbsp;&nbsp;Sina finance",
+      "source": "Sina finance",
       "url": "https://www.baidu.com/s?wd=%E6%9A%96%E5%BF%83%E6%85%B0%E9%97%AE%E5%A4%96%E5%8D%96%E9%AA%91%E6%89%8B",
       "published_at": "2026-06-10T05:34:00",
       "category": "rider_story",
