@@ -1114,6 +1114,12 @@ function _applyData(latest, data){
   // featured 也按时间排序（确保最新的排前面）
   featured.sort(function(a, b) { return b.ts - a.ts; });
 
+  // featured 不足5条时，从 articles 里补齐（避免过滤后首页显示太少）
+  if (featured.length < 5) {
+    var featuredUrls = featured.map(function(n){ return n.url; });
+    var supplement = articles.filter(function(n){ return featuredUrls.indexOf(n.url) === -1; });
+    featured = featured.concat(supplement).slice(0, 5);
+  }
   NEWS = featured.length ? featured : articles.slice(0, 5);
   if (NEWS.length === 0) NEWS = articles.slice(0, 5);
 
