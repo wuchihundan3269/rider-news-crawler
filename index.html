@@ -1195,10 +1195,10 @@ function renderHero(){
   + `<button class="hero-arrow next" id="heroNext" onclick="arrowSlide(1)">&#8250;</button>`
   + dotsHtml;
 
-  // 右侧列表：展示全部 articles，独立滚动，不与轮播联动
+  // 右侧列表：展示最新5条，与轮播联动高亮
   const LIST_NEWS = (window._allArticles && window._allArticles.length ? window._allArticles : articles).slice();
   LIST_NEWS.sort(function(a,b){ return b.ts - a.ts; });
-  listEl.innerHTML = LIST_NEWS.map((n,i) => {
+  listEl.innerHTML = LIST_NEWS.slice(0, 5).map((n,i) => {
     const _hc = _heroCatMap[n.category];
     const _htag = _hc ? `<span class="hero-list-tag ${_hc.cls}">${_hc.label}</span>` : '';
     const _listUrl = n.url || '';
