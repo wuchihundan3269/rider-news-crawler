@@ -562,6 +562,11 @@ def _merge_with_existing(new_articles: list, existing_path: str | None, date_str
     # 合并所有文章（新数据在前，已有数据在后）
     all_articles = new_articles + existing_articles
 
+    # 修复存量数据中 published_at = "unknown" 的文章，补全兜底时间 (date_str + "T12:00:00")
+    for a in all_articles:
+        if a.get("published_at") == "unknown":
+            a["published_at"] = date_str + "T12:00:00"
+
     # 按归一化标题去重，同标题保留优先级最高的那条
     best: dict[str, dict] = {}
     for a in all_articles:
