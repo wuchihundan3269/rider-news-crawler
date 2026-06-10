@@ -1,9 +1,5 @@
 {
-<<<<<<< Updated upstream
-  "updated_at": "2026-06-10T18:02:40",
-=======
-  "updated_at": "2026-06-10T18:05:47",
->>>>>>> Stashed changes
+  "updated_at": "2026-06-10T18:31:15",
   "platforms": [
     {
       "id": "weibo",
@@ -13,8 +9,8 @@
       "items": [
         {
           "rank": 1,
-          "text": "高考结束",
-          "url": "https://s.weibo.com/weibo?q=%E9%AB%98%E8%80%83%E7%BB%93%E6%9D%9F"
+          "text": "南部档案到底播不播",
+          "url": "https://s.weibo.com/weibo?q=%E5%8D%97%E9%83%A8%E6%A1%A3%E6%A1%88%E5%88%B0%E5%BA%95%E6%92%AD%E4%B8%8D%E6%92%AD"
         },
         {
           "rank": 2,
@@ -23,18 +19,13 @@
         },
         {
           "rank": 3,
-          "text": "毕业生入职攻略来了",
-          "url": "https://s.weibo.com/weibo?q=%E6%AF%95%E4%B8%9A%E7%94%9F%E5%85%A5%E8%81%8C%E6%94%BB%E7%95%A5%E6%9D%A5%E4%BA%86"
+          "text": "数读数字中国跨越式发展",
+          "url": "https://s.weibo.com/weibo?q=%E6%95%B0%E8%AF%BB%E6%95%B0%E5%AD%97%E4%B8%AD%E5%9B%BD%E8%B7%A8%E8%B6%8A%E5%BC%8F%E5%8F%91%E5%B1%95"
         },
         {
           "rank": 4,
-<<<<<<< Updated upstream
-          "text": "papi酱私藏好物大公开",
-          "url": "https://s.weibo.com/weibo?q=papi%E9%85%B1%E7%A7%81%E8%97%8F%E5%A5%BD%E7%89%A9%E5%A4%A7%E5%85%AC%E5%BC%80"
-=======
           "text": "马頔在京东赢赢赢赢赢麻了",
           "url": "https://s.weibo.com/weibo?q=%E9%A9%AC%E9%A0%94%E5%9C%A8%E4%BA%AC%E4%B8%9C%E8%B5%A2%E8%B5%A2%E8%B5%A2%E8%B5%A2%E8%B5%A2%E9%BA%BB%E4%BA%86"
->>>>>>> Stashed changes
         },
         {
           "rank": 5,
@@ -43,8 +34,8 @@
         },
         {
           "rank": 6,
-          "text": "光伏",
-          "url": "https://s.weibo.com/weibo?q=%E5%85%89%E4%BC%8F"
+          "text": "高考结束",
+          "url": "https://s.weibo.com/weibo?q=%E9%AB%98%E8%80%83%E7%BB%93%E6%9D%9F"
         },
         {
           "rank": 7,
@@ -53,29 +44,18 @@
         },
         {
           "rank": 8,
-<<<<<<< Updated upstream
-=======
-          "text": "新疆旅游突然在韩国火了起来",
-          "url": "https://s.weibo.com/weibo?q=%E6%96%B0%E7%96%86%E6%97%85%E6%B8%B8%E7%AA%81%E7%84%B6%E5%9C%A8%E9%9F%A9%E5%9B%BD%E7%81%AB%E4%BA%86%E8%B5%B7%E6%9D%A5"
+          "text": "电影角色给未来观众的信",
+          "url": "https://s.weibo.com/weibo?q=%E7%94%B5%E5%BD%B1%E8%A7%92%E8%89%B2%E7%BB%99%E6%9C%AA%E6%9D%A5%E8%A7%82%E4%BC%97%E7%9A%84%E4%BF%A1"
         },
         {
-          "rank": 9,
->>>>>>> Stashed changes
-          "text": "编剧李宗晨问蒙淇淇哪场是你们写的",
-          "url": "https://s.weibo.com/weibo?q=%E7%BC%96%E5%89%A7%E6%9D%8E%E5%AE%97%E6%99%A8%E9%97%AE%E8%92%99%E6%B7%87%E6%B7%87%E5%93%AA%E5%9C%BA%E6%98%AF%E4%BD%A0%E4%BB%AC%E5%86%99%E7%9A%84"
-        },
-        {
-<<<<<<< Updated upstream
           "rank": 9,
           "text": "新疆旅游突然在韩国火了起来",
           "url": "https://s.weibo.com/weibo?q=%E6%96%B0%E7%96%86%E6%97%85%E6%B8%B8%E7%AA%81%E7%84%B6%E5%9C%A8%E9%9F%A9%E5%9B%BD%E7%81%AB%E4%BA%86%E8%B5%B7%E6%9D%A5"
         },
         {
-=======
->>>>>>> Stashed changes
           "rank": 10,
-          "text": "运营商杀熟",
-          "url": "https://s.weibo.com/weibo?q=%E8%BF%90%E8%90%A5%E5%95%86%E6%9D%80%E7%86%9F"
+          "text": "光伏",
+          "url": "https://s.weibo.com/weibo?q=%E5%85%89%E4%BC%8F"
         }
       ]
     },
@@ -97,8 +77,8 @@
         },
         {
           "rank": 3,
-          "text": "国台办：和平统一后台湾将成繁荣之岛",
-          "url": "https://m.baidu.com/s?word=%E5%9B%BD%E5%8F%B0%E5%8A%9E%EF%BC%9A%E5%92%8C%E5%B9%B3%E7%BB%9F%E4%B8%80%E5%90%8E%E5%8F%B0%E6%B9%BE%E5%B0%86%E6%88%90%E7%B9%81%E8%8D%A3%E4%B9%8B%E5%B2%9B&sa=fyb_news"
+          "text": "中国已补齐台湾岛东部海底地图",
+          "url": "https://m.baidu.com/s?word=%E4%B8%AD%E5%9B%BD%E5%B7%B2%E8%A1%A5%E9%BD%90%E5%8F%B0%E6%B9%BE%E5%B2%9B%E4%B8%9C%E9%83%A8%E6%B5%B7%E5%BA%95%E5%9C%B0%E5%9B%BE&sa=fyb_news"
         },
         {
           "rank": 4,
@@ -107,18 +87,18 @@
         },
         {
           "rank": 5,
-          "text": "微信朋友圈能精准搜索了",
-          "url": "https://m.baidu.com/s?word=%E5%BE%AE%E4%BF%A1%E6%9C%8B%E5%8F%8B%E5%9C%88%E8%83%BD%E7%B2%BE%E5%87%86%E6%90%9C%E7%B4%A2%E4%BA%86&sa=fyb_news"
+          "text": "唱《离别开出花》出圈的2名女生毕业了",
+          "url": "https://m.baidu.com/s?word=%E5%94%B1%E3%80%8A%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1%E3%80%8B%E5%87%BA%E5%9C%88%E7%9A%842%E5%90%8D%E5%A5%B3%E7%94%9F%E6%AF%95%E4%B8%9A%E4%BA%86&sa=fyb_news"
         },
         {
           "rank": 6,
-          "text": "为啥定期存款不香了",
-          "url": "https://m.baidu.com/s?word=%E4%B8%BA%E5%95%A5%E5%AE%9A%E6%9C%9F%E5%AD%98%E6%AC%BE%E4%B8%8D%E9%A6%99%E4%BA%86&sa=fyb_news"
+          "text": "蛋价“退烧”还要多久",
+          "url": "https://m.baidu.com/s?word=%E8%9B%8B%E4%BB%B7%E2%80%9C%E9%80%80%E7%83%A7%E2%80%9D%E8%BF%98%E8%A6%81%E5%A4%9A%E4%B9%85&sa=fyb_news"
         },
         {
           "rank": 7,
-          "text": "11岁男孩吃2斤小龙虾致肾损伤",
-          "url": "https://m.baidu.com/s?word=11%E5%B2%81%E7%94%B7%E5%AD%A9%E5%90%832%E6%96%A4%E5%B0%8F%E9%BE%99%E8%99%BE%E8%87%B4%E8%82%BE%E6%8D%9F%E4%BC%A4&sa=fyb_news"
+          "text": "高考结束",
+          "url": "https://m.baidu.com/s?word=%E9%AB%98%E8%80%83%E7%BB%93%E6%9D%9F&sa=fyb_news"
         },
         {
           "rank": 8,
@@ -127,13 +107,13 @@
         },
         {
           "rank": 9,
-          "text": "当地通报残障老人无薪扛水泥20年",
-          "url": "https://m.baidu.com/s?word=%E5%BD%93%E5%9C%B0%E9%80%9A%E6%8A%A5%E6%AE%8B%E9%9A%9C%E8%80%81%E4%BA%BA%E6%97%A0%E8%96%AA%E6%89%9B%E6%B0%B4%E6%B3%A520%E5%B9%B4&sa=fyb_news"
+          "text": "为啥定期存款不香了",
+          "url": "https://m.baidu.com/s?word=%E4%B8%BA%E5%95%A5%E5%AE%9A%E6%9C%9F%E5%AD%98%E6%AC%BE%E4%B8%8D%E9%A6%99%E4%BA%86&sa=fyb_news"
         },
         {
           "rank": 10,
-          "text": "蛋价“退烧”还要多久",
-          "url": "https://m.baidu.com/s?word=%E8%9B%8B%E4%BB%B7%E2%80%9C%E9%80%80%E7%83%A7%E2%80%9D%E8%BF%98%E8%A6%81%E5%A4%9A%E4%B9%85&sa=fyb_news"
+          "text": "11岁男孩吃2斤小龙虾致肾损伤",
+          "url": "https://m.baidu.com/s?word=11%E5%B2%81%E7%94%B7%E5%AD%A9%E5%90%832%E6%96%A4%E5%B0%8F%E9%BE%99%E8%99%BE%E8%87%B4%E8%82%BE%E6%8D%9F%E4%BC%A4&sa=fyb_news"
         }
       ]
     },
