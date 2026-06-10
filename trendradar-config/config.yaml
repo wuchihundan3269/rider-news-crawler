@@ -471,6 +471,43 @@ rss:
       category: "auto"
       tag: "auto"
 
+# ===== 管道三：百度新闻搜索（HTML 解析，补充国内新闻）=====
+# 百度新闻 RSS 已废弃（返回 HTML），改用搜索页面解析
+# 每个关键词最多返回 20 条，时效性好（含今天/N小时前）
+# 优先级 P3（低于 Google/Bing P2，高于自媒体 P5）
+# GitHub Actions 境外服务器可访问百度新闻搜索页
+baidu_news:
+  enabled: true
+  keywords:
+    - keyword: "外卖骑手"
+      category: "auto"
+      tag: "auto"
+      priority: "P3"
+    - keyword: "骑手权益"
+      category: "opinion"
+      tag: "opinion.rights"
+      priority: "P3"
+    - keyword: "骑手社保"
+      category: "policy"
+      tag: "policy.labor"
+      priority: "P3"
+    - keyword: "骑手驿站"
+      category: "care"
+      tag: "care.station"
+      priority: "P3"
+    - keyword: "美团骑手"
+      category: "platform"
+      tag: "auto"
+      priority: "P3"
+    - keyword: "骑手关爱"
+      category: "care"
+      tag: "care.social"
+      priority: "P3"
+    - keyword: "骑手事故"
+      category: "rider_story"
+      tag: "rider_story.accident"
+      priority: "P3"
+
 # ===== 关键词过滤 =====
 # 策略：所有关键词必须是"外卖/配送/平台"相关的复合词
 # 严禁单独使用"骑手"——会命中摩托车骑手、自行车骑手、骑马等无关内容

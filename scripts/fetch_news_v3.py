@@ -407,6 +407,232 @@ SUB_TAG_LABEL = {
 }
 
 
+# ── 百度新闻搜索抓取（HTML 解析管道）────────────────────────────────────────
+
+_BAIDU_HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                  "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,*/*;q=0.8",
+    "Accept-Language": "zh-CN,zh;q=0.9",
+    "Referer": "https://news.baidu.com/",
+}
+
+# 百度新闻 dispTime 格式 → 近似 ISO 时间
+def _parse_baidu_disp_time(disp_time: str) -> str:
+    """将百度新闻的 dispTime（如 '7小时前'、'昨天15:17'、'2026-06-09 10:00'）转为 ISO 格式"""
+    bj_tz = timezone(timedelta(hours=8))
+    now = datetime.now(bj_tz)
+    disp_time = disp_time.strip()
+
+    # 格式：N分钟前
+    m = re.match(r"(\d+)分钟前", disp_time)
+    if m:
+        dt = now - timedelta(minutes=int(m.group(1)))
+        return dt.strftime("%Y-%m-%dT%H:%M:%S")
+
+    # 格式：N小时前
+    m = re.match(r"(\d+)小时前", disp_time)
+    if m:
+        dt = now - timedelta(hours=int(m.group(1)))
+        return dt.strftime("%Y-%m-%dT%H:%M:%S")
+
+    # 格式：今天HH:MM
+    m = re.match(r"今天\s*(\d{2}):(\d{2})", disp_time)
+    if m:
+        dt = now.replace(hour=int(m.group(1)), minute=int(m.group(2)), second=0, microsecond=0)
+        return dt.strftime("%Y-%m-%dT%H:%M:%S")
+
+    # 格式：昨天HH:MM
+    m = re.match(r"昨天\s*(\d{2}):(\d{2})", disp_time)
+    if m:
+        yesterday = now - timedelta(days=1)
+        dt = yesterday.replace(hour=int(m.group(1)), minute=int(m.group(2)), second=0, microsecond=0)
+        return dt.strftime("%Y-%m-%dT%H:%M:%S")
+
+    # 格式：YYYY-MM-DD HH:MM 或 YYYY-MM-DD
+    m = re.match(r"(\d{4}-\d{2}-\d{2})(?:\s+(\d{2}:\d{2}))?", disp_time)
+    if m:
+        date_part = m.group(1)
+        time_part = m.group(2) or "00:00"
+        return f"{date_part}T{time_part}:00"
+
+    # 格式：MM月DD日 HH:MM
+    m = re.match(r"(\d{1,2})月(\d{1,2})日\s*(\d{2}):(\d{2})", disp_time)
+    if m:
+        year = now.year
+        dt_str = f"{year}-{int(m.group(1)):02d}-{int(m.group(2)):02d}T{m.group(3)}:{m.group(4)}:00"
+        return dt_str
+
+    # 无法解析，返回当前时间
+    return now.strftime("%Y-%m-%dT%H:%M:%S")
+
+
+def fetch_baidu_news(keyword: str, category: str = "auto", tag: str = "auto",
+                     priority: str = "P3", max_age_days: int = 3,
+                     keyword_rules: dict = None, base_keywords: list = None,
+                     timeout: int = 15) -> list[dict]:
+    """
+    抓取百度新闻搜索结果（HTML 解析），返回过滤后的文章列表。
+    百度新闻 RSS 已废弃（返回 HTML），改用搜索页面解析。
+    每次搜索最多返回 20 条，时效性好（含今天/N小时前）。
+    """
+    if not _HAS_BS4:
+        print("  [百度新闻] 需要 beautifulsoup4，跳过")
+        return []
+
+    kw_encoded = urllib.parse.quote(keyword)
+    url = f"https://news.baidu.com/ns?word={kw_encoded}&tn=news&ie=utf-8&cl=2&rn=20&ct=1"
+
+    try:
+        import urllib.request as _urllib_req
+        import ssl as _ssl
+        ctx = _ssl.create_default_context()
+        ctx.check_hostname = False
+        ctx.verify_mode = _ssl.CERT_NONE
+        req = _urllib_req.Request(url, headers=_BAIDU_HEADERS)
+        resp = _urllib_req.urlopen(req, context=ctx, timeout=timeout)
+        content = resp.read().decode("utf-8", "replace")
+    except Exception as e:
+        print(f"  [百度新闻-{keyword}] 抓取失败: {e}")
+        return []
+
+    soup = _BS(content, "html.parser")
+    cutoff = datetime.now(timezone.utc) - timedelta(days=max_age_days)
+
+    items = []
+    # 百度新闻搜索结果：每条新闻在 <div tpl="news-normal"> 容器里
+    # s-data 存储在容器内的 HTML 注释中：<!--s-data:{...}-->
+    news_divs = soup.find_all("div", attrs={"tpl": "news-normal"})
+    if not news_divs:
+        # 降级：直接找 h3
+        news_divs = [h3.parent for h3 in soup.find_all("h3") if h3.find("a")]
+
+    for container in news_divs:
+        # 从 HTML 注释中提取 s-data JSON
+        container_html = str(container)
+        sdata_match = re.search(r'<!--s-data:(.*?)-->', container_html, re.DOTALL)
+
+        disp_time   = ""
+        summary     = ""
+        source_name = "百度新闻"
+        img_url     = None
+        link        = container.get("mu", "")  # mu 属性是真实 URL
+        title       = ""
+
+        if sdata_match:
+            try:
+                sdata = json.loads(sdata_match.group(1))
+                disp_time   = sdata.get("dispTime", "")
+                summary     = sdata.get("summary", "")
+                source_name = sdata.get("sourceName", "百度新闻")
+                img_url     = sdata.get("leftImgSrc", None) or None
+                # 优先用 s-data 里的 titleUrl（更干净）
+                real_url = sdata.get("titleUrl", "")
+                if real_url and real_url.startswith("http"):
+                    link = real_url
+                # 标题（去除 <em> 高亮标签）
+                raw_title = sdata.get("title", "")
+                title = re.sub(r"<[^>]+>", "", raw_title).strip()
+            except Exception:
+                pass
+
+        # 如果 s-data 没有标题，从 h3 > a 获取
+        if not title:
+            h3 = container.find("h3")
+            if h3:
+                a = h3.find("a")
+                if a:
+                    title = a.get_text(strip=True)
+                    if not link:
+                        link = a.get("href", "").strip()
+
+        if not title or not link or not link.startswith("http"):
+            continue
+
+        # 解析时间
+        pub_str = _parse_baidu_disp_time(disp_time) if disp_time else \
+                  datetime.now(timezone(timedelta(hours=8))).strftime("%Y-%m-%dT%H:%M:%S")
+
+        # 时效过滤
+        try:
+            pub_dt = datetime.fromisoformat(pub_str).replace(tzinfo=timezone.utc)
+            if pub_dt < cutoff:
+                continue
+        except Exception:
+            pass
+
+        # 清理摘要中的 HTML 标签（百度摘要含 <em> 高亮）
+        summary = clean_html(summary)
+
+        # 全局过滤
+        if keyword_rules and is_global_filtered(title, summary, keyword_rules.get("global_filter", [])):
+            continue
+
+        # 基础关键词过滤
+        if base_keywords and not matches_base_keywords(title, summary, base_keywords):
+            continue
+
+        # 非外卖骑手过滤
+        if is_non_delivery_rider(title, summary):
+            continue
+
+        # 子分类打标
+        if keyword_rules and tag == "auto":
+            sub_tags = match_sub_tags(title, summary, keyword_rules.get("rules", []))
+        elif tag != "auto":
+            sub_tags = [tag]
+        else:
+            sub_tags = []
+
+        # 一级分类
+        if category == "auto":
+            if sub_tags:
+                opinion_tags  = [t for t in sub_tags if t.startswith("opinion.")]
+                policy_tags   = [t for t in sub_tags if t.startswith("policy.")]
+                care_tags     = [t for t in sub_tags if t.startswith("care.")]
+                platform_tags = [t for t in sub_tags if t.startswith("platform.")]
+                if opinion_tags and (policy_tags or care_tags):
+                    final_category = "policy" if policy_tags else "care"
+                    primary_tag    = (policy_tags or care_tags)[0]
+                elif opinion_tags:
+                    final_category = "opinion"
+                    primary_tag    = opinion_tags[0]
+                elif platform_tags:
+                    final_category = "platform"
+                    primary_tag    = platform_tags[0]
+                else:
+                    final_category = SUB_TAG_TO_CATEGORY.get(sub_tags[0], "policy")
+                    primary_tag    = sub_tags[0]
+            else:
+                final_category = "policy"
+                primary_tag    = ""
+        else:
+            final_category = category
+            primary_tag    = sub_tags[0] if sub_tags else ""
+
+        items.append({
+            "title":        title,
+            "summary":      summary or title,
+            "source":       source_name,
+            "url":          link,
+            "published_at": pub_str,
+            "category":     final_category,
+            "tag":          primary_tag,
+            "tags":         sub_tags,
+            "priority":     priority,
+            "feed_id":      f"baidu_{keyword}",
+            "url_hash":     url_hash(link),
+            "image":        img_url or None,
+        })
+
+    print(f"  [P3] 百度新闻-{keyword}: 获取 {len(items)} 条")
+    return items
+
+
+# 需要 urllib.parse 用于百度新闻 URL 编码
+import urllib.parse
+
+
 # ── RSS 抓取 ──────────────────────────────────────────────────────────────────
 
 def _resolve_feed_url(url: str, timeout: int = 15) -> str:
@@ -734,7 +960,38 @@ def main():
         items = fetch_rss_feed(feed_cfg, keyword_rules, base_keywords, max_age_days)
         all_items.extend(items)
 
-    print(f"\n原始抓取: {len(all_items)} 条")
+    print(f"\nRSS 抓取: {len(all_items)} 条")
+
+    # ── 百度新闻搜索管道（HTML 解析，补充国内新闻）──────────────────────────
+    baidu_config = config.get("baidu_news", {})
+    if baidu_config.get("enabled", True):
+        baidu_keywords = baidu_config.get("keywords", [
+            {"keyword": "外卖骑手", "category": "auto", "tag": "auto"},
+            {"keyword": "骑手权益", "category": "opinion", "tag": "opinion.rights"},
+            {"keyword": "骑手社保", "category": "policy", "tag": "policy.labor"},
+            {"keyword": "骑手驿站", "category": "care", "tag": "care.station"},
+            {"keyword": "美团骑手", "category": "platform", "tag": "auto"},
+        ])
+        print(f"\n── 百度新闻搜索（{len(baidu_keywords)} 个关键词，保留 {max_age_days} 天内）──")
+        baidu_items = []
+        for kw_cfg in baidu_keywords:
+            kw = kw_cfg.get("keyword", "")
+            if not kw:
+                continue
+            items = fetch_baidu_news(
+                keyword=kw,
+                category=kw_cfg.get("category", "auto"),
+                tag=kw_cfg.get("tag", "auto"),
+                priority=kw_cfg.get("priority", "P3"),
+                max_age_days=max_age_days,
+                keyword_rules=keyword_rules,
+                base_keywords=base_keywords,
+            )
+            baidu_items.extend(items)
+        print(f"百度新闻抓取: {len(baidu_items)} 条")
+        all_items.extend(baidu_items)
+
+    print(f"\n原始抓取合计: {len(all_items)} 条")
 
     # 去重与排序
     dedup_config = config.get("report", {}).get("dedup", {})
