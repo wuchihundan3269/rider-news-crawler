@@ -1,5 +1,9 @@
 {
+<<<<<<< Updated upstream
   "updated_at": "2026-06-10T20:42:39",
+=======
+  "updated_at": "2026-06-10T21:02:00",
+>>>>>>> Stashed changes
   "platforms": [
     {
       "id": "weibo",
@@ -24,8 +28,13 @@
         },
         {
           "rank": 4,
+<<<<<<< Updated upstream
           "text": "papi酱私藏好物大公开",
           "url": "https://s.weibo.com/weibo?q=papi%E9%85%B1%E7%A7%81%E8%97%8F%E5%A5%BD%E7%89%A9%E5%A4%A7%E5%85%AC%E5%BC%80"
+=======
+          "text": "全世界都在看这场球",
+          "url": "https://s.weibo.com/weibo?q=%E5%85%A8%E4%B8%96%E7%95%8C%E9%83%BD%E5%9C%A8%E7%9C%8B%E8%BF%99%E5%9C%BA%E7%90%83"
+>>>>>>> Stashed changes
         },
         {
           "rank": 5,
@@ -54,8 +63,13 @@
         },
         {
           "rank": 10,
+<<<<<<< Updated upstream
           "text": "南部档案到底播不播",
           "url": "https://s.weibo.com/weibo?q=%E5%8D%97%E9%83%A8%E6%A1%A3%E6%A1%88%E5%88%B0%E5%BA%95%E6%92%AD%E4%B8%8D%E6%92%AD"
+=======
+          "text": "新疆酸奶粽子",
+          "url": "https://s.weibo.com/weibo?q=%E6%96%B0%E7%96%86%E9%85%B8%E5%A5%B6%E7%B2%BD%E5%AD%90"
+>>>>>>> Stashed changes
         }
       ]
     },
@@ -112,8 +126,8 @@
         },
         {
           "rank": 10,
-          "text": "男孩把珠子塞进耳朵 怕责怪隐瞒6年",
-          "url": "https://m.baidu.com/s?word=%E7%94%B7%E5%AD%A9%E6%8A%8A%E7%8F%A0%E5%AD%90%E5%A1%9E%E8%BF%9B%E8%80%B3%E6%9C%B5+%E6%80%95%E8%B4%A3%E6%80%AA%E9%9A%90%E7%9E%926%E5%B9%B4&sa=fyb_news"
+          "text": "墨西哥记者：日本队来了位轮奸犯",
+          "url": "https://m.baidu.com/s?word=%E5%A2%A8%E8%A5%BF%E5%93%A5%E8%AE%B0%E8%80%85%EF%BC%9A%E6%97%A5%E6%9C%AC%E9%98%9F%E6%9D%A5%E4%BA%86%E4%BD%8D%E8%BD%AE%E5%A5%B8%E7%8A%AF&sa=fyb_news"
         }
       ]
     },
@@ -135,8 +149,8 @@
         },
         {
           "rank": 3,
-          "text": "我国储能发展驶入快车道",
-          "url": "https://www.douyin.com/hot/2529225"
+          "text": "5月新能源汽车产销量同比增长",
+          "url": "https://www.douyin.com/hot/2530030"
         },
         {
           "rank": 4,
@@ -145,18 +159,37 @@
         },
         {
           "rank": 5,
+<<<<<<< Updated upstream
           "text": "NBA总决赛主客场待遇拉满",
           "url": "https://www.douyin.com/hot/2529833"
         },
         {
           "rank": 6,
+=======
+>>>>>>> Stashed changes
           "text": "抖音创作者守护乡村孩子足球梦",
           "url": "https://www.douyin.com/hot/2529770"
         },
         {
+<<<<<<< Updated upstream
           "rank": 7,
+=======
+          "rank": 6,
+>>>>>>> Stashed changes
           "text": "全抖音寻找世界杯梗王",
           "url": "https://www.douyin.com/hot/2529535"
+        },
+        {
+<<<<<<< Updated upstream
+          "rank": 8,
+          "text": "所有零食立刻打入冷宫",
+          "url": "https://www.douyin.com/hot/2529124"
+        },
+        {
+=======
+          "rank": 7,
+          "text": "世界杯你的唐梓回来了",
+          "url": "https://www.douyin.com/hot/2529902"
         },
         {
           "rank": 8,
@@ -164,14 +197,15 @@
           "url": "https://www.douyin.com/hot/2529124"
         },
         {
+>>>>>>> Stashed changes
           "rank": 9,
           "text": "西瓜原来可以当成豆腐切",
           "url": "https://www.douyin.com/hot/2528995"
         },
         {
           "rank": 10,
-          "text": "李沂泽虚报年龄被罚限制参赛3年",
-          "url": "https://www.douyin.com/hot/2529251"
+          "text": "天热了就化这个降温妆",
+          "url": "https://www.douyin.com/hot/2528589"
         }
       ]
     },
