@@ -1,5 +1,9 @@
 {
+<<<<<<< Updated upstream
   "updated_at": "2026-06-11T05:31:09",
+=======
+  "updated_at": "2026-06-11T06:05:43",
+>>>>>>> Stashed changes
   "platforms": [
     {
       "id": "weibo",
@@ -24,11 +28,38 @@
         },
         {
           "rank": 4,
+<<<<<<< Updated upstream
+=======
+          "text": "世界杯开幕喜剧上映 看球喝蒙牛",
+          "url": "https://s.weibo.com/weibo?q=%E4%B8%96%E7%95%8C%E6%9D%AF%E5%BC%80%E5%B9%95%E5%96%9C%E5%89%A7%E4%B8%8A%E6%98%A0%20%E7%9C%8B%E7%90%83%E5%96%9D%E8%92%99%E7%89%9B"
+        },
+        {
+          "rank": 5,
+>>>>>>> Stashed changes
           "text": "肥胖标准的重要更新",
           "url": "https://s.weibo.com/weibo?q=%E8%82%A5%E8%83%96%E6%A0%87%E5%87%86%E7%9A%84%E9%87%8D%E8%A6%81%E6%9B%B4%E6%96%B0"
         },
         {
+<<<<<<< Updated upstream
           "rank": 5,
+=======
+          "rank": 6,
+          "text": "李昀锐邢武趁机索吻",
+          "url": "https://s.weibo.com/weibo?q=%E6%9D%8E%E6%98%80%E9%94%90%E9%82%A2%E6%AD%A6%E8%B6%81%E6%9C%BA%E7%B4%A2%E5%90%BB"
+        },
+        {
+          "rank": 7,
+          "text": "山姆打包哥已被行拘",
+          "url": "https://s.weibo.com/weibo?q=%E5%B1%B1%E5%A7%86%E6%89%93%E5%8C%85%E5%93%A5%E5%B7%B2%E8%A2%AB%E8%A1%8C%E6%8B%98"
+        },
+        {
+          "rank": 8,
+          "text": "电影火遮眼让老外重新拜师",
+          "url": "https://s.weibo.com/weibo?q=%E7%94%B5%E5%BD%B1%E7%81%AB%E9%81%AE%E7%9C%BC%E8%AE%A9%E8%80%81%E5%A4%96%E9%87%8D%E6%96%B0%E6%8B%9C%E5%B8%88"
+        },
+        {
+          "rank": 9,
+>>>>>>> Stashed changes
           "text": "养了一只配得感很低的小猫",
           "url": "https://s.weibo.com/weibo?q=%E5%85%BB%E4%BA%86%E4%B8%80%E5%8F%AA%E9%85%8D%E5%BE%97%E6%84%9F%E5%BE%88%E4%BD%8E%E7%9A%84%E5%B0%8F%E7%8C%AB"
         },
@@ -97,8 +128,8 @@
         },
         {
           "rank": 7,
-          "text": "“退钱哥”刚落地墨西哥就被坑",
-          "url": "https://m.baidu.com/s?word=%E2%80%9C%E9%80%80%E9%92%B1%E5%93%A5%E2%80%9D%E5%88%9A%E8%90%BD%E5%9C%B0%E5%A2%A8%E8%A5%BF%E5%93%A5%E5%B0%B1%E8%A2%AB%E5%9D%91&sa=fyb_news"
+          "text": "人民币迎来关键时刻",
+          "url": "https://m.baidu.com/s?word=%E4%BA%BA%E6%B0%91%E5%B8%81%E8%BF%8E%E6%9D%A5%E5%85%B3%E9%94%AE%E6%97%B6%E5%88%BB&sa=fyb_news"
         },
         {
           "rank": 8,
@@ -107,13 +138,18 @@
         },
         {
           "rank": 9,
+<<<<<<< Updated upstream
           "text": "大连突降冰雹有樱桃果农损失20万",
           "url": "https://m.baidu.com/s?word=%E5%A4%A7%E8%BF%9E%E7%AA%81%E9%99%8D%E5%86%B0%E9%9B%B9%E6%9C%89%E6%A8%B1%E6%A1%83%E6%9E%9C%E5%86%9C%E6%8D%9F%E5%A4%B120%E4%B8%87&sa=fyb_news"
+=======
+          "text": "新能源车不能再“胖”了",
+          "url": "https://m.baidu.com/s?word=%E6%96%B0%E8%83%BD%E6%BA%90%E8%BD%A6%E4%B8%8D%E8%83%BD%E5%86%8D%E2%80%9C%E8%83%96%E2%80%9D%E4%BA%86&sa=fyb_news"
+>>>>>>> Stashed changes
         },
         {
           "rank": 10,
-          "text": "改姓名改年龄是对公平规则的践踏",
-          "url": "https://m.baidu.com/s?word=%E6%94%B9%E5%A7%93%E5%90%8D%E6%94%B9%E5%B9%B4%E9%BE%84%E6%98%AF%E5%AF%B9%E5%85%AC%E5%B9%B3%E8%A7%84%E5%88%99%E7%9A%84%E8%B7%B5%E8%B8%8F&sa=fyb_news"
+          "text": "“退钱哥”刚落地墨西哥就被坑",
+          "url": "https://m.baidu.com/s?word=%E2%80%9C%E9%80%80%E9%92%B1%E5%93%A5%E2%80%9D%E5%88%9A%E8%90%BD%E5%9C%B0%E5%A2%A8%E8%A5%BF%E5%93%A5%E5%B0%B1%E8%A2%AB%E5%9D%91&sa=fyb_news"
         }
       ]
     },
