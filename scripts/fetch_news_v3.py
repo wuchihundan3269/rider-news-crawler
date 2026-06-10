@@ -126,7 +126,7 @@ def parse_time(entry) -> str:
                 return dt.strftime("%Y-%m-%dT%H:%M:%S")
             except Exception:
                 pass
-    return datetime.now(timezone(timedelta(hours=8))).strftime("%Y-%m-%dT%H:%M:%S")
+    return ""  # 无法解析时返回空，由 transform.py 统一用日期+12:00:00 兜底
 
 
 def title_similarity(a: str, b: str) -> float:
