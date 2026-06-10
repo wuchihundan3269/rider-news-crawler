@@ -1,25 +1,15 @@
 {
   "date": "2026-06-10",
-<<<<<<< Updated upstream
-  "hour": "21",
-  "updated_at": "2026-06-10 21:02",
-=======
-  "updated_at": "2026-06-10 23:00",
->>>>>>> Stashed changes
+  "updated_at": "2026-06-10 23:05",
   "file": "data/2026-06-10.json",
   "stats": {
-    "total": 28,
+    "total": 73,
     "by_category": {
-<<<<<<< Updated upstream
-      "policy": 16,
-      "rider_story": 4,
-=======
-      "policy": 17,
-      "rider_story": 3,
->>>>>>> Stashed changes
-      "care": 4,
-      "platform": 3,
-      "opinion": 1
+      "rider_story": 14,
+      "care": 16,
+      "platform": 8,
+      "policy": 30,
+      "opinion": 5
     }
   }
 }
