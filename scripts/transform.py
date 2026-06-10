@@ -320,12 +320,26 @@ def parse_article(item: dict, cat_info: dict, date_str: str) -> dict:
     title   = item.get("title", "").strip()
     summary = item.get("summary", item.get("description", "")).strip()
 
+    # ── 从标题末尾提取真实媒体名（Google News RSS 格式：「标题 - 媒体名」）
+    raw_source = item.get("source", item.get("feed_name", "")).strip()
+    real_source = raw_source
+    raw_url_check = item.get("url", item.get("link", ""))
+    if "news.google.com" in raw_url_check or raw_source.startswith("Google新闻"):
+        # Google News 标题格式：「文章标题 - 媒体名」
+        _m = re.search(r'\s[-\u2013\u2014]\s*([^\-\u2013\u2014]{2,30})\s*$', title)
+        if _m:
+            real_source = _m.group(1).strip()
+            title = title[:_m.start()].strip()
+
     # 子分类打标：优先使用 feed 自带的 tag 字段，否则关键词匹配
     sub_tag = item.get("tag") or detect_sub_tag(title, summary)
     sub_label = SUB_TAG_LABEL.get(sub_tag, "") if sub_tag else ""
 
     raw_url = item.get("url", item.get("link", ""))
     resolved_url = resolve_google_news_url(raw_url)
+    # Google News 链接无法解析为直链，改用百度搜索标题作为可点击的 fallback
+    if "news.google.com" in resolved_url:
+        resolved_url = "https://www.baidu.com/s?wd=" + urllib.parse.quote(title)
 
     # 摘要增强：若 summary 为空或与标题重复，爬取原文提取真实摘要
     if not _is_valid_summary(summary, title, 200):
@@ -337,7 +351,7 @@ def parse_article(item: dict, cat_info: dict, date_str: str) -> dict:
     return {
         "title":        title,
         "summary":      summary,
-        "source":       item.get("source", item.get("feed_name", "")).strip(),
+        "source":       real_source,
         "url":          resolved_url,
         "published_at": pub,
         "category":     cat_info["category"],
@@ -369,14 +383,22 @@ def transform(input_path: str, hot_path: str | None, output_path: str, existing_
                 sub_tag = detect_sub_tag(a.get("title", ""), a.get("summary", ""))
                 updates["sub_tag"] = sub_tag
                 updates["sub_label"] = SUB_TAG_LABEL.get(sub_tag, "") if sub_tag else ""
-            # 解析 Google News 中间链接
+            # 解析 Google News 中间链接，修复 source 字段
             raw_url = a.get("url", "")
             resolved_url = raw_url
+            title = a.get("title", "")
             if raw_url and "news.google.com" in raw_url:
                 resolved_url = resolve_google_news_url(raw_url)
+                # 从标题末尾提取真实媒体名
+                _m = re.search(r'\s[-\u2013\u2014]\s*([^\-\u2013\u2014]{2,30})\s*$', title)
+                if _m:
+                    updates["source"] = _m.group(1).strip()
+                    title = title[:_m.start()].strip()
+                    updates["title"] = title
+                # 仍是 Google News 链接则改用百度搜索 fallback
+                if "news.google.com" in resolved_url:
+                    resolved_url = "https://www.baidu.com/s?wd=" + urllib.parse.quote(title)
                 updates["url"] = resolved_url
-            # 摘要增强：summary 为空或与标题重复时爬取原文
-            title = a.get("title", "")
             summary = a.get("summary", "")
             if not _is_valid_summary(summary, title, 200):
                 fetched = fetch_article_summary(resolved_url, title)
@@ -562,10 +584,23 @@ def _merge_with_existing(new_articles: list, existing_path: str | None, date_str
     # 合并所有文章（新数据在前，已有数据在后）
     all_articles = new_articles + existing_articles
 
-    # 修复存量数据中 published_at = "unknown" 的文章，补全兜底时间 (date_str + "T12:00:00")
+    # 修复存量数据中的遗留问题
     for a in all_articles:
+        # 1. published_at = "unknown" → 补全兜底时间
         if a.get("published_at") == "unknown":
             a["published_at"] = date_str + "T12:00:00"
+        # 2. source 仍是 RSS 频道名（如「Google新闻-xxx」）→ 从标题末尾提取真实媒体名
+        src = a.get("source", "")
+        title = a.get("title", "")
+        if src.startswith("Google新闻") or "news.google.com" in a.get("url", ""):
+            _m = re.search(r'\s[-\u2013\u2014]\s*([^\-\u2013\u2014]{2,30})\s*$', title)
+            if _m:
+                a["source"] = _m.group(1).strip()
+                a["title"]  = title[:_m.start()].strip()
+            # URL 无法解析则改为百度搜索 fallback
+            if "news.google.com" in a.get("url", ""):
+                clean_title = a.get("title", title)
+                a["url"] = "https://www.baidu.com/s?wd=" + urllib.parse.quote(clean_title)
 
     # 按归一化标题去重，同标题保留优先级最高的那条
     best: dict[str, dict] = {}
@@ -580,7 +615,13 @@ def _merge_with_existing(new_articles: list, existing_path: str | None, date_str
             cur_p = _PRIORITY_ORDER.get(best[norm].get("priority", "P5"), 5)
             new_p = _PRIORITY_ORDER.get(a.get("priority", "P5"), 5)
             if new_p < cur_p:
-                best[norm] = a  # 用更高优先级的来源替换
+                merged_article = dict(a)
+                # 新数据只有兜底时间（T12:00:00），而已有数据有精确时间 → 保留精确时间
+                existing_pub = best[norm].get("published_at", "")
+                new_pub = a.get("published_at", "")
+                if new_pub.endswith("T12:00:00") and existing_pub and not existing_pub.endswith("T12:00:00"):
+                    merged_article["published_at"] = existing_pub
+                best[norm] = merged_article  # 用更高优先级的来源替换
 
     merged = list(best.values())
     merged.sort(key=lambda x: x.get("published_at", ""), reverse=True)
