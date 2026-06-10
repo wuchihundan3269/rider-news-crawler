@@ -23,6 +23,7 @@ import json
 import hashlib
 import argparse
 import re
+import urllib.parse
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
@@ -627,10 +628,6 @@ def fetch_baidu_news(keyword: str, category: str = "auto", tag: str = "auto",
 
     print(f"  [P3] 百度新闻-{keyword}: 获取 {len(items)} 条")
     return items
-
-
-# 需要 urllib.parse 用于百度新闻 URL 编码
-import urllib.parse
 
 
 # ── RSS 抓取 ──────────────────────────────────────────────────────────────────
