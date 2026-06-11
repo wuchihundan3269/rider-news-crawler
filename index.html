@@ -890,123 +890,9 @@ _date = _yyyy + '-' + _mm + '-' + _dd;
   };
 }
 
-// ===== Fallback 静态数据（网络不可用时使用）=====
-const SAMPLE_NEWS = [
-  { id:1, tag:'平台动作', tagClass:'tag-red', source:'Google新闻-骑手安全举措', category:'platform',
-    title:'北京万余名外卖小哥化身“移动哨兵”，参与排查安全隐患 - 新浪财经',
-    summary:'北京万余名外卖小哥化身“移动哨兵”，参与排查安全隐患 新浪财经',
-    ts: hoursAgo(1), img:null, grad:'linear-gradient(135deg,#1a1a2e 0%,#16213e 45%,#0f3460 100%)' },
-  { id:2, tag:'行业动态', tagClass:'tag-blue', source:'Google新闻-外卖骑手', category:'industry',
-    title:'1600万外卖骑手过剩 陷5人抢1单困局 - 星島頭條',
-    summary:'1600万外卖骑手过剩 陷5人抢1单困局 星島頭條',
-    ts: hoursAgo(3), img:null, grad:'linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)' },
-  { id:3, tag:'骑手新闻', tagClass:'tag-yellow', source:'Google新闻-骑手', category:'rider',
-    title:'文明看“界”里｜“爱心车位” 破解骑手“停车之困” - 搜狐网',
-    summary:'文明看“界”里｜“爱心车位” 破解骑手“停车之困” 搜狐网',
-    ts: hoursAgo(5), img:null, grad:'linear-gradient(135deg,#1a2e1a 0%,#0d2b0d 45%,#1a3a1a 100%)' },
-  { id:4, tag:'舆论信息', tagClass:'tag-purple', source:'Google新闻-骑手权益争议', category:'opinion',
-    title:'司法为民 | 守护骑手权益 化解劳资纠纷 - 新浪财经',
-    summary:'司法为民 | 守护骑手权益 化解劳资纠纷 新浪财经',
-    ts: hoursAgo(7), img:null, grad:'linear-gradient(135deg,#1e0a2e 0%,#180820 45%,#2a0f3a 100%)' },
-  { id:5, tag:'平台动作', tagClass:'tag-red', source:'Google新闻-骑手安全举措', category:'platform',
-    title:'北京万余名外卖小哥化身“移动哨兵”，参与排查安全隐患 - 搜狐网',
-    summary:'北京万余名外卖小哥化身“移动哨兵”，参与排查安全隐患 搜狐网',
-    ts: hoursAgo(9), img:null, grad:'linear-gradient(135deg,#1a1a2e 0%,#16213e 45%,#0f3460 100%)' },
-  { id:6, tag:'行业动态', tagClass:'tag-blue', source:'Google新闻-骑手', category:'industry',
-    title:'徒步的骑手：如果六四成了天花板，民主在那个叫中国的时空就没有希望了 - 新世纪NewCenturyNet',
-    summary:'徒步的骑手：如果六四成了天花板，民主在那个叫中国的时空就没有希望了 新世纪NewCenturyNet',
-    ts: hoursAgo(11), img:null, grad:'linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)' },
-  { id:7, tag:'行业动态', tagClass:'tag-blue', source:'Google新闻-骑手', category:'industry',
-    title:'张馨予重庆骑行与女骑手亲密互动,展现风采与粉丝热情。 - 新浪网',
-    summary:'张馨予重庆骑行与女骑手亲密互动,展现风采与粉丝热情。 新浪网',
-    ts: hoursAgo(13), img:null, grad:'linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)' },
-  { id:8, tag:'行业动态', tagClass:'tag-blue', source:'Google新闻-灵活就业劳动关系', category:'industry',
-    title:'直面五大难点，浙江首次发布“小哥维权指南” - 搜狐网',
-    summary:'直面五大难点，浙江首次发布“小哥维权指南” 搜狐网',
-    ts: hoursAgo(15), img:null, grad:'linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)' }
-];
-const SAMPLE_FLASH = [
-  { id:1, tag:'行业动态', tagClass:'tag-blue', source:'Google新闻-外卖骑手', category:'industry',
-    title:'1600万外卖骑手过剩 陷5人抢1单困局 - 星島頭條',
-    summary:'1600万外卖骑手过剩 陷5人抢1单困局 星島頭條',
-    ts: minsAgo(5), img:null, grad:'linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)' },
-  { id:2, tag:'行业动态', tagClass:'tag-blue', source:'Google新闻-骑手', category:'industry',
-    title:'徒步的骑手：如果六四成了天花板，民主在那个叫中国的时空就没有希望了 - 新世纪NewCenturyNet',
-    summary:'徒步的骑手：如果六四成了天花板，民主在那个叫中国的时空就没有希望了 新世纪NewCenturyNet',
-    ts: minsAgo(20), img:null, grad:'linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)' },
-  { id:3, tag:'行业动态', tagClass:'tag-blue', source:'Google新闻-骑手', category:'industry',
-    title:'张馨予重庆骑行与女骑手亲密互动,展现风采与粉丝热情。 - 新浪网',
-    summary:'张馨予重庆骑行与女骑手亲密互动,展现风采与粉丝热情。 新浪网',
-    ts: minsAgo(35), img:null, grad:'linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)' },
-  { id:4, tag:'行业动态', tagClass:'tag-blue', source:'Google新闻-灵活就业劳动关系', category:'industry',
-    title:'直面五大难点，浙江首次发布“小哥维权指南” - 搜狐网',
-    summary:'直面五大难点，浙江首次发布“小哥维权指南” 搜狐网',
-    ts: minsAgo(50), img:null, grad:'linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)' },
-  { id:5, tag:'行业动态', tagClass:'tag-blue', source:'Google新闻-外卖骑手', category:'industry',
-    title:'济南迎强对流天气，外卖骑手：站点优化派单方式为骑手准备防雨用品 - jinantimes.com.cn',
-    summary:'济南迎强对流天气，外卖骑手：站点优化派单方式为骑手准备防雨用品 jinantimes.com.cn',
-    ts: minsAgo(65), img:null, grad:'linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)' },
-  { id:6, tag:'行业动态', tagClass:'tag-blue', source:'Google新闻-新就业形态', category:'industry',
-    title:'梧州市持续深化新就业形态劳动者服务保障工作 - 新浪财经',
-    summary:'梧州市持续深化新就业形态劳动者服务保障工作 新浪财经',
-    ts: minsAgo(80), img:null, grad:'linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)' },
-  { id:7, tag:'行业动态', tagClass:'tag-blue', source:'Google新闻-外卖骑手', category:'industry',
-    title:'代理公司管理层轮番上阵，狠薅外卖骑手与公司“羊毛”，4人被判刑 - 搜狐网',
-    summary:'代理公司管理层轮番上阵，狠薅外卖骑手与公司“羊毛”，4人被判刑 搜狐网',
-    ts: minsAgo(95), img:null, grad:'linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)' },
-  { id:8, tag:'行业动态', tagClass:'tag-blue', source:'Google新闻-外卖骑手', category:'industry',
-    title:'代理公司管理层轮番上阵，狠薅外卖骑手与公司“羊毛”，4人被判刑 - 新浪财经',
-    summary:'代理公司管理层轮番上阵，狠薅外卖骑手与公司“羊毛”，4人被判刑 新浪财经',
-    ts: minsAgo(110), img:null, grad:'linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)' },
-  { id:9, tag:'平台动作', tagClass:'tag-red', source:'Google新闻-骑手安全举措', category:'platform',
-    title:'北京万余名外卖小哥化身“移动哨兵”，参与排查安全隐患 - 新浪财经',
-    summary:'北京万余名外卖小哥化身“移动哨兵”，参与排查安全隐患 新浪财经',
-    ts: minsAgo(125), img:null, grad:'linear-gradient(135deg,#1a1a2e 0%,#16213e 45%,#0f3460 100%)' },
-  { id:10, tag:'平台动作', tagClass:'tag-red', source:'Google新闻-骑手安全举措', category:'platform',
-    title:'北京万余名外卖小哥化身“移动哨兵”，参与排查安全隐患 - 搜狐网',
-    summary:'北京万余名外卖小哥化身“移动哨兵”，参与排查安全隐患 搜狐网',
-    ts: minsAgo(140), img:null, grad:'linear-gradient(135deg,#1a1a2e 0%,#16213e 45%,#0f3460 100%)' },
-  { id:11, tag:'行业动态', tagClass:'tag-blue', source:'Google新闻-外卖骑手', category:'industry',
-    title:'内地网约车供给饱和 骑手过剩 中年“失业三件套”还能兜底吗？ - 香港01',
-    summary:'内地网约车供给饱和 骑手过剩 中年“失业三件套”还能兜底吗？ 香港01',
-    ts: minsAgo(155), img:null, grad:'linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)' },
-  { id:12, tag:'行业动态', tagClass:'tag-blue', source:'Google新闻-骑手', category:'industry',
-    title:'中国外卖业内卷加剧 5名骑手争1张单 - 亚洲电视新闻',
-    summary:'中国外卖业内卷加剧 5名骑手争1张单 亚洲电视新闻',
-    ts: minsAgo(170), img:null, grad:'linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)' },
-  { id:13, tag:'行业动态', tagClass:'tag-blue', source:'Google新闻-骑手', category:'industry',
-    title:'玩转阿勒泰 | “这里的美景在其他地方从未见过！” 海外骑手点赞草原石城景区 - 阿勒泰新闻网',
-    summary:'玩转阿勒泰 | “这里的美景在其他地方从未见过！” 海外骑手点赞草原石城景区 阿勒泰新闻网',
-    ts: minsAgo(185), img:null, grad:'linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)' },
-  { id:14, tag:'行业动态', tagClass:'tag-blue', source:'Google新闻-外卖骑手', category:'industry',
-    title:'中国的外卖骑手：最显而易见的社会底层 - The Business Times',
-    summary:'中国的外卖骑手：最显而易见的社会底层 The Business Times',
-    ts: minsAgo(200), img:null, grad:'linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)' },
-  { id:15, tag:'骑手新闻', tagClass:'tag-yellow', source:'Google新闻-骑手', category:'rider',
-    title:'文明看“界”里｜“爱心车位” 破解骑手“停车之困” - 搜狐网',
-    summary:'文明看“界”里｜“爱心车位” 破解骑手“停车之困” 搜狐网',
-    ts: minsAgo(215), img:null, grad:'linear-gradient(135deg,#1a2e1a 0%,#0d2b0d 45%,#1a3a1a 100%)' },
-  { id:16, tag:'平台动作', tagClass:'tag-red', source:'Google新闻-配送费调整', category:'platform',
-    title:'转移骑手配送费、薅“羊毛”，外卖平台代理公司管理人员违法侵占70多万元 - 搜狐网',
-    summary:'转移骑手配送费、薅“羊毛”，外卖平台代理公司管理人员违法侵占70多万元 搜狐网',
-    ts: minsAgo(230), img:null, grad:'linear-gradient(135deg,#1a1a2e 0%,#16213e 45%,#0f3460 100%)' },
-  { id:17, tag:'行业动态', tagClass:'tag-blue', source:'Google新闻-骑手', category:'industry',
-    title:'摩托骑手并行挑衅轿车被当场别倒 - video.sina.com.cn',
-    summary:'摩托骑手并行挑衅轿车被当场别倒 video.sina.com.cn',
-    ts: minsAgo(245), img:null, grad:'linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)' },
-  { id:18, tag:'行业动态', tagClass:'tag-blue', source:'Google新闻-骑手', category:'industry',
-    title:'泰国一骑手雨中送快递遭雷击：闪电击中头盔，胸部烧伤，目前正在接受救治 - 搜狐网',
-    summary:'泰国一骑手雨中送快递遭雷击：闪电击中头盔，胸部烧伤，目前正在接受救治 搜狐网',
-    ts: minsAgo(260), img:null, grad:'linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)' },
-  { id:19, tag:'行业动态', tagClass:'tag-blue', source:'Google新闻-骑手', category:'industry',
-    title:'泰国一骑手雨中送快递遭雷击，闪电击中头盔，脖子至胸口烧伤，护身符被劈裂 - 搜狐网',
-    summary:'泰国一骑手雨中送快递遭雷击，闪电击中头盔，脖子至胸口烧伤，护身符被劈裂 搜狐网',
-    ts: minsAgo(275), img:null, grad:'linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)' },
-  { id:20, tag:'行业动态', tagClass:'tag-blue', source:'Google新闻-骑手', category:'industry',
-    title:'破解骑手停车难题北京首设京C快递三轮车专属免费停放区- 快递圈 - expressboo.com',
-    summary:'破解骑手停车难题北京首设京C快递三轮车专属免费停放区- 快递圈 expressboo.com',
-    ts: minsAgo(290), img:null, grad:'linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)' }
-];
+// ===== Fallback 静态数据（已清空，不再使用硬编码数据）=====
+const SAMPLE_NEWS = [];
+const SAMPLE_FLASH = [];
 
 // ===== 运行时数据（由 loadData 填充，初始为 null 表示加载中）=====
 let NEWS = null;
@@ -1070,10 +956,10 @@ async function _fetchData(){
     _applyData(latest, data);
     console.log('[data] fetch 数据加载成功', latest.date, '共', (data.articles||[]).length, '条');
   } catch(err) {
-    console.warn('[data] fetch 失败，使用 fallback 数据', err.message);
-    NEWS = SAMPLE_NEWS;
-    FLASH_DATA = SAMPLE_FLASH;
-    window._allArticles = SAMPLE_NEWS.concat(SAMPLE_FLASH);
+    console.warn('[data] fetch 失败', err.message);
+    NEWS = [];
+    FLASH_DATA = [];
+    window._allArticles = [];
     window._dataDate = null;
     _dataLoaded = true;
   }
