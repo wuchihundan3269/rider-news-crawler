@@ -53,14 +53,28 @@ TrendRadar 原始格式（output/news/YYYY-MM-DD.json）：
 }
 """
 
+import io
 import json
 import os
 import sys
 import argparse
 import re
+import unicodedata
 import urllib.parse
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
+
+# Windows GBK 终端下强制 UTF-8 输出，防止零宽字符等导致 UnicodeEncodeError
+if sys.stdout.encoding and sys.stdout.encoding.upper() not in ("UTF-8", "UTF8"):
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
+
+
+def _clean_text(s: str) -> str:
+    """去除零宽字符、控制字符等不可见字符"""
+    if not s:
+        return s
+    return "".join(c for c in s if not unicodedata.category(c).startswith(("Cf", "Cc", "Cs")))
 
 try:
     import requests as _requests
@@ -206,6 +220,51 @@ _BLOCKED_TITLE_PATTERNS: list[list[str]] = [
     ["法院", "认定"],
     ["裁判", "骑手"],
     ["判决", "骑手", "赔"],
+    # 事故死亡/刑拘类（个案新闻，负面情绪强，不适合展示）
+    ["骑手", "身亡"],
+    ["骑手", "死亡"],
+    ["骑手", "遇难"],
+    ["骑手", "被刑拘"],
+    ["配送站", "被刑拘"],
+    ["骑手", "刑拘"],
+    ["骑手", "交通事故", "亡"],
+    ["骑手", "撞车", "身亡"],
+    ["骑手", "撞车", "死亡"],
+    ["负责人", "被刑拘"],
+    # 责任/追责/赔偿类
+    ["平台失职"],
+    ["重大责任事故"],
+    ["涉嫌重大责任"],
+    # 骑手封号/投诉争议负面类
+    ["骑手", "被封号"],
+    ["骑手", "封号"],
+    # 职业伤害认定争议
+    ["骑手", "职业伤害", "工伤"],
+    ["骑手", "遭遇交通事故", "伤害"],
+    # 法官说法/以案普法类
+    ["法官说法"],
+    ["法官释法"],
+    ["以案普法"],
+    # 主语为"外卖员/快递员"的事故死亡（不含"骑手"关键词）
+    ["外卖员", "身亡"],
+    ["外卖员", "死亡"],
+    ["外卖员", "车祸身亡"],
+    ["快递员", "身亡"],
+    ["快递员", "死亡"],
+    # 撞伤行人/追责类
+    ["骑手", "撞伤", "担责"],
+    ["骑手", "撞伤行人"],
+    ["外卖骑手", "撞伤", "谁应担责"],
+    ["外卖骑手", "撞伤", "担责"],
+    # 法院确认劳动/劳务关系（法律判决类）
+    ["法院确认", "骑手"],
+    ["法院确认", "外卖"],
+    ["法院", "劳务关系", "骑手"],
+    ["法院", "劳动关系", "骑手"],
+    # 刑拘（主语不含"骑手"的）
+    ["送餐", "刑拘"],
+    ["外卖员", "刑拘"],
+    ["车祸身亡", "刑拘"],
 ]
 
 def _is_blocked(article: dict) -> bool:
@@ -350,8 +409,8 @@ def parse_article(item: dict, cat_info: dict, date_str: str) -> dict:
     else:
         pub = date_str + "T12:00:00"
 
-    title   = item.get("title", "").strip()
-    summary = item.get("summary", item.get("description", "")).strip()
+    title   = _clean_text(item.get("title", "").strip())
+    summary = _clean_text(item.get("summary", item.get("description", "")).strip())
 
     # ── 从标题末尾提取真实媒体名（Google News RSS 格式：「标题 - 媒体名」）
     raw_source = item.get("source", item.get("feed_name", "")).strip()
