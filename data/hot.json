@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-11T16:05:19",
+  "updated_at": "2026-06-11T16:51:42",
   "platforms": [
     {
       "id": "weibo",
@@ -14,48 +14,48 @@
         },
         {
           "rank": 2,
-          "text": "榴莲仅退款买家父亲向商家道歉",
-          "url": "https://s.weibo.com/weibo?q=%E6%A6%B4%E8%8E%B2%E4%BB%85%E9%80%80%E6%AC%BE%E4%B9%B0%E5%AE%B6%E7%88%B6%E4%BA%B2%E5%90%91%E5%95%86%E5%AE%B6%E9%81%93%E6%AD%89"
+          "text": "120斤西瓜瓜王拍卖仅617元成交",
+          "url": "https://s.weibo.com/weibo?q=120%E6%96%A4%E8%A5%BF%E7%93%9C%E7%93%9C%E7%8E%8B%E6%8B%8D%E5%8D%96%E4%BB%85617%E5%85%83%E6%88%90%E4%BA%A4"
         },
         {
           "rank": 3,
-          "text": "万千气象看河南",
-          "url": "https://s.weibo.com/weibo?q=%E4%B8%87%E5%8D%83%E6%B0%94%E8%B1%A1%E7%9C%8B%E6%B2%B3%E5%8D%97"
+          "text": "中国人在沙漠建巨型充电宝",
+          "url": "https://s.weibo.com/weibo?q=%E4%B8%AD%E5%9B%BD%E4%BA%BA%E5%9C%A8%E6%B2%99%E6%BC%A0%E5%BB%BA%E5%B7%A8%E5%9E%8B%E5%85%85%E7%94%B5%E5%AE%9D"
         },
         {
           "rank": 4,
+          "text": "于适鸿星尔克足球少年",
+          "url": "https://s.weibo.com/weibo?q=%E4%BA%8E%E9%80%82%E9%B8%BF%E6%98%9F%E5%B0%94%E5%85%8B%E8%B6%B3%E7%90%83%E5%B0%91%E5%B9%B4"
+        },
+        {
+          "rank": 5,
           "text": "爱吃生菜的人天塌了",
           "url": "https://s.weibo.com/weibo?q=%E7%88%B1%E5%90%83%E7%94%9F%E8%8F%9C%E7%9A%84%E4%BA%BA%E5%A4%A9%E5%A1%8C%E4%BA%86"
         },
         {
-          "rank": 5,
-          "text": "谢娜北京演唱会售罄",
-          "url": "https://s.weibo.com/weibo?q=%E8%B0%A2%E5%A8%9C%E5%8C%97%E4%BA%AC%E6%BC%94%E5%94%B1%E4%BC%9A%E5%94%AE%E7%BD%84"
-        },
-        {
           "rank": 6,
-          "text": "色情漫画网站浏览量超1亿次",
-          "url": "https://s.weibo.com/weibo?q=%E8%89%B2%E6%83%85%E6%BC%AB%E7%94%BB%E7%BD%91%E7%AB%99%E6%B5%8F%E8%A7%88%E9%87%8F%E8%B6%851%E4%BA%BF%E6%AC%A1"
-        },
-        {
-          "rank": 7,
-          "text": "京东健康618 赵奕欢送百万免单",
-          "url": "https://s.weibo.com/weibo?q=%E4%BA%AC%E4%B8%9C%E5%81%A5%E5%BA%B7618%20%E8%B5%B5%E5%A5%95%E6%AC%A2%E9%80%81%E7%99%BE%E4%B8%87%E5%85%8D%E5%8D%95"
-        },
-        {
-          "rank": 8,
           "text": "林玉芬心疼白鹿",
           "url": "https://s.weibo.com/weibo?q=%E6%9E%97%E7%8E%89%E8%8A%AC%E5%BF%83%E7%96%BC%E7%99%BD%E9%B9%BF"
         },
         {
+          "rank": 7,
+          "text": "谢娜北京演唱会售罄",
+          "url": "https://s.weibo.com/weibo?q=%E8%B0%A2%E5%A8%9C%E5%8C%97%E4%BA%AC%E6%BC%94%E5%94%B1%E4%BC%9A%E5%94%AE%E7%BD%84"
+        },
+        {
+          "rank": 8,
+          "text": "哈兰德",
+          "url": "https://s.weibo.com/weibo?q=%E5%93%88%E5%85%B0%E5%BE%B7"
+        },
+        {
           "rank": 9,
-          "text": "宁德时代董事长谈奋斗还是生活",
-          "url": "https://s.weibo.com/weibo?q=%E5%AE%81%E5%BE%B7%E6%97%B6%E4%BB%A3%E8%91%A3%E4%BA%8B%E9%95%BF%E8%B0%88%E5%A5%8B%E6%96%97%E8%BF%98%E6%98%AF%E7%94%9F%E6%B4%BB"
+          "text": "毕业租房就是一场巨大的祛魅",
+          "url": "https://s.weibo.com/weibo?q=%E6%AF%95%E4%B8%9A%E7%A7%9F%E6%88%BF%E5%B0%B1%E6%98%AF%E4%B8%80%E5%9C%BA%E5%B7%A8%E5%A4%A7%E7%9A%84%E7%A5%9B%E9%AD%85"
         },
         {
           "rank": 10,
-          "text": "起猛了看到一群苹果去上班",
-          "url": "https://s.weibo.com/weibo?q=%E8%B5%B7%E7%8C%9B%E4%BA%86%E7%9C%8B%E5%88%B0%E4%B8%80%E7%BE%A4%E8%8B%B9%E6%9E%9C%E5%8E%BB%E4%B8%8A%E7%8F%AD"
+          "text": "LOL官宣Peanut断开连接",
+          "url": "https://s.weibo.com/weibo?q=LOL%E5%AE%98%E5%AE%A3Peanut%E6%96%AD%E5%BC%80%E8%BF%9E%E6%8E%A5"
         }
       ]
     },
@@ -67,8 +67,8 @@
       "items": [
         {
           "rank": 1,
-          "text": "从三个维度读懂中朝传统友谊新篇章",
-          "url": "https://m.baidu.com/s?word=%E4%BB%8E%E4%B8%89%E4%B8%AA%E7%BB%B4%E5%BA%A6%E8%AF%BB%E6%87%82%E4%B8%AD%E6%9C%9D%E4%BC%A0%E7%BB%9F%E5%8F%8B%E8%B0%8A%E6%96%B0%E7%AF%87%E7%AB%A0&sa=fyb_news"
+          "text": "让中华文明瑰宝永续留存、泽惠后人",
+          "url": "https://m.baidu.com/s?word=%E8%AE%A9%E4%B8%AD%E5%8D%8E%E6%96%87%E6%98%8E%E7%91%B0%E5%AE%9D%E6%B0%B8%E7%BB%AD%E7%95%99%E5%AD%98%E3%80%81%E6%B3%BD%E6%83%A0%E5%90%8E%E4%BA%BA&sa=fyb_news"
         },
         {
           "rank": 2,
@@ -77,23 +77,23 @@
         },
         {
           "rank": 3,
-          "text": "日本想搞三海联动针对中国",
-          "url": "https://m.baidu.com/s?word=%E6%97%A5%E6%9C%AC%E6%83%B3%E6%90%9E%E4%B8%89%E6%B5%B7%E8%81%94%E5%8A%A8%E9%92%88%E5%AF%B9%E4%B8%AD%E5%9B%BD&sa=fyb_news"
+          "text": "中方：日本已经摘下面具",
+          "url": "https://m.baidu.com/s?word=%E4%B8%AD%E6%96%B9%EF%BC%9A%E6%97%A5%E6%9C%AC%E5%B7%B2%E7%BB%8F%E6%91%98%E4%B8%8B%E9%9D%A2%E5%85%B7&sa=fyb_news"
         },
         {
           "rank": 4,
-          "text": "全国小麦收获进度已过七成",
-          "url": "https://m.baidu.com/s?word=%E5%85%A8%E5%9B%BD%E5%B0%8F%E9%BA%A6%E6%94%B6%E8%8E%B7%E8%BF%9B%E5%BA%A6%E5%B7%B2%E8%BF%87%E4%B8%83%E6%88%90&sa=fyb_news"
+          "text": "合力治理高考志愿填报“陷阱”",
+          "url": "https://m.baidu.com/s?word=%E5%90%88%E5%8A%9B%E6%B2%BB%E7%90%86%E9%AB%98%E8%80%83%E5%BF%97%E6%84%BF%E5%A1%AB%E6%8A%A5%E2%80%9C%E9%99%B7%E9%98%B1%E2%80%9D&sa=fyb_news"
         },
         {
           "rank": 5,
-          "text": "大二学生在三里屯开果礼店日入过万",
-          "url": "https://m.baidu.com/s?word=%E5%A4%A7%E4%BA%8C%E5%AD%A6%E7%94%9F%E5%9C%A8%E4%B8%89%E9%87%8C%E5%B1%AF%E5%BC%80%E6%9E%9C%E7%A4%BC%E5%BA%97%E6%97%A5%E5%85%A5%E8%BF%87%E4%B8%87&sa=fyb_news"
+          "text": "人民日报：让萝卜岗在阳光下无处遁形",
+          "url": "https://m.baidu.com/s?word=%E4%BA%BA%E6%B0%91%E6%97%A5%E6%8A%A5%EF%BC%9A%E8%AE%A9%E8%90%9D%E5%8D%9C%E5%B2%97%E5%9C%A8%E9%98%B3%E5%85%89%E4%B8%8B%E6%97%A0%E5%A4%84%E9%81%81%E5%BD%A2&sa=fyb_news"
         },
         {
           "rank": 6,
-          "text": "色情漫画网站浏览量超1亿次",
-          "url": "https://m.baidu.com/s?word=%E8%89%B2%E6%83%85%E6%BC%AB%E7%94%BB%E7%BD%91%E7%AB%99%E6%B5%8F%E8%A7%88%E9%87%8F%E8%B6%851%E4%BA%BF%E6%AC%A1&sa=fyb_news"
+          "text": "百亿补贴并非真百亿 多家平台被约谈",
+          "url": "https://m.baidu.com/s?word=%E7%99%BE%E4%BA%BF%E8%A1%A5%E8%B4%B4%E5%B9%B6%E9%9D%9E%E7%9C%9F%E7%99%BE%E4%BA%BF+%E5%A4%9A%E5%AE%B6%E5%B9%B3%E5%8F%B0%E8%A2%AB%E7%BA%A6%E8%B0%88&sa=fyb_news"
         },
         {
           "rank": 7,
@@ -102,18 +102,18 @@
         },
         {
           "rank": 8,
+          "text": "色情漫画网站浏览量超1亿次",
+          "url": "https://m.baidu.com/s?word=%E8%89%B2%E6%83%85%E6%BC%AB%E7%94%BB%E7%BD%91%E7%AB%99%E6%B5%8F%E8%A7%88%E9%87%8F%E8%B6%851%E4%BA%BF%E6%AC%A1&sa=fyb_news"
+        },
+        {
+          "rank": 9,
           "text": "爸爸抱完宝宝竟致其脖子溃烂",
           "url": "https://m.baidu.com/s?word=%E7%88%B8%E7%88%B8%E6%8A%B1%E5%AE%8C%E5%AE%9D%E5%AE%9D%E7%AB%9F%E8%87%B4%E5%85%B6%E8%84%96%E5%AD%90%E6%BA%83%E7%83%82&sa=fyb_news"
         },
         {
-          "rank": 9,
-          "text": "极兔速递被立案调查",
-          "url": "https://m.baidu.com/s?word=%E6%9E%81%E5%85%94%E9%80%9F%E9%80%92%E8%A2%AB%E7%AB%8B%E6%A1%88%E8%B0%83%E6%9F%A5&sa=fyb_news"
-        },
-        {
           "rank": 10,
-          "text": "遭仅退款榴莲商家终于等来了道歉",
-          "url": "https://m.baidu.com/s?word=%E9%81%AD%E4%BB%85%E9%80%80%E6%AC%BE%E6%A6%B4%E8%8E%B2%E5%95%86%E5%AE%B6%E7%BB%88%E4%BA%8E%E7%AD%89%E6%9D%A5%E4%BA%86%E9%81%93%E6%AD%89&sa=fyb_news"
+          "text": "伊朗：用12枚导弹摧毁美军大量战机",
+          "url": "https://m.baidu.com/s?word=%E4%BC%8A%E6%9C%97%EF%BC%9A%E7%94%A812%E6%9E%9A%E5%AF%BC%E5%BC%B9%E6%91%A7%E6%AF%81%E7%BE%8E%E5%86%9B%E5%A4%A7%E9%87%8F%E6%88%98%E6%9C%BA&sa=fyb_news"
         }
       ]
     },
