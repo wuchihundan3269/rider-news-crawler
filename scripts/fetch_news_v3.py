@@ -545,21 +545,15 @@ def _fetch_baidu_zixun_page(keyword: str, timeout: int = 15) -> list[dict]:
                 source_name = line
                 break
 
-        # 图片：从 h3 的祖父级容器（整条新闻的外层 div）里查找
-        # 百度资讯结果：图片在 h3.parent.parent 的子树里，与 h3.parent 同级
+        # 图片：在 h3 父级子树里找文章配图缩略图
+        # 排除 bjh/user/ 路径（这是百家号作者头像，不是文章配图）
         img_url = ""
-        search_scopes = [
-            parent.parent if parent else None,  # 祖父级（整条新闻外层）
-            parent,                              # 父级
-        ]
-        for img_scope in search_scopes:
-            if not img_scope:
-                continue
-            img_tag = img_scope.find("img")
-            if img_tag:
+        if parent:
+            for img_tag in parent.find_all("img"):
                 _src = (img_tag.get("src") or img_tag.get("data-src")
                         or img_tag.get("data-original") or "")
-                if _src and _src.startswith("http"):
+                if (_src and _src.startswith("http")
+                        and "/bjh/user/" not in _src):  # 排除作者头像
                     img_url = _src
                     break
 
