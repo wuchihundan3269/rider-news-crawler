@@ -1,32 +1,15 @@
 {
   "date": "2026-06-11",
-<<<<<<< Updated upstream
-  "hour": "10",
-  "updated_at": "2026-06-11 10:44",
+  "hour": "14",
+  "updated_at": "2026-06-11 14:16",
   "file": "data/2026-06-11.json",
   "stats": {
-    "total": 22,
+    "total": 23,
     "by_category": {
-      "policy": 15,
-      "care": 3,
       "rider_story": 2,
-      "platform": 1,
+      "care": 4,
+      "policy": 16,
       "opinion": 1
     }
   }
 }
-=======
-  "updated_at": "2026-06-11 14:05",
-  "file": "data/2026-06-11.json",
-  "stats": {
-    "total": 55,
-    "by_category": {
-      "rider_story": 10,
-      "care": 13,
-      "platform": 4,
-      "opinion": 5,
-      "policy": 23
-    }
-  }
-}
->>>>>>> Stashed changes

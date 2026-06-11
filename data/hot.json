@@ -1,9 +1,5 @@
 {
-<<<<<<< Updated upstream
-  "updated_at": "2026-06-11T10:47:16",
-=======
-  "updated_at": "2026-06-11T14:05:25",
->>>>>>> Stashed changes
+  "updated_at": "2026-06-11T14:18:47",
   "platforms": [
     {
       "id": "weibo",
@@ -13,23 +9,13 @@
       "items": [
         {
           "rank": 1,
-<<<<<<< Updated upstream
-          "text": "广西兴安爆炸致7死17伤",
-          "url": "https://s.weibo.com/weibo?q=%E5%B9%BF%E8%A5%BF%E5%85%B4%E5%AE%89%E7%88%86%E7%82%B8%E8%87%B47%E6%AD%BB17%E4%BC%A4"
-        },
-        {
-          "rank": 2,
-          "text": "王楚钦回应担任国乒男队队长",
-          "url": "https://s.weibo.com/weibo?q=%E7%8E%8B%E6%A5%9A%E9%92%A6%E5%9B%9E%E5%BA%94%E6%8B%85%E4%BB%BB%E5%9B%BD%E4%B9%92%E7%94%B7%E9%98%9F%E9%98%9F%E9%95%BF"
-=======
           "text": "榴莲仅退款买家父亲向商家道歉",
           "url": "https://s.weibo.com/weibo?q=%E6%A6%B4%E8%8E%B2%E4%BB%85%E9%80%80%E6%AC%BE%E4%B9%B0%E5%AE%B6%E7%88%B6%E4%BA%B2%E5%90%91%E5%95%86%E5%AE%B6%E9%81%93%E6%AD%89"
         },
         {
           "rank": 2,
-          "text": "尼克斯绝杀马刺",
-          "url": "https://s.weibo.com/weibo?q=%E5%B0%BC%E5%85%8B%E6%96%AF%E7%BB%9D%E6%9D%80%E9%A9%AC%E5%88%BA"
->>>>>>> Stashed changes
+          "text": "莫离直播",
+          "url": "https://s.weibo.com/weibo?q=%E8%8E%AB%E7%A6%BB%E7%9B%B4%E6%92%AD"
         },
         {
           "rank": 3,
@@ -38,73 +24,38 @@
         },
         {
           "rank": 4,
-<<<<<<< Updated upstream
-          "text": "旅游热度很低却很夯的城市",
-          "url": "https://s.weibo.com/weibo?q=%E6%97%85%E6%B8%B8%E7%83%AD%E5%BA%A6%E5%BE%88%E4%BD%8E%E5%8D%B4%E5%BE%88%E5%A4%AF%E7%9A%84%E5%9F%8E%E5%B8%82"
-        },
-        {
-          "rank": 5,
-          "text": "曝百妖谱女主黄多多",
-          "url": "https://s.weibo.com/weibo?q=%E6%9B%9D%E7%99%BE%E5%A6%96%E8%B0%B1%E5%A5%B3%E4%B8%BB%E9%BB%84%E5%A4%9A%E5%A4%9A"
-        },
-        {
-          "rank": 6,
-          "text": "冷战7年妻子外出跳交谊舞丈夫破防",
-          "url": "https://s.weibo.com/weibo?q=%E5%86%B7%E6%88%987%E5%B9%B4%E5%A6%BB%E5%AD%90%E5%A4%96%E5%87%BA%E8%B7%B3%E4%BA%A4%E8%B0%8A%E8%88%9E%E4%B8%88%E5%A4%AB%E7%A0%B4%E9%98%B2"
-        },
-        {
-          "rank": 7,
-          "text": "江西瑞金警方辟谣考生迟到被拒入",
-          "url": "https://s.weibo.com/weibo?q=%E6%B1%9F%E8%A5%BF%E7%91%9E%E9%87%91%E8%AD%A6%E6%96%B9%E8%BE%9F%E8%B0%A3%E8%80%83%E7%94%9F%E8%BF%9F%E5%88%B0%E8%A2%AB%E6%8B%92%E5%85%A5"
-        },
-        {
-          "rank": 8,
-          "text": "林玉芬代表作",
-          "url": "https://s.weibo.com/weibo?q=%E6%9E%97%E7%8E%89%E8%8A%AC%E4%BB%A3%E8%A1%A8%E4%BD%9C"
-        },
-        {
-          "rank": 9,
-          "text": "央视曝光色情漫画陷阱",
-          "url": "https://s.weibo.com/weibo?q=%E5%A4%AE%E8%A7%86%E6%9B%9D%E5%85%89%E8%89%B2%E6%83%85%E6%BC%AB%E7%94%BB%E9%99%B7%E9%98%B1"
-        },
-        {
-          "rank": 10,
-          "text": "宇树科技合作英伟达引争议",
-          "url": "https://s.weibo.com/weibo?q=%E5%AE%87%E6%A0%91%E7%A7%91%E6%8A%80%E5%90%88%E4%BD%9C%E8%8B%B1%E4%BC%9F%E8%BE%BE%E5%BC%95%E4%BA%89%E8%AE%AE"
-=======
-          "text": "揭开湘西之谜",
-          "url": "https://s.weibo.com/weibo?q=%E6%8F%AD%E5%BC%80%E6%B9%98%E8%A5%BF%E4%B9%8B%E8%B0%9C"
-        },
-        {
-          "rank": 5,
           "text": "爱吃生菜的人天塌了",
           "url": "https://s.weibo.com/weibo?q=%E7%88%B1%E5%90%83%E7%94%9F%E8%8F%9C%E7%9A%84%E4%BA%BA%E5%A4%A9%E5%A1%8C%E4%BA%86"
         },
         {
-          "rank": 6,
+          "rank": 5,
           "text": "色情漫画网站浏览量超1亿次",
           "url": "https://s.weibo.com/weibo?q=%E8%89%B2%E6%83%85%E6%BC%AB%E7%94%BB%E7%BD%91%E7%AB%99%E6%B5%8F%E8%A7%88%E9%87%8F%E8%B6%851%E4%BA%BF%E6%AC%A1"
         },
         {
+          "rank": 6,
+          "text": "尼克斯绝杀马刺",
+          "url": "https://s.weibo.com/weibo?q=%E5%B0%BC%E5%85%8B%E6%96%AF%E7%BB%9D%E6%9D%80%E9%A9%AC%E5%88%BA"
+        },
+        {
           "rank": 7,
-          "text": "贺峻霖我没满22结不了婚",
-          "url": "https://s.weibo.com/weibo?q=%E8%B4%BA%E5%B3%BB%E9%9C%96%E6%88%91%E6%B2%A1%E6%BB%A122%E7%BB%93%E4%B8%8D%E4%BA%86%E5%A9%9A"
+          "text": "人一旦在大城市生活过就定型了",
+          "url": "https://s.weibo.com/weibo?q=%E4%BA%BA%E4%B8%80%E6%97%A6%E5%9C%A8%E5%A4%A7%E5%9F%8E%E5%B8%82%E7%94%9F%E6%B4%BB%E8%BF%87%E5%B0%B1%E5%AE%9A%E5%9E%8B%E4%BA%86"
         },
         {
           "rank": 8,
-          "text": "闪充一下满电上场",
-          "url": "https://s.weibo.com/weibo?q=%E9%97%AA%E5%85%85%E4%B8%80%E4%B8%8B%E6%BB%A1%E7%94%B5%E4%B8%8A%E5%9C%BA"
+          "text": "丁太升回应谢娜演唱会争议",
+          "url": "https://s.weibo.com/weibo?q=%E4%B8%81%E5%A4%AA%E5%8D%87%E5%9B%9E%E5%BA%94%E8%B0%A2%E5%A8%9C%E6%BC%94%E5%94%B1%E4%BC%9A%E4%BA%89%E8%AE%AE"
         },
         {
           "rank": 9,
-          "text": "男子隐瞒性功能障碍被撤销婚姻",
-          "url": "https://s.weibo.com/weibo?q=%E7%94%B7%E5%AD%90%E9%9A%90%E7%9E%92%E6%80%A7%E5%8A%9F%E8%83%BD%E9%9A%9C%E7%A2%8D%E8%A2%AB%E6%92%A4%E9%94%80%E5%A9%9A%E5%A7%BB"
+          "text": "小米玄戒O3芯片性能曝光",
+          "url": "https://s.weibo.com/weibo?q=%E5%B0%8F%E7%B1%B3%E7%8E%84%E6%88%92O3%E8%8A%AF%E7%89%87%E6%80%A7%E8%83%BD%E6%9B%9D%E5%85%89"
         },
         {
           "rank": 10,
-          "text": "莫离直播",
-          "url": "https://s.weibo.com/weibo?q=%E8%8E%AB%E7%A6%BB%E7%9B%B4%E6%92%AD"
->>>>>>> Stashed changes
+          "text": "世界杯揭幕战看什么",
+          "url": "https://s.weibo.com/weibo?q=%E4%B8%96%E7%95%8C%E6%9D%AF%E6%8F%AD%E5%B9%95%E6%88%98%E7%9C%8B%E4%BB%80%E4%B9%88"
         }
       ]
     },
@@ -121,15 +72,6 @@
         },
         {
           "rank": 2,
-<<<<<<< Updated upstream
-          "text": "广西兴安爆炸致7死17伤",
-          "url": "https://m.baidu.com/s?word=%E5%B9%BF%E8%A5%BF%E5%85%B4%E5%AE%89%E7%88%86%E7%82%B8%E8%87%B47%E6%AD%BB17%E4%BC%A4&sa=fyb_news"
-        },
-        {
-          "rank": 3,
-          "text": "美伊冲突最新进展",
-          "url": "https://m.baidu.com/s?word=%E7%BE%8E%E4%BC%8A%E5%86%B2%E7%AA%81%E6%9C%80%E6%96%B0%E8%BF%9B%E5%B1%95&sa=fyb_news"
-=======
           "text": "淘宝京东拼多多抖音小红书被约谈",
           "url": "https://m.baidu.com/s?word=%E6%B7%98%E5%AE%9D%E4%BA%AC%E4%B8%9C%E6%8B%BC%E5%A4%9A%E5%A4%9A%E6%8A%96%E9%9F%B3%E5%B0%8F%E7%BA%A2%E4%B9%A6%E8%A2%AB%E7%BA%A6%E8%B0%88&sa=fyb_news"
         },
@@ -137,7 +79,6 @@
           "rank": 3,
           "text": "极兔速递被立案调查",
           "url": "https://m.baidu.com/s?word=%E6%9E%81%E5%85%94%E9%80%9F%E9%80%92%E8%A2%AB%E7%AB%8B%E6%A1%88%E8%B0%83%E6%9F%A5&sa=fyb_news"
->>>>>>> Stashed changes
         },
         {
           "rank": 4,
@@ -146,15 +87,6 @@
         },
         {
           "rank": 5,
-<<<<<<< Updated upstream
-          "text": "广西爆炸目击者：居民家门窗被震碎",
-          "url": "https://m.baidu.com/s?word=%E5%B9%BF%E8%A5%BF%E7%88%86%E7%82%B8%E7%9B%AE%E5%87%BB%E8%80%85%EF%BC%9A%E5%B1%85%E6%B0%91%E5%AE%B6%E9%97%A8%E7%AA%97%E8%A2%AB%E9%9C%87%E7%A2%8E&sa=fyb_news"
-        },
-        {
-          "rank": 6,
-          "text": "2026年美加墨世界杯",
-          "url": "https://m.baidu.com/s?word=2026%E5%B9%B4%E7%BE%8E%E5%8A%A0%E5%A2%A8%E4%B8%96%E7%95%8C%E6%9D%AF&sa=fyb_news"
-=======
           "text": "尼克斯107-106马刺 阿努诺比绝杀",
           "url": "https://m.baidu.com/s?word=%E5%B0%BC%E5%85%8B%E6%96%AF107-106%E9%A9%AC%E5%88%BA+%E9%98%BF%E5%8A%AA%E8%AF%BA%E6%AF%94%E7%BB%9D%E6%9D%80&sa=fyb_news"
         },
@@ -162,7 +94,6 @@
           "rank": 6,
           "text": "路虎揽胜极光跌至17.98万？销售回应",
           "url": "https://m.baidu.com/s?word=%E8%B7%AF%E8%99%8E%E6%8F%BD%E8%83%9C%E6%9E%81%E5%85%89%E8%B7%8C%E8%87%B317.98%E4%B8%87%EF%BC%9F%E9%94%80%E5%94%AE%E5%9B%9E%E5%BA%94&sa=fyb_news"
->>>>>>> Stashed changes
         },
         {
           "rank": 7,
@@ -171,20 +102,6 @@
         },
         {
           "rank": 8,
-<<<<<<< Updated upstream
-          "text": "两大央企被约谈",
-          "url": "https://m.baidu.com/s?word=%E4%B8%A4%E5%A4%A7%E5%A4%AE%E4%BC%81%E8%A2%AB%E7%BA%A6%E8%B0%88&sa=fyb_news"
-        },
-        {
-          "rank": 9,
-          "text": "钉钉换帅！陈航卸任CEO",
-          "url": "https://m.baidu.com/s?word=%E9%92%89%E9%92%89%E6%8D%A2%E5%B8%85%EF%BC%81%E9%99%88%E8%88%AA%E5%8D%B8%E4%BB%BBCEO&sa=fyb_news"
-        },
-        {
-          "rank": 10,
-          "text": "金价抹去今年全部涨幅",
-          "url": "https://m.baidu.com/s?word=%E9%87%91%E4%BB%B7%E6%8A%B9%E5%8E%BB%E4%BB%8A%E5%B9%B4%E5%85%A8%E9%83%A8%E6%B6%A8%E5%B9%85&sa=fyb_news"
-=======
           "text": "2026年美加墨世界杯",
           "url": "https://m.baidu.com/s?word=2026%E5%B9%B4%E7%BE%8E%E5%8A%A0%E5%A2%A8%E4%B8%96%E7%95%8C%E6%9D%AF&sa=fyb_news"
         },
@@ -197,7 +114,6 @@
           "rank": 10,
           "text": "大二学生在三里屯开果礼店日入过万",
           "url": "https://m.baidu.com/s?word=%E5%A4%A7%E4%BA%8C%E5%AD%A6%E7%94%9F%E5%9C%A8%E4%B8%89%E9%87%8C%E5%B1%AF%E5%BC%80%E6%9E%9C%E7%A4%BC%E5%BA%97%E6%97%A5%E5%85%A5%E8%BF%87%E4%B8%87&sa=fyb_news"
->>>>>>> Stashed changes
         }
       ]
     },
@@ -209,34 +125,11 @@
       "items": [
         {
           "rank": 1,
-<<<<<<< Updated upstream
-          "text": "NBA总决赛G4：尼克斯vs马刺",
-=======
           "text": "尼克斯107:106马刺",
->>>>>>> Stashed changes
           "url": "https://www.douyin.com/hot/2530256"
         },
         {
           "rank": 2,
-<<<<<<< Updated upstream
-          "text": "友谊赛英格兰3:0哥斯达黎加",
-          "url": "https://www.douyin.com/hot/2530250"
-        },
-        {
-          "rank": 3,
-          "text": "5月新能源汽车产销量同比增长",
-          "url": "https://www.douyin.com/hot/2530030"
-        },
-        {
-          "rank": 4,
-          "text": "抖音AI创作大赛来了",
-          "url": "https://www.douyin.com/hot/2529851"
-        },
-        {
-          "rank": 5,
-          "text": "英雄联盟老玩家在做什么工作",
-          "url": "https://www.douyin.com/hot/2529992"
-=======
           "text": "友谊赛葡萄牙2:1尼日利亚",
           "url": "https://www.douyin.com/hot/2530349"
         },
@@ -254,7 +147,6 @@
           "rank": 5,
           "text": "可以质疑我但不能质疑我的馒头",
           "url": "https://www.douyin.com/hot/2530444"
->>>>>>> Stashed changes
         },
         {
           "rank": 6,
@@ -263,25 +155,6 @@
         },
         {
           "rank": 7,
-<<<<<<< Updated upstream
-          "text": "抖音创作者守护乡村孩子足球梦",
-          "url": "https://www.douyin.com/hot/2529770"
-        },
-        {
-          "rank": 8,
-          "text": "所有零食立刻打入冷宫",
-          "url": "https://www.douyin.com/hot/2529124"
-        },
-        {
-          "rank": 9,
-          "text": "足球小将背后的争议和阻力",
-          "url": "https://www.douyin.com/hot/2529266"
-        },
-        {
-          "rank": 10,
-          "text": "高考结束后你最想干什么",
-          "url": "https://www.douyin.com/hot/2528801"
-=======
           "text": "金价跌破4100美元",
           "url": "https://www.douyin.com/hot/2530456"
         },
@@ -299,7 +172,6 @@
           "rank": 10,
           "text": "OG阿努诺比G4赛后发文",
           "url": "https://www.douyin.com/hot/2530590"
->>>>>>> Stashed changes
         }
       ]
     },
