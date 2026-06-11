@@ -311,6 +311,23 @@ def get_beijing_hour() -> int:
     return datetime.now(tz_beijing).hour
 
 
+def is_cn_workday(date_str: str) -> bool:
+    """
+    判断指定日期是否为大陆工作日（含调休补班）。
+    依赖 chinese_calendar 库；若未安装则回退到「非周末即工作日」逻辑。
+    """
+    try:
+        import chinese_calendar
+        from datetime import date as date_cls
+        y, m, d = map(int, date_str.split("-"))
+        return chinese_calendar.is_workday(date_cls(y, m, d))
+    except ImportError:
+        log.warning("chinese_calendar 未安装，回退到周一-周五判断")
+        from datetime import date as date_cls
+        y, m, d = map(int, date_str.split("-"))
+        return date_cls(y, m, d).weekday() < 5  # 0=周一 … 4=周五
+
+
 def main():
     parser = argparse.ArgumentParser(description="本地定时抓取 + 自动推送")
     parser.add_argument("--date",        default="",    help="目标日期 YYYY-MM-DD，默认今天（北京时间）")
@@ -320,17 +337,29 @@ def main():
     args = parser.parse_args()
 
     date = args.date.strip() or get_beijing_date()
-
-    # 白天模式（10:00-18:59 北京时间）：抓百度；其他时间：仅RSS/Google
     hour = get_beijing_hour()
+
+    # ── 模式判断：
+    #   工作日 10:00-20:59  → 百度 + RSS/Google
+    #   工作日 21:00-09:59  → 仅 RSS/Google
+    #   非工作日（节假日/周末） → 全天仅 RSS/Google
     if args.force_baidu:
         skip_baidu = False
+        mode_label = "强制百度模式"
     elif args.skip_baidu:
         skip_baidu = True
+        mode_label = "强制跳过百度"
     else:
-        skip_baidu = not (10 <= hour <= 18)  # 19:00 起进入夜间模式
+        workday = is_cn_workday(date)
+        in_baidu_hours = (10 <= hour <= 20)  # 10:00-20:59
+        skip_baidu = not (workday and in_baidu_hours)
+        if not workday:
+            mode_label = "非工作日(仅RSS/Google)"
+        elif in_baidu_hours:
+            mode_label = "工作日白天(百度+RSS/Google)"
+        else:
+            mode_label = "工作日夜间(仅RSS/Google)"
 
-    mode_label = "夜间(仅RSS/Google)" if skip_baidu else "白天(百度+RSS/Google)"
     log.info("=" * 60)
     log.info("[START] 本地自动抓取启动  date=%s  hour=%d  模式=%s  dry_run=%s",
              date, hour, mode_label, args.dry_run)
