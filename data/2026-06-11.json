@@ -1505,6 +1505,51 @@
       "priority": "P1",
       "img": null,
       "grad": "linear-gradient(135deg,#0d2e1a 0%,#0a2818 45%,#0f3a20 100%)"
+    },
+    {
+      "title": "太原市外卖配送行业工会关爱外卖骑手 送上慰问礼包",
+      "summary": "本报讯（记者 张慧）为弘扬劳动精神、凝聚基层治理合力，4月26日，太原市外卖配送行业工会联合会在太重宾馆下元骑手工作站举办“情暖五一·绿动骑行”主题活动。市外卖配送行业工会联合...",
+      "source": "太原日报",
+      "url": "https://baijiahao.baidu.com/s?id=1863669011497232768&wfr=spider&for=pc",
+      "published_at": "2026-06-11T12:00:00",
+      "category": "care",
+      "tag": "骑手关怀",
+      "tagClass": "tag-green",
+      "sub_tag": "care.social",
+      "sub_label": "社会关爱",
+      "priority": "P1",
+      "img": "https://t9.baidu.com/it/u=236246827,2897561736&fm=3035&app=3035&size=f242,162&n=0&g=0n&f=JPEG?s=3AD74A96429D09CC77B26DC90300D09C&sec=1781247919&t=7b1e24048d16631b399b6375505522e3",
+      "grad": "linear-gradient(135deg,#0d2e1a 0%,#0a2818 45%,#0f3a20 100%)"
+    },
+    {
+      "title": "外卖员年龄上限45岁?美团辟谣!",
+      "summary": "近日，有消息称美团骑手年龄超过45岁就不再符合美团及配送商的服务规范，系统将不再派送订单，引发了许多骑手的“年龄焦虑”。对此，记者联系美团众包客服进行求证，客服表示：“只要是年龄在18岁到57岁，都可以申请成为美团骑手，没有45岁停止派单这一说。”美团回应...",
+      "source": "证券时报",
+      "url": "https://baijiahao.baidu.com/s?id=1781810104899434956&wfr=spider&for=pc",
+      "published_at": "2026-06-11T12:00:00",
+      "category": "platform",
+      "tag": "平台动作",
+      "tagClass": "tag-purple",
+      "sub_tag": null,
+      "sub_label": "",
+      "priority": "P1",
+      "img": null,
+      "grad": "linear-gradient(135deg,#1a1a2e 0%,#16213e 45%,#0f3460 100%)"
+    },
+    {
+      "title": "美团管不了那么多骑手",
+      "summary": "8月13日，杭州，讲述主角中年失业，变身外卖骑手的电影《逆行人生》正在路演；就在一天前，一名外卖骑手因担心之后订单超时便向发生冲突的小区保安下跪，冲上热搜。很快，骑手所在的美团公司表态称，对于骑手可能遭遇的不公正对待问题，将一管到底，并根据骑手诉求配...",
+      "source": "华尔街见闻",
+      "url": "https://baijiahao.baidu.com/s?id=1807435639843387439&wfr=spider&for=pc",
+      "published_at": "2026-06-11T12:00:00",
+      "category": "platform",
+      "tag": "平台动作",
+      "tagClass": "tag-purple",
+      "sub_tag": "rider_story.life",
+      "sub_label": "生活百态",
+      "priority": "P1",
+      "img": null,
+      "grad": "linear-gradient(135deg,#1a1a2e 0%,#16213e 45%,#0f3460 100%)"
     }
   ],
   "hot": []
