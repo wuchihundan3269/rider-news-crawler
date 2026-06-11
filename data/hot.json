@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-11T17:27:39",
+  "updated_at": "2026-06-11T17:30:48",
   "platforms": [
     {
       "id": "weibo",
@@ -24,8 +24,8 @@
         },
         {
           "rank": 4,
-          "text": "千问高考志愿大模型权威发布",
-          "url": "https://s.weibo.com/weibo?q=%E5%8D%83%E9%97%AE%E9%AB%98%E8%80%83%E5%BF%97%E6%84%BF%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%9D%83%E5%A8%81%E5%8F%91%E5%B8%83"
+          "text": "爱吃生菜的人天塌了",
+          "url": "https://s.weibo.com/weibo?q=%E7%88%B1%E5%90%83%E7%94%9F%E8%8F%9C%E7%9A%84%E4%BA%BA%E5%A4%A9%E5%A1%8C%E4%BA%86"
         },
         {
           "rank": 5,
@@ -34,18 +34,18 @@
         },
         {
           "rank": 6,
-          "text": "爱吃生菜的人天塌了",
-          "url": "https://s.weibo.com/weibo?q=%E7%88%B1%E5%90%83%E7%94%9F%E8%8F%9C%E7%9A%84%E4%BA%BA%E5%A4%A9%E5%A1%8C%E4%BA%86"
-        },
-        {
-          "rank": 7,
           "text": "孙丞潇找不到金莎哭了",
           "url": "https://s.weibo.com/weibo?q=%E5%AD%99%E4%B8%9E%E6%BD%87%E6%89%BE%E4%B8%8D%E5%88%B0%E9%87%91%E8%8E%8E%E5%93%AD%E4%BA%86"
         },
         {
+          "rank": 7,
+          "text": "千年酒韵群星演唱会",
+          "url": "https://s.weibo.com/weibo?q=%E5%8D%83%E5%B9%B4%E9%85%92%E9%9F%B5%E7%BE%A4%E6%98%9F%E6%BC%94%E5%94%B1%E4%BC%9A"
+        },
+        {
           "rank": 8,
-          "text": "海尔京东超级品牌日",
-          "url": "https://s.weibo.com/weibo?q=%E6%B5%B7%E5%B0%94%E4%BA%AC%E4%B8%9C%E8%B6%85%E7%BA%A7%E5%93%81%E7%89%8C%E6%97%A5"
+          "text": "法拉利高管质疑首席设计师加盟智界",
+          "url": "https://s.weibo.com/weibo?q=%E6%B3%95%E6%8B%89%E5%88%A9%E9%AB%98%E7%AE%A1%E8%B4%A8%E7%96%91%E9%A6%96%E5%B8%AD%E8%AE%BE%E8%AE%A1%E5%B8%88%E5%8A%A0%E7%9B%9F%E6%99%BA%E7%95%8C"
         },
         {
           "rank": 9,
@@ -54,8 +54,8 @@
         },
         {
           "rank": 10,
-          "text": "法拉利高管质疑首席设计师加盟智界",
-          "url": "https://s.weibo.com/weibo?q=%E6%B3%95%E6%8B%89%E5%88%A9%E9%AB%98%E7%AE%A1%E8%B4%A8%E7%96%91%E9%A6%96%E5%B8%AD%E8%AE%BE%E8%AE%A1%E5%B8%88%E5%8A%A0%E7%9B%9F%E6%99%BA%E7%95%8C"
+          "text": "减脂期误食了8个鸡腿",
+          "url": "https://s.weibo.com/weibo?q=%E5%87%8F%E8%84%82%E6%9C%9F%E8%AF%AF%E9%A3%9F%E4%BA%868%E4%B8%AA%E9%B8%A1%E8%85%BF"
         }
       ]
     },
