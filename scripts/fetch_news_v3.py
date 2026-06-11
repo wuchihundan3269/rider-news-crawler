@@ -425,17 +425,17 @@ def _parse_baidu_disp_time(disp_time: str) -> str:
     now = datetime.now(bj_tz)
     disp_time = disp_time.strip()
 
-    # 格式：N分钟前
+    # 格式：N分钟前（秒数清零，避免每次换算结果不同）
     m = re.match(r"(\d+)分钟前", disp_time)
     if m:
         dt = now - timedelta(minutes=int(m.group(1)))
-        return dt.strftime("%Y-%m-%dT%H:%M:%S")
+        return dt.strftime("%Y-%m-%dT%H:%M:00")
 
-    # 格式：N小时前
+    # 格式：N小时前（秒数清零，避免每次换算结果不同）
     m = re.match(r"(\d+)小时前", disp_time)
     if m:
         dt = now - timedelta(hours=int(m.group(1)))
-        return dt.strftime("%Y-%m-%dT%H:%M:%S")
+        return dt.strftime("%Y-%m-%dT%H:00:00")
 
     # 格式：今天HH:MM
     m = re.match(r"今天\s*(\d{2}):(\d{2})", disp_time)
@@ -464,8 +464,115 @@ def _parse_baidu_disp_time(disp_time: str) -> str:
         dt_str = f"{year}-{int(m.group(1)):02d}-{int(m.group(2)):02d}T{m.group(3)}:{m.group(4)}:00"
         return dt_str
 
-    # 无法解析，返回当前时间
-    return now.strftime("%Y-%m-%dT%H:%M:%S")
+    # 无法解析，返回空，由 transform.py 兜底为 T12:00:00
+    return ""
+
+
+def _fetch_baidu_zixun_page(keyword: str, timeout: int = 15) -> list[dict]:
+    """
+    从百度资讯搜索结果页（baidu.com/s?tn=news）抓取新闻条目。
+    返回原始条目列表：{title, href, time_str, summary, source}
+    - href 多为原始媒体 URL（非百家号聚合页）
+    - time_str 为相对时间（如 "1小时前"、"昨天17:59"），由调用方解析
+    """
+    if not _HAS_BS4:
+        return []
+
+    kw_encoded = urllib.parse.quote(keyword)
+    url = (
+        f"https://www.baidu.com/s?tn=news&rtt=1&bsst=1&cl=2"
+        f"&wd={kw_encoded}&medium=0&ie=utf-8&rn=20"
+    )
+    headers = {
+        "User-Agent": (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+            "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+        ),
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "zh-CN,zh;q=0.9",
+        "Referer": "https://www.baidu.com/",
+    }
+    try:
+        resp = requests.get(url, headers=headers, timeout=timeout)
+        resp.encoding = "utf-8"
+        content = resp.text
+    except Exception as e:
+        print(f"  [百度资讯-{keyword}] 请求失败: {e}")
+        return []
+
+    soup = _BS(content, "html.parser")
+    raw_items = []
+
+    for h3 in soup.find_all("h3"):
+        a = h3.find("a")
+        if not a:
+            continue
+        title = a.get_text(strip=True)
+        href = a.get("href", "")
+        if not title or not href or not href.startswith("http"):
+            continue
+
+        # 从父级容器文本中提取时间和来源
+        parent = h3.parent
+        parent_text = parent.get_text(separator="\n", strip=True)
+
+        # 时间：N分钟前 / N小时前 / 今天HH:MM / 昨天HH:MM / 前天HH:MM / YYYY-MM-DD
+        time_pat = (
+            r"(\d+分钟前|\d+小时前"
+            r"|今天\s*\d{1,2}:\d{2}"
+            r"|昨天\s*\d{1,2}:\d{2}"
+            r"|前天\s*\d{1,2}:\d{2}"
+            r"|\d{4}-\d{2}-\d{2}\s*\d{2}:\d{2}"
+            r"|\d{1,2}月\d{1,2}日\s*\d{1,2}:\d{2})"
+        )
+        time_match = re.search(time_pat, parent_text)
+        time_str = time_match.group(1).strip() if time_match else ""
+
+        # 摘要：取父级文本第一段非标题的内容
+        lines = [l.strip() for l in parent_text.split("\n") if l.strip()]
+        summary = ""
+        for line in lines:
+            if line == title or re.match(time_pat, line):
+                continue
+            if len(line) > 15:
+                summary = line[:200]
+                break
+
+        # 来源：取摘要之后最短的一行（通常是媒体名）
+        source_name = ""
+        for line in reversed(lines):
+            if 1 < len(line) <= 15 and not re.match(time_pat, line) and line != title:
+                source_name = line
+                break
+
+        # 图片：从 h3 的祖父级容器（整条新闻的外层 div）里查找
+        # 百度资讯结果：图片在 h3.parent.parent 的子树里，与 h3.parent 同级
+        img_url = ""
+        search_scopes = [
+            parent.parent if parent else None,  # 祖父级（整条新闻外层）
+            parent,                              # 父级
+        ]
+        for img_scope in search_scopes:
+            if not img_scope:
+                continue
+            img_tag = img_scope.find("img")
+            if img_tag:
+                _src = (img_tag.get("src") or img_tag.get("data-src")
+                        or img_tag.get("data-original") or "")
+                if _src and _src.startswith("http"):
+                    img_url = _src
+                    break
+
+        raw_items.append({
+            "title": title,
+            "href": href,
+            "time_str": time_str,
+            "summary": summary,
+            "source": source_name or "百度资讯",
+            "img": img_url or None,
+        })
+
+    return raw_items
 
 
 def fetch_baidu_news(keyword: str, category: str = "auto", tag: str = "auto",
@@ -473,85 +580,34 @@ def fetch_baidu_news(keyword: str, category: str = "auto", tag: str = "auto",
                      keyword_rules: dict = None, base_keywords: list = None,
                      timeout: int = 15) -> list[dict]:
     """
-    抓取百度新闻搜索结果（HTML 解析），返回过滤后的文章列表。
-    百度新闻 RSS 已废弃（返回 HTML），改用搜索页面解析。
-    每次搜索最多返回 20 条，时效性好（含今天/N小时前）。
+    抓取百度资讯搜索结果，返回过滤后的文章列表。
+    使用 baidu.com/s?tn=news 资讯搜索页，可获取原文链接和精确发布时间。
     """
     if not _HAS_BS4:
-        print("  [百度新闻] 需要 beautifulsoup4，跳过")
+        print("  [百度资讯] 需要 beautifulsoup4，跳过")
         return []
 
-    kw_encoded = urllib.parse.quote(keyword)
-    url = f"https://news.baidu.com/ns?word={kw_encoded}&tn=news&ie=utf-8&cl=2&rn=20&ct=1"
-
-    try:
-        import urllib.request as _urllib_req
-        import ssl as _ssl
-        ctx = _ssl.create_default_context()
-        ctx.check_hostname = False
-        ctx.verify_mode = _ssl.CERT_NONE
-        req = _urllib_req.Request(url, headers=_BAIDU_HEADERS)
-        resp = _urllib_req.urlopen(req, context=ctx, timeout=timeout)
-        content = resp.read().decode("utf-8", "replace")
-    except Exception as e:
-        print(f"  [百度新闻-{keyword}] 抓取失败: {e}")
+    raw_items = _fetch_baidu_zixun_page(keyword, timeout=timeout)
+    if not raw_items:
+        print(f"  [百度资讯-{keyword}] 未获取到任何条目")
         return []
 
-    soup = _BS(content, "html.parser")
     cutoff = datetime.now(timezone.utc) - timedelta(days=max_age_days)
-
     items = []
-    # 百度新闻搜索结果：每条新闻在 <div tpl="news-normal"> 容器里
-    # s-data 存储在容器内的 HTML 注释中：<!--s-data:{...}-->
-    news_divs = soup.find_all("div", attrs={"tpl": "news-normal"})
-    if not news_divs:
-        # 降级：直接找 h3
-        news_divs = [h3.parent for h3 in soup.find_all("h3") if h3.find("a")]
 
-    for container in news_divs:
-        # 从 HTML 注释中提取 s-data JSON
-        container_html = str(container)
-        sdata_match = re.search(r'<!--s-data:(.*?)-->', container_html, re.DOTALL)
-
-        disp_time   = ""
-        summary     = ""
-        source_name = "百度新闻"
-        img_url     = None
-        link        = container.get("mu", "")  # mu 属性是真实 URL
-        title       = ""
-
-        if sdata_match:
-            try:
-                sdata = json.loads(sdata_match.group(1))
-                disp_time   = sdata.get("dispTime", "")
-                summary     = sdata.get("summary", "")
-                source_name = sdata.get("sourceName", "百度新闻")
-                img_url     = sdata.get("leftImgSrc", None) or None
-                # 优先用 s-data 里的 titleUrl（更干净）
-                real_url = sdata.get("titleUrl", "")
-                if real_url and real_url.startswith("http"):
-                    link = real_url
-                # 标题（去除 <em> 高亮标签）
-                raw_title = sdata.get("title", "")
-                title = re.sub(r"<[^>]+>", "", raw_title).strip()
-            except Exception:
-                pass
-
-        # 如果 s-data 没有标题，从 h3 > a 获取
-        if not title:
-            h3 = container.find("h3")
-            if h3:
-                a = h3.find("a")
-                if a:
-                    title = a.get_text(strip=True)
-                    if not link:
-                        link = a.get("href", "").strip()
+    for raw in raw_items:
+        title       = raw["title"]
+        link        = raw["href"]
+        time_str    = raw["time_str"]
+        summary     = raw["summary"]
+        source_name = raw["source"]
+        img_url     = raw.get("img") or None
 
         if not title or not link or not link.startswith("http"):
             continue
 
         # 解析时间；无时间信息时返回空，由 transform.py 统一兜底
-        pub_str = _parse_baidu_disp_time(disp_time) if disp_time else ""
+        pub_str = _parse_baidu_disp_time(time_str) if time_str else ""
 
         # 时效过滤
         try:
@@ -561,7 +617,7 @@ def fetch_baidu_news(keyword: str, category: str = "auto", tag: str = "auto",
         except Exception:
             pass
 
-        # 清理摘要中的 HTML 标签（百度摘要含 <em> 高亮）
+        # 清理摘要中的 HTML 标签
         summary = clean_html(summary)
 
         # 全局过滤

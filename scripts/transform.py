@@ -251,11 +251,14 @@ _BLOCKED_TITLE_PATTERNS: list[list[str]] = [
     ["外卖员", "车祸身亡"],
     ["快递员", "身亡"],
     ["快递员", "死亡"],
-    # 撞伤行人/追责类
+    # 撞伤行人/追责类（含主语为他人被骑手撞伤的）
     ["骑手", "撞伤", "担责"],
     ["骑手", "撞伤行人"],
     ["外卖骑手", "撞伤", "谁应担责"],
     ["外卖骑手", "撞伤", "担责"],
+    ["被外卖骑手撞伤"],
+    ["被骑手撞伤"],
+    ["被外卖小哥撞伤"],
     # 法院确认劳动/劳务关系（法律判决类）
     ["法院确认", "骑手"],
     ["法院确认", "外卖"],
@@ -723,15 +726,6 @@ def _merge_with_existing(new_articles: list, existing_path: str | None, date_str
             continue
         norm = _normalize_title(raw_title)
         if norm not in best:
-            # 新文章首次入库：若时间是相对时间解析出的抓取时刻（秒数非零且是当天），
-            # 统一归为当天T12:00:00，避免「6小时前」每次算出不同时间
-            pub = a.get("published_at", "")
-            if (pub.startswith(date_str) and
-                    len(pub) >= 19 and pub[17:19] != "00" and
-                    not pub.endswith("T12:00:00")):
-                # 有秒数说明是相对时间解析结果，不是原始精确时间（原始一般到分钟）
-                a = dict(a)
-                a["published_at"] = date_str + "T12:00:00"
             best[norm] = a
         else:
             cur_p = _PRIORITY_ORDER.get(best[norm].get("priority", "P5"), 5)
