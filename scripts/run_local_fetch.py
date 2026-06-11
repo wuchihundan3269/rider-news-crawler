@@ -269,7 +269,7 @@ def _git_push_with_retry_cwd(branch: str, cwd: Path, max_retry: int = 3):
 
 
 def _git_push_with_retry(branch: str, max_retry: int = 3):
-    """push 指定分支，失败时 pull --rebase 后重试。"""
+    """push 指定分支，失败时用 merge -X ours 同步远端后重试，data文件冲突永远以本地为准。"""
     import time
     for attempt in range(1, max_retry + 1):
         log.info("第 %d 次尝试 push %s...", attempt, branch)
@@ -279,7 +279,9 @@ def _git_push_with_retry(branch: str, max_retry: int = 3):
             return
         log.warning("push 失败，%d 秒后重试...", attempt * 10)
         time.sleep(attempt * 10)
-        run(["git", "pull", "--rebase", "origin", branch], check=False)
+        # merge -X ours：本地优先，不产生 conflict markers
+        run(["git", "fetch", "origin", branch], check=False)
+        run(["git", "merge", "-X", "ours", f"origin/{branch}", "--no-edit"], check=False)
     raise RuntimeError(f"git push {branch} 失败，已重试 {max_retry} 次")
 
 
@@ -289,9 +291,9 @@ def step_git_push(date: str, dry_run: bool = False):
     datetime_str = get_beijing_datetime()
 
     # ── 5a. 同步 main 分支 ──────────────────────────────────────────
-    run(["git", "stash"], check=False)
-    run(["git", "pull", "--rebase", "origin", "main"], check=False)
-    run(["git", "stash", "pop"], check=False)
+    # 用 merge -X ours 代替 rebase：data/ 文件冲突永远以本地为准，不产生 conflict markers
+    run(["git", "fetch", "origin", "main"], check=False)
+    run(["git", "merge", "-X", "ours", "origin/main", "--no-edit"], check=False)
 
     run(["git", "add", "data/"])
 
