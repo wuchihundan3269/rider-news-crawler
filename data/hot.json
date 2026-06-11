@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-11T18:15:33",
+  "updated_at": "2026-06-11T18:17:12",
   "platforms": [
     {
       "id": "weibo",
@@ -39,23 +39,23 @@
         },
         {
           "rank": 7,
-          "text": "王晶罗永浩没有不敢聊的",
-          "url": "https://s.weibo.com/weibo?q=%E7%8E%8B%E6%99%B6%E7%BD%97%E6%B0%B8%E6%B5%A9%E6%B2%A1%E6%9C%89%E4%B8%8D%E6%95%A2%E8%81%8A%E7%9A%84"
+          "text": "红掌 关晓彤",
+          "url": "https://s.weibo.com/weibo?q=%E7%BA%A2%E6%8E%8C%20%E5%85%B3%E6%99%93%E5%BD%A4"
         },
         {
           "rank": 8,
-          "text": "北京地铁通报张雪用房卡刷开闸机",
-          "url": "https://s.weibo.com/weibo?q=%E5%8C%97%E4%BA%AC%E5%9C%B0%E9%93%81%E9%80%9A%E6%8A%A5%E5%BC%A0%E9%9B%AA%E7%94%A8%E6%88%BF%E5%8D%A1%E5%88%B7%E5%BC%80%E9%97%B8%E6%9C%BA"
-        },
-        {
-          "rank": 9,
           "text": "世界杯三场开幕式",
           "url": "https://s.weibo.com/weibo?q=%E4%B8%96%E7%95%8C%E6%9D%AF%E4%B8%89%E5%9C%BA%E5%BC%80%E5%B9%95%E5%BC%8F"
         },
         {
-          "rank": 10,
+          "rank": 9,
           "text": "法拉利高管质疑首席设计师加盟智界",
           "url": "https://s.weibo.com/weibo?q=%E6%B3%95%E6%8B%89%E5%88%A9%E9%AB%98%E7%AE%A1%E8%B4%A8%E7%96%91%E9%A6%96%E5%B8%AD%E8%AE%BE%E8%AE%A1%E5%B8%88%E5%8A%A0%E7%9B%9F%E6%99%BA%E7%95%8C"
+        },
+        {
+          "rank": 10,
+          "text": "北京地铁通报张雪用房卡刷开闸机",
+          "url": "https://s.weibo.com/weibo?q=%E5%8C%97%E4%BA%AC%E5%9C%B0%E9%93%81%E9%80%9A%E6%8A%A5%E5%BC%A0%E9%9B%AA%E7%94%A8%E6%88%BF%E5%8D%A1%E5%88%B7%E5%BC%80%E9%97%B8%E6%9C%BA"
         }
       ]
     },
