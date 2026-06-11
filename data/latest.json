@@ -1,5 +1,6 @@
 {
   "date": "2026-06-11",
+<<<<<<< Updated upstream
   "hour": "10",
   "updated_at": "2026-06-11 10:44",
   "file": "data/2026-06-11.json",
@@ -14,3 +15,18 @@
     }
   }
 }
+=======
+  "updated_at": "2026-06-11 14:05",
+  "file": "data/2026-06-11.json",
+  "stats": {
+    "total": 55,
+    "by_category": {
+      "rider_story": 10,
+      "care": 13,
+      "platform": 4,
+      "opinion": 5,
+      "policy": 23
+    }
+  }
+}
+>>>>>>> Stashed changes
