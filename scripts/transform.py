@@ -635,15 +635,21 @@ def _merge_with_existing(new_articles: list, existing_path: str | None, date_str
                 clean_title = a.get("title", title)
                 a["url"] = "https://www.baidu.com/s?wd=" + urllib.parse.quote(clean_title)
 
-    # ── 黑名单过滤（URL + 标题关键词）──
+    # ── 黑名单过滤 + 日期过滤 ──
     now_iso = datetime.now(timezone(timedelta(hours=8))).strftime("%Y-%m-%dT%H:%M:%S")
     filtered = []
     for a in all_articles:
+        # 1. 黑名单过滤（URL + 标题关键词）
         if _is_blocked(a):
             print(f"  [blocked] {a.get('title','')[:40]}")
             continue
-        # 过滤未来时间（published_at 晚于当前时间超过 30 分钟，视为错误时间）
+        # 2. 严格当日过滤：published_at 的日期部分必须等于 date_str
+        #    兜底时间（T12:00:00）日期已经是 date_str，不受影响
         pub = a.get("published_at", "")
+        if pub and pub[:10] != date_str:
+            print(f"  [skip-old] {pub[:10]} {a.get('title','')[:35]}")
+            continue
+        # 3. 过滤未来时间（published_at 晚于当前时间，视为错误时间）
         if pub and pub > now_iso and not pub.endswith("T12:00:00"):
             print(f"  [future-time] {pub} {a.get('title','')[:30]}")
             a["published_at"] = date_str + "T12:00:00"

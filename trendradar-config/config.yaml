@@ -98,7 +98,7 @@ rss:
   enable_rss: true
   freshness_filter:
     enabled: true
-    max_age_days: 7
+    max_age_days: 1  # 只保留当日发布的新闻
   feeds:
 
     # ══════════════════════════════════════════════════════════════
@@ -478,6 +478,7 @@ rss:
 # GitHub Actions 境外服务器可访问百度新闻搜索页
 baidu_news:
   enabled: true
+  max_age_days: 1  # 只保留当日发布的新闻
   keywords:
     - keyword: "外卖骑手"
       category: "auto"
