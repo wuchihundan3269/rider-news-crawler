@@ -908,6 +908,7 @@ def main():
     parser.add_argument("--config",      default=str(CONFIG_PATH), help="配置文件路径")
     parser.add_argument("--words",       default=str(WORDS_PATH),  help="关键词文件路径")
     parser.add_argument("--skip-baidu",  action="store_true", help="跳过百度新闻抓取（夜间/非工作时间使用）")
+    parser.add_argument("--skip-rss",    action="store_true", help="跳过 RSS/Google 抓取（工作日白天仅用百度时使用）")
     args = parser.parse_args()
 
     # 日期
@@ -950,14 +951,16 @@ def main():
     max_age_days = rss_config.get("freshness_filter", {}).get("max_age_days", 3)
     feeds = rss_config.get("feeds", [])
 
-    print(f"\n── RSS 抓取（{len(feeds)} 个源，保留 {max_age_days} 天内）──")
-    all_items = []
-
-    for feed_cfg in feeds:
-        items = fetch_rss_feed(feed_cfg, keyword_rules, base_keywords, max_age_days)
-        all_items.extend(items)
-
-    print(f"\nRSS 抓取: {len(all_items)} 条")
+    if args.skip_rss:
+        print("\n── RSS 抓取：已跳过（--skip-rss）──")
+        all_items = []
+    else:
+        print(f"\n── RSS 抓取（{len(feeds)} 个源，保留 {max_age_days} 天内）──")
+        all_items = []
+        for feed_cfg in feeds:
+            items = fetch_rss_feed(feed_cfg, keyword_rules, base_keywords, max_age_days)
+            all_items.extend(items)
+        print(f"\nRSS 抓取: {len(all_items)} 条")
 
     # ── 百度新闻搜索管道（HTML 解析，补充国内新闻）──────────────────────────
     baidu_config = config.get("baidu_news", {})
