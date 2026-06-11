@@ -1,15 +1,14 @@
 {
   "date": "2026-06-11",
-  "hour": "20",
-  "updated_at": "2026-06-11 20:32",
+  "updated_at": "2026-06-11 21:05",
   "file": "data/2026-06-11.json",
   "stats": {
     "total": 71,
     "by_category": {
-      "policy": 35,
-      "opinion": 15,
-      "care": 13,
-      "rider_story": 6,
+      "policy": 15,
+      "care": 5,
+      "rider_story": 4,
+      "opinion": 4,
       "platform": 2
     }
   }

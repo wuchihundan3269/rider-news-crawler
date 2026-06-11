@@ -1,6 +1,6 @@
 {
   "date": "2026-06-11",
-  "generated_at": "2026-06-11T12:33:28Z",
+  "generated_at": "2026-06-11T13:05:48Z",
   "featured": [
     {
       "title": "车祸现场驾驶室变形司机被困 独臂外卖骑手率两名快递小哥合力救人",
@@ -1672,11 +1672,26 @@
       "grad": "linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"
     },
     {
-      "title": "外卖小哥进入“社保时代”五险一金为何却成“选择题”?",
-      "summary": "时代”五险一金为何却成“选择题”?",
-      "source": "澎湃新闻客户端",
-      "url": "http://baijiahao.baidu.com/s?id=1826370094189105221&wfr=spider&for=pc",
-      "published_at": "2026-06-11T12:00:00",
+      "title": "袁记云饺上线“骑手食堂”外卖骑手闲时堂食享85折",
+      "summary": "自2026年6月1日起，袁记云饺持续升级公益暖心体系，在常态化运营“长者饭堂”、深耕社区敬老服务的基础上，将关怀触角延伸至城市一线劳动者群体，正式启动外卖骑手专属关怀计划——“骑...",
+      "source": "钱江晚报",
+      "url": "https://baijiahao.baidu.com/s?id=1867697594966307645&wfr=spider&for=pc",
+      "published_at": "2026-06-11T03:51:00",
+      "category": "rider_story",
+      "tag": "骑手新闻",
+      "tagClass": "tag-orange",
+      "sub_tag": "rider_story.positive",
+      "sub_label": "正面事迹",
+      "priority": "P1",
+      "img": "https://t8.baidu.com/it/u=4110013237,1549182173&fm=3035&app=3035&size=f242,162&n=0&g=0n&f=JPEG?s=AC73729350D3E5DED411BA0F0300E044&sec=1781265937&t=bdaea549fd0b7b7182281be37df6d2c5",
+      "grad": "linear-gradient(135deg,#1a2e1a 0%,#0d2b0d 45%,#1a3a1a 100%)"
+    },
+    {
+      "title": "成都:外卖骑手化身移动“探头” 随手拍揪出食品安全隐患",
+      "summary": "化身移动“探头” 随手拍揪出食品安全隐患",
+      "source": "四川新闻网",
+      "url": "https://scnews.newssc.org/system/20260611/001618768.html",
+      "published_at": "2026-06-11T01:00:00",
       "category": "policy",
       "tag": "行业观察",
       "tagClass": "tag-blue",
