@@ -97,10 +97,19 @@ def cleanup_old_logs(days: int = 7):
     log_file.write_text("".join(kept), encoding="utf-8")
 
 
-def step_fetch_news(date: str, skip_baidu: bool = False):
-    """步骤1：抓取新闻。skip_baidu=True 时跳过百度管道，只抓 RSS/Google。"""
+def step_fetch_news(date: str, skip_baidu: bool = False, skip_rss: bool = False):
+    """
+    步骤1：抓取新闻。
+      skip_baidu=True  → 跳过百度（夜间/非工作日）
+      skip_rss=True    → 跳过 RSS/Google（工作日白天仅用百度）
+    """
     log.info("=" * 60)
-    mode = "仅RSS/Google（夜间模式）" if skip_baidu else "百度+RSS/Google（白天模式）"
+    if skip_rss and not skip_baidu:
+        mode = "仅百度（工作日白天）"
+    elif skip_baidu and not skip_rss:
+        mode = "仅RSS/Google（夜间/非工作日）"
+    else:
+        mode = "百度+RSS/Google"
     log.info("步骤1：抓取新闻 (date=%s, 模式=%s)", date, mode)
     NEWS_DIR.mkdir(parents=True, exist_ok=True)
     output_file = NEWS_DIR / f"{date}.json"
@@ -114,6 +123,8 @@ def step_fetch_news(date: str, skip_baidu: bool = False):
     ]
     if skip_baidu:
         cmd.append("--skip-baidu")
+    if skip_rss:
+        cmd.append("--skip-rss")
     run(cmd)
     if output_file.exists():
         with open(output_file, encoding="utf-8") as f:
@@ -345,20 +356,28 @@ def main():
     #   非工作日（节假日/周末） → 全天仅 RSS/Google
     if args.force_baidu:
         skip_baidu = False
-        mode_label = "强制百度模式"
+        skip_rss   = True   # 强制百度 = 只用百度
+        mode_label = "强制仅百度"
     elif args.skip_baidu:
         skip_baidu = True
-        mode_label = "强制跳过百度"
+        skip_rss   = False
+        mode_label = "强制仅RSS/Google"
     else:
         workday = is_cn_workday(date)
         in_baidu_hours = (10 <= hour <= 20)  # 10:00-20:59
-        skip_baidu = not (workday and in_baidu_hours)
-        if not workday:
-            mode_label = "非工作日(仅RSS/Google)"
-        elif in_baidu_hours:
-            mode_label = "工作日白天(百度+RSS/Google)"
+        if workday and in_baidu_hours:
+            # 工作日 10:00-20:59：只用百度，跳过 RSS/Google
+            skip_baidu = False
+            skip_rss   = True
+            mode_label = "工作日白天(仅百度)"
         else:
-            mode_label = "工作日夜间(仅RSS/Google)"
+            # 工作日夜间 / 非工作日：只用 RSS/Google，跳过百度
+            skip_baidu = True
+            skip_rss   = False
+            if not workday:
+                mode_label = "非工作日(仅RSS/Google)"
+            else:
+                mode_label = "工作日夜间(仅RSS/Google)"
 
     log.info("=" * 60)
     log.info("[START] 本地自动抓取启动  date=%s  hour=%d  模式=%s  dry_run=%s",
@@ -367,7 +386,7 @@ def main():
 
     try:
         cleanup_old_logs(days=7)
-        news_file  = step_fetch_news(date, skip_baidu=skip_baidu)
+        news_file  = step_fetch_news(date, skip_baidu=skip_baidu, skip_rss=skip_rss)
         step_fetch_hot()
         data_file  = step_transform(date, news_file)
         step_update_latest(date, data_file)

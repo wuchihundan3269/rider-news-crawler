@@ -1,6 +1,6 @@
 {
   "date": "2026-06-11",
-  "generated_at": "2026-06-11T06:22:33Z",
+  "generated_at": "2026-06-11T06:28:10Z",
   "featured": [
     {
       "title": "关注新就业群体丨外卖小哥的“暖心港湾” 观影吃饭充电一站配齐",
@@ -48,6 +48,21 @@
       "grad": "linear-gradient(135deg,#0d1b2e 0%,#0a1628 45%,#0f2040 100%)"
     },
     {
+      "title": "株洲恺德医院为美团骑手开展应急救护培训",
+      "summary": "株洲恺德医院为美团骑手开展应急救护培训&nbsp;&nbsp;红网",
+      "source": "红网",
+      "url": "https://www.baidu.com/s?wd=%E6%A0%AA%E6%B4%B2%E6%81%BA%E5%BE%B7%E5%8C%BB%E9%99%A2%E4%B8%BA%E7%BE%8E%E5%9B%A2%E9%AA%91%E6%89%8B%E5%BC%80%E5%B1%95%E5%BA%94%E6%80%A5%E6%95%91%E6%8A%A4%E5%9F%B9%E8%AE%AD",
+      "published_at": "2026-06-08T10:00:06",
+      "category": "platform",
+      "tag": "平台动作",
+      "tagClass": "tag-purple",
+      "sub_tag": "rider_story.career",
+      "sub_label": "职业发展",
+      "priority": "P3",
+      "img": null,
+      "grad": "linear-gradient(135deg,#1a1a2e 0%,#16213e 45%,#0f3460 100%)"
+    },
+    {
       "title": "打工新鲜事儿｜确认了，全国部署！外卖骑手迎来新角色- 权益",
       "summary": "打工新鲜事儿｜确认了，全国部署！外卖骑手迎来新角色- 权益&nbsp;&nbsp;中工网",
       "source": "中工网",
@@ -61,21 +76,6 @@
       "priority": "P3",
       "img": null,
       "grad": "linear-gradient(135deg,#1e0a2e 0%,#180820 45%,#2a0f3a 100%)"
-    },
-    {
-      "title": "训练AI取代自己？纺织工和外卖骑手正收集“第一人称视角数据”",
-      "summary": "训练AI取代自己？纺织工和外卖骑手正收集“第一人称视角数据”&nbsp;&nbsp;新浪财经",
-      "source": "新浪财经",
-      "url": "https://www.baidu.com/s?wd=%E8%AE%AD%E7%BB%83AI%E5%8F%96%E4%BB%A3%E8%87%AA%E5%B7%B1%EF%BC%9F%E7%BA%BA%E7%BB%87%E5%B7%A5%E5%92%8C%E5%A4%96%E5%8D%96%E9%AA%91%E6%89%8B%E6%AD%A3%E6%94%B6%E9%9B%86%E2%80%9C%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%E8%A7%86%E8%A7%92%E6%95%B0%E6%8D%AE%E2%80%9D",
-      "published_at": "2026-06-06T13:06:26",
-      "category": "rider_story",
-      "tag": "骑手新闻",
-      "tagClass": "tag-orange",
-      "sub_tag": "rider_story.life",
-      "sub_label": "生活百态",
-      "priority": "P3",
-      "img": null,
-      "grad": "linear-gradient(135deg,#1a2e1a 0%,#0d2b0d 45%,#1a3a1a 100%)"
     }
   ],
   "articles": [
@@ -216,18 +216,18 @@
     },
     {
       "title": "株洲恺德医院为美团骑手开展应急救护培训",
-      "summary": "株洲恺德医院为美团骑手开展应急救护培训&nbsp;&nbsp;新浪财经",
-      "source": "新浪财经",
+      "summary": "株洲恺德医院为美团骑手开展应急救护培训&nbsp;&nbsp;红网",
+      "source": "红网",
       "url": "https://www.baidu.com/s?wd=%E6%A0%AA%E6%B4%B2%E6%81%BA%E5%BE%B7%E5%8C%BB%E9%99%A2%E4%B8%BA%E7%BE%8E%E5%9B%A2%E9%AA%91%E6%89%8B%E5%BC%80%E5%B1%95%E5%BA%94%E6%80%A5%E6%95%91%E6%8A%A4%E5%9F%B9%E8%AE%AD",
-      "published_at": "2026-06-08T10:11:48",
-      "category": "care",
-      "tag": "骑手关怀",
-      "tagClass": "tag-green",
-      "sub_tag": "care.health",
-      "sub_label": "健康安全",
+      "published_at": "2026-06-08T10:00:06",
+      "category": "platform",
+      "tag": "平台动作",
+      "tagClass": "tag-purple",
+      "sub_tag": "rider_story.career",
+      "sub_label": "职业发展",
       "priority": "P3",
       "img": null,
-      "grad": "linear-gradient(135deg,#0d2e1a 0%,#0a2818 45%,#0f3a20 100%)"
+      "grad": "linear-gradient(135deg,#1a1a2e 0%,#16213e 45%,#0f3460 100%)"
     },
     {
       "title": "打工新鲜事儿｜确认了，全国部署！外卖骑手迎来新角色- 权益",
@@ -593,18 +593,18 @@
     },
     {
       "title": "株洲恺德医院为美团骑手开展应急救护培训",
-      "summary": "株洲恺德医院为美团骑手开展应急救护培训&nbsp;&nbsp;新浪财经",
-      "source": "新浪财经",
+      "summary": "株洲恺德医院为美团骑手开展应急救护培训&nbsp;&nbsp;红网",
+      "source": "红网",
       "url": "https://www.baidu.com/s?wd=%E6%A0%AA%E6%B4%B2%E6%81%BA%E5%BE%B7%E5%8C%BB%E9%99%A2%E4%B8%BA%E7%BE%8E%E5%9B%A2%E9%AA%91%E6%89%8B%E5%BC%80%E5%B1%95%E5%BA%94%E6%80%A5%E6%95%91%E6%8A%A4%E5%9F%B9%E8%AE%AD",
-      "published_at": "2026-06-08T10:11:48",
-      "category": "care",
-      "tag": "骑手关怀",
-      "tagClass": "tag-green",
-      "sub_tag": "care.health",
-      "sub_label": "健康安全",
+      "published_at": "2026-06-08T10:00:06",
+      "category": "platform",
+      "tag": "平台动作",
+      "tagClass": "tag-purple",
+      "sub_tag": "rider_story.career",
+      "sub_label": "职业发展",
       "priority": "P3",
       "img": null,
-      "grad": "linear-gradient(135deg,#0d2e1a 0%,#0a2818 45%,#0f3a20 100%)"
+      "grad": "linear-gradient(135deg,#1a1a2e 0%,#16213e 45%,#0f3460 100%)"
     },
     {
       "title": "打工新鲜事儿｜确认了，全国部署！外卖骑手迎来新角色- 权益",
