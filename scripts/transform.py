@@ -59,7 +59,7 @@ import sys
 import argparse
 import re
 import urllib.parse
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 try:
@@ -186,6 +186,39 @@ def _normalize_title(title: str) -> str:
     return t.lower()
 
 _PRIORITY_ORDER = {"P0": 0, "P1": 1, "P2": 2, "P3": 3, "P4": 4, "P5": 5}
+
+# ===== 内容黑名单（永久屏蔽）=====
+# URL 黑名单：完整或部分匹配，只要 article["url"] 包含其中任意一项即屏蔽
+_BLOCKED_URL_FRAGMENTS: set[str] = {
+    "news.cn/fortune/2022-12/13/c_1129203735",   # 农民工年龄统计老文章，反复出现
+}
+
+# 标题关键词黑名单：标题同时包含指定词组（AND逻辑）则屏蔽
+# 每项是一个词语列表，列表内所有词同时出现才屏蔽
+_BLOCKED_TITLE_PATTERNS: list[list[str]] = [
+    # 法院判决/以案说法类（纯法律案例，与行业资讯关联度低）
+    ["法院", "判了"],
+    ["以案释法"],
+    ["以案说法"],
+    ["宜案说法"],
+    ["法院", "赔偿", "骑手"],
+    ["法院", "担责"],
+    ["法院", "认定"],
+    ["裁判", "骑手"],
+    ["判决", "骑手", "赔"],
+]
+
+def _is_blocked(article: dict) -> bool:
+    """判断文章是否命中黑名单（URL 或 标题关键词）"""
+    url = article.get("url", "")
+    for frag in _BLOCKED_URL_FRAGMENTS:
+        if frag in url:
+            return True
+    title = article.get("title", "")
+    for pattern in _BLOCKED_TITLE_PATTERNS:
+        if all(kw in title for kw in pattern):
+            return True
+    return False
 
 
 # ===== 一级分类映射（category → 页面展示信息）=====
@@ -602,6 +635,21 @@ def _merge_with_existing(new_articles: list, existing_path: str | None, date_str
                 clean_title = a.get("title", title)
                 a["url"] = "https://www.baidu.com/s?wd=" + urllib.parse.quote(clean_title)
 
+    # ── 黑名单过滤（URL + 标题关键词）──
+    now_iso = datetime.now(timezone(timedelta(hours=8))).strftime("%Y-%m-%dT%H:%M:%S")
+    filtered = []
+    for a in all_articles:
+        if _is_blocked(a):
+            print(f"  [blocked] {a.get('title','')[:40]}")
+            continue
+        # 过滤未来时间（published_at 晚于当前时间超过 30 分钟，视为错误时间）
+        pub = a.get("published_at", "")
+        if pub and pub > now_iso and not pub.endswith("T12:00:00"):
+            print(f"  [future-time] {pub} {a.get('title','')[:30]}")
+            a["published_at"] = date_str + "T12:00:00"
+        filtered.append(a)
+    all_articles = filtered
+
     # 按归一化标题去重，同标题保留优先级最高的那条
     best: dict[str, dict] = {}
     for a in all_articles:
@@ -610,18 +658,34 @@ def _merge_with_existing(new_articles: list, existing_path: str | None, date_str
             continue
         norm = _normalize_title(raw_title)
         if norm not in best:
+            # 新文章首次入库：若时间是相对时间解析出的抓取时刻（秒数非零且是当天），
+            # 统一归为当天T12:00:00，避免「6小时前」每次算出不同时间
+            pub = a.get("published_at", "")
+            if (pub.startswith(date_str) and
+                    len(pub) >= 19 and pub[17:19] != "00" and
+                    not pub.endswith("T12:00:00")):
+                # 有秒数说明是相对时间解析结果，不是原始精确时间（原始一般到分钟）
+                a = dict(a)
+                a["published_at"] = date_str + "T12:00:00"
             best[norm] = a
         else:
             cur_p = _PRIORITY_ORDER.get(best[norm].get("priority", "P5"), 5)
             new_p = _PRIORITY_ORDER.get(a.get("priority", "P5"), 5)
             if new_p < cur_p:
                 merged_article = dict(a)
-                # 新数据只有兜底时间（T12:00:00），而已有数据有精确时间 → 保留精确时间
+                # 无论优先级如何，只要已有数据有精确时间就保留——
+                # 防止每次重新抓取时「X小时前」相对时间算出不同值覆盖掉稳定时间
                 existing_pub = best[norm].get("published_at", "")
                 new_pub = a.get("published_at", "")
-                if new_pub.endswith("T12:00:00") and existing_pub and not existing_pub.endswith("T12:00:00"):
+                if existing_pub and not existing_pub.endswith("T12:00:00"):
                     merged_article["published_at"] = existing_pub
-                best[norm] = merged_article  # 用更高优先级的来源替换
+                best[norm] = merged_article
+            else:
+                # 优先级相同或新数据更低：保留已有，但若已有是兜底时间而新数据更精确则更新
+                existing_pub = best[norm].get("published_at", "")
+                new_pub = a.get("published_at", "")
+                if existing_pub.endswith("T12:00:00") and new_pub and not new_pub.endswith("T12:00:00"):
+                    best[norm]["published_at"] = new_pub
 
     merged = list(best.values())
     merged.sort(key=lambda x: x.get("published_at", ""), reverse=True)

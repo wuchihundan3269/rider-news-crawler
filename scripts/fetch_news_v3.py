@@ -550,9 +550,8 @@ def fetch_baidu_news(keyword: str, category: str = "auto", tag: str = "auto",
         if not title or not link or not link.startswith("http"):
             continue
 
-        # 解析时间
-        pub_str = _parse_baidu_disp_time(disp_time) if disp_time else \
-                  datetime.now(timezone(timedelta(hours=8))).strftime("%Y-%m-%dT%H:%M:%S")
+        # 解析时间；无时间信息时返回空，由 transform.py 统一兜底
+        pub_str = _parse_baidu_disp_time(disp_time) if disp_time else ""
 
         # 时效过滤
         try:
