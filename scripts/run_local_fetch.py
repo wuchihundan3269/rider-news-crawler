@@ -97,20 +97,24 @@ def cleanup_old_logs(days: int = 7):
     log_file.write_text("".join(kept), encoding="utf-8")
 
 
-def step_fetch_news(date: str):
-    """步骤1：抓取新闻（含百度新闻）。"""
+def step_fetch_news(date: str, skip_baidu: bool = False):
+    """步骤1：抓取新闻。skip_baidu=True 时跳过百度管道，只抓 RSS/Google。"""
     log.info("=" * 60)
-    log.info("步骤1：抓取新闻 (date=%s)", date)
+    mode = "仅RSS/Google（夜间模式）" if skip_baidu else "百度+RSS/Google（白天模式）"
+    log.info("步骤1：抓取新闻 (date=%s, 模式=%s)", date, mode)
     NEWS_DIR.mkdir(parents=True, exist_ok=True)
     output_file = NEWS_DIR / f"{date}.json"
-    run([
+    cmd = [
         sys.executable,
         str(SCRIPTS_DIR / "fetch_news_v3.py"),
         "--date",   date,
         "--output", str(output_file),
         "--config", str(CONFIG_FILE),
         "--words",  str(WORDS_FILE),
-    ])
+    ]
+    if skip_baidu:
+        cmd.append("--skip-baidu")
+    run(cmd)
     if output_file.exists():
         with open(output_file, encoding="utf-8") as f:
             d = json.load(f)
@@ -301,20 +305,40 @@ def step_git_push(date: str, dry_run: bool = False):
     _sync_data_to_ghpages(datetime_str, dry_run)
 
 
+def get_beijing_hour() -> int:
+    """返回当前北京时间的小时数（0-23）。"""
+    tz_beijing = timezone(timedelta(hours=8))
+    return datetime.now(tz_beijing).hour
+
+
 def main():
     parser = argparse.ArgumentParser(description="本地定时抓取 + 自动推送")
-    parser.add_argument("--date",    default="",     help="目标日期 YYYY-MM-DD，默认今天（北京时间）")
-    parser.add_argument("--dry-run", action="store_true", help="只抓取不推送，用于测试")
+    parser.add_argument("--date",        default="",    help="目标日期 YYYY-MM-DD，默认今天（北京时间）")
+    parser.add_argument("--dry-run",     action="store_true", help="只抓取不推送，用于测试")
+    parser.add_argument("--skip-baidu",  action="store_true", help="强制跳过百度抓取")
+    parser.add_argument("--force-baidu", action="store_true", help="强制开启百度抓取（忽略时间判断）")
     args = parser.parse_args()
 
     date = args.date.strip() or get_beijing_date()
+
+    # 白天模式（10:00-18:59 北京时间）：抓百度；其他时间：仅RSS/Google
+    hour = get_beijing_hour()
+    if args.force_baidu:
+        skip_baidu = False
+    elif args.skip_baidu:
+        skip_baidu = True
+    else:
+        skip_baidu = not (10 <= hour <= 18)  # 19:00 起进入夜间模式
+
+    mode_label = "夜间(仅RSS/Google)" if skip_baidu else "白天(百度+RSS/Google)"
     log.info("=" * 60)
-    log.info("[START] 本地自动抓取启动  date=%s  dry_run=%s", date, args.dry_run)
+    log.info("[START] 本地自动抓取启动  date=%s  hour=%d  模式=%s  dry_run=%s",
+             date, hour, mode_label, args.dry_run)
     log.info("=" * 60)
 
     try:
         cleanup_old_logs(days=7)
-        news_file  = step_fetch_news(date)
+        news_file  = step_fetch_news(date, skip_baidu=skip_baidu)
         step_fetch_hot()
         data_file  = step_transform(date, news_file)
         step_update_latest(date, data_file)

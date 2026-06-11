@@ -903,10 +903,11 @@ def dedup_and_sort(items: list[dict], threshold: float = 0.85) -> list[dict]:
 
 def main():
     parser = argparse.ArgumentParser(description="骑手行业新闻独立抓取脚本 v3")
-    parser.add_argument("--date",   default=None, help="目标日期 YYYY-MM-DD，默认今天")
-    parser.add_argument("--output", default=None, help="输出文件路径，默认 output/news/YYYY-MM-DD.json")
-    parser.add_argument("--config", default=str(CONFIG_PATH), help="配置文件路径")
-    parser.add_argument("--words",  default=str(WORDS_PATH),  help="关键词文件路径")
+    parser.add_argument("--date",        default=None, help="目标日期 YYYY-MM-DD，默认今天")
+    parser.add_argument("--output",      default=None, help="输出文件路径，默认 output/news/YYYY-MM-DD.json")
+    parser.add_argument("--config",      default=str(CONFIG_PATH), help="配置文件路径")
+    parser.add_argument("--words",       default=str(WORDS_PATH),  help="关键词文件路径")
+    parser.add_argument("--skip-baidu",  action="store_true", help="跳过百度新闻抓取（夜间/非工作时间使用）")
     args = parser.parse_args()
 
     # 日期
@@ -960,7 +961,9 @@ def main():
 
     # ── 百度新闻搜索管道（HTML 解析，补充国内新闻）──────────────────────────
     baidu_config = config.get("baidu_news", {})
-    if baidu_config.get("enabled", True):
+    if args.skip_baidu:
+        print("\n── 百度新闻搜索：已跳过（--skip-baidu）──")
+    elif baidu_config.get("enabled", True):
         baidu_keywords = baidu_config.get("keywords", [
             {"keyword": "外卖骑手", "category": "auto", "tag": "auto"},
             {"keyword": "骑手权益", "category": "opinion", "tag": "opinion.rights"},
