@@ -1,9 +1,12 @@
 {
   "date": "2026-06-12",
-  "updated_at": "2026-06-12 09:05",
+  "updated_at": "2026-06-12 11:05",
   "file": "data/2026-06-12.json",
   "stats": {
-    "total": 0,
-    "by_category": {}
+    "total": 3,
+    "by_category": {
+      "policy": 2,
+      "opinion": 1
+    }
   }
 }
