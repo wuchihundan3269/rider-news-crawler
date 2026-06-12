@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-12T03:05:36",
+  "updated_at": "2026-06-12T09:03:39",
   "platforms": [
     {
       "id": "weibo",
@@ -9,53 +9,53 @@
       "items": [
         {
           "rank": 1,
-          "text": "世界杯开幕式",
-          "url": "https://s.weibo.com/weibo?q=%E4%B8%96%E7%95%8C%E6%9D%AF%E5%BC%80%E5%B9%95%E5%BC%8F"
-        },
-        {
-          "rank": 2,
           "text": "世界杯开幕式 吓我一跳",
           "url": "https://s.weibo.com/weibo?q=%E4%B8%96%E7%95%8C%E6%9D%AF%E5%BC%80%E5%B9%95%E5%BC%8F%20%E5%90%93%E6%88%91%E4%B8%80%E8%B7%B3"
         },
         {
+          "rank": 2,
+          "text": "中国队首发 labubu马宁",
+          "url": "https://s.weibo.com/weibo?q=%E4%B8%AD%E5%9B%BD%E9%98%9F%E9%A6%96%E5%8F%91%20labubu%E9%A9%AC%E5%AE%81"
+        },
+        {
           "rank": 3,
-          "text": "中国航天又一次成功发射",
-          "url": "https://s.weibo.com/weibo?q=%E4%B8%AD%E5%9B%BD%E8%88%AA%E5%A4%A9%E5%8F%88%E4%B8%80%E6%AC%A1%E6%88%90%E5%8A%9F%E5%8F%91%E5%B0%84"
+          "text": "让文化遗产走进普通人生活",
+          "url": "https://s.weibo.com/weibo?q=%E8%AE%A9%E6%96%87%E5%8C%96%E9%81%97%E4%BA%A7%E8%B5%B0%E8%BF%9B%E6%99%AE%E9%80%9A%E4%BA%BA%E7%94%9F%E6%B4%BB"
         },
         {
           "rank": 4,
-          "text": "联想世界杯一球千金",
-          "url": "https://s.weibo.com/weibo?q=%E8%81%94%E6%83%B3%E4%B8%96%E7%95%8C%E6%9D%AF%E4%B8%80%E7%90%83%E5%8D%83%E9%87%91"
+          "text": "南非 打人",
+          "url": "https://s.weibo.com/weibo?q=%E5%8D%97%E9%9D%9E%20%E6%89%93%E4%BA%BA"
         },
         {
           "rank": 5,
-          "text": "labubu都进世界杯了",
-          "url": "https://s.weibo.com/weibo?q=labubu%E9%83%BD%E8%BF%9B%E4%B8%96%E7%95%8C%E6%9D%AF%E4%BA%86"
+          "text": "白鹿没有去碰场外的声音",
+          "url": "https://s.weibo.com/weibo?q=%E7%99%BD%E9%B9%BF%E6%B2%A1%E6%9C%89%E5%8E%BB%E7%A2%B0%E5%9C%BA%E5%A4%96%E7%9A%84%E5%A3%B0%E9%9F%B3"
         },
         {
           "rank": 6,
-          "text": "墨西哥vs南非",
-          "url": "https://s.weibo.com/weibo?q=%E5%A2%A8%E8%A5%BF%E5%93%A5vs%E5%8D%97%E9%9D%9E"
+          "text": "金银终于猛涨",
+          "url": "https://s.weibo.com/weibo?q=%E9%87%91%E9%93%B6%E7%BB%88%E4%BA%8E%E7%8C%9B%E6%B6%A8"
         },
         {
           "rank": 7,
-          "text": "美国五角大楼被封锁",
-          "url": "https://s.weibo.com/weibo?q=%E7%BE%8E%E5%9B%BD%E4%BA%94%E8%A7%92%E5%A4%A7%E6%A5%BC%E8%A2%AB%E5%B0%81%E9%94%81"
+          "text": "球场疼痛急救指南",
+          "url": "https://s.weibo.com/weibo?q=%E7%90%83%E5%9C%BA%E7%96%BC%E7%97%9B%E6%80%A5%E6%95%91%E6%8C%87%E5%8D%97"
         },
         {
           "rank": 8,
-          "text": "新乐道L60价格惊爆全场跳舞",
-          "url": "https://s.weibo.com/weibo?q=%E6%96%B0%E4%B9%90%E9%81%93L60%E4%BB%B7%E6%A0%BC%E6%83%8A%E7%88%86%E5%85%A8%E5%9C%BA%E8%B7%B3%E8%88%9E"
+          "text": "世界杯开幕式",
+          "url": "https://s.weibo.com/weibo?q=%E4%B8%96%E7%95%8C%E6%9D%AF%E5%BC%80%E5%B9%95%E5%BC%8F"
         },
         {
           "rank": 9,
-          "text": "熬夜看世界杯",
-          "url": "https://s.weibo.com/weibo?q=%E7%86%AC%E5%A4%9C%E7%9C%8B%E4%B8%96%E7%95%8C%E6%9D%AF"
+          "text": "二手燃油车价格大跳水",
+          "url": "https://s.weibo.com/weibo?q=%E4%BA%8C%E6%89%8B%E7%87%83%E6%B2%B9%E8%BD%A6%E4%BB%B7%E6%A0%BC%E5%A4%A7%E8%B7%B3%E6%B0%B4"
         },
         {
           "rank": 10,
-          "text": "世界杯",
-          "url": "https://s.weibo.com/weibo?q=%E4%B8%96%E7%95%8C%E6%9D%AF"
+          "text": "AI短片效果看到起鸡皮疙瘩了",
+          "url": "https://s.weibo.com/weibo?q=AI%E7%9F%AD%E7%89%87%E6%95%88%E6%9E%9C%E7%9C%8B%E5%88%B0%E8%B5%B7%E9%B8%A1%E7%9A%AE%E7%96%99%E7%98%A9%E4%BA%86"
         }
       ]
     },
@@ -72,13 +72,13 @@
         },
         {
           "rank": 2,
-          "text": "世界杯揭幕战：墨西哥vs南非",
-          "url": "https://m.baidu.com/s?word=%E4%B8%96%E7%95%8C%E6%9D%AF%E6%8F%AD%E5%B9%95%E6%88%98%EF%BC%9A%E5%A2%A8%E8%A5%BF%E5%93%A5vs%E5%8D%97%E9%9D%9E&sa=fyb_news"
+          "text": "世界杯开幕式“大半夜吓我一跳”",
+          "url": "https://m.baidu.com/s?word=%E4%B8%96%E7%95%8C%E6%9D%AF%E5%BC%80%E5%B9%95%E5%BC%8F%E2%80%9C%E5%A4%A7%E5%8D%8A%E5%A4%9C%E5%90%93%E6%88%91%E4%B8%80%E8%B7%B3%E2%80%9D&sa=fyb_news"
         },
         {
           "rank": 3,
-          "text": "labubu都去世界杯了",
-          "url": "https://m.baidu.com/s?word=labubu%E9%83%BD%E5%8E%BB%E4%B8%96%E7%95%8C%E6%9D%AF%E4%BA%86&sa=fyb_news"
+          "text": "世界杯揭幕战：墨西哥2比0胜南非",
+          "url": "https://m.baidu.com/s?word=%E4%B8%96%E7%95%8C%E6%9D%AF%E6%8F%AD%E5%B9%95%E6%88%98%EF%BC%9A%E5%A2%A8%E8%A5%BF%E5%93%A52%E6%AF%940%E8%83%9C%E5%8D%97%E9%9D%9E&sa=fyb_news"
         },
         {
           "rank": 4,
@@ -87,33 +87,33 @@
         },
         {
           "rank": 5,
-          "text": "中方宣布制裁菲律宾国防部长",
-          "url": "https://m.baidu.com/s?word=%E4%B8%AD%E6%96%B9%E5%AE%A3%E5%B8%83%E5%88%B6%E8%A3%81%E8%8F%B2%E5%BE%8B%E5%AE%BE%E5%9B%BD%E9%98%B2%E9%83%A8%E9%95%BF&sa=fyb_news"
+          "text": "世界杯中国队首发：LABUBU和马宁 ​",
+          "url": "https://m.baidu.com/s?word=%E4%B8%96%E7%95%8C%E6%9D%AF%E4%B8%AD%E5%9B%BD%E9%98%9F%E9%A6%96%E5%8F%91%EF%BC%9ALABUBU%E5%92%8C%E9%A9%AC%E5%AE%81+%E2%80%8B&sa=fyb_news"
         },
         {
           "rank": 6,
-          "text": "夏奇拉开幕式献唱燃爆全场",
-          "url": "https://m.baidu.com/s?word=%E5%A4%8F%E5%A5%87%E6%8B%89%E5%BC%80%E5%B9%95%E5%BC%8F%E7%8C%AE%E5%94%B1%E7%87%83%E7%88%86%E5%85%A8%E5%9C%BA&sa=fyb_news"
+          "text": "赵丽娜在世界杯开幕式偶遇大张伟",
+          "url": "https://m.baidu.com/s?word=%E8%B5%B5%E4%B8%BD%E5%A8%9C%E5%9C%A8%E4%B8%96%E7%95%8C%E6%9D%AF%E5%BC%80%E5%B9%95%E5%BC%8F%E5%81%B6%E9%81%87%E5%A4%A7%E5%BC%A0%E4%BC%9F&sa=fyb_news"
         },
         {
           "rank": 7,
-          "text": "美国五角大楼被封锁",
-          "url": "https://m.baidu.com/s?word=%E7%BE%8E%E5%9B%BD%E4%BA%94%E8%A7%92%E5%A4%A7%E6%A5%BC%E8%A2%AB%E5%B0%81%E9%94%81&sa=fyb_news"
+          "text": "特朗普称取消对伊猛烈打击 伊朗回应",
+          "url": "https://m.baidu.com/s?word=%E7%89%B9%E6%9C%97%E6%99%AE%E7%A7%B0%E5%8F%96%E6%B6%88%E5%AF%B9%E4%BC%8A%E7%8C%9B%E7%83%88%E6%89%93%E5%87%BB+%E4%BC%8A%E6%9C%97%E5%9B%9E%E5%BA%94&sa=fyb_news"
         },
         {
           "rank": 8,
-          "text": "轮奸犯踢世界杯 日本足协沉默",
-          "url": "https://m.baidu.com/s?word=%E8%BD%AE%E5%A5%B8%E7%8A%AF%E8%B8%A2%E4%B8%96%E7%95%8C%E6%9D%AF+%E6%97%A5%E6%9C%AC%E8%B6%B3%E5%8D%8F%E6%B2%89%E9%BB%98&sa=fyb_news"
+          "text": "全世界都看得目瞪口呆",
+          "url": "https://m.baidu.com/s?word=%E5%85%A8%E4%B8%96%E7%95%8C%E9%83%BD%E7%9C%8B%E5%BE%97%E7%9B%AE%E7%9E%AA%E5%8F%A3%E5%91%86&sa=fyb_news"
         },
         {
           "rank": 9,
-          "text": "武契奇：我计划很快辞职",
-          "url": "https://m.baidu.com/s?word=%E6%AD%A6%E5%A5%91%E5%A5%87%EF%BC%9A%E6%88%91%E8%AE%A1%E5%88%92%E5%BE%88%E5%BF%AB%E8%BE%9E%E8%81%8C&sa=fyb_news"
+          "text": "世界杯红牌比进球多",
+          "url": "https://m.baidu.com/s?word=%E4%B8%96%E7%95%8C%E6%9D%AF%E7%BA%A2%E7%89%8C%E6%AF%94%E8%BF%9B%E7%90%83%E5%A4%9A&sa=fyb_news"
         },
         {
           "rank": 10,
-          "text": "小区保安长期匿名骚扰业主母女",
-          "url": "https://m.baidu.com/s?word=%E5%B0%8F%E5%8C%BA%E4%BF%9D%E5%AE%89%E9%95%BF%E6%9C%9F%E5%8C%BF%E5%90%8D%E9%AA%9A%E6%89%B0%E4%B8%9A%E4%B8%BB%E6%AF%8D%E5%A5%B3&sa=fyb_news"
+          "text": "女子点外卖备注牛蛙不要烧收到活蛙",
+          "url": "https://m.baidu.com/s?word=%E5%A5%B3%E5%AD%90%E7%82%B9%E5%A4%96%E5%8D%96%E5%A4%87%E6%B3%A8%E7%89%9B%E8%9B%99%E4%B8%8D%E8%A6%81%E7%83%A7%E6%94%B6%E5%88%B0%E6%B4%BB%E8%9B%99&sa=fyb_news"
         }
       ]
     },
@@ -125,13 +125,13 @@
       "items": [
         {
           "rank": 1,
-          "text": "美加墨世界杯首场开幕式",
-          "url": "https://www.douyin.com/hot/2531419"
+          "text": "墨西哥2:0南非赢下揭幕战",
+          "url": "https://www.douyin.com/hot/2531021"
         },
         {
           "rank": 2,
-          "text": "世界杯揭幕战墨西哥vs南非",
-          "url": "https://www.douyin.com/hot/2531021"
+          "text": "美加墨世界杯首场开幕式",
+          "url": "https://www.douyin.com/hot/2531419"
         },
         {
           "rank": 3,
@@ -140,38 +140,38 @@
         },
         {
           "rank": 4,
-          "text": "美国五角大楼被封锁",
-          "url": "https://www.douyin.com/hot/2531410"
+          "text": "韩国vs捷克",
+          "url": "https://www.douyin.com/hot/2531452"
         },
         {
           "rank": 5,
-          "text": "美加墨世界杯五大必看",
-          "url": "https://www.douyin.com/hot/2530888"
+          "text": "世界杯开幕式我们来了",
+          "url": "https://www.douyin.com/hot/2531422"
         },
         {
           "rank": 6,
-          "text": "吴越杯金华点球夺冠",
-          "url": "https://www.douyin.com/hot/2530323"
-        },
-        {
-          "rank": 7,
           "text": "是时候穿上我的主队球衣了",
           "url": "https://www.douyin.com/hot/2530685"
         },
         {
-          "rank": 8,
-          "text": "夏奇拉开幕式撑场子",
-          "url": "https://www.douyin.com/hot/2531426"
+          "rank": 7,
+          "text": "熬夜看完世界杯开幕式的我想说",
+          "url": "https://www.douyin.com/hot/2531423"
         },
         {
-          "rank": 9,
+          "rank": 8,
           "text": "可以质疑我但不能质疑我的馒头",
           "url": "https://www.douyin.com/hot/2530444"
         },
         {
+          "rank": 9,
+          "text": "夏奇拉开幕式撑场子",
+          "url": "https://www.douyin.com/hot/2531426"
+        },
+        {
           "rank": 10,
-          "text": "LABUBU亮相世界杯开幕式",
-          "url": "https://www.douyin.com/hot/2531420"
+          "text": "美国五角大楼被封锁",
+          "url": "https://www.douyin.com/hot/2531410"
         }
       ]
     },
