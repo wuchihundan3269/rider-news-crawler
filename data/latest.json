@@ -3,7 +3,11 @@
   "updated_at": "2026-06-12 09:03",
   "file": "data/2026-06-12.json",
   "stats": {
-    "total": 0,
-    "by_category": {}
+    "total": 36,
+    "by_category": {
+      "policy": 22,
+      "opinion": 12,
+      "rider_story": 2
+    }
   }
 }
