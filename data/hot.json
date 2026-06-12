@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-12T11:05:49",
+  "updated_at": "2026-06-12T11:18:33",
   "platforms": [
     {
       "id": "weibo",
@@ -9,13 +9,13 @@
       "items": [
         {
           "rank": 1,
-          "text": "韩国vs捷克",
-          "url": "https://s.weibo.com/weibo?q=%E9%9F%A9%E5%9B%BDvs%E6%8D%B7%E5%85%8B"
+          "text": "白鹿方六连辟谣",
+          "url": "https://s.weibo.com/weibo?q=%E7%99%BD%E9%B9%BF%E6%96%B9%E5%85%AD%E8%BF%9E%E8%BE%9F%E8%B0%A3"
         },
         {
           "rank": 2,
-          "text": "日本炸鸡店一锅油反复用66年",
-          "url": "https://s.weibo.com/weibo?q=%E6%97%A5%E6%9C%AC%E7%82%B8%E9%B8%A1%E5%BA%97%E4%B8%80%E9%94%85%E6%B2%B9%E5%8F%8D%E5%A4%8D%E7%94%A866%E5%B9%B4"
+          "text": "韩国vs捷克",
+          "url": "https://s.weibo.com/weibo?q=%E9%9F%A9%E5%9B%BDvs%E6%8D%B7%E5%85%8B"
         },
         {
           "rank": 3,
@@ -24,8 +24,8 @@
         },
         {
           "rank": 4,
-          "text": "华为开发者大会2026",
-          "url": "https://s.weibo.com/weibo?q=%E5%8D%8E%E4%B8%BA%E5%BC%80%E5%8F%91%E8%80%85%E5%A4%A7%E4%BC%9A2026"
+          "text": "美团外卖赞助加纳队",
+          "url": "https://s.weibo.com/weibo?q=%E7%BE%8E%E5%9B%A2%E5%A4%96%E5%8D%96%E8%B5%9E%E5%8A%A9%E5%8A%A0%E7%BA%B3%E9%98%9F"
         },
         {
           "rank": 5,
@@ -34,8 +34,8 @@
         },
         {
           "rank": 6,
-          "text": "泰国公主帕查拉吉迪雅帕逝世",
-          "url": "https://s.weibo.com/weibo?q=%E6%B3%B0%E5%9B%BD%E5%85%AC%E4%B8%BB%E5%B8%95%E6%9F%A5%E6%8B%89%E5%90%89%E8%BF%AA%E9%9B%85%E5%B8%95%E9%80%9D%E4%B8%96"
+          "text": "日本炸鸡店一锅油反复用66年",
+          "url": "https://s.weibo.com/weibo?q=%E6%97%A5%E6%9C%AC%E7%82%B8%E9%B8%A1%E5%BA%97%E4%B8%80%E9%94%85%E6%B2%B9%E5%8F%8D%E5%A4%8D%E7%94%A866%E5%B9%B4"
         },
         {
           "rank": 7,
@@ -44,18 +44,18 @@
         },
         {
           "rank": 8,
-          "text": "新乐道L60价格惊爆全场跳舞",
-          "url": "https://s.weibo.com/weibo?q=%E6%96%B0%E4%B9%90%E9%81%93L60%E4%BB%B7%E6%A0%BC%E6%83%8A%E7%88%86%E5%85%A8%E5%9C%BA%E8%B7%B3%E8%88%9E"
+          "text": "天猫世界路人杯开幕式",
+          "url": "https://s.weibo.com/weibo?q=%E5%A4%A9%E7%8C%AB%E4%B8%96%E7%95%8C%E8%B7%AF%E4%BA%BA%E6%9D%AF%E5%BC%80%E5%B9%95%E5%BC%8F"
         },
         {
           "rank": 9,
-          "text": "世界杯开幕式",
-          "url": "https://s.weibo.com/weibo?q=%E4%B8%96%E7%95%8C%E6%9D%AF%E5%BC%80%E5%B9%95%E5%BC%8F"
+          "text": "伊能静替张豆豆哭了",
+          "url": "https://s.weibo.com/weibo?q=%E4%BC%8A%E8%83%BD%E9%9D%99%E6%9B%BF%E5%BC%A0%E8%B1%86%E8%B1%86%E5%93%AD%E4%BA%86"
         },
         {
           "rank": 10,
-          "text": "伊能静替张豆豆哭了",
-          "url": "https://s.weibo.com/weibo?q=%E4%BC%8A%E8%83%BD%E9%9D%99%E6%9B%BF%E5%BC%A0%E8%B1%86%E8%B1%86%E5%93%AD%E4%BA%86"
+          "text": "亲密关系 心理承载力",
+          "url": "https://s.weibo.com/weibo?q=%E4%BA%B2%E5%AF%86%E5%85%B3%E7%B3%BB%20%E5%BF%83%E7%90%86%E6%89%BF%E8%BD%BD%E5%8A%9B"
         }
       ]
     },
